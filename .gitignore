@@ -29,3 +29,15 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Temp files when opening LibreOffice on ubuntu
+.~lock.*
+
+# Ignore all folder start with ~
+**/~*/
+
+# Ignore all file start with ~
+~*
+
+# Ignore Office暫存檔案
+.~*
