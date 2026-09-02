@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 01 教師版</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.quick-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.55rem;
+  padding: 0.48rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  background: white;
+  color: var(--navy);
+}
+
+main {
+  width: min(100% - 2rem, 72rem);
+  margin: 1.6rem auto 3rem;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg text, svg tspan { font-size: 16px !important; }
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .quick-nav { display: grid; grid-template-columns: 1fr; }
+  .quick-nav a { border-radius: 0.6rem; }
+  main { width: 100%; margin-top: 0; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .quick-nav, .skip-link, .back-link { display: none; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 01 · 教師版完整教案</p>
+      <h1>TNDA Week 01 教師版</h1>
+      <p class="hero-note">合併課前預習、課堂示範與課堂實作，供遠端教學備課與操作。</p>
+      <nav class="quick-nav" aria-label="本頁導覽"><a href="#part-prep">課前預習</a><a href="#part-demo">課堂示範</a><a href="#part-lab">課堂實作</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <article class="paper"><section class="document-part" id="part-prep">
+      <h2 class="part-title">TNDA Week 01 課前預習｜教師版</h2>
+      <h3 id="teacher-01-prep-1">使用方式</h3>
+<p>本文件用來檢查學生能否正常使用開發環境，以及是否已從操作結果辨認 Third Person 四種玩法。環境安裝屬於課前條件，不占用兩組各 30 分鐘的實作時間。</p>
+<h3 id="teacher-01-prep-2">教材與環境前置條件</h3>
+<ul>
+<li>Unreal Engine 5.8。</li>
+<li>Visual Studio 2026，已安裝 Unreal C++ 開發所需工作負載與元件。</li>
+<li>GitHub Desktop。</li>
+<li><code>ThirdPersonTemplate</code> 教材專案可編譯、可開啟，且包含以下關卡：<ul>
+<li><code>/Game/ThirdPerson/Lvl_ThirdPerson</code></li>
+<li><code>/Game/Variant_Combat/Lvl_Combat</code></li>
+<li><code>/Game/Variant_Platforming/Lvl_Platforming</code></li>
+<li><code>/Game/Variant_SideScrolling/Lvl_SideScrolling</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="teacher-01-prep-3">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</h3>
+<h4 id="teacher-01-prep-4">給學生看的題目</h4>
+<p>使用 PIE 依序體驗 <code>Lvl_ThirdPerson</code>、<code>Lvl_Combat</code>、<code>Lvl_Platforming</code> 與 <code>Lvl_SideScrolling</code>。整理四種玩法在角色操作、鏡頭、關卡互動與遊戲目標上的差異，並為每個關卡留下一張能看出特色的執行畫面。</p>
+<h4 id="teacher-01-prep-5">教學目的</h4>
+<p>讓學生先從玩家體驗辨認範本差異，知道 Variant 是可拆解與改造的專案起點，不是四套彼此無關的引擎功能。</p>
+<h4 id="teacher-01-prep-6">完整操作</h4>
+<ol>
+<li>開啟 <code>ThirdPersonTemplate</code>，確認目前沒有編譯錯誤。</li>
+<li>在 Content Browser 依序開啟四個關卡。</li>
+<li>每次切換關卡後啟動 PIE，實際操作角色並觀察鏡頭、移動能力、場景互動與可見 UI。</li>
+<li>每個關卡擷取一張能辨認特色的畫面。</li>
+<li>整理比較表，最後選出較適合近戰遊戲原型的起點。</li>
+</ol>
+<h4 id="teacher-01-prep-7">參考答案與教學基準</h4>
+<table>
+<thead>
+<tr>
+<th>關卡</th>
+<th>應辨認的核心差異</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Lvl_ThirdPerson</code></td>
+<td>標準第三人稱移動、跳躍、自由視角與基礎關卡。</td>
+</tr>
+<tr>
+<td><code>Lvl_Combat</code></td>
+<td>徒手攻擊、連段、AI 對手與場景內血條。</td>
+</tr>
+<tr>
+<td><code>Lvl_Platforming</code></td>
+<td>衝刺、牆跳與更強調精準移動的平台玩法。</td>
+</tr>
+<tr>
+<td><code>Lvl_SideScrolling</code></td>
+<td>固定鏡頭、平面移動限制、拾取物與橫向平台互動。</td>
+</tr>
+</tbody></table>
+<p>學生的文字不必和表格一致，但必須以實際操作觀察為依據。選擇近戰遊戲起點時，以 <code>Combat</code> 最直接；若學生選擇其他 Variant，只要能說明取捨，不直接判錯。</p>
+<h4 id="teacher-01-prep-8">完成判斷與證據</h4>
+<ul>
+<li>四個關卡都各有一張 PIE 畫面。</li>
+<li>比較表至少涵蓋操作、鏡頭、互動與目標中的三項。</li>
+<li>選型理由能對應到所選 Variant 的實際特色。</li>
+</ul>
+<h4 id="teacher-01-prep-9">還原方式</h4>
+<p>本題只切換並執行關卡，不應修改資產。若誤存關卡變更，使用 GitHub Desktop 檢查差異，只還原本題造成的檔案變更。</p>
+<h4 id="teacher-01-prep-10">常見問題</h4>
+<ul>
+<li>找不到關卡：確認 Content Browser 沒有啟用只顯示特定資料夾或資產類型的篩選。</li>
+<li>PIE 出現錯誤地圖：先確認目前開啟的關卡名稱，再按 Play。</li>
+<li>操作方式不同：以各關卡內建提示與實際反應為準，不要求四個 Variant 使用完全相同的輸入。</li>
+</ul>
+<h3 id="teacher-01-prep-11">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</h3>
+<h4 id="teacher-01-prep-12">給學生看的題目</h4>
+<p>把編輯器啟動時開啟的關卡，以及遊戲使用的預設關卡，都改成 <code>Lvl_Combat</code>。關閉並重新開啟專案，確認編輯器會直接進入 Combat 關卡，而且 PIE 可以正常操作角色。</p>
+<h4 id="teacher-01-prep-13">教學目的</h4>
+<p>讓學生分清楚「目前開啟的關卡」與「專案預設關卡」，並熟悉會寫入專案設定的基本操作。</p>
+<h4 id="teacher-01-prep-14">完整操作</h4>
+<ol>
+<li>開啟 <code>Edit &gt; Project Settings</code>。</li>
+<li>進入 <code>Project &gt; Maps &amp; Modes</code>。</li>
+<li>將 <code>Editor Startup Map</code> 設為 <code>/Game/Variant_Combat/Lvl_Combat</code>。</li>
+<li>將 <code>Game Default Map</code> 設為 <code>/Game/Variant_Combat/Lvl_Combat</code>。</li>
+<li>關閉 Project Settings，確認設定已寫入 <code>Config/DefaultEngine.ini</code>。</li>
+<li>關閉並重新開啟專案，確認目前關卡是 <code>Lvl_Combat</code>。</li>
+<li>啟動 PIE，確認角色能移動並使用 Combat 玩法。</li>
+</ol>
+<h4 id="teacher-01-prep-15">參考答案與教學基準</h4>
+<p>兩個欄位都應顯示 <code>Lvl_Combat</code>。重新開啟專案會驗證 <code>Editor Startup Map</code>；<code>Game Default Map</code> 則以設定頁或 <code>DefaultEngine.ini</code> 的值確認。單純在目前關卡按 Play，不足以單獨證明兩個欄位都已設定。</p>
+<h4 id="teacher-01-prep-16">完成判斷與證據</h4>
+<ul>
+<li>設定畫面同時顯示兩個 <code>Lvl_Combat</code>。</li>
+<li>重新啟動後目前關卡為 <code>Lvl_Combat</code>。</li>
+<li>PIE 可正常控制 Combat 角色。</li>
+</ul>
+<h4 id="teacher-01-prep-17">還原方式</h4>
+<p>課堂將沿用 Combat 關卡，因此學生可保留設定。若要回到教材原始狀態，將 <code>Editor Startup Map</code> 與 <code>Game Default Map</code> 都改回 <code>/Game/ThirdPerson/Lvl_ThirdPerson</code>。</p>
+<h4 id="teacher-01-prep-18">常見問題</h4>
+<ul>
+<li>只改了一個欄位：重新檢查 Maps &amp; Modes 內的兩個 Map 欄位。</li>
+<li>重新開啟後仍是舊關卡：確認選到的是 <code>Lvl_Combat</code> 資產，而不是只在 Content Browser 選取它。</li>
+<li>GitHub Desktop 出現 <code>DefaultEngine.ini</code> 變更：這是本題預期結果；應確認差異只包含兩個 Map 設定。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-demo">
+      <h2 class="part-title">TNDA Week 01 課堂示範｜教師版</h2>
+      <h3 id="teacher-01-demo-1">示範 1｜Gameplay Framework 與 Unity 對照（20 分鐘內）</h3>
+<h4 id="teacher-01-demo-2">示範目標</h4>
+<p>用 <code>Lvl_Combat</code> 說明 Unreal 如何把關卡規則、玩家控制與可控制角色拆開，並讓有 Unity 經驗的學生建立可用的責任對照。</p>
+<h4 id="teacher-01-demo-3">備課前置</h4>
+<ul>
+<li>開啟 <code>ThirdPersonTemplate</code> 的 <code>Lvl_Combat</code>。</li>
+<li>事先確認以下 Blueprint 可開啟：<code>BP_CombatGameMode</code>、<code>BP_CombatPlayerController</code>、<code>BP_CombatCharacter</code>。</li>
+<li>準備一個 PIE 視窗，能看見玩家角色與敵人。</li>
+</ul>
+<h4 id="teacher-01-demo-4">建議節奏與操作</h4>
+<ol>
+<li><strong>0～4 分鐘：從執行結果反推角色。</strong> 在 PIE 指出關卡開始後，誰決定生成什麼 Pawn、誰接收本機輸入、誰真正出現在世界中。</li>
+<li><strong>4～10 分鐘：沿資產關係說明。</strong> 從關卡使用的 GameMode 開始，依序打開 PlayerController 與 Character，說明 <code>Possess</code> 把控制者與 Pawn 接起來。</li>
+<li><strong>10～16 分鐘：補齊 Framework 責任。</strong> 說明 GameMode 只存在於權威端、GameState 保存整場可共享狀態、PlayerState 保存每位玩家的狀態。Week 01 先理解責任，不展開網路同步實作。</li>
+<li><strong>16～20 分鐘：與 Unity 對照。</strong> 使用下表逐項比較，最後回到 <code>Lvl_Combat</code> 的實際資產。</li>
+</ol>
+<h4 id="teacher-01-demo-5">Unity 概念對照</h4>
+<p>這些對照只用來理解責任，不是類型、生命週期或網路模型的一對一映射。</p>
+<table>
+<thead>
+<tr>
+<th>Unreal</th>
+<th>主要責任</th>
+<th>Unity 中可近似聯想到的做法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GameMode</code></td>
+<td>定義關卡或比賽規則、預設 Pawn 與 Controller 類別</td>
+<td>場景啟動器、GameManager 或自訂規則服務的組合</td>
+</tr>
+<tr>
+<td><code>PlayerController</code></td>
+<td>代表玩家的控制端，接收輸入並 Possess Pawn</td>
+<td><code>PlayerInput</code> 加上玩家控制腳本，但 Unity 沒有完全相同的內建角色</td>
+</tr>
+<tr>
+<td><code>Pawn</code></td>
+<td>可被 Controller Possess 的世界物件</td>
+<td>可控制的 <code>GameObject</code> 加自訂控制元件</td>
+</tr>
+<tr>
+<td><code>Character</code></td>
+<td>具備 Capsule 與 Character Movement 的 Pawn</td>
+<td>角色 <code>GameObject</code>、<code>CharacterController</code> 與移動腳本的組合</td>
+</tr>
+<tr>
+<td><code>PlayerState</code></td>
+<td>保存單一玩家、適合共享或同步的狀態</td>
+<td>玩家資料元件或網路玩家狀態物件</td>
+</tr>
+<tr>
+<td><code>GameState</code></td>
+<td>保存整場遊戲的共享狀態</td>
+<td>Match Manager 或網路化的場次狀態物件</td>
+</tr>
+<tr>
+<td><code>Actor Component</code></td>
+<td>把能力或資料組合到 Actor 上</td>
+<td><code>Component</code>／<code>MonoBehaviour</code> 的組合概念最接近</td>
+</tr>
+</tbody></table>
+<h4 id="teacher-01-demo-6">必講重點</h4>
+<ul>
+<li><code>PlayerController</code> 與 <code>Character</code> 是兩個物件；「玩家」不等於角色 Blueprint。</li>
+<li>Pawn 必須被 Possess 才能由對應 Controller 控制。</li>
+<li>GameMode、GameState 與 PlayerState 的資料可見性及生命週期不同，不能全部塞進單一 Manager。</li>
+<li>Unity 對照的用途是幫助定位責任，不是照名稱直接移植程式碼。</li>
+</ul>
+<h4 id="teacher-01-demo-7">示範中常見狀況</h4>
+<ul>
+<li>World Settings 顯示的 GameMode 與 Project Settings 不同：說明關卡可用 GameMode Override 覆寫專案預設。</li>
+<li>PIE 找不到 PlayerController：可用 World Outliner 切到 PIE 世界，或以 Blueprint 類別關係說明，不把時間花在 Debug 工具設定。</li>
+</ul>
+<h3 id="teacher-01-demo-8">示範 2｜從按鍵走到 Input Action（20 分鐘內）</h3>
+<h4 id="teacher-01-demo-9">示範目標</h4>
+<p>讓學生看懂 <code>按鍵 → Input Mapping Context → Input Action → 角色行為</code> 的最小路徑，為課堂實作新增 U 鍵做準備。完整的 Enhanced Input 設計概念留到 Week 02。</p>
+<h4 id="teacher-01-demo-10">備課前置</h4>
+<ul>
+<li>開啟 <code>/Game/Variant_Combat/Input/IMC_Combat</code>。</li>
+<li>準備 <code>/Game/Variant_Combat/Input/Actions/IA_ComboAttack</code> 與 <code>BP_CombatCharacter</code>。</li>
+<li>確認原始設定中滑鼠左鍵會觸發 <code>IA_ComboAttack</code>。</li>
+</ul>
+<h4 id="teacher-01-demo-11">建議節奏與操作</h4>
+<ol>
+<li><strong>0～4 分鐘：先操作。</strong> 在 PIE 以滑鼠左鍵觸發攻擊，請學生先記住輸入結果。</li>
+<li><strong>4～9 分鐘：打開 IMC。</strong> 找到滑鼠左鍵對應的 <code>IA_ComboAttack</code>，說明 IMC 管理「目前情境可用哪些映射」。</li>
+<li><strong>9～14 分鐘：打開 IA。</strong> 說明 Input Action 表示玩家意圖，按鍵只是其中一種來源；簡短指出 Value Type、Trigger 與 Modifier 的位置。</li>
+<li><strong>14～18 分鐘：回到 Character。</strong> 顯示 Character 接收 IA 事件後才執行攻擊，建立資產與行為的分工。</li>
+<li><strong>18～20 分鐘：串起流程。</strong> 用口頭或白板畫出 <code>Left Mouse Button → IMC_Combat → IA_ComboAttack → BP_CombatCharacter</code>。</li>
+</ol>
+<h4 id="teacher-01-demo-12">必講重點</h4>
+<ul>
+<li>同一個 Input Action 可以有多個按鍵映射，因此不必複製攻擊邏輯。</li>
+<li>IMC 管情境與映射，IA 表達意圖，Character 執行遊戲行為。</li>
+<li>Modifier 改寫輸入值，Trigger 判斷何時成立；本週只辨認位置，不展開組合設計。</li>
+<li>新增第二個按鍵時要保留原本映射，才能讓兩種輸入都觸發同一功能。</li>
+</ul>
+<h4 id="teacher-01-demo-13">示範中常見狀況</h4>
+<ul>
+<li>IA 名稱搜尋不到：先確認正在編輯的是 <code>IMC_Combat</code>，而不是 Project Settings 的舊式 Input 頁面。</li>
+<li>PIE 沒有反應：先點一下遊戲 Viewport 取得鍵盤與滑鼠焦點。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-lab">
+      <h2 class="part-title">TNDA Week 01 課堂實作｜教師版</h2>
+      <h3 id="teacher-01-lab-1">課堂實作 1｜讓 U 鍵也能攻擊（15 分鐘內）</h3>
+<h4 id="teacher-01-lab-2">給學生看的題目</h4>
+<p>在不移除滑鼠左鍵的前提下，讓鍵盤 U 鍵也能觸發相同的連段攻擊。完成後分別使用滑鼠左鍵與 U 鍵測試，確認兩種輸入都會執行同一個功能。</p>
+<h4 id="teacher-01-lab-3">教學目的</h4>
+<p>確認學生能修改既有 IMC 映射，並理解「增加輸入來源」不等於「複製一套攻擊邏輯」。</p>
+<h4 id="teacher-01-lab-4">教材專案前置條件</h4>
+<ul>
+<li>使用 <code>ThirdPersonTemplate</code> 的 <code>Lvl_Combat</code>。</li>
+<li><code>/Game/Variant_Combat/Input/IMC_Combat</code> 已有 <code>Left Mouse Button → IA_ComboAttack</code>。</li>
+</ul>
+<h4 id="teacher-01-lab-5">參考操作</h4>
+<ol>
+<li>開啟 <code>IMC_Combat</code>。</li>
+<li>找到 <code>IA_ComboAttack</code> 的既有滑鼠左鍵映射。</li>
+<li>在同一個 Input Action 下新增一筆 Mapping。</li>
+<li>將新 Mapping 的 Key 設為鍵盤 <code>U</code>，保留滑鼠左鍵那一筆。</li>
+<li>儲存 <code>IMC_Combat</code>，進入 PIE。</li>
+<li>分別按滑鼠左鍵與 U 鍵，確認兩者都觸發連段攻擊。</li>
+</ol>
+<h4 id="teacher-01-lab-6">參考答案與基準</h4>
+<p><code>IMC_Combat</code> 內應同時存在 <code>Left Mouse Button → IA_ComboAttack</code> 與 <code>U → IA_ComboAttack</code>。不需要在 Character 內新增第二套攻擊事件。</p>
+<h4 id="teacher-01-lab-7">完成判斷與證據</h4>
+<ul>
+<li>IMC 畫面可同時看見兩筆映射。</li>
+<li>PIE 中兩個按鍵都能觸發攻擊。</li>
+<li>學生能指出兩個按鍵最後共用的是 <code>IA_ComboAttack</code>。</li>
+</ul>
+<h4 id="teacher-01-lab-8">還原方式</h4>
+<p>若要回到教材原始狀態，刪除 U 鍵那一筆 Mapping，保留滑鼠左鍵映射後儲存。</p>
+<h4 id="teacher-01-lab-9">常見問題</h4>
+<ul>
+<li>新增了另一個 IA：刪除多餘 IA，改在既有 <code>IA_ComboAttack</code> 下增加 Mapping。</li>
+<li>U 鍵無反應：確認新 Mapping 的 Key 是鍵盤 U，且 PIE Viewport 已取得焦點。</li>
+<li>滑鼠左鍵失效：檢查是否誤把原本 Mapping 改成 U，而不是新增一筆。</li>
+</ul>
+<h3 id="teacher-01-lab-10">課堂實作 2｜把移動速度調成兩倍（15 分鐘內）</h3>
+<h4 id="teacher-01-lab-11">給學生看的題目</h4>
+<p>把 Combat 操控角色的移動速度調成目前的兩倍。完成後進入 PIE，比較修改前後從同一位置走到同一目標所需的時間。</p>
+<h4 id="teacher-01-lab-12">教學目的</h4>
+<p>讓學生從 Character 的元件設定找到移動參數，並以可重複的遊戲內比較判斷修改是否生效。</p>
+<h4 id="teacher-01-lab-13">教材專案前置條件</h4>
+<ul>
+<li><code>/Game/Variant_Combat/Blueprints/BP_CombatCharacter</code> 的 <code>Character Movement</code> 可正常使用。</li>
+<li>原始 <code>Max Walk Speed</code> 為 <code>400 cm/s</code>。</li>
+</ul>
+<h4 id="teacher-01-lab-14">參考操作</h4>
+<ol>
+<li>開啟 <code>BP_CombatCharacter</code>。</li>
+<li>在 Components 選取 <code>Character Movement</code>。</li>
+<li>在 Details 搜尋 <code>Max Walk Speed</code>。</li>
+<li>將數值由 <code>400</code> 改為 <code>800</code>。</li>
+<li>Compile、Save，進入 <code>Lvl_Combat</code> 的 PIE。</li>
+<li>從同一個起點朝同一個目標移動，比較修改前後的時間或錄影。</li>
+</ol>
+<h4 id="teacher-01-lab-15">參考答案與基準</h4>
+<p>目標值為 <code>800 cm/s</code>。這代表角色的最大步行速度設定為原本兩倍，不代表短距離實測時間一定精準減半；加速度、路線與計時誤差都會影響結果。</p>
+<h4 id="teacher-01-lab-16">完成判斷與證據</h4>
+<ul>
+<li><code>BP_CombatCharacter</code> 的 <code>Max Walk Speed</code> 顯示為 <code>800</code>。</li>
+<li>Blueprint 編譯沒有錯誤。</li>
+<li>PIE 中角色明顯比原始設定移動得快，且比較使用同一起點與目標。</li>
+</ul>
+<h4 id="teacher-01-lab-17">還原方式</h4>
+<p>將 <code>Max Walk Speed</code> 改回 <code>400</code>，Compile 並 Save。</p>
+<h4 id="teacher-01-lab-18">常見問題</h4>
+<ul>
+<li>改到錯誤角色：確認資產是 <code>BP_CombatCharacter</code>，不是其他 Variant 的 Character。</li>
+<li>找不到欄位：先選取 <code>Character Movement</code> 元件，再搜尋完整欄位名稱。</li>
+<li>改完沒有差異：確認已 Compile，且 PIE 使用的是 <code>Lvl_Combat</code> 與正確 Character。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section></article>
+  </main>
+  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 01 · 教師版完整教案</footer>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 03 教師版</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.quick-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.55rem;
+  padding: 0.48rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  background: white;
+  color: var(--navy);
+}
+
+main {
+  width: min(100% - 2rem, 72rem);
+  margin: 1.6rem auto 3rem;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg text, svg tspan { font-size: 16px !important; }
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .quick-nav { display: grid; grid-template-columns: 1fr; }
+  .quick-nav a { border-radius: 0.6rem; }
+  main { width: 100%; margin-top: 0; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .quick-nav, .skip-link, .back-link { display: none; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 03 · 教師版完整教案</p>
+      <h1>TNDA Week 03 教師版</h1>
+      <p class="hero-note">合併課前預習、課堂示範與課堂實作，供遠端教學備課與操作。</p>
+      <nav class="quick-nav" aria-label="本頁導覽"><a href="#part-prep">課前預習</a><a href="#part-demo">課堂示範</a><a href="#part-lab">課堂實作</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <article class="paper"><section class="document-part" id="part-prep">
+      <h2 class="part-title">TNDA Week 03 課前預習｜教師版</h2>
+      <h3 id="teacher-03-prep-1">教材發布前置檢查</h3>
+<p>本週重點是閱讀與觀察既有實作，不要求學生建立相對方向或自動面向功能。發布前確認：</p>
+<ul>
+<li>Week 03 教材專案已完成 Opponent Reference、戰鬥軸、4／6 相對方向、最後有效方向與平順自動面向。</li>
+<li><code>docs/</code> 已包含「換邊與自動面向」架構流程文件，內容與實際類別、變數及執行順序一致。</li>
+<li><code>FacingInterpolationSpeed</code>、面向 Debug 資料與換邊測試方式已存在專案內，不需上課時補發。</li>
+<li><code>docs/為何 1P 與 CPU 不會疊在一起呢.md</code> 與 <code>docs/blueprints/ABP_Manny_Combat.md</code> 可直接開啟。</li>
+</ul>
+<p>目前工作區尚未具備 Week 03 的自動面向實作、<code>FacingInterpolationSpeed</code> 與對應架構文件；補齊並驗證前，本週課前實作 2 與後續課堂內容不能直接使用現況授課。</p>
+<h3 id="teacher-03-prep-2">課前實作 1｜讓 1P 與 CPU 可以重疊（30 分鐘內）</h3>
+<h4 id="teacher-03-prep-3">給學生看的題目</h4>
+<p>先記錄 1P 與 CPU 的根 Capsule 碰撞設定，以及兩者接觸時的畫面。只調整教材專案中既有的碰撞設定，嘗試讓 1P 能進入並穿過 CPU 的位置。留下修改前後的設定與 PIE 畫面，完成後恢復原始設定。</p>
+<h4 id="teacher-03-prep-4">教學目的</h4>
+<p>讓學生從可觀察的阻擋行為追到根 Capsule 的 Collision Response，確認角色模型與防重疊規則不是同一層。</p>
+<h4 id="teacher-03-prep-5">教材專案前置條件</h4>
+<ul>
+<li><code>BP_FightingPlayerCharacter</code> 與 <code>BP_FightingCpuCharacter</code> 的根元件都是 <code>CollisionCylinder</code>。</li>
+<li>兩個 Capsule 的 Object Type 都是 <code>Pawn</code>，Collision Enabled 都是 <code>Query and Physics</code>，對 <code>Pawn</code> 的 Response 都是 <code>Block</code>。</li>
+<li>兩個 Capsule 的 Radius 都是 <code>35 cm</code>，並已開啟 Generate Overlap Events。</li>
+</ul>
+<h4 id="teacher-03-prep-6">完整操作</h4>
+<ol>
+<li>分別開啟 <code>BP_FightingPlayerCharacter</code> 與 <code>BP_FightingCpuCharacter</code>，選取根 <code>CollisionCylinder</code>，記錄 Collision Presets、Object Type、Collision Enabled 與 Pawn Response。</li>
+<li>在原始狀態進入 PIE，讓 1P 持續朝 CPU 移動，擷取兩個 Capsule 被阻擋的畫面。需要時使用 <code>show collision</code> 顯示碰撞範圍。</li>
+<li>停止 PIE，開啟 <code>BP_FightingCpuCharacter</code>，把根 Capsule 的 <code>Pawn</code> Response 由 <code>Block</code> 改為 <code>Overlap</code>，其他 Channel 不變。</li>
+<li>Compile、Save，再進入 PIE，讓 1P 穿過 CPU 並擷取畫面。</li>
+<li>停止 PIE，將 CPU 根 Capsule 的 <code>Pawn</code> Response 改回 <code>Block</code>，Compile、Save，再次確認兩者會互相阻擋。</li>
+</ol>
+<h4 id="teacher-03-prep-7">參考答案與教學基準</h4>
+<p>原始阻擋來自兩名 <code>ACharacter</code> 的根 Capsule：Object Type 是 <code>Pawn</code>，雙方對 <code>Pawn</code> 都是 <code>Block</code>。把其中一方改為 <code>Overlap</code> 後，兩個 Capsule 可以互相進入，且 Generate Overlap Events 開啟時可保留 Overlap 事件條件。Skeletal Mesh 不是本題阻擋角色移動的元件。</p>
+<h4 id="teacher-03-prep-8">完成判斷與證據</h4>
+<ul>
+<li>原始設定紀錄包含兩個角色的根 Capsule。</li>
+<li>修改紀錄能指出 CPU 的 <code>Pawn: Block → Overlap</code>。</li>
+<li>PIE 畫面能辨認修改前受阻、修改後可穿過。</li>
+<li>最後已恢復 <code>Pawn: Block</code>，並再次確認阻擋行為。</li>
+</ul>
+<h4 id="teacher-03-prep-9">還原方式</h4>
+<p>在 <code>BP_FightingCpuCharacter &gt; CollisionCylinder</code> 將 Collision Presets 保持原本的 <code>Custom</code>，並把 <code>Pawn</code> Response 設回 <code>Block</code>。Compile、Save 後，以 GitHub Desktop 確認沒有留下本題變更。</p>
+<h4 id="teacher-03-prep-10">常見問題</h4>
+<ul>
+<li>改 Skeletal Mesh 後仍不能穿過：角色移動阻擋由根 Capsule 處理，應檢查 <code>CollisionCylinder</code>。</li>
+<li>使用 <code>Ignore</code> 也能穿過：可以達成穿越，但不會產生 Overlap 事件；本題參考操作使用 <code>Overlap</code> 方便比較責任差異。</li>
+<li>改回 Block 後仍能穿過：確認修改的是 CPU 根 Capsule，並已 Compile；也要檢查 PIE 是否仍在使用修改前的執行實例。</li>
+</ul>
+<h3 id="teacher-03-prep-11">課前實作 2｜把換邊流程分成 Gameplay 與 ABP（30 分鐘內）</h3>
+<h4 id="teacher-03-prep-12">給學生看的題目</h4>
+<p>閱讀教材專案內的「換邊與自動面向」架構流程文件，把 <code>Opponent Reference</code>、戰鬥軸、4／6 相對方向、目標面向、旋轉插值與 ABP Pose 分到 Gameplay 與 Animation Blueprint 兩個責任區。畫一張雙泳道流程圖，標出資料從角色位置一路到畫面姿勢的方向。</p>
+<h4 id="teacher-03-prep-13">教學目的</h4>
+<p>讓學生把角色規則與動畫呈現拆開閱讀，知道 ABP 應消費結果並產生 Pose，而不是決定對手、輸入語意或 Actor 世界旋轉。</p>
+<h4 id="teacher-03-prep-14">教材專案前置條件</h4>
+<ul>
+<li>「換邊與自動面向」文件能連回教材專案內的實際類別、屬性與 ABP 變數。</li>
+<li>Week 03 版本已實作最後有效方向備援，重疊時不會反覆切換方向。</li>
+</ul>
+<h4 id="teacher-03-prep-15">完整操作</h4>
+<ol>
+<li>先沿文件找出 Opponent Reference 的建立位置與更新時機。</li>
+<li>從 1P、CPU 世界位置追到水平戰鬥軸，記錄距離過近時採用的備援資料。</li>
+<li>追蹤實體移動方向如何和戰鬥軸比較，並在輸入事件產生時保存 4／6 語意。</li>
+<li>從同一份戰鬥軸追到目標面向與 Actor Rotation Interpolation。</li>
+<li>最後開啟 <code>ABP_Manny_Combat</code>，確認 ABP 讀取移動與旋轉結果，再由 AnimGraph、State Machine 與 BlendSpace 產生 Pose。</li>
+<li>把以上流程畫成 Gameplay 與 Animation Blueprint 兩條泳道。</li>
+</ol>
+<h4 id="teacher-03-prep-16">參考答案與教學基準</h4>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>主要責任區</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Opponent Reference</code></td>
+<td>Gameplay</td>
+<td>代表目前互動對象，會影響規則與控制。</td>
+</tr>
+<tr>
+<td>戰鬥軸</td>
+<td>Gameplay</td>
+<td>由雙方位置推導，供方向語意與面向共同使用。</td>
+</tr>
+<tr>
+<td>4／6 相對方向</td>
+<td>Gameplay</td>
+<td>是輸入與指令語意，必須在事件產生時確定。</td>
+</tr>
+<tr>
+<td>目標面向</td>
+<td>Gameplay</td>
+<td>決定 Actor 在世界中的朝向。</td>
+</tr>
+<tr>
+<td>旋轉插值</td>
+<td>Gameplay／Character Movement</td>
+<td>實際更新 Actor Rotation，而不是只改骨架 Pose。</td>
+</tr>
+<tr>
+<td>ABP Pose</td>
+<td>Animation Blueprint</td>
+<td>讀取角色結果，選擇並混合畫面中的骨架姿勢。</td>
+</tr>
+</tbody></table>
+<p>ABP 可以依 Actor Rotation、Velocity 或相對方向挑選動畫，但不應成為決定對手或改寫 4／6 指令的唯一來源。</p>
+<h4 id="teacher-03-prep-17">完成判斷與證據</h4>
+<ul>
+<li>六個指定概念都有放入泳道，且資料箭頭方向完整。</li>
+<li>Gameplay 流程先產生角色狀態，ABP 再讀取狀態形成 Pose。</li>
+<li>學生能指出 ABP 不應負責的至少一項遊戲規則。</li>
+</ul>
+<h4 id="teacher-03-prep-18">還原方式</h4>
+<p>本題只閱讀資產與文件，不需修改專案。</p>
+<h4 id="teacher-03-prep-19">常見問題</h4>
+<ul>
+<li>把「轉身動畫」和「Actor 旋轉」畫成同一件事：前者是 Pose，後者會改變角色在世界中的方向。</li>
+<li>先在 ABP 判定 4／6：提醒學生方向事件要保存當下語意，後續換邊不能回頭改寫已記錄輸入。</li>
+<li>重疊時重新算出不穩定方向：應沿用最後有效戰鬥軸或最後有效面向。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-demo">
+      <h2 class="part-title">TNDA Week 03 課堂示範｜教師版</h2>
+      <h3 id="teacher-03-demo-1">教材發布前置檢查</h3>
+<p>以下示範以完成版 Week 03 教材專案為前提。專案必須已包含相對方向、自動面向、最後有效方向備援、<code>FacingInterpolationSpeed</code> 與 ABP Debug 資料；老師不在遠端課堂臨時加入節點或程式碼。目前工作區尚未具備這些內容，發布前需先完成並依實際名稱校對本文件。</p>
+<h3 id="teacher-03-demo-2">示範 1｜從角色碰撞到 4／6 相對方向（20 分鐘內）</h3>
+<h4 id="teacher-03-demo-3">示範目標</h4>
+<p>說明角色為何不會重疊，以及同一個實體方向鍵如何依 1P 與 CPU 的相對位置轉成格鬥遊戲的前進 6 或後退 4。</p>
+<h4 id="teacher-03-demo-4">備課前置</h4>
+<ul>
+<li>開啟 <code>stage1</code>、<code>BP_FightingPlayerCharacter</code>、<code>BP_FightingCpuCharacter</code> 與「換邊與自動面向」流程文件。</li>
+<li>PIE 可顯示碰撞，並可查看教材專案提供的戰鬥軸、相對方向與最後有效方向 Debug 資料。</li>
+</ul>
+<h4 id="teacher-03-demo-5">建議節奏與操作</h4>
+<ol>
+<li><strong>0～4 分鐘：先看碰撞。</strong> 在 PIE 顯示 Collision，讓 1P 靠近 CPU。指出 Character Movement 移動根 Capsule，雙方 <code>Pawn → Block</code> 形成 Blocking Hit；Skeletal Mesh 不負責阻止兩人穿越。</li>
+<li><strong>4～8 分鐘：建立 Opponent Vector。</strong> 用 <code>OpponentLocation - SelfLocation</code> 得到指向對手的向量，移除 Z 後正規化成水平戰鬥軸。</li>
+<li><strong>8～13 分鐘：判定 4／6。</strong> 將本次移動方向與「指向對手」的戰鬥軸比較。同向代表朝對手前進，可記為 6；反向代表遠離對手，可記為 4。強調語意在方向事件產生時保存。</li>
+<li><strong>13～17 分鐘：交換左右位置。</strong> 讓 1P 位於 CPU 的另一側，使用同一組實體按鍵，觀察戰鬥軸反轉後 4／6 語意同步反轉。</li>
+<li><strong>17～20 分鐘：處理重疊例外。</strong> 雙方距離太近時，新方向不可靠，沿用最後有效戰鬥軸與最後有效面向，避免方向及旋轉在每幀跳動。</li>
+</ol>
+<h4 id="teacher-03-demo-6">必講重點</h4>
+<ul>
+<li>Capsule Collision 解決「能不能穿過」，戰鬥軸解決「前後方向怎麼解讀」，兩者是不同規則。</li>
+<li>4／6 是相對於對手的輸入語意，不是固定綁死螢幕左鍵或右鍵。</li>
+<li>戰鬥軸與自動面向應共用同一份對手資料，避免角色面向和指令方向互相矛盾。</li>
+<li>距離接近零時不要正規化不穩定向量；使用最後有效值是本週的保底策略。</li>
+</ul>
+<h4 id="teacher-03-demo-7">示範中常見狀況</h4>
+<ul>
+<li>Debug 顯示的 4／6 沒有反轉：先確認 1P 確實換到 CPU 另一側，再檢查 Opponent Reference 是否有效。</li>
+<li>重疊時方向快速跳動：代表近零距離仍在產生新戰鬥軸，應回到最後有效值的分支。</li>
+</ul>
+<h3 id="teacher-03-demo-8">示範 2｜換邊後如何平順轉身，ABP 又負責什麼（20 分鐘內）</h3>
+<h4 id="teacher-03-demo-9">示範目標</h4>
+<p>沿著「目標面向 → Actor 旋轉插值 → ABP 讀取結果 → Pose」說明換邊後的平順轉身，清楚劃分 Gameplay 與 Animation Blueprint 的責任。</p>
+<h4 id="teacher-03-demo-10">備課前置</h4>
+<ul>
+<li>Week 03 教材專案已公開 <code>FacingInterpolationSpeed</code>，並有可重複的換邊測試方式。</li>
+<li><code>ABP_Manny_Combat</code> 的 Debug Filter 可選到 1P 與 CPU 的執行實例。</li>
+<li>面向或方向 Debug 變數名稱已寫入教材專案流程文件。</li>
+</ul>
+<h4 id="teacher-03-demo-11">建議節奏與操作</h4>
+<ol>
+<li><strong>0～5 分鐘：算出目標面向。</strong> 從角色到對手的水平向量取得 Desired Yaw；雙方各自使用指向對方的方向，所以會互相面對。</li>
+<li><strong>5～10 分鐘：加入 Rotation Interpolation。</strong> 比較直接設定 Desired Rotation 與逐幀插值。指出 <code>Delta Seconds</code> 保持不同幀率下的時間尺度，<code>FacingInterpolationSpeed</code> 控制追上目標的快慢。</li>
+<li><strong>10～14 分鐘：說明 Rotation Ownership。</strong> Gameplay／Character Movement 負責 Actor 在世界中的旋轉；ABP 不應偷偷把遊戲方向規則藏在 Pose 裡。</li>
+<li><strong>14～18 分鐘：使用 ABP Debug Filter。</strong> 選取 1P 實例，觀察 EventGraph 取得的移動與旋轉資料，再看 AnimGraph、State Machine 與 BlendSpace 如何依結果產生待機、前進、後退或轉身中的 Pose。</li>
+<li><strong>18～20 分鐘：完成換邊。</strong> 讓 1P 穿越 CPU，指出戰鬥軸、Desired Yaw、Actor Rotation 與 ABP Pose 更新的先後關係。</li>
+</ol>
+<h4 id="teacher-03-demo-12">必講重點</h4>
+<ul>
+<li>Desired Yaw 是目標，Actor Rotation 是目前結果；插值讓兩者不必在同一幀相等。</li>
+<li><code>FacingInterpolationSpeed</code> 改變轉身速度，不改變最終應面向哪裡。</li>
+<li>ABP 負責把目前角色狀態表現成骨架 Pose；Gameplay 邏輯仍是相對方向與世界旋轉的權威來源。</li>
+<li>ABP Debug Filter 看的是某一個執行中 Anim Instance，必須選對 1P 或 CPU。</li>
+</ul>
+<h4 id="teacher-03-demo-13">示範中常見狀況</h4>
+<ul>
+<li>角色世界旋轉已改，動畫看起來仍像滑行：檢查 ABP 使用的 Direction、Ground Speed 與目前 State／BlendSpace，而不是再疊一套 Actor 旋轉。</li>
+<li>Debug Filter 沒有實例：先保持 PIE 執行，再回到 ABP 編輯器選取對應角色。</li>
+<li>高插值速度看起來像瞬間翻面：換成較低值重做同一路徑，讓學生看出差異。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-lab">
+      <h2 class="part-title">TNDA Week 03 課堂實作｜教師版</h2>
+      <h3 id="teacher-03-lab-1">教材發布前置檢查</h3>
+<p>兩組實作只操作 Week 03 教材專案內已存在的 Actor、屬性與 Debug 資料。發布版需先完成並驗證相對方向、自動面向、<code>FacingInterpolationSpeed</code>、ABP Debug 變數與可穿越 CPU 的換邊測試方式。目前工作區尚缺這些內容，未補齊前不可把下列題目直接交給學生操作。</p>
+<h3 id="teacher-03-lab-2">課堂實作 1｜交換 1P 與 CPU 的起始左右位置（15 分鐘內）</h3>
+<h4 id="teacher-03-lab-3">給學生看的題目</h4>
+<p>只調整 <code>stage1</code> 內 <code>PlayerStart</code> 與 <code>CPU_Spawner</code> 的位置，讓 1P 開場時站在 CPU 的右側。進入 PIE，觀察雙方初始面向、A／D 的相對前進與後退，以及格鬥攝影機的構圖；完成紀錄後還原兩個 Actor 的 Transform。</p>
+<h4 id="teacher-03-lab-4">教學目的</h4>
+<p>讓學生不改程式碼就能驗證相對方向與自動面向不是綁死在固定出生側，並同時檢查攝影機換邊策略。</p>
+<h4 id="teacher-03-lab-5">教材專案前置條件</h4>
+<ul>
+<li>Week 03 的 4／6 相對方向與自動面向已啟用。</li>
+<li>原始位置：<code>PlayerStart=(1800, 1663, 302)</code>、<code>CPU_Spawner=(1800, 1926, 210)</code>。</li>
+<li><code>PlayerStart</code> 原始 Rotation 約為 <code>(Pitch 0, Yaw 90, Roll 0)</code>；<code>CPU_Spawner</code> 原始 Rotation 為 <code>(0, 0, 0)</code>。</li>
+</ul>
+<h4 id="teacher-03-lab-6">參考操作</h4>
+<ol>
+<li>在非 PIE 狀態擷取 <code>PlayerStart</code> 與 <code>CPU_Spawner</code> 的完整 Transform。</li>
+<li>只交換兩者的 Y 位置：<code>PlayerStart.Y=1926</code>、<code>CPU_Spawner.Y=1663</code>，保留各自的 X、Z、Rotation 與 Scale。</li>
+<li>進入 PIE，確認畫面中 1P 開場位於 CPU 右側，雙方會朝向彼此。</li>
+<li>分別按 A、D，記錄哪一個是朝向對手的前進 6，哪一個是遠離對手的後退 4。</li>
+<li>觀察格鬥攝影機是否仍把雙方放在畫面內，且沒有翻轉 180 度。</li>
+<li>停止 PIE，還原兩個 Actor 的完整 Transform。</li>
+</ol>
+<h4 id="teacher-03-lab-7">參考答案與基準</h4>
+<ul>
+<li>1P 位於 CPU 右側時，應面向畫面左側的 CPU。</li>
+<li>朝畫面左側、接近 CPU 的 A 應解讀為前進 6；朝畫面右側、遠離 CPU 的 D 應解讀為後退 4。</li>
+<li>攝影機可以更新共同中點與取景，但不應因開場左右交換而翻到場景另一側。</li>
+</ul>
+<h4 id="teacher-03-lab-8">完成判斷與證據</h4>
+<ul>
+<li>PIE 畫面可辨認 1P 位於 CPU 右側且雙方面向正確。</li>
+<li>A、D 的 4／6 紀錄符合相對於對手的方向。</li>
+<li>畫面仍維持雙人構圖，沒有 180 度鏡頭翻轉。</li>
+<li>兩個 Actor 的 Transform 已還原。</li>
+</ul>
+<h4 id="teacher-03-lab-9">還原方式</h4>
+<ul>
+<li><code>PlayerStart</code>：Location <code>(1800, 1663, 302)</code>、Rotation 約 <code>(0, 90, 0)</code>、Scale <code>(1, 1, 1)</code>。</li>
+<li><code>CPU_Spawner</code>：Location <code>(1800, 1926, 210)</code>、Rotation <code>(0, 0, 0)</code>、Scale <code>(1, 1, 1)</code>。</li>
+<li>儲存 <code>stage1</code> 後，用 GitHub Desktop 確認沒有留下本題的關卡差異。</li>
+</ul>
+<h4 id="teacher-03-lab-10">常見問題</h4>
+<ul>
+<li>交換整個 Transform 後角色高度錯誤：本題只交換 Y，Z 與 Rotation 必須留在各自 Actor。</li>
+<li>1P 站到右側卻背對 CPU：確認 Week 03 自動面向已執行，且 Opponent Reference 有效。</li>
+<li>4／6 沒有反轉：確認測試紀錄採用的是相對方向 Debug 值，不是直接把 A、D 當成 4、6。</li>
+</ul>
+<h3 id="teacher-03-lab-11">課堂實作 2｜比較平順轉身的插值速度（15 分鐘內）</h3>
+<h4 id="teacher-03-lab-12">給學生看的題目</h4>
+<p>使用教材專案既有的換邊測試方式，把 <code>FacingInterpolationSpeed</code> 分別調成一個低值與一個高值。讓 1P 穿過 CPU 完成換邊，並在 <code>ABP_Manny_Combat</code> 的 Debug Filter 觀察角色資料與 Pose。比較兩種設定的轉身速度，完成後恢復教材原始設定。</p>
+<h4 id="teacher-03-lab-13">教學目的</h4>
+<p>讓學生把可調參數、Actor Rotation 與 ABP Pose 放在同一次觀察裡，確認插值速度影響轉身過程，不改變最終面向規則。</p>
+<h4 id="teacher-03-lab-14">教材專案前置條件</h4>
+<ul>
+<li><code>FacingInterpolationSpeed</code> 已公開在學生可直接調整的位置，且架構文件寫明所在資產與原始值。</li>
+<li>教材專案已有可穿越 CPU 的換邊測試方式；若採 Collision Response，操作位置與還原值必須寫入專案文件。</li>
+<li><code>ABP_Manny_Combat</code> 的 Debug Filter 可選到 1P 執行實例，並能觀察 <code>Direction</code>、面向 Debug 資料與目前 Pose。</li>
+</ul>
+<h4 id="teacher-03-lab-15">參考操作</h4>
+<ol>
+<li>先記錄 <code>FacingInterpolationSpeed</code> 原始值，啟用教材專案既有的換邊測試方式。</li>
+<li>在 1P 與 CPU 使用的面向設定中，將 <code>FacingInterpolationSpeed</code> 暫時設為 <code>1</code>。</li>
+<li>進入 PIE，開啟 <code>ABP_Manny_Combat</code>，把 Debug Filter 指向 1P。讓 1P 穿過 CPU，錄下 Actor 轉身與 ABP Pose 的變化。</li>
+<li>將相同設定改為 <code>20</code>，用相近路線再完成一次換邊並錄影。</li>
+<li>比較低值與高值到達目標面向所需的時間；確認換邊後最終仍朝向 CPU。</li>
+<li>停止 PIE，恢復 <code>FacingInterpolationSpeed</code> 原始值與換邊測試設定。</li>
+</ol>
+<h4 id="teacher-03-lab-16">參考答案與基準</h4>
+<ul>
+<li><code>1</code>：Actor 較慢追上 Desired Yaw，轉身過程較長。</li>
+<li><code>20</code>：Actor 很快追上 Desired Yaw，視覺上更接近立即轉身。</li>
+<li>兩種設定的最終面向都應是朝向 CPU；如果最終方向不同，問題不在插值速度。</li>
+<li>ABP 的 Pose 應跟著執行中角色的移動與旋轉資料更新，不能只看 Blueprint 預覽角色。</li>
+</ul>
+<p><code>1</code> 與 <code>20</code> 是方便在 15 分鐘內觀察的參考值。教材發布時仍須在流程文件記錄專案實際原始值與屬性位置。</p>
+<h4 id="teacher-03-lab-17">完成判斷與證據</h4>
+<ul>
+<li>低值與高值各有一次完整換邊紀錄。</li>
+<li>Debug Filter 明確選到 1P 執行實例。</li>
+<li>學生能分辨 Desired Yaw、Actor Rotation 與 ABP Pose。</li>
+<li>結束時插值速度與換邊測試設定已還原。</li>
+</ul>
+<h4 id="teacher-03-lab-18">還原方式</h4>
+<p>將 <code>FacingInterpolationSpeed</code> 改回開始前記錄的原始值。若換邊測試使用 CPU Capsule 的 Pawn Response，將它改回 <code>Block</code>，Compile、Save，並以 GitHub Desktop 檢查沒有留下本題變更。</p>
+<h4 id="teacher-03-lab-19">常見問題</h4>
+<ul>
+<li>Debug Filter 只看到預覽角色：保持 PIE 執行，重新選取 1P 的 Anim Instance。</li>
+<li>低值仍瞬間轉身：確認 Player 與 CPU 沒有另一條邏輯直接設定 Actor Rotation，並核對改到實際使用的 <code>FacingInterpolationSpeed</code>。</li>
+<li>可以穿過但沒有換邊 Debug 變化：檢查 Opponent Reference、近零距離備援與越過後的新戰鬥軸是否更新。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section></article>
+  </main>
+  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 03 · 教師版完整教案</footer>
+</body>
+</html>

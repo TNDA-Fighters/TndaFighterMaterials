@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 02 教師版</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.quick-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.55rem;
+  padding: 0.48rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  background: white;
+  color: var(--navy);
+}
+
+main {
+  width: min(100% - 2rem, 72rem);
+  margin: 1.6rem auto 3rem;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg text, svg tspan { font-size: 16px !important; }
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .quick-nav { display: grid; grid-template-columns: 1fr; }
+  .quick-nav a { border-radius: 0.6rem; }
+  main { width: 100%; margin-top: 0; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .quick-nav, .skip-link, .back-link { display: none; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 02 · 教師版完整教案</p>
+      <h1>TNDA Week 02 教師版</h1>
+      <p class="hero-note">合併課前預習、課堂示範與課堂實作，供遠端教學備課與操作。</p>
+      <nav class="quick-nav" aria-label="本頁導覽"><a href="#part-prep">課前預習</a><a href="#part-demo">課堂示範</a><a href="#part-lab">課堂實作</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <article class="paper"><section class="document-part" id="part-prep">
+      <h2 class="part-title">TNDA Week 02 課前預習｜教師版</h2>
+      <h3 id="teacher-02-prep-1">教材發布前置檢查</h3>
+<p>本週所有操作都必須在學生收到的 <code>TndaFighter</code> 專案內完成。發布前確認：</p>
+<ul>
+<li><code>/Game/Fighting/stage1</code> 能直接執行。</li>
+<li><code>docs/</code> 內已放入 FightingCameraActor 架構流程文件，並涵蓋角色生成、View Target、中點構圖、距離映射與最大角色距離限制。</li>
+<li><code>docs/blueprints/ABP_Manny_Combat.md</code> 與受阻移動流程文件可直接開啟。</li>
+<li>PIE 期間可在 World Outliner 選到執行時產生的 <code>FightingCameraActor</code>，Details 可調整 <code>Fighting Camera</code> 類別下的屬性。</li>
+</ul>
+<p>目前工作區尚未包含 FightingCameraActor 架構流程文件；在該文件放入教材專案前，本週課前實作 2 不具備完整教材條件。</p>
+<h3 id="teacher-02-prep-2">課前實作 1｜畫出雙角色與攝影機的關係（30 分鐘內）</h3>
+<h4 id="teacher-02-prep-3">給學生看的題目</h4>
+<p>比較 <code>stage1</code> 在編輯狀態與 PIE 執行期間出現的物件，找出 PlayerController、1P、CPU Spawner、CPU 與 FightingCameraActor。畫一張架構圖，標示哪些物件原本就在關卡中、哪些在執行時產生，以及彼此的生成、控制與 View Target 關係。</p>
+<h4 id="teacher-02-prep-4">教學目的</h4>
+<p>讓學生分清楚關卡 Actor、執行時生成物件、Possession 與 View Target，避免把「控制角色」和「目前攝影機」視為同一件事。</p>
+<h4 id="teacher-02-prep-5">教材專案前置條件</h4>
+<ul>
+<li><code>stage1</code> 編輯狀態可看到 <code>PlayerStart</code> 與 <code>CPU_Spawner</code>。</li>
+<li><code>BP_FightingGameMode</code>、<code>BP_FightingPlayerController</code>、<code>BP_FightingPlayerCharacter</code>、<code>BP_FightingCpuSpawner</code> 與 <code>BP_FightingCpuCharacter</code> 可開啟。</li>
+</ul>
+<h4 id="teacher-02-prep-6">完整操作</h4>
+<ol>
+<li>開啟 <code>stage1</code>，在非 PIE 狀態記錄 World Outliner 的 <code>PlayerStart</code> 與 <code>CPU_Spawner</code>。</li>
+<li>啟動 PIE，切換到 PIE 世界的 World Outliner，找出 PlayerController、1P、CPU 與 FightingCameraActor。</li>
+<li>對照 Blueprint 類別與 C++ 流程，確認 1P、CPU 與攝影機各自從哪裡產生。</li>
+<li>確認 PlayerController Possess 的 Pawn 是 1P，但 View Target 會切換到 FightingCameraActor。</li>
+<li>用箭頭畫出生成、Possess、追蹤與 View Target 關係。</li>
+</ol>
+<h4 id="teacher-02-prep-7">參考答案與教學基準</h4>
+<figure class="diagram" aria-label="雙角色與攝影機關係圖">
+  <figcaption>雙角色與攝影機關係</figcaption>
+  <div class="relation-list">
+    <div class="relation-row">
+      <div class="relation-node">stage1</div>
+      <div class="relation-edge"><span>→</span></div>
+      <div class="relation-node">PlayerStart</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">stage1</div>
+      <div class="relation-edge"><span>→</span></div>
+      <div class="relation-node">CPU_Spawner</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">BP_FightingGameMode</div>
+      <div class="relation-edge"><span>→</span></div>
+      <div class="relation-node">BP_FightingPlayerController</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">PlayerStart</div>
+      <div class="relation-edge"><span>→</span></div>
+      <div class="relation-node">BP_FightingPlayerCharacter</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">BP_FightingPlayerController</div>
+      <div class="relation-edge"><span>Possess</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">BP_FightingPlayerCharacter</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">CPU_Spawner</div>
+      <div class="relation-edge"><span>Spawn</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">BP_FightingCpuCharacter</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">BP_FightingPlayerController</div>
+      <div class="relation-edge"><span>Spawn 與初始化</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">FightingCameraActor</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">FightingCameraActor</div>
+      <div class="relation-edge"><span>追蹤</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">BP_FightingPlayerCharacter</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">FightingCameraActor</div>
+      <div class="relation-edge"><span>尋找最近對手</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">BP_FightingCpuCharacter</div>
+    </div>
+    <div class="relation-row">
+      <div class="relation-node">BP_FightingPlayerController</div>
+      <div class="relation-edge"><span>View Target 指向</span><span aria-hidden="true">→</span></div>
+      <div class="relation-node">FightingCameraActor</div>
+    </div>
+  </div>
+  <details class="diagram-source">
+    <summary>查看 Mermaid 原始碼</summary>
+    <pre><code class="language-mermaid">flowchart LR
+    Level[stage1] --&gt; Start[PlayerStart]
+    Level --&gt; Spawner[CPU_Spawner]
+    GameMode[BP_FightingGameMode] --&gt; PC[BP_FightingPlayerController]
+    Start --&gt; P1[BP_FightingPlayerCharacter]
+    PC --&gt;|Possess| P1
+    Spawner --&gt;|Spawn| CPU[BP_FightingCpuCharacter]
+    PC --&gt;|Spawn 與初始化| Camera[FightingCameraActor]
+    Camera --&gt;|追蹤| P1
+    Camera --&gt;|尋找最近對手| CPU
+    PC --&gt;|View Target 指向| Camera</code></pre>
+  </details>
+</figure>
+
+<p>核心答案是：PlayerController Possess 1P，卻把 View Target 設為共用 FightingCameraActor。CPU 由關卡內的 <code>CPU_Spawner</code> 生成，不由玩家控制。</p>
+<h4 id="teacher-02-prep-8">完成判斷與證據</h4>
+<ul>
+<li>兩張 Outliner 畫面能辨認編輯狀態與 PIE 世界。</li>
+<li>架構圖包含指定的五個角色，且生成、Possess 與 View Target 箭頭方向正確。</li>
+<li>短答能清楚說明 Possessed Pawn 與 View Target 可以是不同物件。</li>
+</ul>
+<h4 id="teacher-02-prep-9">還原方式</h4>
+<p>本題只觀察執行狀態與資產，不需修改專案。結束 PIE 即回到編輯世界。</p>
+<h4 id="teacher-02-prep-10">常見問題</h4>
+<ul>
+<li>Outliner 看不到執行時角色：確認 PIE 已開始，並切到 PIE 對應的 World。</li>
+<li>把 CPU Spawner 當成 CPU：要求學生比較 Class 與出現時機；Spawner 是關卡 Actor，CPU 是執行時角色。</li>
+<li>找不到攝影機：FightingCameraActor 由 PlayerController 在執行時產生，非 PIE 狀態不會出現在關卡 Outliner。</li>
+</ul>
+<h3 id="teacher-02-prep-11">課前實作 2｜調整雙人構圖範圍（30 分鐘內）</h3>
+<h4 id="teacher-02-prep-12">給學生看的題目</h4>
+<p>閱讀教材專案內的 FightingCameraActor 架構流程文件，找出會影響「1P 與 CPU 最遠能離多遠」及「兩人靠近時鏡頭能拉多近」的設定。各做一次調整並在 PIE 比較結果，記錄修改前後的數值與畫面；測試結束後恢復教材原始設定。</p>
+<h4 id="teacher-02-prep-13">教學目的</h4>
+<p>讓學生從架構圖追到可調屬性，理解角色可分離範圍與 Camera Boom 距離雖然互相影響，但負責的是兩種不同限制。</p>
+<h4 id="teacher-02-prep-14">教材專案前置條件</h4>
+<ul>
+<li>FightingCameraActor 架構流程文件已放入教材專案。</li>
+<li>FightingCameraActor 使用目前原生預設值：<code>MinCameraDistance=440</code>、<code>MaxCameraDistance=690</code>、<code>MinFighterDistance=110</code>、<code>MaxFighterDistance=570</code>、<code>DistanceInterpolationSpeed=5</code>。</li>
+<li>學生可在 PIE Eject 後選取執行時的 FightingCameraActor。</li>
+</ul>
+<h4 id="teacher-02-prep-15">完整操作</h4>
+<ol>
+<li>閱讀架構流程文件，先圈出角色距離限制與鏡頭距離映射兩條流程。</li>
+<li>啟動 PIE，按 <code>F8</code> Eject，在 PIE World Outliner 選取 FightingCameraActor。</li>
+<li>記錄 <code>Fighting Camera &gt; Distance</code> 內的原始值。</li>
+<li>將 <code>MaxFighterDistance</code> 暫時提高到 <code>900</code>，並把 <code>MaxCameraDistance</code> 提高到 <code>850</code>，重新控制角色後測試雙方能否離得更遠且仍留在畫面中。</li>
+<li>將 <code>MinCameraDistance</code> 暫時降低到 <code>320</code>，讓雙方靠近後觀察鏡頭是否拉得更近。</li>
+<li>擷取原始值與修改值的近距離、遠距離畫面。</li>
+<li>停止 PIE，重新執行一次，確認執行時修改已恢復。</li>
+</ol>
+<h4 id="teacher-02-prep-16">參考答案與教學基準</h4>
+<ul>
+<li><code>MaxFighterDistance</code> 同時是角色最大水平距離限制，以及距離映射的輸入上界。提高它後，1P 才能離 CPU 更遠。</li>
+<li><code>MinCameraDistance</code> 是雙方靠近時 Camera Boom 使用的最短距離。降低它會讓近距離構圖更貼近角色。</li>
+<li><code>MaxCameraDistance</code> 只決定鏡頭最多拉多遠，不會單獨放寬角色移動上限。</li>
+<li>上述 <code>900</code>、<code>850</code>、<code>320</code> 是便於觀察的課堂參考值，不是遊戲平衡定案。</li>
+</ul>
+<h4 id="teacher-02-prep-17">完成判斷與證據</h4>
+<ul>
+<li>紀錄同時包含角色距離設定與鏡頭距離設定。</li>
+<li>前後畫面能辨認角色最遠距離或近距離構圖的差異。</li>
+<li>學生能說出提高 <code>MaxCameraDistance</code> 不等於角色就能站得更遠。</li>
+</ul>
+<h4 id="teacher-02-prep-18">還原方式</h4>
+<p>本題在 PIE 執行時修改 Actor Instance，停止 PIE 即會還原。重新開始 PIE 後，再確認五個原始值已恢復。</p>
+<h4 id="teacher-02-prep-19">常見問題</h4>
+<ul>
+<li>Details 沒有 Fighting Camera 類別：確認選到的是 PIE 世界裡的 FightingCameraActor，不是 CameraComponent 或編輯世界 Actor。</li>
+<li>數值改了卻不能控制角色：按 <code>F8</code> 重新 Possess，或重新開始 PIE。</li>
+<li>拉遠後角色仍被限制：先確認 <code>MaxFighterDistance</code> 也有提高，而不是只改 <code>MaxCameraDistance</code>。</li>
+<li>停止 PIE 後數值消失：這是本題的預期還原方式，不要嘗試把執行時 Actor 存回關卡。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-demo">
+      <h2 class="part-title">TNDA Week 02 課堂示範｜教師版</h2>
+      <h3 id="teacher-02-demo-1">示範 1｜從雙角色生成到 ABP 動畫（20 分鐘內）</h3>
+<h4 id="teacher-02-demo-2">示範目標</h4>
+<p>把 <code>stage1</code> 的角色生成、Possession、共用攝影機與 locomotion 動畫串成一條可閱讀的流程，讓學生知道每個系統各自負責哪一段。</p>
+<h4 id="teacher-02-demo-3">備課前置</h4>
+<ul>
+<li><code>stage1</code> 可正常出現 1P、CPU 與雙人構圖。</li>
+<li>FightingCameraActor 架構流程文件已放入教材專案。</li>
+<li><code>docs/blueprints/ABP_Manny_Combat.md</code> 與 <code>docs/blueprints/changes/2026-09-01-blocked-movement-locomotion.md</code> 可開啟。</li>
+<li>預先開啟 <code>BP_FightingCpuSpawner</code>、<code>BP_FightingPlayerController</code> 與 <code>ABP_Manny_Combat</code>，避免遠端示範等待載入。</li>
+</ul>
+<h4 id="teacher-02-demo-4">建議節奏與操作</h4>
+<ol>
+<li><strong>0～4 分鐘：雙角色進場。</strong> 在 <code>stage1</code> 指出 <code>PlayerStart</code> 與 <code>CPU_Spawner</code>。進入 PIE 後說明 1P 由 PlayerController Possess，CPU 由 Spawner 的 Spawn Capsule Transform 生成，初始朝向 1P 出生位置。</li>
+<li><strong>4～9 分鐘：View Target 與共同構圖。</strong> 說明 PlayerController 建立 FightingCameraActor；攝影機取得 1P 與最近的 CPU 後呼叫 <code>SetViewTarget</code>，因此控制對象仍是 1P，畫面來源則是共用攝影機。</li>
+<li><strong>9～14 分鐘：鏡頭如何跟著兩人。</strong> 指出攝影機每幀計算雙方中點、以 16:9 保留構圖，並依水平距離在最小與最大鏡頭距離之間映射。角色換邊時選擇離目前 Yaw 較近的取景側，避免鏡頭翻轉 180 度。</li>
+<li><strong>14～20 分鐘：ABP 快速導覽。</strong> 開啟 <code>ABP_Manny_Combat</code>，依序指出 EventGraph 讀角色與移動資料、Variables 保存 Ground Speed 等資料、AnimGraph 產生 Pose、State Machine 切換狀態、BlendSpace 依速度與方向混合動畫。</li>
+</ol>
+<h4 id="teacher-02-demo-5">ABP 必講重點</h4>
+<ul>
+<li>EventGraph 整理資料，AnimGraph 輸出 Pose，兩者不是同一種流程圖。</li>
+<li>State Machine 決定 Idle、移動或跳躍等狀態，BlendSpace 負責同一狀態內的連續混合。</li>
+<li><code>ABP_Manny_Combat</code> 在角色仍有輸入但實際位移受阻時，會提供動畫用的速度替代值；它不會改寫真實移動速度。</li>
+<li>受阻 locomotion 的完整節點流程留在教材專案文件，示範只帶學生知道如何閱讀，不在 20 分鐘內逐節點重做。</li>
+</ul>
+<h4 id="teacher-02-demo-6">示範中常見狀況</h4>
+<ul>
+<li>CPU 尚未出現時畫面短暫等待：說明攝影機會等待有效對手，再完成 View Target 切換。</li>
+<li>學生把 Camera Boom 距離當成角色距離：回到流程圖分開指出 <code>MaxFighterDistance</code> 與 Camera Distance。</li>
+<li>ABP 圖太大：只聚焦 EventGraph 的 movement data 與 AnimGraph 的 Locomotion，不在本次展開攻擊 Montage。</li>
+</ul>
+<h3 id="teacher-02-demo-7">示範 2｜Enhanced Input 的設計概念與 Unity 對照（20 分鐘內）</h3>
+<h4 id="teacher-02-demo-8">示範目標</h4>
+<p>用 <code>TndaFighter</code> 的移動輸入解說 Input Action、Input Mapping Context、Modifier、Trigger、Value Type 與執行時 Context 管理，並與 Unity Input System 做責任對照。</p>
+<h4 id="teacher-02-demo-9">備課前置</h4>
+<ul>
+<li>開啟 <a href="https://dev.epicgames.com/documentation/unreal-engine/enhanced-input-in-unreal-engine?lang=en-US">Epic Games：Enhanced Input</a>。</li>
+<li>備妥 <a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.17/manual/Actions.html">Unity Input System 1.17：Actions</a> 與 <a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.17/manual/Interactions.html">Interactions</a>，用來核對 <code>InputAction</code>、<code>InputActionMap</code>、<code>started</code>、<code>performed</code> 與 <code>canceled</code> 的用途。</li>
+<li>準備 <code>/Game/Fighting/Input/IMC_Combat</code>、<code>/Game/Fighting/Input/Actions/IA_Move</code>、<code>BP_FightingPlayerController</code> 與 <code>BP_FightingPlayerCharacter</code>。</li>
+<li>確認 WASD 能在 PIE 驅動 1P 移動。</li>
+</ul>
+<h4 id="teacher-02-demo-10">建議節奏與操作</h4>
+<ol>
+<li><strong>0～4 分鐘：從玩家意圖開始。</strong> <code>IA_Move</code> 表達「移動」，不是 W、A、S、D 中任何一顆按鍵；Value Type 決定這個意圖傳遞 Bool、Axis1D、Axis2D 或 Axis3D。</li>
+<li><strong>4～8 分鐘：查看 IMC。</strong> 在 <code>IMC_Combat</code> 指出實體按鍵如何組成 <code>IA_Move</code> 的 Axis2D 值，以及同一 IA 可以有多個映射。</li>
+<li><strong>8～12 分鐘：分清 Modifier 與 Trigger。</strong> Modifier 先轉換輸入值；Trigger 再判斷何時產生 Started、Ongoing、Triggered、Completed 或 Canceled 等事件。</li>
+<li><strong>12～16 分鐘：執行時掛載。</strong> 顯示 PlayerController 從 Local Player 取得 <code>Enhanced Input Local Player Subsystem</code>，再加入預設 IMC；Character 將 <code>IA_Move</code> 的 Triggered 事件綁到 <code>Move()</code>。</li>
+<li><strong>16～20 分鐘：與 Unity Input System 對照。</strong> 用下表比較責任，並串回 <code>WASD → IMC_Combat → IA_Move → FInputActionValue → Move()</code>。</li>
+</ol>
+<h4 id="teacher-02-demo-11">Unity Input System 概念對照</h4>
+<p>以下是用途上的近似比較，不代表資產格式、事件時機或生命週期完全相同。</p>
+<table>
+<thead>
+<tr>
+<th>Unreal Enhanced Input</th>
+<th>主要責任</th>
+<th>Unity Input System 可近似聯想到的概念</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Input Action</code></td>
+<td>定義玩家意圖與 Value Type</td>
+<td><code>InputAction</code></td>
+</tr>
+<tr>
+<td><code>Input Mapping Context</code></td>
+<td>將按鍵映射分組，並可在執行時加入、移除及排序</td>
+<td><code>InputActionMap</code> 加上啟用／停用策略</td>
+</tr>
+<tr>
+<td><code>Modifier</code></td>
+<td>先改寫輸入值，例如 Negate、Swizzle、Dead Zone</td>
+<td>Processor 或 Composite 內的值轉換</td>
+</tr>
+<tr>
+<td><code>Trigger</code></td>
+<td>判斷輸入在何種條件與時機成立</td>
+<td>Interaction；實際 phase 語意並非一對一</td>
+</tr>
+<tr>
+<td><code>Enhanced Input Local Player Subsystem</code></td>
+<td>管理本機玩家目前啟用的 IMC 與優先權</td>
+<td><code>PlayerInput</code>、<code>InputUser</code> 或程式碼管理 Action Map 的組合</td>
+</tr>
+<tr>
+<td>IA Event／C++ BindAction</td>
+<td>把輸入事件接到遊戲行為</td>
+<td><code>started</code>、<code>performed</code>、<code>canceled</code> callback 或 Input System event</td>
+</tr>
+</tbody></table>
+<h4 id="teacher-02-demo-12">必講重點</h4>
+<ul>
+<li>IA 與 IMC 是資料資產；玩家控制與角色行為不該全部塞在 IMC。</li>
+<li>Context 優先權適合處理 Gameplay、Menu 等模式切換，不必為每個模式重寫按鍵事件。</li>
+<li>Modifier 處理「值變成什麼」，Trigger 處理「何時算成立」。</li>
+<li>UE 的 <code>Triggered</code> 與 Unity 的 <code>performed</code> 常可用來理解主要行為事件，但不能假設觸發條件完全一致。</li>
+</ul>
+<h4 id="teacher-02-demo-13">示範中常見狀況</h4>
+<ul>
+<li>IMC 已設定但事件沒進 Character：依序檢查 Context 是否加入、IA 是否綁定、Pawn 是否由正確 PlayerController Possess。</li>
+<li>Axis2D 方向錯誤：回到每個 WASD Mapping 的 Modifier，檢查 Negate 與 Swizzle，而不是在 Character 內硬改按鍵。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section>
+<section class="document-part" id="part-lab">
+      <h2 class="part-title">TNDA Week 02 課堂實作｜教師版</h2>
+      <h3 id="teacher-02-lab-1">課堂實作 1｜移動 CPU 出生位置（15 分鐘內）</h3>
+<h4 id="teacher-02-lab-2">給學生看的題目</h4>
+<p>先記錄 <code>stage1</code> 內 <code>CPU_Spawner</code> 的 Transform，再把它移到另一個位置。進入 PIE，比較 CPU 的出生位置與初始朝向；完成紀錄後，把 <code>CPU_Spawner</code> 還原到原始 Transform。</p>
+<h4 id="teacher-02-lab-3">教學目的</h4>
+<p>讓學生直接驗證 Spawner、Spawn Capsule 與生成角色的關係，並觀察 CPU 初始朝向不是單純照抄 Spawner 的旋轉。</p>
+<h4 id="teacher-02-lab-4">教材專案前置條件</h4>
+<ul>
+<li><code>stage1</code> 內有 <code>CPU_Spawner</code> 與 <code>PlayerStart</code>。</li>
+<li><code>CPU_Spawner</code> 原始 Transform 為 Location <code>(1800, 1926, 210)</code>、Rotation <code>(0, 0, 0)</code>、Scale <code>(1, 1, 1)</code>。</li>
+<li>CPU Spawn Capsule 相對 Spawner 向上 <code>90 cm</code>。</li>
+</ul>
+<h4 id="teacher-02-lab-5">參考操作</h4>
+<ol>
+<li>非 PIE 狀態選取 <code>CPU_Spawner</code>，擷取 Details 的 Transform。</li>
+<li>保持 Y、Z、Rotation 與 Scale 不變，把 Location X 由 <code>1800</code> 改成 <code>2050</code>。</li>
+<li>進入 PIE，觀察 CPU 是否從新的 Spawn Capsule 位置出現，以及初始是否仍朝向 <code>PlayerStart</code>。</li>
+<li>擷取移動後的 Spawner、CPU 出生位置與初始朝向。</li>
+<li>停止 PIE，把 Location X 改回 <code>1800</code>，再核對完整 Transform。</li>
+</ol>
+<h4 id="teacher-02-lab-6">參考答案與基準</h4>
+<ul>
+<li>CPU 使用 <code>Spawn Capsule</code> 的世界 Transform 生成，因此 X 位置會跟著 Spawner 改變，生成高度仍包含 Capsule 的相對 Z 偏移。</li>
+<li>CPU 生成後會重新朝向 <code>PlayerStart</code>，不是直接沿用 <code>CPU_Spawner</code> 或 <code>Spawn Direction</code> 的旋轉。</li>
+<li>X=<code>2050</code> 只是方便在現有場地觀察的參考值，不是正式關卡配置。</li>
+</ul>
+<h4 id="teacher-02-lab-7">完成判斷與證據</h4>
+<ul>
+<li>有原始 Transform 與修改值紀錄。</li>
+<li>PIE 畫面能看出 CPU 出生位置跟著 Spawner 改變。</li>
+<li>學生能指出 CPU 初始面向 <code>PlayerStart</code>。</li>
+<li>結束時 Transform 已完整還原。</li>
+</ul>
+<h4 id="teacher-02-lab-8">還原方式</h4>
+<p>將 <code>CPU_Spawner</code> 設回 Location <code>(1800, 1926, 210)</code>、Rotation <code>(0, 0, 0)</code>、Scale <code>(1, 1, 1)</code>，儲存 <code>stage1</code>。再用 GitHub Desktop 確認沒有留下本題的關卡變更。</p>
+<h4 id="teacher-02-lab-9">常見問題</h4>
+<ul>
+<li>移動 CPU 而不是 Spawner：停止 PIE，回到編輯世界選取 <code>CPU_Spawner</code>。</li>
+<li>CPU 沒在 Spawner 原點：提醒學生 CPU 取用的是 <code>Spawn Capsule</code> Transform，Capsule 有相對高度。</li>
+<li>CPU 面向和 Spawner 箭頭不同：這是預期行為；生成流程會讓 CPU 朝向 <code>PlayerStart</code>。</li>
+</ul>
+<h3 id="teacher-02-lab-10">課堂實作 2｜比較鏡頭距離插值速度（15 分鐘內）</h3>
+<h4 id="teacher-02-lab-11">給學生看的題目</h4>
+<p>在 <code>stage1</code> 的 PIE 執行期間，把 FightingCameraActor 的 <code>DistanceInterpolationSpeed</code> 分別調成一個低值與一個高值。讓 1P 與 CPU 反覆靠近、遠離，比較鏡頭縮放的跟隨速度；記錄兩種設定的畫面或短片，結束後恢復原始狀態。</p>
+<h4 id="teacher-02-lab-12">教學目的</h4>
+<p>讓學生直接感受插值速度只改變「追上目標值的快慢」，不改變最小與最大鏡頭距離。</p>
+<h4 id="teacher-02-lab-13">教材專案前置條件</h4>
+<ul>
+<li>PIE 期間可選取 FightingCameraActor。</li>
+<li><code>DistanceInterpolationSpeed</code> 的原始值為 <code>5</code>。</li>
+<li>1P 可在攝影機移動基準下靠近或遠離 CPU。</li>
+</ul>
+<h4 id="teacher-02-lab-14">參考操作</h4>
+<ol>
+<li>啟動 PIE，按 <code>F8</code> Eject，在 PIE World Outliner 選取 FightingCameraActor。</li>
+<li>將 <code>DistanceInterpolationSpeed</code> 改為 <code>0.5</code>，重新控制 1P，快速改變雙方距離並錄下鏡頭反應。</li>
+<li>再次 Eject，將數值改為 <code>20</code>，用相近的移動路線重新測試。</li>
+<li>比較鏡頭到達新距離的速度，以及最終近、遠構圖是否改變。</li>
+<li>停止 PIE，重新執行並確認數值回到 <code>5</code>。</li>
+</ol>
+<h4 id="teacher-02-lab-15">參考答案與基準</h4>
+<ul>
+<li><code>0.5</code>：鏡頭較慢追上目標距離，縮放有明顯延遲。</li>
+<li><code>20</code>：鏡頭很快靠近目標距離，反應更直接。</li>
+<li>兩者最後仍受同一組 <code>MinCameraDistance</code> 與 <code>MaxCameraDistance</code> 限制；插值速度不會放大距離範圍。</li>
+</ul>
+<h4 id="teacher-02-lab-16">完成判斷與證據</h4>
+<ul>
+<li>低值與高值各有一段畫面或清楚的觀察紀錄。</li>
+<li>兩次測試使用相近的角色移動方式。</li>
+<li>學生能區分插值速度與鏡頭距離範圍。</li>
+</ul>
+<h4 id="teacher-02-lab-17">還原方式</h4>
+<p>停止 PIE 即可捨棄執行時修改。重新開始 PIE 後，確認 <code>DistanceInterpolationSpeed=5</code>。</p>
+<h4 id="teacher-02-lab-18">常見問題</h4>
+<ul>
+<li>修改後無法移動：按 <code>F8</code> 重新 Possess，或重新開始 PIE。</li>
+<li>高低值看不出差異：讓角色先靠近 CPU，再快速走到接近最大距離的位置，並固定相近測試路線。</li>
+<li>最終畫面距離不同：檢查是否同時誤改了 <code>MinCameraDistance</code> 或 <code>MaxCameraDistance</code>。</li>
+</ul>
+
+      <a class="back-link" href="#top">回到頁首</a>
+    </section></article>
+  </main>
+  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 02 · 教師版完整教案</footer>
+</body>
+</html>

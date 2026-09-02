@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>TNDA：UE 5.8 單機 3D 格鬥遊戲｜教材專案規劃</title>
+  <style>
+:root {
+  color-scheme: light;
+  --canvas: #eef3f8;
+  --surface: #ffffff;
+  --ink: #172033;
+  --muted: #526176;
+  --line: #d5dfeb;
+  --accent: #1d4ed8;
+  --accent-soft: #eff6ff;
+  --code-bg: #e9eef5;
+  --code-ink: #8b1d4a;
+}
+html { box-sizing: border-box; min-width: 0; font-size: 16px; background: var(--canvas); scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: inherit; min-width: 0; }
+body { margin: 0; color: var(--ink); font: 16px/1.7 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif; overflow-wrap: anywhere; }
+.skip-link { position: fixed; top: 0.75rem; left: 0.75rem; z-index: 100; padding: 0.65rem 0.9rem; border-radius: 0.5rem; background: #0f172a; color: #fff; font-size: 16px; transform: translateY(-200%); }
+.skip-link:focus { transform: translateY(0); }
+.page-shell { width: min(100% - 2rem, 94rem); margin: 2rem auto; display: grid; grid-template-columns: minmax(14rem, 18rem) minmax(0, 72rem); gap: 1.5rem; align-items: start; justify-content: center; }
+.week-sidebar { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); padding: 1rem; overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; box-shadow: 0 0.75rem 2.5rem rgb(15 23 42 / 8%); }
+.week-nav__title { margin: 0 0 0.75rem; color: #0f172a; font-size: 1rem; font-weight: 750; }
+.week-nav ol { margin: 0; padding: 0; display: grid; gap: 0.35rem; list-style: none; }
+.week-nav li + li { margin-top: 0; }
+.week-nav a { display: block; padding: 0.55rem 0.65rem; border: 1px solid transparent; border-radius: 0.55rem; color: var(--muted); text-decoration: none; line-height: 1.4; }
+.week-nav a:hover { border-color: #bfdbfe; background: var(--accent-soft); color: #1e3a8a; }
+.week-nav a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+.week-nav a[aria-current="location"] { border-color: #93c5fd; background: #dbeafe; color: #1e3a8a; }
+.week-number { display: block; font-weight: 750; }
+.week-title { display: block; margin-top: 0.1rem; font-size: 16px; }
+.week-jump-label, .week-jump { display: none; }
+.week-jump { width: 100%; padding: 0.65rem 0.75rem; border: 1px solid #9fb0c5; border-radius: 0.5rem; background: #fff; color: var(--ink); font: inherit; }
+main { width: 100%; margin: 0; padding: clamp(1.25rem, 4vw, 3.5rem); background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; box-shadow: 0 0.75rem 2.5rem rgb(15 23 42 / 8%); }
+h1, h2, h3 { color: #0f172a; line-height: 1.3; overflow-wrap: anywhere; }
+h1 { margin: 0 0 1.75rem; padding-bottom: 1rem; border-bottom: 3px solid var(--accent); font-size: clamp(2rem, 4.5vw, 2.75rem); }
+h2 { margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); font-size: clamp(1.5rem, 3vw, 1.85rem); scroll-margin-top: 1.5rem; }
+h2:target { border-bottom-color: var(--accent); }
+h3 { margin: 1.75rem 0 0.65rem; font-size: 1.25rem; }
+p { margin: 0.65rem 0 1rem; }
+ul, ol { margin: 0.7rem 0 1.2rem; padding-left: 1.5rem; }
+li + li { margin-top: 0.35rem; }
+a { color: var(--accent); text-underline-offset: 0.15em; overflow-wrap: anywhere; }
+strong { color: #0f172a; }
+code { padding: 0.08em 0.35em; border-radius: 0.3rem; background: var(--code-bg); color: var(--code-ink); font: 16px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+pre { margin: 1rem 0 1.4rem; padding: 1rem 1.1rem; border-radius: 0.7rem; background: #111827; color: #e5edf7; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+pre code { padding: 0; background: transparent; color: inherit; }
+blockquote { margin: 1rem 0; padding: 0.8rem 1rem; border-left: 4px solid #93c5fd; background: var(--accent-soft); color: #334155; }
+table { width: 100%; margin: 1.25rem 0 1.75rem; table-layout: fixed; border-collapse: collapse; }
+th, td { padding: 0.75rem 0.85rem; border: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; word-break: break-word; }
+th { background: #e8f0fb; color: #173b67; }
+th:first-child, td:first-child { width: 28%; }
+img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
+svg text, svg tspan { font-size: 16px !important; }
+hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
+@media (max-width: 1200px) {
+  .page-shell { grid-template-columns: 10rem minmax(0, 72rem); }
+  .week-title { display: none; }
+  .week-nav a { text-align: center; }
+}
+@media (max-width: 820px) {
+  .page-shell { width: min(100% - 2rem, 72rem); display: block; }
+  .week-sidebar { position: sticky; top: 0; z-index: 10; max-height: none; margin-bottom: 1rem; padding: 0.75rem 1rem; overflow: visible; border-radius: 0 0 0.8rem 0.8rem; }
+  .week-nav { display: none; }
+  .week-jump-label { display: block; margin-bottom: 0.35rem; color: #0f172a; font-size: 16px; font-weight: 750; }
+  .week-jump { display: block; }
+  h2 { scroll-margin-top: 7rem; }
+}
+@media (max-width: 600px) {
+  .page-shell { width: 100%; margin: 0; }
+  .week-sidebar { margin-bottom: 0; border-top: 0; border-right: 0; border-left: 0; border-radius: 0; box-shadow: 0 0.35rem 1.2rem rgb(15 23 42 / 10%); }
+  main { width: 100%; margin: 0; padding: 1rem; border: 0; border-radius: 0; box-shadow: none; }
+  h1 { font-size: 2rem; }
+  h2 { margin-top: 2.4rem; }
+  th, td { padding: 0.6rem; }
+}
+@media print {
+  html, body { background: #fff; }
+  .skip-link, .week-sidebar { display: none; }
+  .page-shell { width: 100%; margin: 0; display: block; }
+  main { width: 100%; margin: 0; padding: 0; border: 0; box-shadow: none; }
+  h2, h3 { break-after: avoid; }
+  pre, table { break-inside: avoid; }
+}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#week-02">跳到教材內容</a>
+  <div class="page-shell">
+    <aside class="week-sidebar" aria-label="週次快速導覽">
+      <nav class="week-nav" aria-labelledby="week-nav-title">
+        <p class="week-nav__title" id="week-nav-title">週次導覽</p>
+        <ol>
+          <li><a href="#week-02"><span class="week-number">Week 02</span><span class="week-title">雙角色入場與基礎格鬥攝影機</span></a></li>
+          <li><a href="#week-03"><span class="week-number">Week 03</span><span class="week-title">相對方向與自動面向</span></a></li>
+          <li><a href="#week-04"><span class="week-number">Week 04</span><span class="week-title">戰鬥區域碰撞限制</span></a></li>
+          <li><a href="#week-05"><span class="week-number">Week 05</span><span class="week-title">基本攻擊與 Animation Montage</span></a></li>
+          <li><a href="#week-06"><span class="week-number">Week 06</span><span class="week-title">Command DataTable 與資料驅動放招</span></a></li>
+          <li><a href="#week-07"><span class="week-number">Week 07</span><span class="week-title">Hitbox、Hurtbox 與資料驅動傷害</span></a></li>
+          <li><a href="#week-08"><span class="week-number">Week 08</span><span class="week-title">Frame Data 與 Command Link 執行模型</span></a></li>
+          <li><a href="#week-09"><span class="week-number">Week 09</span><span class="week-title">CPU AI 接近與選招</span></a></li>
+          <li><a href="#week-10"><span class="week-number">Week 10</span><span class="week-title">防禦、硬直與集中式戰鬥狀態</span></a></li>
+          <li><a href="#week-11"><span class="week-number">Week 11</span><span class="week-title">基本連段</span></a></li>
+          <li><a href="#week-12"><span class="week-number">Week 12</span><span class="week-title">相對方向分支連段</span></a></li>
+          <li><a href="#week-13"><span class="week-number">Week 13</span><span class="week-title">回合基本流程與自動再戰</span></a></li>
+          <li><a href="#week-14"><span class="week-number">Week 14</span><span class="week-title">倒數計時與特殊結算</span></a></li>
+          <li><a href="#week-15"><span class="week-number">Week 15</span><span class="week-title">戰鬥 HUD 與結算 UI</span></a></li>
+          <li><a href="#week-16"><span class="week-number">Week 16</span><span class="week-title">戰鬥特效與音效</span></a></li>
+          <li><a href="#week-17"><span class="week-number">Week 17</span><span class="week-title">主選單、非同步載入與完整遊戲流程</span></a></li>
+          <li><a href="#week-18"><span class="week-number">Week 18</span><span class="week-title">Build、Cook、Stage 與 Package</span></a></li>
+        </ol>
+      </nav>
+      <label class="week-jump-label" for="week-jump">快速切換週次</label>
+      <select class="week-jump" id="week-jump">
+        <option value="#week-02">Week 02｜雙角色入場與基礎格鬥攝影機</option>
+        <option value="#week-03">Week 03｜相對方向與自動面向</option>
+        <option value="#week-04">Week 04｜戰鬥區域碰撞限制</option>
+        <option value="#week-05">Week 05｜基本攻擊與 Animation Montage</option>
+        <option value="#week-06">Week 06｜Command DataTable 與資料驅動放招</option>
+        <option value="#week-07">Week 07｜Hitbox、Hurtbox 與資料驅動傷害</option>
+        <option value="#week-08">Week 08｜Frame Data 與 Command Link 執行模型</option>
+        <option value="#week-09">Week 09｜CPU AI 接近與選招</option>
+        <option value="#week-10">Week 10｜防禦、硬直與集中式戰鬥狀態</option>
+        <option value="#week-11">Week 11｜基本連段</option>
+        <option value="#week-12">Week 12｜相對方向分支連段</option>
+        <option value="#week-13">Week 13｜回合基本流程與自動再戰</option>
+        <option value="#week-14">Week 14｜倒數計時與特殊結算</option>
+        <option value="#week-15">Week 15｜戰鬥 HUD 與結算 UI</option>
+        <option value="#week-16">Week 16｜戰鬥特效與音效</option>
+        <option value="#week-17">Week 17｜主選單、非同步載入與完整遊戲流程</option>
+        <option value="#week-18">Week 18｜Build、Cook、Stage 與 Package</option>
+      </select>
+    </aside>
+  <main id="main-content">
+<h1>TNDA：UE 5.8 單機 3D 格鬥遊戲｜教材專案規劃</h1>
+<h2 id="week-02" tabindex="-1"><code>week-02</code>｜雙角色入場與基礎格鬥攝影機</h2>
+<h3>專案展示內容</h3>
+<p>Play 後直接進入 <code>stage1</code>。PlayerController Possess 1P，CPU 由場上的 Spawner 生成並保持原位；1P 可使用 W／A／S／D 移動。</p>
+<ul>
+<li>場上固定存在 1P 與 CPU，兩者依指定出生位置站定位；PlayerController 只控制 1P。</li>
+<li>CPU 生成時先朝向 1P 的出生位置，但本週不會持續自動轉向，也不會自主移動。</li>
+<li>1P 的移動方向以實際格鬥攝影機為基準；本週尚未把 A／D 正規化為 4／6。</li>
+<li>1P 靜止、移動及受阻時會播放對應的 locomotion 動畫，放開輸入後回到 Idle。</li>
+<li>PlayerController 建立共用 CameraActor；取得 1P 與 CPU 後，攝影機切換到雙人構圖。</li>
+<li>攝影機每幀追蹤雙方中點，讓兩名角色保持在畫面內且站位線維持水平，並將可見遊戲區固定為 16:9。</li>
+<li>雙方距離改變時，攝影機會平順拉近或拉遠，且不超過設定的最小與最大鏡頭距離。</li>
+<li>1P 與 CPU 換邊時只交換畫面左右位置，攝影機不會瞬間翻轉 180 度。</li>
+<li>兩名角色重疊或距離近到無法可靠計算戰鬥軸時，攝影機維持目前角度，不會突然跳向另一側。</li>
+<li>現版另有限制 1P 與 CPU 的最大距離，用途是維持雙人構圖；這不是場地外圍碰撞，正式戰鬥區域限制留到 <code>week-04</code>。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Gameplay Framework／SpawnActor／Pawn Possession</code>、<code>Enhanced Input</code>、<code>Animation Blueprint／Blend Space</code>、<code>CameraActor／SpringArm</code>、<code>戰鬥中點／垂直向量／距離插值／換邊旋轉策略</code></p>
+<h2 id="week-03" tabindex="-1"><code>week-03</code>｜相對方向與自動面向</h2>
+<h3>專案展示內容</h3>
+<p>建立雙方共用的戰鬥軸與對手參照。實體移動輸入先轉成相對於對手的方向語意，角色在一般移動期間持續轉向對方。</p>
+<ul>
+<li>1P 位於 CPU 左側時，A／D 會分別判定為後退 4 與前進 6。</li>
+<li>1P 與 CPU 換邊後，相同實體按鍵的 4／6 意義同步反轉。</li>
+<li>方向事件在產生時就保存 4／6 語意；後續換邊不回頭修改已記錄的方向。</li>
+<li>1P 與 CPU 在待機及移動期間會持續面向對方，換邊後能平順轉身。</li>
+<li>雙方重疊或距離太近時沿用上一個有效面向，避免左右方向與角色旋轉反覆跳動。</li>
+<li>相對方向與自動面向共用同一份對手位置及戰鬥軸判定，避免兩套規則互相矛盾。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Opponent Reference</code>、<code>戰鬥軸</code>、<code>4／6 相對方向正規化</code>、<code>Vector／Dot Product</code>、<code>Look At Rotation／Rotation Interpolation</code></p>
+<h2 id="week-04" tabindex="-1"><code>week-04</code>｜戰鬥區域碰撞限制</h2>
+<h3>專案展示內容</h3>
+<p>以場地碰撞圍出可移動的戰鬥區域，讓角色留在區域內。本週只處理不可穿越的邊界，不實作 Ring Out。</p>
+<ul>
+<li>1P 與 CPU 都無法穿過戰鬥區域外圍的碰撞邊界。</li>
+<li>角色持續朝邊界移動時不會穿牆、瞬移到場外或持續抖動。</li>
+<li>角色碰到邊界後仍可往場內移動，也可沿邊界移動。</li>
+<li>場地邊界與 <code>week-02</code> 的雙方最大距離限制各自負責不同規則，不互相取代。</li>
+<li>攝影機在角色接近場地邊界時仍維持雙人構圖。</li>
+<li>角色碰到場地邊界不會觸發勝負，本週沒有 Ring Out 判定。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Blocking Volume</code>、<code>Collision Preset／Channel Response</code>、<code>CharacterMovement Collision</code>、<code>場地邊界配置</code></p>
+<h2 id="week-05" tabindex="-1"><code>week-05</code>｜基本攻擊與 Animation Montage</h2>
+<h3>專案展示內容</h3>
+<p>使用既有 <code>MM_Attack_01</code> AnimSequence 建立可播放及編輯的 <code>AM_Attack_01</code> Animation Montage。U 鍵是本週的測試鍵，按下後送出攻擊語意 <code>X</code>。</p>
+<ul>
+<li>可在 Montage Editor 編輯 <code>AM_Attack_01</code> 的動畫片段、Slot、Blend In 與 Blend Out。</li>
+<li>按下 U 鍵後，1P 完整播放一次 <code>AM_Attack_01</code>。</li>
+<li>攻擊期間限制角色移動與自動面向，避免攻擊動作被一般移動規則覆蓋。</li>
+<li>攻擊正常結束或被中斷時，都會離開攻擊狀態並恢復合法操作。</li>
+<li>攻擊中重複按鍵不會疊加 Montage，也不會讓角色卡在攻擊狀態。</li>
+<li>本週只有攻擊動畫與動作生命週期，尚未加入 Hitbox、Hurtbox、扣血或連段。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Animation Montage</code>、<code>Anim Slot</code>、<code>Montage Playback</code>、<code>Montage Callback</code>、<code>Action Lock／Input Gating</code></p>
+<h2 id="week-06" tabindex="-1"><code>week-06</code>｜Command DataTable 與資料驅動放招</h2>
+<h3>專案展示內容</h3>
+<p>建立 Command CSV、<code>FTableRowBase</code> 資料結構與 Command DataTable。攻擊入口依語意指令 <code>X</code> 查表取得 <code>AM_Attack_01</code>，不再由程式硬編碼 Montage。</p>
+<ul>
+<li>U 鍵透過 Input Mapping Context 送出 <code>X</code>，Command DataTable 再將 <code>X</code> 對應到 <code>AM_Attack_01</code>。</li>
+<li>修改 CSV 的 Montage 或招式設定並 Reimport 後，下一次放招會使用更新後的資料。</li>
+<li>程式碼不再直接指定 <code>AM_Attack_01</code>。</li>
+<li>在 Input Mapping Context 將 I 鍵加入同一個攻擊 Input Action 後，不修改 C++ 也能用 I 鍵播放 A 招。</li>
+<li>無效 Row、空 Montage 或與角色 Skeleton／Slot 不相容的資料會拒絕執行並留下 Log。</li>
+<li>Command DataTable 不保存 U、I 等實體鍵名；實體鍵位仍由 Enhanced Input 負責。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>DataTable／CSV Reimport</code>、<code>FTableRowBase</code>、<code>Command Row Lookup</code>、<code>Input Mapping Context</code>、<code>資料驗證</code></p>
+<h2 id="week-07" tabindex="-1"><code>week-07</code>｜Hitbox、Hurtbox 與資料驅動傷害</h2>
+<h3>專案展示內容</h3>
+<p>建立獨立的 Damage CSV／DataTable、角色生命值，以及攻擊用 Hitbox 與受擊用 Hurtbox。Command Row 只保存 Damage Row 的參照；實際扣血值由 Damage DataTable 提供。</p>
+<ul>
+<li>在 <code>AM_Attack_01</code> 加入 <code>Damage Notify State</code>，並以時間範圍標示可造成傷害的 Active 階段。</li>
+<li><code>Damage Notify State</code> 開始時啟用 Hitbox，結束時停用；範圍外不會造成傷害。</li>
+<li>1P 的 Hitbox 接觸 CPU 的 Hurtbox 時判定命中，並依 Damage Row 扣除 CPU 生命值。</li>
+<li>本週先以單一 Hurtbox 驗證一次攻擊、一次碰撞與一次扣血流程；多 Hurtbox 的重複命中防護留到 <code>week-08</code>。</li>
+<li>Damage Notify State 不保存第二份傷害值，只傳遞目前攻擊的命中時機。</li>
+<li>尚未建立正式 HUD 時，可由 Log 或開發用除錯資訊確認命中 Row、傷害值與剩餘生命值。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Damage DataTable</code>、<code>Hitbox／Hurtbox</code>、<code>Anim Notify State</code>、<code>Overlap Collision</code>、<code>Health Component</code></p>
+<h2 id="week-08" tabindex="-1"><code>week-08</code>｜Frame Data 與 Command Link 執行模型</h2>
+<h3>專案展示內容</h3>
+<p>正式建立 Startup、Active、Recovery 的 Frame Data 執行模型，並用 Montage 時間軸上的 Notify 控制輸入預約、接招時機與 Recovery 起點。Frame 是設計及驗收單位；執行階段依 Montage 時間與事件運作，不以 Tick 累加整數幀。</p>
+<ul>
+<li><code>CommandLinkPreorderNotify</code> 觸發後開始接收一筆待處理指令，並記錄到 <code>CommandBuffer</code>。</li>
+<li><code>CommandLinkEnableNotify</code> 觸發時檢查 <code>CommandBuffer</code>；若指令有效且是合法後續招式，就消耗該指令並開始下一招。</li>
+<li><code>CommandLinkDisableNotify</code> 觸發後關閉接招機會，之後輸入不會回溯生效，角色進入 Recovery。</li>
+<li>Preorder 前的輸入不會被錯誤預約；Buffer 過期、攻擊結束、Montage 中斷、受擊、KO 或 Reset 時都會清除待處理指令。</li>
+<li>同一次揮擊即使碰到同一角色的多個 Hurtbox，也只會扣一次血。</li>
+<li>修改 Damage CSV 並 Reimport 後，下一次命中會使用新數值，不需重建 Hitbox 或 Notify。</li>
+<li>本週完成可供連段使用的 Link 與 Buffer 基礎；正式連段內容在 <code>week-11</code> 加入。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Frame Data</code>、<code>CommandBuffer</code>、<code>Command Link Notify</code>、<code>單次揮擊命中集合</code>、<code>中斷與結束清理</code></p>
+<h2 id="week-09" tabindex="-1"><code>week-09</code>｜CPU AI 接近與選招</h2>
+<h3>專案展示內容</h3>
+<p>建立 CPU 的基本決策流程。CPU 根據與 1P 的距離決定接近或攻擊，並呼叫玩家共用的選招與攻擊入口，不模擬鍵盤輸入。</p>
+<ul>
+<li>CPU 距離過遠時會朝 1P 接近，進入攻擊距離後停止追趕。</li>
+<li>CPU 生成後由 AIController Possess，並由 StateTree 管理接近、攻擊與等待下一次決策的流程。</li>
+<li>進入攻擊距離後，CPU 會從 Command DataTable 選出目前可用的招式。</li>
+<li>CPU 執行招式時沿用 <code>week-05</code>～<code>week-08</code> 的 Montage、Hitbox、傷害與 Command Link 流程。</li>
+<li>CPU 在攻擊或尚未恢復行動時不會重複下攻擊指令。</li>
+<li>玩家與 CPU 在相同條件下會通過同一套資料驗證與招式合法性檢查。</li>
+<li>本週 CPU 尚未防禦；防禦與硬直狀態留到 <code>week-10</code>。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>AIController</code>、<code>StateTree</code>、<code>Evaluator／Task／Transition</code>、<code>距離決策</code>、<code>玩家與 AI 共用攻擊介面</code></p>
+<h2 id="week-10" tabindex="-1"><code>week-10</code>｜防禦、硬直與集中式戰鬥狀態</h2>
+<h3>專案展示內容</h3>
+<p>建立 Neutral、Attacking、Defending、Hitstun、Blockstun 與 KnockedOut 等集中式戰鬥狀態。命中流程依 Defense Intent 決定進入一般受擊或防禦結果。</p>
+<ul>
+<li>防禦成功時不進入一般受擊流程，改為 Blockstun。</li>
+<li>一般命中會進入 Hitstun；Hitstun／Blockstun 到期後，角色回到合法狀態。</li>
+<li>Damage DataTable 提供傷害與硬直時間，Hitbox、Hurtbox 及 Notify 不保存重複數值。</li>
+<li>角色在 Hitstun、Blockstun 或 KnockedOut 期間不能移動、攻擊或重複接受不合法指令。</li>
+<li><code>tnda.Debug.CPUDefense on|off|auto</code> 可將 CPU 防禦固定為開啟、關閉或交還 AI 控制。</li>
+<li><code>tnda.Debug.PrintFighters</code> 可輸出雙方目前戰鬥狀態、生命值、目前招式與硬直剩餘時間。</li>
+<li>Console 指令呼叫正式戰鬥介面，不直接寫入角色內部狀態。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Combat State Machine</code>、<code>Defense Intent</code>、<code>Hit Resolution</code>、<code>Gameplay Timer</code>、<code>自訂 Console 指令</code></p>
+<h2 id="week-11" tabindex="-1"><code>week-11</code>｜基本連段</h2>
+<h3>專案展示內容</h3>
+<p>以 Command DataTable 定義三段基本連段。<code>AM_Attack_01</code>～<code>03</code> 是由對應 <code>MM_Attack_01</code>～<code>03</code> AnimSequence 建立的可播放 Montage；本週的第三段刻意再次使用 <code>AM_Attack_01</code>。</p>
+<pre><code class="language-text">X       → AM_Attack_01
+XX      → AM_Attack_02
+XXX     → AM_Attack_01
+</code></pre>
+<ul>
+<li>單按 X 只播放第一段，符合 Link Window 時再次按 X 才會進入第二段與第三段。</li>
+<li>太早、過期或在 <code>CommandLinkDisableNotify</code> 之後輸入，不會錯誤接段。</li>
+<li>即使第一段與第三段使用同一個 Montage，兩者仍保有不同的連段步驟身分，不會形成錯誤循環。</li>
+<li>攻擊正常結束或中斷時，連段步驟與待處理指令都會清除。</li>
+<li>CPU AI 可依相同 Command Row 與 Follow-up 規則完成三段連段。</li>
+<li>本週只有 X 的線性連段，尚未加入 6X 分支。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Combo Step／Chain State</code>、<code>Allowed Follow-up</code>、<code>Pending Command Consumption</code>、<code>資料驅動連段</code>、<code>玩家與 AI 共用連段入口</code></p>
+<h2 id="week-12" tabindex="-1"><code>week-12</code>｜相對方向分支連段</h2>
+<h3>專案展示內容</h3>
+<p>在基本連段加入 6X 分支，並沿用 <code>week-03</code> 的相對方向與 <code>week-08</code> 的 CommandBuffer。</p>
+<pre><code class="language-text">X       → AM_Attack_01
+XX      → AM_Attack_02
+XXX     → AM_Attack_01
+XX6X    → AM_Attack_03
+</code></pre>
+<ul>
+<li>第二段後按 X 會進入 <code>AM_Attack_01</code>，按住相對前方 6 再按 X 則進入 <code>AM_Attack_03</code>。</li>
+<li>6X 與 X 同時符合時，較具體的 6X 分支優先。</li>
+<li>方向在輸入寫入 CommandBuffer 時就保存；之後換邊不會把已記錄的 6X 改成 4X。</li>
+<li>換邊後的新輸入會依新朝向重新判定 4／6。</li>
+<li>不合法、過期或不在 Link Window 內的方向攻擊不會接段。</li>
+<li>CPU AI 可直接提供相對方向語意，並透過同一套分支規則選擇普通第三段或 6X 分支。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Command Pattern Matching</code>、<code>方向輸入快照</code>、<code>Context Snapshot</code>、<code>分支具體度／優先規則</code>、<code>資料驅動分支</code></p>
+<h2 id="week-13" tabindex="-1"><code>week-13</code>｜回合基本流程與自動再戰</h2>
+<h3>專案展示內容</h3>
+<p>建立 Preparing、Ready、Fight 與 RoundOver 等回合狀態。任一方生命值歸零時產生唯一的 <code>Round Result</code>，寫入 Log，等待 2 秒後完整重設並自動開始下一場。本週尚未加入正式 Round Timer 與結算 UI。</p>
+<pre><code class="language-text">READY → FIGHT → KO → Round Result Log → 等待 2 秒 → Reset → 下一場 READY
+</code></pre>
+<ul>
+<li>FIGHT 前玩家與 CPU 都不能行動，倒數結束後才開放戰鬥。</li>
+<li>KO 後停止輸入、AI、攻擊與傷害，每場只產生一次 <code>Round Result</code>。</li>
+<li>Log 正確顯示 Round、勝負、結束原因與雙方剩餘生命值。</li>
+<li>結算後等待 2 秒，自動重設位置、生命值、Montage、Timer、CommandBuffer、輸入與戰鬥狀態。</li>
+<li>連續進行多場時，不會殘留上一場的角色狀態、Hitbox、Command Link 或回合事件。</li>
+<li>提供開發用情境指令，可快速觸發 1P KO、CPU KO 與回合重設；最終結果仍由正式回合規則產生。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Round State Machine</code>、<code>READY／FIGHT Gating</code>、<code>KO 判定</code>、<code>Round Result</code>、<code>Round Reset</code></p>
+<h2 id="week-14" tabindex="-1"><code>week-14</code>｜倒數計時與特殊結算</h2>
+<h3>專案展示內容</h3>
+<p>加入 Round Timer、Time Over 與 Draw。傷害與時間到期先進入 Pending Resolution，再由單一入口依固定優先順序結算，避免 KO 與 Time Over 在同一幀產生兩次結果。</p>
+<p>結算優先順序如下：</p>
+<ol>
+<li>雙方生命值同時歸零：Double KO／Draw。</li>
+<li>只有一方生命值歸零：另一方以 KO 獲勝。</li>
+<li>雙方都未歸零且時間到：生命值較高者獲勝，同血量為 Draw。</li>
+</ol>
+<ul>
+<li>時間歸零時依雙方生命值正確判定勝負或 Draw。</li>
+<li>KO 與 Time Over 同時發生時，只會依上述優先順序結算一次。</li>
+<li>Log 顯示 <code>Reason</code>、雙方剩餘生命值與剩餘時間。</li>
+<li>結算後仍沿用 <code>week-13</code> 的 2 秒等待、完整 Reset 與自動再戰。</li>
+<li>提供以下開發情境指令：</li>
+</ul>
+<pre><code class="language-text">tnda.Debug.RoundScenario double_ko
+tnda.Debug.RoundScenario timeover_draw
+tnda.Debug.RoundScenario ko_at_timeout
+tnda.Debug.RoundScenario player_timeover_win
+tnda.Debug.RoundScenario cpu_timeover_win
+</code></pre>
+<ul>
+<li>情境指令只建立測試條件，不直接偽造 <code>Round Result</code>。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Round Timer</code>、<code>Time Over</code>、<code>Pending Resolution</code>、<code>Double KO／Draw</code>、<code>結算優先規則</code></p>
+<h2 id="week-15" tabindex="-1"><code>week-15</code>｜戰鬥 HUD 與結算 UI</h2>
+<h3>專案展示內容</h3>
+<p>建立事件驅動的 Battle HUD，顯示 1P／CPU 生命值、倒數時間、READY／FIGHT 與連段資訊。回合結束後顯示勝負或 Draw，並停用 <code>week-13</code>～<code>week-14</code> 的自動再戰。</p>
+<ul>
+<li>HUD 會隨生命值、時間與回合事件更新，不使用 Tick 輪詢戰鬥資料。</li>
+<li>結算畫面讀取 Round 系統產生的同一份 <code>Round Result</code>，正確顯示 1P 勝、CPU 勝或 Draw。</li>
+<li>結算 UI 顯示期間不會自動開始下一場。</li>
+<li><code>&lt;再來一局&gt;</code> 會執行完整 Round Reset，重新進入 READY／FIGHT 流程。</li>
+<li><code>&lt;回主選單&gt;</code> 本週只輸出尚未實作的 Log，不切換場景。</li>
+<li>連續操作 <code>&lt;再來一局&gt;</code> 不會重複建立 HUD 或綁定相同事件。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>UMG</code>、<code>事件驅動 UI</code>、<code>Battle HUD</code>、<code>Result UI</code>、<code>Widget 按鈕事件</code></p>
+<h2 id="week-16" tabindex="-1"><code>week-16</code>｜戰鬥特效與音效</h2>
+<h3>專案展示內容</h3>
+<p>示範 Niagara System 與 Emitter 編輯，製作 Hit、Block 與 Combo 的視覺回饋及一次性音效。C++ 命中結算只送出戰鬥表現事件，由 Blueprint 依事件資料選擇 Niagara 與音效。</p>
+<ul>
+<li>Hit、Block 與 Combo 會播放不同特效及音效。</li>
+<li>特效可接收接觸位置、方向或強度等 User Parameter。</li>
+<li>音效由戰鬥事件觸發一次，不會因 Niagara 粒子數量重複播放。</li>
+<li><code>tnda.Debug.PlayFeedback hit|block|combo</code> 可在不進行完整戰鬥時預覽表現效果。</li>
+<li>關閉或移除特效後，傷害、防禦、戰鬥狀態、連段及回合結果都不受影響。</li>
+<li>KO 或 Round Reset 會清除尚未完成的戰鬥特效與音效元件，不殘留到下一場。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Niagara System／Emitter</code>、<code>User Parameter</code>、<code>One-shot Audio</code>、<code>C++／Blueprint 事件串接</code>、<code>戰鬥規則與表現分離</code></p>
+<h2 id="week-17" tabindex="-1"><code>week-17</code>｜主選單、非同步載入與完整遊戲流程</h2>
+<h3>專案展示內容</h3>
+<p>建立主選單與對戰準備畫面，使用 Soft Reference 非同步載入戰鬥場地、角色、動畫、Niagara 與音效，並正式接通 <code>week-15</code> 的 <code>&lt;回主選單&gt;</code>。</p>
+<pre><code class="language-text">主選單
+→ 對戰準備／非同步載入
+→ READY／FIGHT
+→ 戰鬥
+→ 結算
+→ 再來一局或回主選單
+</code></pre>
+<ul>
+<li>主選單不直接硬參照戰鬥資產。</li>
+<li>載入期間顯示目前階段與 Spinner，不顯示無法可靠計算的假百分比。</li>
+<li>必要資產載入完成後才建立戰鬥；載入失敗時不留下半套場景，並可安全回主選單。</li>
+<li>快速連按開始不會建立重複的載入請求或戰鬥流程，過期回呼不會污染新請求。</li>
+<li><code>&lt;再來一局&gt;</code> 沿用已載入資產，略過準備畫面並完整重設戰鬥。</li>
+<li><code>&lt;回主選單&gt;</code> 會停止戰鬥、銷毀本局物件、卸載場地、釋放非同步 Handle 並回到選單。</li>
+<li>從主選單再次開始時，會重新走載入流程並正常進入 READY／FIGHT。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Soft Reference</code>、<code>Async Loading／Streamable Handle</code>、<code>Loading State</code>、<code>Level Streaming／資源卸載</code>、<code>完整遊戲流程</code></p>
+<h2 id="week-18" tabindex="-1"><code>week-18</code>｜Build、Cook、Stage 與 Package</h2>
+<h3>專案展示內容</h3>
+<p>沿用 <code>week-17</code> 的完整專案示範 Build、Cook、Stage、Package 與封裝故障排除，不建立新的 <code>week-18</code> 教材專案。</p>
+<ul>
+<li>說明 Build、Cook、Stage、Package 各階段的輸入、輸出與常見失敗位置。</li>
+<li>檢查 Default Map、需要 Cook 的關卡、Soft Reference、必要資產與 Packaging Settings。</li>
+<li>完成 Windows Development 封裝；執行檔不依賴 Unreal Editor，也能從主選單完成對戰、結算、再來一局與回主選單。</li>
+<li>以 Development 封裝的 Log 找出至少一個可重現的封裝問題，修正後重新封裝並通過流程驗收。</li>
+<li>說明 Development 與 Shipping 在除錯能力、Log／Console 可用性、最佳化及發行用途上的差異。</li>
+<li>建立 Shipping 封裝並確認可啟動及完成一場對戰；不把只在 Development 可用的除錯指令列為 Shipping 驗收條件。</li>
+<li>保存封裝設定與版本控制紀錄，不提交 <code>Binaries</code>、<code>Intermediate</code>、<code>Saved</code> 或封裝輸出目錄。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Unreal Automation Tool／Project Launcher</code>、<code>Build／Cook／Stage／Package</code>、<code>Packaging Settings</code>、<code>Development／Shipping Configuration</code>、<code>封裝 Log 與故障排除</code></p>
+  </main>
+  </div>
+  <script>
+(() => {
+  const links = [...document.querySelectorAll(".week-nav a")];
+  const headings = links.map((link) => document.querySelector(link.hash)).filter(Boolean);
+  const jump = document.querySelector("#week-jump");
+
+  const setActiveWeek = (id) => {
+    const hash = `#${id}`;
+    links.forEach((link) => {
+      if (link.hash === hash) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+    if (jump.value !== hash) jump.value = hash;
+  };
+
+  let updatePending = false;
+  const updateActiveWeek = () => {
+    updatePending = false;
+    const threshold = window.innerWidth <= 820 ? 128 : 80;
+    let current = headings[0];
+    headings.forEach((heading) => {
+      if (heading.getBoundingClientRect().top <= threshold) current = heading;
+    });
+    if (current) setActiveWeek(current.id);
+  };
+
+  const requestUpdate = () => {
+    if (updatePending) return;
+    updatePending = true;
+    window.requestAnimationFrame(updateActiveWeek);
+  };
+
+  jump.addEventListener("change", () => {
+    const target = document.querySelector(jump.value);
+    if (!target) return;
+    history.pushState(null, "", jump.value);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.focus({ preventScroll: true });
+  });
+
+  links.forEach((link) => link.addEventListener("click", () => setActiveWeek(link.hash.slice(1))));
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  updateActiveWeek();
+})();
+  </script>
+</body>
+</html>

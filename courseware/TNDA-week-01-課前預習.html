@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 01 課前預習｜開發環境與 Third Person 專案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.quick-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.55rem;
+  padding: 0.48rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  background: white;
+  color: var(--navy);
+}
+
+main {
+  width: min(100% - 2rem, 72rem);
+  margin: 1.6rem auto 3rem;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg text, svg tspan { font-size: 16px !important; }
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .quick-nav { display: grid; grid-template-columns: 1fr; }
+  .quick-nav a { border-radius: 0.6rem; }
+  main { width: 100%; margin-top: 0; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .quick-nav, .skip-link, .back-link { display: none; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 01 · 學生版課前預習</p>
+      <h1>TNDA Week 01 課前預習｜開發環境與 Third Person 專案</h1>
+      <p class="hero-note">課前先完成環境確認與兩組實作，帶著紀錄進入課堂。</p>
+      <nav class="quick-nav" aria-label="本頁導覽"><a href="#student-01-1">本週目標</a><a href="#student-01-2">課前準備</a><a href="#student-01-3">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</a><a href="#student-01-6">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</a><a href="#student-01-9">官方參考資料</a><a href="#student-01-10">上課前確認</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <article class="paper"><h2 id="student-01-1">本週目標</h2>
+<p>先確認開發環境可以正常使用，再從同一份 Third Person 教材專案比較四種玩法起點，最後把 Combat 關卡設成專案的啟動內容。</p>
+<h2 id="student-01-2">課前準備</h2>
+<p>開始兩組實作前，先完成以下準備：</p>
+<ul>
+<li>安裝 Unreal Engine 5.8。</li>
+<li>安裝 Visual Studio 2026，並備妥 Unreal C++ 開發所需元件。</li>
+<li>安裝 GitHub Desktop，確認能開啟教材版本庫並查看檔案變更。</li>
+<li>取得並開啟 <code>ThirdPersonTemplate</code> 教材專案，確認專案可編譯且能進入 PIE。</li>
+</ul>
+<p>環境安裝不計入下面兩組實作的 30 分鐘。</p>
+<h2 id="student-01-3">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</h2>
+<h3 id="student-01-4">給學生看的題目</h3>
+<p>使用 PIE 依序體驗 <code>Lvl_ThirdPerson</code>、<code>Lvl_Combat</code>、<code>Lvl_Platforming</code> 與 <code>Lvl_SideScrolling</code>。整理四種玩法在角色操作、鏡頭、關卡互動與遊戲目標上的差異，並為每個關卡留下一張能看出特色的執行畫面。</p>
+<h3 id="student-01-5">要帶來上課的紀錄</h3>
+<ul>
+<li>一張四種玩法的比較表。</li>
+<li>四張 PIE 畫面，每個關卡各一張。</li>
+<li>一句話說明你會選哪一種玩法當作近戰遊戲的起點，以及理由。</li>
+</ul>
+<h2 id="student-01-6">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</h2>
+<h3 id="student-01-7">給學生看的題目</h3>
+<p>把編輯器啟動時開啟的關卡，以及遊戲使用的預設關卡，都改成 <code>Lvl_Combat</code>。關閉並重新開啟專案，確認編輯器會直接進入 Combat 關卡，而且 PIE 可以正常操作角色。</p>
+<h3 id="student-01-8">要帶來上課的紀錄</h3>
+<ul>
+<li>一張顯示兩項預設關卡都已改成 <code>Lvl_Combat</code> 的設定畫面。</li>
+<li>一張重新開啟專案後的編輯器畫面。</li>
+<li>一張 Combat 關卡的 PIE 畫面。</li>
+</ul>
+<h2 id="student-01-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine?lang=en-US">Epic Games：Third Person Template</a>：介紹標準 Third Person 範本，以及 Combat、Platforming、Side Scroller 三種 Variant。</li>
+<li><a href="https://dev.epicgames.com/documentation/unreal-engine/changing-the-default-level-of-an-unreal-engine-project?lang=en-US">Epic Games：Changing the Default Level</a>：說明 <code>Game Default Map</code> 與 <code>Editor Startup Map</code> 的設定位置。</li>
+<li><a href="https://learn.microsoft.com/en-us/visualstudio/gamedev/unreal/get-started/vs-tools-unreal-install">Microsoft Learn：Install Visual Studio Tools for Unreal Engine</a>：列出 Unreal C++ 工作負載與 Visual Studio Tools for Unreal Engine 的安裝項目。</li>
+<li><a href="https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop">GitHub Docs：Getting started with GitHub Desktop</a>：說明安裝、登入、加入或複製版本庫，以及查看變更的基本流程。</li>
+</ul>
+<h2 id="student-01-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Unreal Engine 5.8 能開啟 <code>ThirdPersonTemplate</code>。</li>
+<li><input disabled="" type="checkbox"> Visual Studio 2026 能開啟專案並完成編譯。</li>
+<li><input disabled="" type="checkbox"> GitHub Desktop 能辨識教材版本庫與目前變更。</li>
+<li><input disabled="" type="checkbox"> 四個關卡都能進入 PIE。</li>
+<li><input disabled="" type="checkbox"> 重新開啟專案時會直接進入 <code>Lvl_Combat</code>。</li>
+<li><input disabled="" type="checkbox"> 兩組實作的畫面與比較紀錄已備妥。</li>
+</ul>
+</article>
+  </main>
+  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 01 · 學生版課前預習</footer>
+</body>
+</html>
