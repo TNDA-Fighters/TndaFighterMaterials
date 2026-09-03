@@ -116,34 +116,65 @@ a:hover, a:focus-visible { color: var(--coral); }
   font-size: 1.05rem;
 }
 
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
 .quick-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-top: 1.35rem;
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
 }
 
 .quick-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.55rem;
-  padding: 0.48rem 0.82rem;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
   font-weight: 700;
+  line-height: 1.45;
   text-decoration: none;
 }
 
 .quick-nav a:hover, .quick-nav a:focus-visible {
-  background: white;
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
   color: var(--navy);
 }
 
 main {
-  width: min(100% - 2rem, 72rem);
-  margin: 1.6rem auto 3rem;
+  width: 100%;
+  margin: 0;
 }
 
 .paper {
@@ -345,13 +376,36 @@ img, svg, video, canvas {
 
 svg text, svg tspan { font-size: 16px !important; }
 
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 640px) {
   body { background: var(--paper); }
   .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
   .hero h1 { font-size: 2rem; }
-  .quick-nav { display: grid; grid-template-columns: 1fr; }
-  .quick-nav a { border-radius: 0.6rem; }
-  main { width: 100%; margin-top: 0; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
   .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
   .relation-row { grid-template-columns: 1fr; }
   .relation-edge { flex-direction: column; gap: 0; }
@@ -363,7 +417,9 @@ svg text, svg tspan { font-size: 16px !important; }
 @media print {
   body { background: white; }
   .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
-  .quick-nav, .skip-link, .back-link { display: none; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
   main { width: 100%; margin: 0; }
   .paper { border: 0; box-shadow: none; }
   a { color: inherit; }
@@ -377,9 +433,17 @@ svg text, svg tspan { font-size: 16px !important; }
       <p class="eyebrow">TNDA · WEEK 01 · 教師版完整教案</p>
       <h1>TNDA Week 01 教師版</h1>
       <p class="hero-note">合併課前預習、課堂示範與課堂實作，供遠端教學備課與操作。</p>
-      <nav class="quick-nav" aria-label="本頁導覽"><a href="#part-prep">課前預習</a><a href="#part-demo">課堂示範</a><a href="#part-lab">課堂實作</a></nav>
     </div>
   </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+        <p class="quick-nav-title">本頁導覽</p>
+        <a href="#part-prep">課前預習</a>
+        <a href="#part-demo">課堂示範</a>
+        <a href="#part-lab">課堂實作</a>
+      </nav>
+    </aside>
   <main id="main-content">
     <article class="paper"><section class="document-part" id="part-prep">
       <h2 class="part-title">TNDA Week 01 課前預習｜教師版</h2>
@@ -669,6 +733,7 @@ svg text, svg tspan { font-size: 16px !important; }
       <a class="back-link" href="#top">回到頁首</a>
     </section></article>
   </main>
+  </div>
   <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 01 · 教師版完整教案</footer>
 </body>
 </html>
