@@ -441,16 +441,15 @@ svg text, svg tspan { font-size: 16px !important; }
         <p class="quick-nav-title">本頁導覽</p>
         <a href="#student-02-1">本週目標</a>
         <a href="#student-02-2">課前準備</a>
-        <a href="#student-02-3">課前實作 1｜畫出雙角色與攝影機的關係（30 分鐘內）</a>
-        <a href="#student-02-6">課前實作 2｜調整雙人構圖範圍（30 分鐘內）</a>
-        <a href="#student-02-9">教材專案內要使用的文件</a>
+        <a href="#student-02-3">課前實作 1｜畫出雙角色與攝影機的關係</a>
+        <a href="#student-02-6">課前實作 2｜調整雙人構圖範圍</a>
         <a href="#student-02-10">官方參考資料</a>
         <a href="#student-02-11">上課前確認</a>
       </nav>
     </aside>
   <main id="main-content">
     <article class="paper"><h2 id="student-02-1">本週目標</h2>
-<p>看懂 <code>stage1</code> 如何建立 1P、CPU 與共用格鬥攝影機，並從既有攝影機設定觀察雙方距離和畫面遠近的關係。</p>
+<p>看懂 <code>stage1</code> 如何建立 1P、CPU 與格鬥遊戲攝影機，並從既有攝影機設定觀察雙方距離和畫面遠近的關係。</p>
 <h2 id="student-02-2">課前準備</h2>
 <ul>
 <li>使用本週提供的 <code>TndaFighter</code> 教材專案。</li>
@@ -458,37 +457,26 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>確認 PIE 後畫面中同時出現 1P、CPU 與雙人構圖。</li>
 <li>操作前先確認 GitHub Desktop 沒有自己尚未整理的變更。</li>
 </ul>
-<h2 id="student-02-3">課前實作 1｜畫出雙角色與攝影機的關係（30 分鐘內）</h2>
-<h3 id="student-02-4">給學生看的題目</h3>
+<h2 id="student-02-3">課前實作 1｜畫出雙角色與攝影機的關係</h2>
 <p>比較 <code>stage1</code> 在編輯狀態與 PIE 執行期間出現的物件，找出 PlayerController、1P、CPU Spawner、CPU 與 FightingCameraActor。畫一張架構圖，標示哪些物件原本就在關卡中、哪些在執行時產生，以及彼此的生成、控制與 View Target 關係。</p>
-<h3 id="student-02-5">要帶來上課的紀錄</h3>
+<h3 id="student-02-5">預習成果紀錄</h3>
 <ul>
-<li>一張編輯狀態的 World Outliner 畫面。</li>
-<li>一張 PIE 執行期間的 World Outliner 畫面。</li>
-<li>一張包含五個指定角色及其關係的架構圖。</li>
+<li>一張標示 PlayerController、1P、CPU Spawner、CPU 與 FightingCameraActor 之間生成、控制及 View Target 關係的架構圖。</li>
 <li>一段不超過 100 字的說明：PlayerController 控制的對象和畫面觀看的對象是否一定相同？</li>
 </ul>
-<h2 id="student-02-6">課前實作 2｜調整雙人構圖範圍（30 分鐘內）</h2>
-<h3 id="student-02-7">給學生看的題目</h3>
+<h2 id="student-02-6">課前實作 2｜調整雙人構圖範圍</h2>
 <p>閱讀教材專案內的 FightingCameraActor 架構流程文件，找出會影響「1P 與 CPU 最遠能離多遠」及「兩人靠近時鏡頭能拉多近」的設定。各做一次調整並在 PIE 比較結果，記錄修改前後的數值與畫面；測試結束後恢復教材原始設定。</p>
-<h3 id="student-02-8">要帶來上課的紀錄</h3>
+<h3 id="student-02-8">預習成果紀錄</h3>
 <ul>
 <li>你找到的設定名稱，以及各自影響的畫面結果。</li>
 <li>修改前、修改後的數值對照。</li>
 <li>最遠距離與近距離構圖各一組前後對照畫面。</li>
 <li>一句話說明為什麼角色距離上限與鏡頭距離上限不是同一件事。</li>
 </ul>
-<h2 id="student-02-9">教材專案內要使用的文件</h2>
-<ul>
-<li>教材專案 <code>docs/</code> 內的 FightingCameraActor 架構流程文件。</li>
-<li>教材專案 <code>docs/blueprints/ABP_Manny_Combat.md</code>。</li>
-<li>教材專案 <code>docs/blueprints/changes/2026-09-01-blocked-movement-locomotion.md</code>。</li>
-</ul>
 <h2 id="student-02-10">官方參考資料</h2>
 <ul>
 <li><a href="https://dev.epicgames.com/documentation/unreal-engine/gameplay-framework-quick-reference-in-unreal-engine?lang=en-US">Epic Games：Gameplay Framework Quick Reference</a>：說明 Actor 可預先放入 Level 或在執行時生成，以及 Controller、Pawn、Possession 與攝影機的基本責任。</li>
 <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/cameras-in-unreal-engine">Epic Games：Cameras in Unreal Engine</a>：說明 CameraActor、PlayerCameraManager 與 ViewTarget 的關係。</li>
-<li><a href="https://dev.epicgames.com/documentation/unreal-engine/graphing-in-animation-blueprints-in-unreal-engine">Epic Games：Graphing in Animation Blueprints</a>：說明 EventGraph 更新動畫資料、AnimGraph 輸出 Pose 的分工。</li>
 <li><a href="https://dev.epicgames.com/documentation/unreal-engine/enhanced-input-in-unreal-engine?lang=en-US">Epic Games：Enhanced Input</a>：介紹 Input Action、Input Mapping Context、Modifier、Trigger 與執行時 Context 管理。</li>
 </ul>
 <h2 id="student-02-11">上課前確認</h2>

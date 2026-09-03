@@ -551,115 +551,54 @@ svg text, svg tspan { font-size: 16px !important; }
     </section>
 <section class="document-part" id="part-demo">
       <h2 class="part-title">TNDA Week 01 課堂示範｜教師版</h2>
-      <h3 id="teacher-01-demo-1">示範 1｜Gameplay Framework 與 Unity 對照（20 分鐘內）</h3>
-<h4 id="teacher-01-demo-2">示範目標</h4>
-<p>用 <code>Lvl_Combat</code> 說明 Unreal 如何把關卡規則、玩家控制與可控制角色拆開，並讓有 Unity 經驗的學生建立可用的責任對照。</p>
-<h4 id="teacher-01-demo-3">備課前置</h4>
+      <h3 id="teacher-01-demo-1">示範 1｜用 Variant_Combat 看懂 Gameplay Framework</h3>
+<h4 id="teacher-01-demo-2">主題</h4>
+<p>以 <code>Lvl_Combat.umap</code> 為入口，說明 Variant_Combat 的關卡、玩家與敵人如何分工。主要資產包含 <code>CombatGameMode</code>、<code>CombatPlayerController</code>、<code>CombatCharacter</code>、<code>CombatEnemySpawner</code>、<code>CombatEnemy</code> 與 <code>CombatAIController</code>。</p>
+<h4 id="teacher-01-demo-3">目的</h4>
 <ul>
-<li>開啟 <code>ThirdPersonTemplate</code> 的 <code>Lvl_Combat</code>。</li>
-<li>事先確認以下 Blueprint 可開啟：<code>BP_CombatGameMode</code>、<code>BP_CombatPlayerController</code>、<code>BP_CombatCharacter</code>。</li>
-<li>準備一個 PIE 視窗，能看見玩家角色與敵人。</li>
+<li>讓學生分清楚 C++ 類別、Blueprint 子類別與 PIE 執行期 Actor。</li>
+<li>說明玩家與敵人各有一組 Controller 和 Character，兩者透過 Possess 建立控制關係。</li>
+<li>說明 <code>CombatGameMode</code> 負責玩家端的預設類別，關卡中的 <code>CombatEnemySpawner</code> 另行負責敵人生成。</li>
+<li>建立 Unreal 與 Unity 的概念對照，同時提醒兩套引擎的類型與生命週期並非一對一。</li>
+<li>說明 Variant_Combat 沒有客製 GameState 與 PlayerState，因此本週先略過；執行時仍有引擎提供的預設物件。</li>
 </ul>
-<h4 id="teacher-01-demo-4">建議節奏與操作</h4>
+<h4 id="teacher-01-demo-4">過程概述</h4>
 <ol>
-<li><strong>0～4 分鐘：從執行結果反推角色。</strong> 在 PIE 指出關卡開始後，誰決定生成什麼 Pawn、誰接收本機輸入、誰真正出現在世界中。</li>
-<li><strong>4～10 分鐘：沿資產關係說明。</strong> 從關卡使用的 GameMode 開始，依序打開 PlayerController 與 Character，說明 <code>Possess</code> 把控制者與 Pawn 接起來。</li>
-<li><strong>10～16 分鐘：補齊 Framework 責任。</strong> 說明 GameMode 只存在於權威端、GameState 保存整場可共享狀態、PlayerState 保存每位玩家的狀態。Week 01 先理解責任，不展開網路同步實作。</li>
-<li><strong>16～20 分鐘：與 Unity 對照。</strong> 使用下表逐項比較，最後回到 <code>Lvl_Combat</code> 的實際資產。</li>
+<li>從 <code>Lvl_Combat.umap</code> 總覽玩家與敵人兩條執行路徑，並指出關卡內放置的 <code>BP_CombatEnemySpawner</code>。</li>
+<li>開啟幾個 <code>BP_</code> 資產，對照它們的 C++ 父類別，再說明 Blueprint 資產如何在關卡中成為實際 Actor。</li>
+<li>查看 <code>BP_CombatGameMode</code> 的 <code>PlayerControllerClass</code> 與 <code>DefaultPawnClass</code>，說明 PlayerController 如何 Possess 玩家 Character，以及角色被摧毀後的重生責任。</li>
+<li>比較玩家端與敵人端的 Possess 關係。<code>CombatCharacter</code> 和 <code>CombatEnemy</code> 都繼承 <code>ACharacter</code>，但彼此沒有繼承關係。</li>
+<li>沿著 <code>CombatEnemySpawner → CombatEnemy → CombatAIController → ST_CombatEnemy</code> 說明敵人的生成與 AI 啟動流程。</li>
+<li>查看 Enemy 死亡事件如何回到 Spawner。Spawner 依剩餘數量決定再次生成敵人，或在耗盡後啟用指定 Actor。</li>
+<li>回到總覽，請學生口頭說出玩家與敵人兩條路徑，並用 Unity 經驗說明各物件的近似責任。</li>
 </ol>
-<h4 id="teacher-01-demo-5">Unity 概念對照</h4>
-<p>這些對照只用來理解責任，不是類型、生命週期或網路模型的一對一映射。</p>
-<table>
-<thead>
-<tr>
-<th>Unreal</th>
-<th>主要責任</th>
-<th>Unity 中可近似聯想到的做法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GameMode</code></td>
-<td>定義關卡或比賽規則、預設 Pawn 與 Controller 類別</td>
-<td>場景啟動器、GameManager 或自訂規則服務的組合</td>
-</tr>
-<tr>
-<td><code>PlayerController</code></td>
-<td>代表玩家的控制端，接收輸入並 Possess Pawn</td>
-<td><code>PlayerInput</code> 加上玩家控制腳本，但 Unity 沒有完全相同的內建角色</td>
-</tr>
-<tr>
-<td><code>Pawn</code></td>
-<td>可被 Controller Possess 的世界物件</td>
-<td>可控制的 <code>GameObject</code> 加自訂控制元件</td>
-</tr>
-<tr>
-<td><code>Character</code></td>
-<td>具備 Capsule 與 Character Movement 的 Pawn</td>
-<td>角色 <code>GameObject</code>、<code>CharacterController</code> 與移動腳本的組合</td>
-</tr>
-<tr>
-<td><code>PlayerState</code></td>
-<td>保存單一玩家、適合共享或同步的狀態</td>
-<td>玩家資料元件或網路玩家狀態物件</td>
-</tr>
-<tr>
-<td><code>GameState</code></td>
-<td>保存整場遊戲的共享狀態</td>
-<td>Match Manager 或網路化的場次狀態物件</td>
-</tr>
-<tr>
-<td><code>Actor Component</code></td>
-<td>把能力或資料組合到 Actor 上</td>
-<td><code>Component</code>／<code>MonoBehaviour</code> 的組合概念最接近</td>
-</tr>
-</tbody></table>
-<h4 id="teacher-01-demo-6">必講重點</h4>
+<h3 id="teacher-01-demo-5">示範 2｜從按鍵走到 Input Action</h3>
+<h4 id="teacher-01-demo-6">主題</h4>
+<p>以 Variant_Combat 的連段攻擊為例，說明 Enhanced Input 如何把實體按鍵轉成 <code>IA_ComboAttack</code>，再由 <code>BP_CombatCharacter</code> 執行攻擊行為。</p>
+<h4 id="teacher-01-demo-7">目的</h4>
 <ul>
-<li><code>PlayerController</code> 與 <code>Character</code> 是兩個物件；「玩家」不等於角色 Blueprint。</li>
-<li>Pawn 必須被 Possess 才能由對應 Controller 控制。</li>
-<li>GameMode、GameState 與 PlayerState 的資料可見性及生命週期不同，不能全部塞進單一 Manager。</li>
-<li>Unity 對照的用途是幫助定位責任，不是照名稱直接移植程式碼。</li>
+<li>讓學生看懂 <code>按鍵 → IMC → IA → Character</code> 的最小輸入路徑。</li>
+<li>分清楚 <code>BP_CombatPlayerController</code>、<code>IMC_Combat</code>、<code>IA_ComboAttack</code> 與 <code>BP_CombatCharacter</code> 的責任。</li>
+<li>認識 Mapping 層與 Input Action 層的 Modifier、Trigger，以及 Character 監聽的 Trigger Event。</li>
+<li>說明多個實體按鍵可以共用同一個 Input Action，不需要複製攻擊程式。</li>
+<li>為課堂實作新增 <code>U → IA_ComboAttack</code> 的 Mapping 做準備。</li>
 </ul>
-<h4 id="teacher-01-demo-7">示範中常見狀況</h4>
-<ul>
-<li>World Settings 顯示的 GameMode 與 Project Settings 不同：說明關卡可用 GameMode Override 覆寫專案預設。</li>
-<li>PIE 找不到 PlayerController：可用 World Outliner 切到 PIE 世界，或以 Blueprint 類別關係說明，不把時間花在 Debug 工具設定。</li>
-</ul>
-<h3 id="teacher-01-demo-8">示範 2｜從按鍵走到 Input Action（20 分鐘內）</h3>
-<h4 id="teacher-01-demo-9">示範目標</h4>
-<p>讓學生看懂 <code>按鍵 → Input Mapping Context → Input Action → 角色行為</code> 的最小路徑，為課堂實作新增 U 鍵做準備。完整的 Enhanced Input 設計概念留到 Week 02。</p>
-<h4 id="teacher-01-demo-10">備課前置</h4>
-<ul>
-<li>開啟 <code>/Game/Variant_Combat/Input/IMC_Combat</code>。</li>
-<li>準備 <code>/Game/Variant_Combat/Input/Actions/IA_ComboAttack</code> 與 <code>BP_CombatCharacter</code>。</li>
-<li>確認原始設定中滑鼠左鍵會觸發 <code>IA_ComboAttack</code>。</li>
-</ul>
-<h4 id="teacher-01-demo-11">建議節奏與操作</h4>
+<h4 id="teacher-01-demo-8">過程概述</h4>
 <ol>
-<li><strong>0～4 分鐘：先操作。</strong> 在 PIE 以滑鼠左鍵觸發攻擊，請學生先記住輸入結果。</li>
-<li><strong>4～9 分鐘：打開 IMC。</strong> 找到滑鼠左鍵對應的 <code>IA_ComboAttack</code>，說明 IMC 管理「目前情境可用哪些映射」。</li>
-<li><strong>9～14 分鐘：打開 IA。</strong> 說明 Input Action 表示玩家意圖，按鍵只是其中一種來源；簡短指出 Value Type、Trigger 與 Modifier 的位置。</li>
-<li><strong>14～18 分鐘：回到 Character。</strong> 顯示 Character 接收 IA 事件後才執行攻擊，建立資產與行為的分工。</li>
-<li><strong>18～20 分鐘：串起流程。</strong> 用口頭或白板畫出 <code>Left Mouse Button → IMC_Combat → IA_ComboAttack → BP_CombatCharacter</code>。</li>
+<li>在 <code>Lvl_Combat</code> 執行 PIE，以滑鼠左鍵觸發連段攻擊，先讓學生看到輸入結果。</li>
+<li>查看 <code>BP_CombatPlayerController</code>，說明它會把 <code>IMC_Combat</code> 加入 Enhanced Input Local Player Subsystem，並 Possess <code>BP_CombatCharacter</code>。</li>
+<li>開啟 <code>IMC_Combat</code>，確認 <code>LeftMouseButton</code> 與 <code>Gamepad_RightShoulder</code> 都映射到 <code>IA_ComboAttack</code>。</li>
+<li>開啟 <code>IA_ComboAttack</code>，指出 Value Type 是 Boolean，Action Triggers 包含 <code>Pressed</code> 與 <code>Released</code>，Action Modifiers 為空；兩條 IMC Mapping 也沒有額外的 Modifier 或 Trigger。</li>
+<li>查看 <code>CombatCharacter.cpp</code> 的輸入綁定，說明程式以 <code>ETriggerEvent::Started</code> 呼叫 <code>ComboAttackPressed</code>。</li>
+<li>沿著 <code>ComboAttackPressed → DoComboAttackStart → ComboAttack → Montage_Play</code> 追到 <code>AM_ComboAttack</code>，說明 Character 負責執行遊戲行為。</li>
+<li>用 <code>按鍵 → IMC_Combat → IA_ComboAttack → BP_CombatCharacter</code> 收束流程，指出課堂實作只新增 U 鍵 Mapping，後面的攻擊程式不需修改。</li>
 </ol>
-<h4 id="teacher-01-demo-12">必講重點</h4>
-<ul>
-<li>同一個 Input Action 可以有多個按鍵映射，因此不必複製攻擊邏輯。</li>
-<li>IMC 管情境與映射，IA 表達意圖，Character 執行遊戲行為。</li>
-<li>Modifier 改寫輸入值，Trigger 判斷何時成立；本週只辨認位置，不展開組合設計。</li>
-<li>新增第二個按鍵時要保留原本映射，才能讓兩種輸入都觸發同一功能。</li>
-</ul>
-<h4 id="teacher-01-demo-13">示範中常見狀況</h4>
-<ul>
-<li>IA 名稱搜尋不到：先確認正在編輯的是 <code>IMC_Combat</code>，而不是 Project Settings 的舊式 Input 頁面。</li>
-<li>PIE 沒有反應：先點一下遊戲 Viewport 取得鍵盤與滑鼠焦點。</li>
-</ul>
 
       <a class="back-link" href="#top">回到頁首</a>
     </section>
 <section class="document-part" id="part-lab">
       <h2 class="part-title">TNDA Week 01 課堂實作｜教師版</h2>
-      <h3 id="teacher-01-lab-1">課堂實作 1｜讓 U 鍵也能攻擊（15 分鐘內）</h3>
+      <h3 id="teacher-01-lab-1">課堂實作 1｜讓 U 鍵也能攻擊</h3>
 <h4 id="teacher-01-lab-2">給學生看的題目</h4>
 <p>在不移除滑鼠左鍵的前提下，讓鍵盤 U 鍵也能觸發相同的連段攻擊。完成後分別使用滑鼠左鍵與 U 鍵測試，確認兩種輸入都會執行同一個功能。</p>
 <h4 id="teacher-01-lab-3">教學目的</h4>
@@ -694,7 +633,7 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>U 鍵無反應：確認新 Mapping 的 Key 是鍵盤 U，且 PIE Viewport 已取得焦點。</li>
 <li>滑鼠左鍵失效：檢查是否誤把原本 Mapping 改成 U，而不是新增一筆。</li>
 </ul>
-<h3 id="teacher-01-lab-10">課堂實作 2｜把移動速度調成兩倍（15 分鐘內）</h3>
+<h3 id="teacher-01-lab-10">課堂實作 2｜把移動速度調成兩倍</h3>
 <h4 id="teacher-01-lab-11">給學生看的題目</h4>
 <p>把 Combat 操控角色的移動速度調成目前的兩倍。完成後進入 PIE，比較修改前後從同一位置走到同一目標所需的時間。</p>
 <h4 id="teacher-01-lab-12">教學目的</h4>

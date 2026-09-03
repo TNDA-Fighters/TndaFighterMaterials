@@ -638,7 +638,7 @@ svg text, svg tspan { font-size: 16px !important; }
       <h2 class="part-title">TNDA Week 03 課堂實作｜教師版</h2>
       <h3 id="teacher-03-lab-1">教材發布前置檢查</h3>
 <p>兩組實作只操作 Week 03 教材專案內已存在的 Actor、屬性與 Debug 資料。發布版需先完成並驗證相對方向、自動面向、<code>FacingInterpolationSpeed</code>、ABP Debug 變數與可穿越 CPU 的換邊測試方式。目前工作區尚缺這些內容，未補齊前不可把下列題目直接交給學生操作。</p>
-<h3 id="teacher-03-lab-2">課堂實作 1｜交換 1P 與 CPU 的起始左右位置（15 分鐘內）</h3>
+<h3 id="teacher-03-lab-2">課堂實作 1｜交換 1P 與 CPU 的起始左右位置</h3>
 <h4 id="teacher-03-lab-3">給學生看的題目</h4>
 <p>只調整 <code>stage1</code> 內 <code>PlayerStart</code> 與 <code>CPU_Spawner</code> 的位置，讓 1P 開場時站在 CPU 的右側。進入 PIE，觀察雙方初始面向、A／D 的相對前進與後退，以及格鬥攝影機的構圖；完成紀錄後還原兩個 Actor 的 Transform。</p>
 <h4 id="teacher-03-lab-4">教學目的</h4>
@@ -683,7 +683,7 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>1P 站到右側卻背對 CPU：確認 Week 03 自動面向已執行，且 Opponent Reference 有效。</li>
 <li>4／6 沒有反轉：確認測試紀錄採用的是相對方向 Debug 值，不是直接把 A、D 當成 4、6。</li>
 </ul>
-<h3 id="teacher-03-lab-11">課堂實作 2｜比較平順轉身的插值速度（15 分鐘內）</h3>
+<h3 id="teacher-03-lab-11">課堂實作 2｜比較平順轉身的插值速度</h3>
 <h4 id="teacher-03-lab-12">給學生看的題目</h4>
 <p>使用教材專案既有的換邊測試方式，把 <code>FacingInterpolationSpeed</code> 分別調成一個低值與一個高值。讓 1P 穿過 CPU 完成換邊，並在 <code>ABP_Manny_Combat</code> 的 Debug Filter 觀察角色資料與 Pose。比較兩種設定的轉身速度，完成後恢復教材原始設定。</p>
 <h4 id="teacher-03-lab-13">教學目的</h4>

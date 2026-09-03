@@ -441,9 +441,8 @@ svg text, svg tspan { font-size: 16px !important; }
         <p class="quick-nav-title">本頁導覽</p>
         <a href="#student-03-1">本週目標</a>
         <a href="#student-03-2">課前準備</a>
-        <a href="#student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊（30 分鐘內）</a>
-        <a href="#student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP（30 分鐘內）</a>
-        <a href="#student-03-9">教材專案內要使用的文件</a>
+        <a href="#student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊</a>
+        <a href="#student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP</a>
         <a href="#student-03-10">官方參考資料</a>
         <a href="#student-03-11">上課前確認</a>
       </nav>
@@ -457,38 +456,27 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>確認 <code>/Game/Fighting/stage1</code> 能進入 PIE，1P 與 CPU 都會出現。</li>
 <li>操作前先用 GitHub Desktop 確認工作目錄狀態，避免覆蓋自己的其他修改。</li>
 </ul>
-<h2 id="student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊（30 分鐘內）</h2>
-<h3 id="student-03-4">給學生看的題目</h3>
+<h2 id="student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊</h2>
 <p>先記錄 1P 與 CPU 的根 Capsule 碰撞設定，以及兩者接觸時的畫面。只調整教材專案中既有的碰撞設定，嘗試讓 1P 能進入並穿過 CPU 的位置。留下修改前後的設定與 PIE 畫面，完成後恢復原始設定。</p>
-<h3 id="student-03-5">要帶來上課的紀錄</h3>
+<h3 id="student-03-5">預習成果紀錄</h3>
 <ul>
 <li>1P 與 CPU 根 Capsule 的原始碰撞設定。</li>
 <li>你修改的物件、設定名稱與修改值。</li>
 <li>修改前無法重疊，以及修改後可以穿過的對照畫面。</li>
 <li>一句話說明原本是哪個元件阻止兩名角色疊在一起。</li>
 </ul>
-<h2 id="student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP（30 分鐘內）</h2>
-<h3 id="student-03-7">給學生看的題目</h3>
+<h2 id="student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP</h2>
 <p>閱讀教材專案內的「換邊與自動面向」架構流程文件，把 <code>Opponent Reference</code>、戰鬥軸、4／6 相對方向、目標面向、旋轉插值與 ABP Pose 分到 Gameplay 與 Animation Blueprint 兩個責任區。畫一張雙泳道流程圖，標出資料從角色位置一路到畫面姿勢的方向。</p>
-<h3 id="student-03-8">要帶來上課的紀錄</h3>
+<h3 id="student-03-8">預習成果紀錄</h3>
 <ul>
 <li>一張 Gameplay／Animation Blueprint 雙泳道流程圖。</li>
 <li>每個指定概念所在的責任區與一句理由。</li>
 <li>一個你認為最不應該交給 ABP 決定的項目，以及理由。</li>
 </ul>
-<h2 id="student-03-9">教材專案內要使用的文件</h2>
-<ul>
-<li>教材專案 <code>docs/為何 1P 與 CPU 不會疊在一起呢.md</code>。</li>
-<li>教材專案 <code>docs/</code> 內的「換邊與自動面向」架構流程文件。</li>
-<li>教材專案 <code>docs/blueprints/ABP_Manny_Combat.md</code>。</li>
-</ul>
 <h2 id="student-03-10">官方參考資料</h2>
 <ul>
 <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview">Epic Games：Collision Overview</a>：說明 Block、Overlap、Ignore 之間的互動規則。</li>
 <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">Epic Games：Collision Response Reference</a>：整理 Collision Preset、Collision Enabled、Object Type 與 Collision Response 等設定。</li>
-<li><a href="https://dev.epicgames.com/documentation/unreal-engine/graphing-in-animation-blueprints-in-unreal-engine">Epic Games：Graphing in Animation Blueprints</a>：說明 EventGraph 與 AnimGraph 如何共同產生角色的最終 Pose。</li>
-<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/state-machines-in-unreal-engine">Epic Games：State Machines</a>：說明 Animation Blueprint 內的 State、Transition 與輸出 Pose。</li>
-<li><a href="https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Math/Interpolation/RInterpTo?lang=en-US">Epic Games：RInterp To</a>：說明如何依目前旋轉、目標旋轉、Delta Time 與 Interp Speed 計算平順旋轉。</li>
 </ul>
 <h2 id="student-03-11">上課前確認</h2>
 <ul>
