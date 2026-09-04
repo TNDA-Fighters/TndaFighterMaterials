@@ -570,45 +570,46 @@ svg text, svg tspan { font-size: 16px !important; }
 <h2 id="_18">課堂示範</h2>
 <h3 id="1-variant_combat-gameplay-framework">示範 1｜用 Variant_Combat 看懂 Gameplay Framework</h3>
 <h4 id="_19">主題</h4>
-<p>以 <code>Lvl_Combat.umap</code> 為入口，說明 Variant_Combat 的關卡、玩家與敵人如何分工。主要資產包含 <code>CombatGameMode</code>、<code>CombatPlayerController</code>、<code>CombatCharacter</code>、<code>CombatEnemySpawner</code>、<code>CombatEnemy</code> 與 <code>CombatAIController</code>。</p>
+<p>以 <code>Lvl_Combat.umap</code> 為入口，說明關卡、GameMode、PlayerController、CombatCharacter、CombatEnemySpawner 與 CombatEnemy 之間的關係。先比較 Unity 常見的 Scene 配置，再帶學生看懂玩家如何依 GameMode 設定建立，以及關卡中的 Spawner 如何生成 Enemy。</p>
 <h4 id="_20">目的</h4>
 <ul>
-<li>讓學生分清楚 C++ 類別、Blueprint 子類別與 PIE 執行期 Actor。</li>
-<li>說明玩家與敵人各有一組 Controller 和 Character，兩者透過 Possess 建立控制關係。</li>
-<li>說明 <code>CombatGameMode</code> 負責玩家端的預設類別，關卡中的 <code>CombatEnemySpawner</code> 另行負責敵人生成。</li>
-<li>建立 Unreal 與 Unity 的概念對照，同時提醒兩套引擎的類型與生命週期並非一對一。</li>
-<li>說明 Variant_Combat 沒有客製 GameState 與 PlayerState，因此本週先略過；執行時仍有引擎提供的預設物件。</li>
+<li>讓學生分清楚哪些物件預先放在 <code>Lvl_Combat</code> 裡，哪些物件要等 PIE 開始後才建立。</li>
+<li>說明 GameMode 提供玩家使用的 PlayerController 與 Character 類別，PlayerController 再控制建立好的 CombatCharacter。</li>
+<li>說明 <code>BP_CombatActivationVolume</code> 如何啟動第一個 CombatEnemySpawner，以及第一個 Spawner 耗盡後如何接著啟動另外兩個 Spawner。</li>
+<li>用 Unity 對照說明兩套引擎都會用 Component 組合功能；Unreal 另外提供已組好常用 Component、用途明確的 Actor 子類別。</li>
+<li>讓學生用最簡單的方式分清楚 <code>AActor</code>、<code>APawn</code> 與 <code>ACharacter</code>，並理解 <code>AController</code> 的 <code>Possess</code> 對象必須是 Pawn 或其子類別。</li>
+<li>提醒 Unity 與 Unreal 的概念對照只用來協助理解，兩套引擎的類型與生命週期並非一對一。</li>
 </ul>
 <h4 id="_21">過程概述</h4>
 <ol>
-<li>從 <code>Lvl_Combat.umap</code> 總覽玩家與敵人兩條執行路徑，並指出關卡內放置的 <code>BP_CombatEnemySpawner</code>。</li>
-<li>開啟幾個 <code>BP_</code> 資產，對照它們的 C++ 父類別，再說明 Blueprint 資產如何在關卡中成為實際 Actor。</li>
-<li>查看 <code>BP_CombatGameMode</code> 的 <code>PlayerControllerClass</code> 與 <code>DefaultPawnClass</code>，說明 PlayerController 如何 Possess 玩家 Character，以及角色被摧毀後的重生責任。</li>
-<li>比較玩家端與敵人端的 Possess 關係。<code>CombatCharacter</code> 和 <code>CombatEnemy</code> 都繼承 <code>ACharacter</code>，但彼此沒有繼承關係。</li>
-<li>沿著 <code>CombatEnemySpawner → CombatEnemy → CombatAIController → ST_CombatEnemy</code> 說明敵人的生成與 AI 啟動流程。</li>
-<li>查看 Enemy 死亡事件如何回到 Spawner。Spawner 依剩餘數量決定再次生成敵人，或在耗盡後啟用指定 Actor。</li>
-<li>回到總覽，請學生口頭說出玩家與敵人兩條路徑，並用 Unity 經驗說明各物件的近似責任。</li>
+<li>先用 Unity 常見的 Scene 配置對照 Variant_Combat，指出 Unity 可能直接放玩家 GameObject 與生怪 GameObject；這份 UE 教材則把玩家建立交給 GameMode，關卡內只預先放置 Spawner。</li>
+<li>開啟 <code>Lvl_Combat</code>，在 World Settings 指出 <code>BP_CombatGameMode</code>，再從 World Outliner 確認 4 個 PlayerStart 與 3 個 <code>BP_CombatEnemySpawner</code>。同時確認 CombatCharacter 與 CombatEnemy 都不是預先放好的固定角色。</li>
+<li>查看 <code>BP_CombatGameMode</code> 的 PlayerController 與 Character 類別設定。進入 PIE 後，確認 Unreal 依設定建立兩個不同物件，再由 PlayerController 控制 CombatCharacter；PlayerStart 只提供出生位置。</li>
+<li>沿著 <code>BP_CombatActivationVolume → BP_CombatEnemySpawner → CombatEnemy</code> 說明敵人生成。玩家進入指定區域後才啟動第一個 Spawner，第一個 Spawner 耗盡後再啟動另外兩個 Spawner。</li>
+<li>用 Camera 對照兩套引擎的 Component 組合：Unity 的 Camera 是 GameObject 掛上 Camera Component；UE 的 <code>ACameraActor</code> 內仍有 <code>UCameraComponent</code>，Actor 並沒有取代 Component。</li>
+<li>補充 <code>APointLight</code>、<code>AStaticMeshActor</code> 與 <code>AAmbientSound</code> 等例子，說明 UE 常提供已組好 Component、可以直接放進關卡的 Actor。需要把功能加入既有 Actor 時，仍可直接增加對應 Component。</li>
+<li>最後用 <code>AActor → APawn → ACharacter</code> 收束類別關係。說明一般 Actor 能被程式操作，但只有 Pawn 或其子類別能被 Controller <code>Possess</code>，再請學生用 CombatEnemySpawner、CombatCharacter 與 CombatEnemy 說明各自屬於哪一類。</li>
 </ol>
 <h3 id="2-input-action">示範 2｜從按鍵走到 Input Action</h3>
 <h4 id="_22">主題</h4>
-<p>以 Variant_Combat 的連段攻擊為例，說明 Enhanced Input 如何把實體按鍵轉成 <code>IA_ComboAttack</code>，再由 <code>BP_CombatCharacter</code> 執行攻擊行為。</p>
+<p>以 Variant_Combat 的連段攻擊為例，沿著 <code>PlayerController 啟用 IMC → IMC 配對按鍵與 IA → Character 綁定 IA 並執行行為</code>，說明 Enhanced Input 的責任分工與分層原因。</p>
 <h4 id="_23">目的</h4>
 <ul>
 <li>讓學生看懂 <code>按鍵 → IMC → IA → Character</code> 的最小輸入路徑。</li>
-<li>分清楚 <code>BP_CombatPlayerController</code>、<code>IMC_Combat</code>、<code>IA_ComboAttack</code> 與 <code>BP_CombatCharacter</code> 的責任。</li>
-<li>認識 Mapping 層與 Input Action 層的 Modifier、Trigger，以及 Character 監聽的 Trigger Event。</li>
+<li>用一句話分清楚四個責任：PlayerController 啟用 IMC、IMC 配按鍵、IA 代表動作、Character 執行動作。</li>
+<li>說清楚 <code>BP_CombatPlayerController</code> 只啟用整張 <code>IMC_Combat</code>，按鍵與 IA 的配對則設定在 IMC 資產內。</li>
 <li>說明多個實體按鍵可以共用同一個 Input Action，不需要複製攻擊程式。</li>
+<li>用換按鍵、換輸入情境與改攻擊內容三種變動，解釋 Enhanced Input 為何拆成不同責任。</li>
 <li>為課堂實作新增 <code>U → IA_ComboAttack</code> 的 Mapping 做準備。</li>
 </ul>
 <h4 id="_24">過程概述</h4>
 <ol>
 <li>在 <code>Lvl_Combat</code> 執行 PIE，以滑鼠左鍵觸發連段攻擊，先讓學生看到輸入結果。</li>
-<li>查看 <code>BP_CombatPlayerController</code>，說明它會把 <code>IMC_Combat</code> 加入 Enhanced Input Local Player Subsystem，並 Possess <code>BP_CombatCharacter</code>。</li>
-<li>開啟 <code>IMC_Combat</code>，確認 <code>LeftMouseButton</code> 與 <code>Gamepad_RightShoulder</code> 都映射到 <code>IA_ComboAttack</code>。</li>
-<li>開啟 <code>IA_ComboAttack</code>，指出 Value Type 是 Boolean，Action Triggers 包含 <code>Pressed</code> 與 <code>Released</code>，Action Modifiers 為空；兩條 IMC Mapping 也沒有額外的 Modifier 或 Trigger。</li>
-<li>查看 <code>CombatCharacter.cpp</code> 的輸入綁定，說明程式以 <code>ETriggerEvent::Started</code> 呼叫 <code>ComboAttackPressed</code>。</li>
-<li>沿著 <code>ComboAttackPressed → DoComboAttackStart → ComboAttack → Montage_Play</code> 追到 <code>AM_ComboAttack</code>，說明 Character 負責執行遊戲行為。</li>
-<li>用 <code>按鍵 → IMC_Combat → IA_ComboAttack → BP_CombatCharacter</code> 收束流程，指出課堂實作只新增 U 鍵 Mapping，後面的攻擊程式不需修改。</li>
+<li>查看 <code>BP_CombatPlayerController</code> 與 <code>IMC_Combat</code>，說明 PlayerController 只啟用整張輸入表；真正的 <code>LeftMouseButton／Gamepad_RightShoulder → IA_ComboAttack</code> 配對寫在 IMC 裡。</li>
+<li>開啟 <code>IA_ComboAttack</code>，說明 IA 代表「連段攻擊」這個玩家意圖，不綁死某一顆按鍵；Boolean、<code>Pressed</code>、<code>Released</code> 與 Modifier 本週只辨認位置。</li>
+<li>查看 <code>BP_CombatCharacter</code> 與 <code>CombatCharacter.cpp</code>，說明 Character 綁定 <code>IA_ComboAttack</code> 的 <code>Started</code>，再沿著 <code>ComboAttackPressed → DoComboAttackStart → ComboAttack → Montage_Play</code> 追到 <code>AM_ComboAttack</code>。</li>
+<li>用「換按鍵只改 IMC、換輸入情境由 PlayerController 管理、改攻擊內容才動 Character」解釋分層原因，並提醒這是本專案的責任切法。</li>
+<li>最後用四點收束：PlayerController 啟用 IMC、IMC 配按鍵、IA 代表動作、Character 執行動作，再銜接只需新增 U 鍵 Mapping 的課堂實作。</li>
 </ol>
 <h2 id="_25">課堂實作</h2>
 <h3 id="1-u">課堂實作 1｜讓 U 鍵也能攻擊</h3>
