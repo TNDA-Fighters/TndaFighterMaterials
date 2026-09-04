@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TNDA Week 03 課前預習｜相對方向與自動面向</title>
+  <title>TNDA Week 01 課前預習｜開發環境與 Third Person 專案</title>
   <style>
 :root {
   color-scheme: light;
@@ -430,8 +430,8 @@ svg text, svg tspan { font-size: 16px !important; }
   <a class="skip-link" href="#main-content">跳到主要內容</a>
   <header class="hero" id="top">
     <div class="hero-inner">
-      <p class="eyebrow">TNDA · WEEK 03 · 學生版課前預習</p>
-      <h1>TNDA Week 03 課前預習｜相對方向與自動面向</h1>
+      <p class="eyebrow">TNDA · WEEK 01 · 學生版課前預習</p>
+      <h1>TNDA Week 01 課前預習｜開發環境與 Third Person 專案</h1>
       <p class="hero-note">課前先完成環境確認與兩組實作，帶著紀錄進入課堂。</p>
     </div>
   </header>
@@ -439,56 +439,64 @@ svg text, svg tspan { font-size: 16px !important; }
     <aside class="sidebar">
       <nav class="quick-nav" aria-label="本頁導覽">
         <p class="quick-nav-title">本頁導覽</p>
-        <a href="#student-03-1">本週目標</a>
-        <a href="#student-03-2">課前準備</a>
-        <a href="#student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊</a>
-        <a href="#student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP</a>
-        <a href="#student-03-10">官方參考資料</a>
-        <a href="#student-03-11">上課前確認</a>
+        <a href="#student-01-1">本週目標</a>
+        <a href="#student-01-2">課前準備</a>
+        <a href="#student-01-3">課前實作 1｜比較四種 Third Person 玩法</a>
+        <a href="#student-01-6">課前實作 2｜讓專案從 Combat 關卡開始</a>
+        <a href="#student-01-9">官方參考資料</a>
+        <a href="#student-01-10">上課前確認</a>
       </nav>
     </aside>
   <main id="main-content">
-    <article class="paper"><h2 id="student-03-1">本週目標</h2>
-<p>從碰撞、相對方向與動畫表現三個角度讀懂教材專案，理解角色為什麼不會重疊，以及角色換邊後如何維持正確方向並平順轉身。</p>
-<h2 id="student-03-2">課前準備</h2>
+    <article class="paper"><h2 id="student-01-1">本週目標</h2>
+<p>先確認開發環境可以正常使用，再從同一份 Third Person 教材專案比較四種玩法起點，最後把 Combat 關卡設成專案的啟動內容。</p>
+<h2 id="student-01-2">課前準備</h2>
+<p>開始兩組實作前，先完成以下準備：</p>
 <ul>
-<li>使用本週提供的 <code>TndaFighter</code> 教材專案。</li>
-<li>確認 <code>/Game/Fighting/stage1</code> 能進入 PIE，1P 與 CPU 都會出現。</li>
-<li>操作前先用 GitHub Desktop 確認工作目錄狀態，避免覆蓋自己的其他修改。</li>
+<li>安裝 Unreal Engine 5.8。</li>
+<li>安裝 Visual Studio 2026，並備妥 Unreal C++ 開發所需元件。</li>
+<li>安裝 GitHub Desktop，確認能開啟教材版本庫並查看檔案變更。</li>
+<li>取得 <code>ThirdPersonTemplate</code> 教材專案，從 <code>ThirdPersonTemplate.uproject</code> 產生 <code>ThirdPersonTemplate.sln</code>。</li>
+<li>使用 Visual Studio 2026 開啟 <code>ThirdPersonTemplate.sln</code>，按下 F7（Build Solution）完成方案編譯，並確認沒有編譯錯誤。</li>
+<li>編譯完成後按下 F5（Start Debugging）啟動 Unreal Editor，確認專案可以開啟並正常進入 PIE。</li>
 </ul>
-<h2 id="student-03-3">課前實作 1｜讓 1P 與 CPU 可以重疊</h2>
-<p>先記錄 1P 與 CPU 的根 Capsule 碰撞設定，以及兩者接觸時的畫面。只調整教材專案中既有的碰撞設定，嘗試讓 1P 能進入並穿過 CPU 的位置。留下修改前後的設定與 PIE 畫面，完成後恢復原始設定。</p>
-<h3 id="student-03-5">預習成果紀錄</h3>
+<p>後續課堂會使用 Codex，示範 AI Agent 如何透過 MCP 操作 UE 資產。</p>
+<h2 id="student-01-3">課前實作 1｜比較四種 Third Person 玩法</h2>
+<p>使用 PIE 依序體驗 <code>Lvl_ThirdPerson</code>、<code>Lvl_Combat</code>、<code>Lvl_Platforming</code> 與 <code>Lvl_SideScrolling</code>。整理四種玩法在角色操作、鏡頭、關卡互動與遊戲目標上的差異，並為每個關卡留下一張能看出特色的執行畫面。</p>
+<h3 id="student-01-5">預習成果紀錄</h3>
 <ul>
-<li>1P 與 CPU 根 Capsule 的原始碰撞設定。</li>
-<li>你修改的物件、設定名稱與修改值。</li>
-<li>修改前無法重疊，以及修改後可以穿過的對照畫面。</li>
-<li>一句話說明原本是哪個元件阻止兩名角色疊在一起。</li>
+<li>一張四種玩法的比較表。</li>
+<li>四張 PIE 畫面，每個關卡各一張。</li>
+<li>一句話說明你會選哪一種玩法當作近戰遊戲的起點，以及理由。</li>
 </ul>
-<h2 id="student-03-6">課前實作 2｜把換邊流程分成 Gameplay 與 ABP</h2>
-<p>閱讀教材專案內的「換邊與自動面向」架構流程文件，把 <code>Opponent Reference</code>、戰鬥軸、4／6 相對方向、目標面向、旋轉插值與 ABP Pose 分到 Gameplay 與 Animation Blueprint 兩個責任區。畫一張雙泳道流程圖，標出資料從角色位置一路到畫面姿勢的方向。</p>
-<h3 id="student-03-8">預習成果紀錄</h3>
+<h2 id="student-01-6">課前實作 2｜讓專案從 Combat 關卡開始</h2>
+<p>把編輯器啟動時開啟的關卡，以及遊戲使用的預設關卡，都改成 <code>Lvl_Combat</code>。關閉並重新開啟專案，確認編輯器會直接進入 Combat 關卡，而且 PIE 可以正常操作角色。</p>
+<h3 id="student-01-8">預習成果紀錄</h3>
 <ul>
-<li>一張 Gameplay／Animation Blueprint 雙泳道流程圖。</li>
-<li>每個指定概念所在的責任區與一句理由。</li>
-<li>一個你認為最不應該交給 ABP 決定的項目，以及理由。</li>
+<li>一張顯示兩項預設關卡都已改成 <code>Lvl_Combat</code> 的設定畫面。</li>
+<li>一張重新開啟專案後的編輯器畫面。</li>
+<li>一張 Combat 關卡的 PIE 畫面。</li>
 </ul>
-<h2 id="student-03-10">官方參考資料</h2>
+<h2 id="student-01-9">官方參考資料</h2>
 <ul>
-<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview">Epic Games：Collision Overview</a>：說明 Block、Overlap、Ignore 之間的互動規則。</li>
-<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">Epic Games：Collision Response Reference</a>：整理 Collision Preset、Collision Enabled、Object Type 與 Collision Response 等設定。</li>
+<li><a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine?lang=en-US">Epic Games：Third Person Template</a>：介紹標準 Third Person 範本，以及 Combat、Platforming、Side Scroller 三種 Variant。</li>
+<li><a href="https://dev.epicgames.com/documentation/unreal-engine/changing-the-default-level-of-an-unreal-engine-project?lang=en-US">Epic Games：Changing the Default Level</a>：說明 <code>Game Default Map</code> 與 <code>Editor Startup Map</code> 的設定位置。</li>
+<li><a href="https://learn.microsoft.com/en-us/visualstudio/gamedev/unreal/get-started/vs-tools-unreal-install">Microsoft Learn：Install Visual Studio Tools for Unreal Engine</a>：列出 Unreal C++ 工作負載與 Visual Studio Tools for Unreal Engine 的安裝項目。</li>
+<li><a href="https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop">GitHub Docs：Getting started with GitHub Desktop</a>：說明安裝、登入、加入或複製版本庫，以及查看變更的基本流程。</li>
+<li><a href="https://openai.com/zh-Hant/index/introducing-the-codex-app/">OpenAI：介紹 Codex 應用程式</a>：介紹 Codex 桌面應用程式的多 Agent 協作、Skills 與自動化功能。</li>
 </ul>
-<h2 id="student-03-11">上課前確認</h2>
+<h2 id="student-01-10">上課前確認</h2>
 <ul>
-<li><input disabled="" type="checkbox"> 已記錄 1P 與 CPU 的原始碰撞設定。</li>
-<li><input disabled="" type="checkbox"> 已讓 1P 在 PIE 中進入並穿過 CPU 的位置。</li>
-<li><input disabled="" type="checkbox"> 測試後已恢復原始碰撞設定。</li>
-<li><input disabled="" type="checkbox"> 雙泳道流程圖已包含題目指定的六個概念。</li>
-<li><input disabled="" type="checkbox"> 能用自己的話區分 Gameplay 邏輯與 ABP Pose。</li>
+<li><input disabled="" type="checkbox"> Unreal Engine 5.8 能開啟 <code>ThirdPersonTemplate</code>。</li>
+<li><input disabled="" type="checkbox"> 已從 <code>ThirdPersonTemplate.uproject</code> 產生 <code>ThirdPersonTemplate.sln</code>。</li>
+<li><input disabled="" type="checkbox"> Visual Studio 2026 能開啟 <code>ThirdPersonTemplate.sln</code>，並以 F7 完成編譯。</li>
+<li><input disabled="" type="checkbox"> 能以 F5 啟動 Unreal Editor 並正常進入 PIE。</li>
+<li><input disabled="" type="checkbox"> 四個關卡都能進入 PIE。</li>
+<li><input disabled="" type="checkbox"> 重新開啟專案時會直接進入 <code>Lvl_Combat</code>。</li>
 </ul>
 </article>
   </main>
   </div>
-  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 03 · 學生版課前預習</footer>
+  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 01 · 學生版課前預習</footer>
 </body>
 </html>

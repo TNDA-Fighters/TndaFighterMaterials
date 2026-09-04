@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TNDA Week 01 教師版</title>
+  <title>TNDA Week 01 教案</title>
   <style>
 :root {
   color-scheme: light;
@@ -424,50 +424,69 @@ svg text, svg tspan { font-size: 16px !important; }
   .paper { border: 0; box-shadow: none; }
   a { color: inherit; }
 }
-</style>
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳到主要內容</a>
   <header class="hero" id="top">
     <div class="hero-inner">
-      <p class="eyebrow">TNDA · WEEK 01 · 教師版完整教案</p>
-      <h1>TNDA Week 01 教師版</h1>
-      <p class="hero-note">合併課前預習、課堂示範與課堂實作，供遠端教學備課與操作。</p>
+      <p class="eyebrow">TNDA · WEEK 01 · 助教教案</p>
+      <h1>TNDA Week 01 教案</h1>
+      <p class="hero-note">助教備課與帶課使用，包含課前預習、課堂示範與課堂實作。</p>
     </div>
   </header>
   <div class="page-layout">
     <aside class="sidebar">
-      <nav class="quick-nav" aria-label="本頁導覽">
-        <p class="quick-nav-title">本頁導覽</p>
-        <a href="#part-prep">課前預習</a>
-        <a href="#part-demo">課堂示範</a>
-        <a href="#part-lab">課堂實作</a>
+      <nav class="quick-nav" aria-label="教案導覽">
+        <p class="quick-nav-title">教案導覽</p>
+        <a class="nav-level-2" href="#_1">課前預習</a>
+        <a class="nav-level-3" href="#_2">使用方式</a>
+        <a class="nav-level-3" href="#_3">教材與環境前置條件</a>
+        <a class="nav-level-3" href="#1-third-person-30">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</a>
+        <a class="nav-level-3" href="#2-combat-30">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</a>
+        <a class="nav-level-2" href="#_18">課堂示範</a>
+        <a class="nav-level-3" href="#1-variant_combat-gameplay-framework">示範 1｜用 Variant_Combat 看懂 Gameplay Framework</a>
+        <a class="nav-level-3" href="#2-input-action">示範 2｜從按鍵走到 Input Action</a>
+        <a class="nav-level-2" href="#_25">課堂實作</a>
+        <a class="nav-level-3" href="#1-u">課堂實作 1｜讓 U 鍵也能攻擊</a>
+        <a class="nav-level-3" href="#2">課堂實作 2｜把移動速度調成兩倍</a>
       </nav>
     </aside>
-  <main id="main-content">
-    <article class="paper"><section class="document-part" id="part-prep">
-      <h2 class="part-title">TNDA Week 01 課前預習｜教師版</h2>
-      <h3 id="teacher-01-prep-1">使用方式</h3>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="_1">課前預習</h2>
+<h3 id="_2">使用方式</h3>
 <p>本文件用來檢查學生能否正常使用開發環境，以及是否已從操作結果辨認 Third Person 四種玩法。環境安裝屬於課前條件，不占用兩組各 30 分鐘的實作時間。</p>
-<h3 id="teacher-01-prep-2">教材與環境前置條件</h3>
+<h3 id="_3">教材與環境前置條件</h3>
 <ul>
 <li>Unreal Engine 5.8。</li>
 <li>Visual Studio 2026，已安裝 Unreal C++ 開發所需工作負載與元件。</li>
 <li>GitHub Desktop。</li>
-<li><code>ThirdPersonTemplate</code> 教材專案可編譯、可開啟，且包含以下關卡：<ul>
+<li>從 <code>ThirdPersonTemplate.uproject</code> 產生 <code>ThirdPersonTemplate.sln</code>。</li>
+<li>使用 Visual Studio 2026 開啟 <code>ThirdPersonTemplate.sln</code>，按下 F7（Build Solution）完成方案編譯，並確認沒有編譯錯誤。</li>
+<li>編譯完成後按下 F5（Start Debugging）啟動 Unreal Editor，確認專案可以開啟並正常進入 PIE。</li>
+<li><code>ThirdPersonTemplate</code> 教材專案包含以下關卡：</li>
 <li><code>/Game/ThirdPerson/Lvl_ThirdPerson</code></li>
 <li><code>/Game/Variant_Combat/Lvl_Combat</code></li>
 <li><code>/Game/Variant_Platforming/Lvl_Platforming</code></li>
 <li><code>/Game/Variant_SideScrolling/Lvl_SideScrolling</code></li>
 </ul>
-</li>
-</ul>
-<h3 id="teacher-01-prep-3">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</h3>
-<h4 id="teacher-01-prep-4">給學生看的題目</h4>
+<h3 id="1-third-person-30">課前實作 1｜比較四種 Third Person 玩法（30 分鐘內）</h3>
+<h4 id="_4">給學生看的題目</h4>
 <p>使用 PIE 依序體驗 <code>Lvl_ThirdPerson</code>、<code>Lvl_Combat</code>、<code>Lvl_Platforming</code> 與 <code>Lvl_SideScrolling</code>。整理四種玩法在角色操作、鏡頭、關卡互動與遊戲目標上的差異，並為每個關卡留下一張能看出特色的執行畫面。</p>
-<h4 id="teacher-01-prep-5">教學目的</h4>
+<h4 id="_5">教學目的</h4>
 <p>讓學生先從玩家體驗辨認範本差異，知道 Variant 是可拆解與改造的專案起點，不是四套彼此無關的引擎功能。</p>
-<h4 id="teacher-01-prep-6">完整操作</h4>
+<h4 id="_6">完整操作</h4>
 <ol>
 <li>開啟 <code>ThirdPersonTemplate</code>，確認目前沒有編譯錯誤。</li>
 <li>在 Content Browser 依序開啟四個關卡。</li>
@@ -475,7 +494,7 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>每個關卡擷取一張能辨認特色的畫面。</li>
 <li>整理比較表，最後選出較適合近戰遊戲原型的起點。</li>
 </ol>
-<h4 id="teacher-01-prep-7">參考答案與教學基準</h4>
+<h4 id="_7">參考答案與教學基準</h4>
 <table>
 <thead>
 <tr>
@@ -483,7 +502,8 @@ svg text, svg tspan { font-size: 16px !important; }
 <th>應辨認的核心差異</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>Lvl_ThirdPerson</code></td>
 <td>標準第三人稱移動、跳躍、自由視角與基礎關卡。</td>
 </tr>
@@ -499,28 +519,29 @@ svg text, svg tspan { font-size: 16px !important; }
 <td><code>Lvl_SideScrolling</code></td>
 <td>固定鏡頭、平面移動限制、拾取物與橫向平台互動。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>學生的文字不必和表格一致，但必須以實際操作觀察為依據。選擇近戰遊戲起點時，以 <code>Combat</code> 最直接；若學生選擇其他 Variant，只要能說明取捨，不直接判錯。</p>
-<h4 id="teacher-01-prep-8">完成判斷與證據</h4>
+<h4 id="_8">完成判斷與證據</h4>
 <ul>
 <li>四個關卡都各有一張 PIE 畫面。</li>
 <li>比較表至少涵蓋操作、鏡頭、互動與目標中的三項。</li>
 <li>選型理由能對應到所選 Variant 的實際特色。</li>
 </ul>
-<h4 id="teacher-01-prep-9">還原方式</h4>
+<h4 id="_9">還原方式</h4>
 <p>本題只切換並執行關卡，不應修改資產。若誤存關卡變更，使用 GitHub Desktop 檢查差異，只還原本題造成的檔案變更。</p>
-<h4 id="teacher-01-prep-10">常見問題</h4>
+<h4 id="_10">常見問題</h4>
 <ul>
 <li>找不到關卡：確認 Content Browser 沒有啟用只顯示特定資料夾或資產類型的篩選。</li>
 <li>PIE 出現錯誤地圖：先確認目前開啟的關卡名稱，再按 Play。</li>
 <li>操作方式不同：以各關卡內建提示與實際反應為準，不要求四個 Variant 使用完全相同的輸入。</li>
 </ul>
-<h3 id="teacher-01-prep-11">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</h3>
-<h4 id="teacher-01-prep-12">給學生看的題目</h4>
+<h3 id="2-combat-30">課前實作 2｜讓專案從 Combat 關卡開始（30 分鐘內）</h3>
+<h4 id="_11">給學生看的題目</h4>
 <p>把編輯器啟動時開啟的關卡，以及遊戲使用的預設關卡，都改成 <code>Lvl_Combat</code>。關閉並重新開啟專案，確認編輯器會直接進入 Combat 關卡，而且 PIE 可以正常操作角色。</p>
-<h4 id="teacher-01-prep-13">教學目的</h4>
+<h4 id="_12">教學目的</h4>
 <p>讓學生分清楚「目前開啟的關卡」與「專案預設關卡」，並熟悉會寫入專案設定的基本操作。</p>
-<h4 id="teacher-01-prep-14">完整操作</h4>
+<h4 id="_13">完整操作</h4>
 <ol>
 <li>開啟 <code>Edit &gt; Project Settings</code>。</li>
 <li>進入 <code>Project &gt; Maps &amp; Modes</code>。</li>
@@ -530,31 +551,27 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>關閉並重新開啟專案，確認目前關卡是 <code>Lvl_Combat</code>。</li>
 <li>啟動 PIE，確認角色能移動並使用 Combat 玩法。</li>
 </ol>
-<h4 id="teacher-01-prep-15">參考答案與教學基準</h4>
+<h4 id="_14">參考答案與教學基準</h4>
 <p>兩個欄位都應顯示 <code>Lvl_Combat</code>。重新開啟專案會驗證 <code>Editor Startup Map</code>；<code>Game Default Map</code> 則以設定頁或 <code>DefaultEngine.ini</code> 的值確認。單純在目前關卡按 Play，不足以單獨證明兩個欄位都已設定。</p>
-<h4 id="teacher-01-prep-16">完成判斷與證據</h4>
+<h4 id="_15">完成判斷與證據</h4>
 <ul>
 <li>設定畫面同時顯示兩個 <code>Lvl_Combat</code>。</li>
 <li>重新啟動後目前關卡為 <code>Lvl_Combat</code>。</li>
 <li>PIE 可正常控制 Combat 角色。</li>
 </ul>
-<h4 id="teacher-01-prep-17">還原方式</h4>
+<h4 id="_16">還原方式</h4>
 <p>課堂將沿用 Combat 關卡，因此學生可保留設定。若要回到教材原始狀態，將 <code>Editor Startup Map</code> 與 <code>Game Default Map</code> 都改回 <code>/Game/ThirdPerson/Lvl_ThirdPerson</code>。</p>
-<h4 id="teacher-01-prep-18">常見問題</h4>
+<h4 id="_17">常見問題</h4>
 <ul>
 <li>只改了一個欄位：重新檢查 Maps &amp; Modes 內的兩個 Map 欄位。</li>
 <li>重新開啟後仍是舊關卡：確認選到的是 <code>Lvl_Combat</code> 資產，而不是只在 Content Browser 選取它。</li>
 <li>GitHub Desktop 出現 <code>DefaultEngine.ini</code> 變更：這是本題預期結果；應確認差異只包含兩個 Map 設定。</li>
 </ul>
-
-      <a class="back-link" href="#top">回到頁首</a>
-    </section>
-<section class="document-part" id="part-demo">
-      <h2 class="part-title">TNDA Week 01 課堂示範｜教師版</h2>
-      <h3 id="teacher-01-demo-1">示範 1｜用 Variant_Combat 看懂 Gameplay Framework</h3>
-<h4 id="teacher-01-demo-2">主題</h4>
+<h2 id="_18">課堂示範</h2>
+<h3 id="1-variant_combat-gameplay-framework">示範 1｜用 Variant_Combat 看懂 Gameplay Framework</h3>
+<h4 id="_19">主題</h4>
 <p>以 <code>Lvl_Combat.umap</code> 為入口，說明 Variant_Combat 的關卡、玩家與敵人如何分工。主要資產包含 <code>CombatGameMode</code>、<code>CombatPlayerController</code>、<code>CombatCharacter</code>、<code>CombatEnemySpawner</code>、<code>CombatEnemy</code> 與 <code>CombatAIController</code>。</p>
-<h4 id="teacher-01-demo-3">目的</h4>
+<h4 id="_20">目的</h4>
 <ul>
 <li>讓學生分清楚 C++ 類別、Blueprint 子類別與 PIE 執行期 Actor。</li>
 <li>說明玩家與敵人各有一組 Controller 和 Character，兩者透過 Possess 建立控制關係。</li>
@@ -562,7 +579,7 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>建立 Unreal 與 Unity 的概念對照，同時提醒兩套引擎的類型與生命週期並非一對一。</li>
 <li>說明 Variant_Combat 沒有客製 GameState 與 PlayerState，因此本週先略過；執行時仍有引擎提供的預設物件。</li>
 </ul>
-<h4 id="teacher-01-demo-4">過程概述</h4>
+<h4 id="_21">過程概述</h4>
 <ol>
 <li>從 <code>Lvl_Combat.umap</code> 總覽玩家與敵人兩條執行路徑，並指出關卡內放置的 <code>BP_CombatEnemySpawner</code>。</li>
 <li>開啟幾個 <code>BP_</code> 資產，對照它們的 C++ 父類別，再說明 Blueprint 資產如何在關卡中成為實際 Actor。</li>
@@ -572,10 +589,10 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>查看 Enemy 死亡事件如何回到 Spawner。Spawner 依剩餘數量決定再次生成敵人，或在耗盡後啟用指定 Actor。</li>
 <li>回到總覽，請學生口頭說出玩家與敵人兩條路徑，並用 Unity 經驗說明各物件的近似責任。</li>
 </ol>
-<h3 id="teacher-01-demo-5">示範 2｜從按鍵走到 Input Action</h3>
-<h4 id="teacher-01-demo-6">主題</h4>
+<h3 id="2-input-action">示範 2｜從按鍵走到 Input Action</h3>
+<h4 id="_22">主題</h4>
 <p>以 Variant_Combat 的連段攻擊為例，說明 Enhanced Input 如何把實體按鍵轉成 <code>IA_ComboAttack</code>，再由 <code>BP_CombatCharacter</code> 執行攻擊行為。</p>
-<h4 id="teacher-01-demo-7">目的</h4>
+<h4 id="_23">目的</h4>
 <ul>
 <li>讓學生看懂 <code>按鍵 → IMC → IA → Character</code> 的最小輸入路徑。</li>
 <li>分清楚 <code>BP_CombatPlayerController</code>、<code>IMC_Combat</code>、<code>IA_ComboAttack</code> 與 <code>BP_CombatCharacter</code> 的責任。</li>
@@ -583,7 +600,7 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>說明多個實體按鍵可以共用同一個 Input Action，不需要複製攻擊程式。</li>
 <li>為課堂實作新增 <code>U → IA_ComboAttack</code> 的 Mapping 做準備。</li>
 </ul>
-<h4 id="teacher-01-demo-8">過程概述</h4>
+<h4 id="_24">過程概述</h4>
 <ol>
 <li>在 <code>Lvl_Combat</code> 執行 PIE，以滑鼠左鍵觸發連段攻擊，先讓學生看到輸入結果。</li>
 <li>查看 <code>BP_CombatPlayerController</code>，說明它會把 <code>IMC_Combat</code> 加入 Enhanced Input Local Player Subsystem，並 Possess <code>BP_CombatCharacter</code>。</li>
@@ -593,22 +610,18 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>沿著 <code>ComboAttackPressed → DoComboAttackStart → ComboAttack → Montage_Play</code> 追到 <code>AM_ComboAttack</code>，說明 Character 負責執行遊戲行為。</li>
 <li>用 <code>按鍵 → IMC_Combat → IA_ComboAttack → BP_CombatCharacter</code> 收束流程，指出課堂實作只新增 U 鍵 Mapping，後面的攻擊程式不需修改。</li>
 </ol>
-
-      <a class="back-link" href="#top">回到頁首</a>
-    </section>
-<section class="document-part" id="part-lab">
-      <h2 class="part-title">TNDA Week 01 課堂實作｜教師版</h2>
-      <h3 id="teacher-01-lab-1">課堂實作 1｜讓 U 鍵也能攻擊</h3>
-<h4 id="teacher-01-lab-2">給學生看的題目</h4>
+<h2 id="_25">課堂實作</h2>
+<h3 id="1-u">課堂實作 1｜讓 U 鍵也能攻擊</h3>
+<h4 id="_26">給學生看的題目</h4>
 <p>在不移除滑鼠左鍵的前提下，讓鍵盤 U 鍵也能觸發相同的連段攻擊。完成後分別使用滑鼠左鍵與 U 鍵測試，確認兩種輸入都會執行同一個功能。</p>
-<h4 id="teacher-01-lab-3">教學目的</h4>
+<h4 id="_27">教學目的</h4>
 <p>確認學生能修改既有 IMC 映射，並理解「增加輸入來源」不等於「複製一套攻擊邏輯」。</p>
-<h4 id="teacher-01-lab-4">教材專案前置條件</h4>
+<h4 id="_28">教材專案前置條件</h4>
 <ul>
 <li>使用 <code>ThirdPersonTemplate</code> 的 <code>Lvl_Combat</code>。</li>
 <li><code>/Game/Variant_Combat/Input/IMC_Combat</code> 已有 <code>Left Mouse Button → IA_ComboAttack</code>。</li>
 </ul>
-<h4 id="teacher-01-lab-5">參考操作</h4>
+<h4 id="_29">參考操作</h4>
 <ol>
 <li>開啟 <code>IMC_Combat</code>。</li>
 <li>找到 <code>IA_ComboAttack</code> 的既有滑鼠左鍵映射。</li>
@@ -617,33 +630,33 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>儲存 <code>IMC_Combat</code>，進入 PIE。</li>
 <li>分別按滑鼠左鍵與 U 鍵，確認兩者都觸發連段攻擊。</li>
 </ol>
-<h4 id="teacher-01-lab-6">參考答案與基準</h4>
+<h4 id="_30">參考答案與基準</h4>
 <p><code>IMC_Combat</code> 內應同時存在 <code>Left Mouse Button → IA_ComboAttack</code> 與 <code>U → IA_ComboAttack</code>。不需要在 Character 內新增第二套攻擊事件。</p>
-<h4 id="teacher-01-lab-7">完成判斷與證據</h4>
+<h4 id="_31">完成判斷與證據</h4>
 <ul>
 <li>IMC 畫面可同時看見兩筆映射。</li>
 <li>PIE 中兩個按鍵都能觸發攻擊。</li>
 <li>學生能指出兩個按鍵最後共用的是 <code>IA_ComboAttack</code>。</li>
 </ul>
-<h4 id="teacher-01-lab-8">還原方式</h4>
+<h4 id="_32">還原方式</h4>
 <p>若要回到教材原始狀態，刪除 U 鍵那一筆 Mapping，保留滑鼠左鍵映射後儲存。</p>
-<h4 id="teacher-01-lab-9">常見問題</h4>
+<h4 id="_33">常見問題</h4>
 <ul>
 <li>新增了另一個 IA：刪除多餘 IA，改在既有 <code>IA_ComboAttack</code> 下增加 Mapping。</li>
 <li>U 鍵無反應：確認新 Mapping 的 Key 是鍵盤 U，且 PIE Viewport 已取得焦點。</li>
 <li>滑鼠左鍵失效：檢查是否誤把原本 Mapping 改成 U，而不是新增一筆。</li>
 </ul>
-<h3 id="teacher-01-lab-10">課堂實作 2｜把移動速度調成兩倍</h3>
-<h4 id="teacher-01-lab-11">給學生看的題目</h4>
+<h3 id="2">課堂實作 2｜把移動速度調成兩倍</h3>
+<h4 id="_34">給學生看的題目</h4>
 <p>把 Combat 操控角色的移動速度調成目前的兩倍。完成後進入 PIE，比較修改前後從同一位置走到同一目標所需的時間。</p>
-<h4 id="teacher-01-lab-12">教學目的</h4>
+<h4 id="_35">教學目的</h4>
 <p>讓學生從 Character 的元件設定找到移動參數，並以可重複的遊戲內比較判斷修改是否生效。</p>
-<h4 id="teacher-01-lab-13">教材專案前置條件</h4>
+<h4 id="_36">教材專案前置條件</h4>
 <ul>
 <li><code>/Game/Variant_Combat/Blueprints/BP_CombatCharacter</code> 的 <code>Character Movement</code> 可正常使用。</li>
 <li>原始 <code>Max Walk Speed</code> 為 <code>400 cm/s</code>。</li>
 </ul>
-<h4 id="teacher-01-lab-14">參考操作</h4>
+<h4 id="_37">參考操作</h4>
 <ol>
 <li>開啟 <code>BP_CombatCharacter</code>。</li>
 <li>在 Components 選取 <code>Character Movement</code>。</li>
@@ -652,27 +665,26 @@ svg text, svg tspan { font-size: 16px !important; }
 <li>Compile、Save，進入 <code>Lvl_Combat</code> 的 PIE。</li>
 <li>從同一個起點朝同一個目標移動，比較修改前後的時間或錄影。</li>
 </ol>
-<h4 id="teacher-01-lab-15">參考答案與基準</h4>
+<h4 id="_38">參考答案與基準</h4>
 <p>目標值為 <code>800 cm/s</code>。這代表角色的最大步行速度設定為原本兩倍，不代表短距離實測時間一定精準減半；加速度、路線與計時誤差都會影響結果。</p>
-<h4 id="teacher-01-lab-16">完成判斷與證據</h4>
+<h4 id="_39">完成判斷與證據</h4>
 <ul>
 <li><code>BP_CombatCharacter</code> 的 <code>Max Walk Speed</code> 顯示為 <code>800</code>。</li>
 <li>Blueprint 編譯沒有錯誤。</li>
 <li>PIE 中角色明顯比原始設定移動得快，且比較使用同一起點與目標。</li>
 </ul>
-<h4 id="teacher-01-lab-17">還原方式</h4>
+<h4 id="_40">還原方式</h4>
 <p>將 <code>Max Walk Speed</code> 改回 <code>400</code>，Compile 並 Save。</p>
-<h4 id="teacher-01-lab-18">常見問題</h4>
+<h4 id="_41">常見問題</h4>
 <ul>
 <li>改到錯誤角色：確認資產是 <code>BP_CombatCharacter</code>，不是其他 Variant 的 Character。</li>
 <li>找不到欄位：先選取 <code>Character Movement</code> 元件，再搜尋完整欄位名稱。</li>
 <li>改完沒有差異：確認已 Compile，且 PIE 使用的是 <code>Lvl_Combat</code> 與正確 Character。</li>
 </ul>
-
-      <a class="back-link" href="#top">回到頁首</a>
-    </section></article>
-  </main>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
   </div>
-  <footer>TNDA UE 5.8 單機 3D 格鬥遊戲程式設計 · Week 01 · 教師版完整教案</footer>
+  <footer>TNDA · Week 01 · 助教教案</footer>
 </body>
 </html>
