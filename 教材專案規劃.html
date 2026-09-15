@@ -209,17 +209,17 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 <p><code>DataTable／CSV Reimport</code>、<code>FTableRowBase</code>、<code>Command Row Lookup</code>、<code>Input Mapping Context</code>、<code>資料驗證</code></p>
 <h2 id="week-07" tabindex="-1"><code>week-07</code>｜Hitbox、Hurtbox 與資料驅動傷害</h2>
 <h3>專案展示內容</h3>
-<p>建立獨立的 Damage CSV／DataTable、角色生命值，以及攻擊用 Hitbox 與受擊用 Hurtbox。Command Row 只保存 Damage Row 的參照；實際扣血值由 Damage DataTable 提供。</p>
+<p>建立獨立的 Damage CSV／DataTable、角色生命值，以及攻擊用 Hitbox 與受擊用 Hurtbox。Command Row 只保存 Damage Row 的參照、本招使用的 Hitbox 與允許命中的 Hurtbox 清單；實際扣血值由 Damage DataTable 提供。</p>
 <ul>
-<li>在 <code>AM_Attack_01</code> 加入 <code>Damage Notify State</code>，並以時間範圍標示可造成傷害的 Active 階段。</li>
+<li>在 <code>AM_Attack_01</code>、<code>AM_Attack_02</code>、<code>AM_Attack_03</code> 三份 Montage 都加入 <code>Damage Notify State</code>，並以時間範圍標示可造成傷害的 Active 階段。</li>
 <li><code>Damage Notify State</code> 開始時啟用 Hitbox，結束時停用；範圍外不會造成傷害。</li>
-<li>1P 的 Hitbox 接觸 CPU 的 Hurtbox 時判定命中，並依 Damage Row 扣除 CPU 生命值。</li>
-<li>本週先以單一 Hurtbox 驗證一次攻擊、一次碰撞與一次扣血流程；多 Hurtbox 的重複命中防護留到 <code>week-08</code>。</li>
+<li>攻擊者的 Hitbox 接觸對手的 Hurtbox 時判定命中，並依 Damage Row 扣除對手生命值；判定、扣血與生命值放在玩家與 CPU 共用的角色基底，機制對雙方對稱，本週只示範 1P 打 CPU。</li>
+<li>同一次揮擊即使 Hitbox 接觸同一角色的多個 Hurtbox，也只會扣一次血；攻擊結束或中斷時清除該次揮擊的命中集合。</li>
 <li>Damage Notify State 不保存第二份傷害值，只傳遞目前攻擊的命中時機。</li>
 <li>尚未建立正式 HUD 時，可由 Log 或開發用除錯資訊確認命中 Row、傷害值與剩餘生命值。</li>
 </ul>
 <h3>核心導入技術</h3>
-<p><code>Damage DataTable</code>、<code>Hitbox／Hurtbox</code>、<code>Anim Notify State</code>、<code>Overlap Collision</code>、<code>Health Component</code></p>
+<p><code>Damage DataTable</code>、<code>Hitbox／Hurtbox</code>、<code>Anim Notify State</code>、<code>Overlap Collision</code>、<code>Health Component</code>、<code>單次揮擊命中集合</code></p>
 <h2 id="week-08" tabindex="-1"><code>week-08</code>｜Frame Data 與 Command Link 執行模型</h2>
 <h3>專案展示內容</h3>
 <p>正式建立 Startup、Active、Recovery 的 Frame Data 執行模型，並用 Montage 時間軸上的 Notify 控制輸入預約、接招時機與 Recovery 起點。Frame 是設計及驗收單位；執行階段依 Montage 時間與事件運作，不以 Tick 累加整數幀。</p>
@@ -228,12 +228,11 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 <li><code>CommandLinkEnableNotify</code> 觸發時檢查 <code>CommandBuffer</code>；若指令有效且是合法後續招式，就消耗該指令並開始下一招。</li>
 <li><code>CommandLinkDisableNotify</code> 觸發後關閉接招機會，之後輸入不會回溯生效，角色進入 Recovery。</li>
 <li>Preorder 前的輸入不會被錯誤預約；Buffer 過期、攻擊結束、Montage 中斷、受擊、KO 或 Reset 時都會清除待處理指令。</li>
-<li>同一次揮擊即使碰到同一角色的多個 Hurtbox，也只會扣一次血。</li>
 <li>修改 Damage CSV 並 Reimport 後，下一次命中會使用新數值，不需重建 Hitbox 或 Notify。</li>
 <li>本週完成可供連段使用的 Link 與 Buffer 基礎；正式連段內容在 <code>week-11</code> 加入。</li>
 </ul>
 <h3>核心導入技術</h3>
-<p><code>Frame Data</code>、<code>CommandBuffer</code>、<code>Command Link Notify</code>、<code>單次揮擊命中集合</code>、<code>中斷與結束清理</code></p>
+<p><code>Frame Data</code>、<code>CommandBuffer</code>、<code>Command Link Notify</code>、<code>中斷與結束清理</code></p>
 <h2 id="week-09" tabindex="-1"><code>week-09</code>｜CPU AI 接近與選招</h2>
 <h3>專案展示內容</h3>
 <p>建立 CPU 的基本決策流程。CPU 根據與 1P 的距離決定接近或攻擊，並呼叫玩家共用的選招與攻擊入口，不模擬鍵盤輸入。</p>
