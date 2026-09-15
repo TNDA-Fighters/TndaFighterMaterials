@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 03 課前預習｜相對方向與自動面向</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+
+.flow-diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.flow-diagram svg { height: auto; margin-inline: auto; }
+
+
+
+
+
+  
+
+#week03-flow-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week03-flow-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week03-flow-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week03-flow-1 .error-icon{fill:#552222;}#week03-flow-1 .error-text{fill:#552222;stroke:#552222;}#week03-flow-1 .edge-thickness-normal{stroke-width:1px;}#week03-flow-1 .edge-thickness-thick{stroke-width:3.5px;}#week03-flow-1 .edge-pattern-solid{stroke-dasharray:0;}#week03-flow-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#week03-flow-1 .edge-pattern-dashed{stroke-dasharray:3;}#week03-flow-1 .edge-pattern-dotted{stroke-dasharray:2;}#week03-flow-1 .marker{fill:#333333;stroke:#333333;}#week03-flow-1 .marker.cross{stroke:#333333;}#week03-flow-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#week03-flow-1 p{margin:0;}#week03-flow-1 .label{font-family:Microsoft JhengHei;color:#333;}#week03-flow-1 .cluster-label text{fill:#333;}#week03-flow-1 .cluster-label span{color:#333;}#week03-flow-1 .cluster-label span p{background-color:transparent;}#week03-flow-1 .label text,#week03-flow-1 span{fill:#333;color:#333;}#week03-flow-1 .node rect,#week03-flow-1 .node circle,#week03-flow-1 .node ellipse,#week03-flow-1 .node polygon,#week03-flow-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week03-flow-1 .rough-node .label text,#week03-flow-1 .node .label text,#week03-flow-1 .image-shape .label,#week03-flow-1 .icon-shape .label{text-anchor:middle;}#week03-flow-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week03-flow-1 .rough-node .label,#week03-flow-1 .node .label,#week03-flow-1 .image-shape .label,#week03-flow-1 .icon-shape .label{text-align:center;}#week03-flow-1 .node.clickable{cursor:pointer;}#week03-flow-1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week03-flow-1 .arrowheadPath{fill:#333333;}#week03-flow-1 .edgePath .path{stroke:#333333;stroke-width:2.0px;}#week03-flow-1 .flowchart-link{stroke:#333333;fill:none;}#week03-flow-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week03-flow-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week03-flow-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week03-flow-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week03-flow-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week03-flow-1 .cluster text{fill:#333;}#week03-flow-1 .cluster span{color:#333;}#week03-flow-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week03-flow-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week03-flow-1 rect.text{fill:none;stroke-width:0;}#week03-flow-1 .icon-shape,#week03-flow-1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week03-flow-1 .icon-shape p,#week03-flow-1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week03-flow-1 .icon-shape rect,#week03-flow-1 .image-shape rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week03-flow-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week03-flow-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week03-flow-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week03-flow-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week03-flow-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week03-flow-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week03-flow-2 .error-icon{fill:#552222;}#week03-flow-2 .error-text{fill:#552222;stroke:#552222;}#week03-flow-2 .edge-thickness-normal{stroke-width:1px;}#week03-flow-2 .edge-thickness-thick{stroke-width:3.5px;}#week03-flow-2 .edge-pattern-solid{stroke-dasharray:0;}#week03-flow-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#week03-flow-2 .edge-pattern-dashed{stroke-dasharray:3;}#week03-flow-2 .edge-pattern-dotted{stroke-dasharray:2;}#week03-flow-2 .marker{fill:#333333;stroke:#333333;}#week03-flow-2 .marker.cross{stroke:#333333;}#week03-flow-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#week03-flow-2 p{margin:0;}#week03-flow-2 .label{font-family:Microsoft JhengHei;color:#333;}#week03-flow-2 .cluster-label text{fill:#333;}#week03-flow-2 .cluster-label span{color:#333;}#week03-flow-2 .cluster-label span p{background-color:transparent;}#week03-flow-2 .label text,#week03-flow-2 span{fill:#333;color:#333;}#week03-flow-2 .node rect,#week03-flow-2 .node circle,#week03-flow-2 .node ellipse,#week03-flow-2 .node polygon,#week03-flow-2 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week03-flow-2 .rough-node .label text,#week03-flow-2 .node .label text,#week03-flow-2 .image-shape .label,#week03-flow-2 .icon-shape .label{text-anchor:middle;}#week03-flow-2 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week03-flow-2 .rough-node .label,#week03-flow-2 .node .label,#week03-flow-2 .image-shape .label,#week03-flow-2 .icon-shape .label{text-align:center;}#week03-flow-2 .node.clickable{cursor:pointer;}#week03-flow-2 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week03-flow-2 .arrowheadPath{fill:#333333;}#week03-flow-2 .edgePath .path{stroke:#333333;stroke-width:2.0px;}#week03-flow-2 .flowchart-link{stroke:#333333;fill:none;}#week03-flow-2 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week03-flow-2 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week03-flow-2 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week03-flow-2 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week03-flow-2 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week03-flow-2 .cluster text{fill:#333;}#week03-flow-2 .cluster span{color:#333;}#week03-flow-2 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week03-flow-2 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week03-flow-2 rect.text{fill:none;stroke-width:0;}#week03-flow-2 .icon-shape,#week03-flow-2 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week03-flow-2 .icon-shape p,#week03-flow-2 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week03-flow-2 .icon-shape rect,#week03-flow-2 .image-shape rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week03-flow-2 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week03-flow-2 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week03-flow-2 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 03 · 學生版課前預習</p>
+      <h1>TNDA Week 03 課前預習｜相對方向與自動面向</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+        <p class="quick-nav-title">本頁導覽</p>
+        <a class="nav-level-2" href="#student-03-1">本週目標</a>
+        <a class="nav-level-2" href="#student-03-2">課前準備</a>
+        <a class="nav-level-2" href="#student-03-3">課前預習</a>
+        <a class="nav-level-3" href="#student-03-4">課前預習 1｜A／D、4／6 與相對方向通知</a>
+        <a class="nav-level-3" href="#student-03-5">課前預習 2｜從共同角色 Tick 找到自動面向的可調參數</a>
+        <a class="nav-level-2" href="#student-03-6">課前實作練習</a>
+        <a class="nav-level-3" href="#student-03-7">課前實作練習 1｜做出 1P 從右側開場的場景</a>
+        <a class="nav-level-3" href="#student-03-8">課前實作練習 2｜讓 CPU 立即轉向，1P 保持平順轉身</a>
+        <a class="nav-level-2" href="#student-03-9">官方參考資料</a>
+        <a class="nav-level-2" href="#student-03-10">上課前確認</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="student-03-1">本週目標</h2>
+<ul>
+<li>能從角色站位與移動輸入，解釋前進 6、後退 4 的判定，以及方向改變時的通知流程。</li>
+<li>能調整既有角色設定，做出立即轉向、平順轉身與慢速轉身的差異，分清方向判定和角色旋轉各自負責的事。</li>
+</ul>
+<h2 id="student-03-2">課前準備</h2>
+<ul>
+<li>使用本週提供的 <code>TndaFighter</code> 教材專案，版本為 <code>week-03</code>。</li>
+<li>完成專案編譯，確認 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code> 能進入 PIE（Play In Editor，在編輯器內執行遊戲），1P 與 CPU 都會出現。</li>
+<li>本週沿用 A／D 移動、Player Start 出生點，以及 Blueprint 的 Class Defaults。以下原始碼路徑都從 <code>TndaFighter</code> 專案根目錄算起；<code>/<wbr>Game/<wbr></code> 對應 Content Browser 裡的 <code>Content/<wbr></code>。</li>
+</ul>
+<h2 id="student-03-3">課前預習</h2>
+<h3 id="student-03-4">課前預習 1｜A／D、4／6 與相對方向通知</h3>
+<p><strong>先分清按鍵和方向代號</strong></p>
+<p>在本週的格鬥視角中，A 讓角色朝螢幕左方移動，D 朝螢幕右方移動。角色換邊後，這組按鍵方向仍然相同。</p>
+<p>4、6 是相對於對手的方向代號：4 表示後退，也就是遠離對手；6 表示前進，也就是靠近對手。因此，同一個按鍵會隨站位得到不同的方向代號。</p>
+<table>
+<thead>
+<tr>
+<th>1P 在螢幕上的位置</th>
+<th>A：朝螢幕左方</th>
+<th>D：朝螢幕右方</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1P 在 CPU 左側</td>
+<td>遠離對手，4</td>
+<td>靠近對手，6</td>
+</tr>
+<tr>
+<td>1P 在 CPU 右側</td>
+<td>靠近對手，6</td>
+<td>遠離對手，4</td>
+</tr>
+</tbody></table>
+<p>程式以列舉 <code>ERelativeDirection</code> 表示三種結果：<code>Backward4</code>、<code>Forward6</code>、<code>Neutral</code>（中立）。4／6 描述的是輸入意圖；即使角色被擋住，朝向對手的輸入仍可判為 6。放開移動鍵後，目前方向會回到 <code>Neutral</code>。</p>
+<p><strong>原始碼從哪裡讀</strong></p>
+<table>
+<thead>
+<tr>
+<th>檔案</th>
+<th>閱讀位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.cpp</code></td>
+<td>從 <code>AFightingPlayerCharacter::<wbr>DoMove()</code> 讀到 <code>SetCurrentRelativeDirection()</code>，補看 <code>Move()</code>、<code>StopMove()</code> 與 <code>SetupPlayerInputComponent()</code>。</td>
+</tr>
+<tr>
+<td><code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.h</code></td>
+<td><code>CurrentRelativeDirection</code>、<code>OnRelativeDirectionChanged</code> 與通知型別 <code>FOnRelativeDirectionChanged</code> 的宣告。</td>
+</tr>
+<tr>
+<td><code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code></td>
+<td><code>AFightingCharacter::<wbr>TryGetOpponentDirection()</code>、<code>ClassifyRelativeDirection()</code>。</td>
+</tr>
+<tr>
+<td><code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.h</code></td>
+<td><code>ERelativeDirection</code> 的三種值。</td>
+</tr>
+</tbody></table>
+<p><code>.h</code> 宣告類別有哪些資料與功能，<code>.cpp</code> 則寫出功能的實作。這次先沿著呼叫位置讀懂資料交給誰，內積的計算方式留到課堂示範。</p>
+<p><strong>從移動輸入到方向通知</strong></p>
+<p>以下路徑已依本週原始碼核對。追蹤從玩家的 <code>DoMove()</code> 開始，到方向通知送出為止。</p>
+<ol>
+<li><code>FightingPlayerCharacter.cpp</code> 的 <code>DoMove(Right, Forward)</code> 使用攝影機的水平旋轉，將左右、前後兩個輸入軸合成世界移動方向 <code>MovementIntent</code>。這是本次想往哪裡走。</li>
+<li>同一個函式呼叫共同父類的 <code>TryGetOpponentDirection()</code>。它在 <code>FightingCharacter.cpp</code> 讀出 <code>LastValidOpponentDirection</code>，代表由自己指向對手的有效水平方向；資料如何更新，接著在預習 2 追蹤。</li>
+<li><code>FightingCharacter.cpp</code> 的 <code>ClassifyRelativeDirection()</code> 比較這兩個方向，回傳 <code>ERelativeDirection</code>。取得不到有效對手方向時，<code>DoMove()</code> 直接使用 <code>Neutral</code>。</li>
+<li>回到 <code>FightingPlayerCharacter.cpp</code> 的 <code>SetCurrentRelativeDirection()</code>：新值與目前值不同時，先更新 <code>CurrentRelativeDirection</code>，再呼叫 <code>OnRelativeDirectionChanged.Broadcast(CurrentRelativeDirection)</code>，將新值通知已綁定的接收者。值相同就結束這次呼叫。</li>
+</ol>
+<figure class="flow-diagram">
+<svg id="week03-flow-1" width="100%" xmlns="http://www.w3.org/2000/svg" class="flowchart" style="max-width: 578px;" viewBox="0 0 578 802" role="img" aria-roledescription="flowchart-v2" aria-labelledby="week03-flow-1-title"><title id="week03-flow-1-title">從移動輸入到方向通知</title><g><marker id="week03-flow-1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="week03-flow-1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="week03-flow-1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M128,83L128,110L188.568,135.45" id="L_M_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_C_0" data-points="W3sieCI6MTI4LCJ5Ijo4M30seyJ4IjoxMjgsInkiOjExMH0seyJ4IjoxOTIuMjU1ODEzOTUzNDg4MzcsInkiOjEzN31d" marker-end="url(#week03-flow-1_flowchart-v2-pointEnd)"></path><path d="M435,83L435,110L374.432,135.45" id="L_O_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_O_C_0" data-points="W3sieCI6NDM1LCJ5Ijo4M30seyJ4Ijo0MzUsInkiOjExMH0seyJ4IjozNzAuNzQ0MTg2MDQ2NTExNjMsInkiOjEzN31d" marker-end="url(#week03-flow-1_flowchart-v2-pointEnd)"></path><path d="M281.5,212L281.5,239L281.5,262" id="L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6MjgxLjUsInkiOjIxMn0seyJ4IjoyODEuNSwieSI6MjM5fSx7IngiOjI4MS41LCJ5IjoyNjZ9XQ==" marker-end="url(#week03-flow-1_flowchart-v2-pointEnd)"></path><path d="M281.5,491L281.5,540.5L281.5,586" id="L_D_S_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_S_0" data-points="W3sieCI6MjgxLjUsInkiOjQ5MX0seyJ4IjoyODEuNSwieSI6NTQwLjV9LHsieCI6MjgxLjUsInkiOjU5MH1d" marker-end="url(#week03-flow-1_flowchart-v2-pointEnd)"></path><path d="M281.5,665L281.5,692L281.5,715" id="L_S_N_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_S_N_0" data-points="W3sieCI6MjgxLjUsInkiOjY2NX0seyJ4IjoyODEuNSwieSI6NjkyfSx7IngiOjI4MS41LCJ5Ijo3MTl9XQ==" marker-end="url(#week03-flow-1_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_M_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_O_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(281.5, 540.5)"><g class="label" data-id="L_D_S_0" transform="translate(-15, -22.5)"><foreignObject width="30" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>有</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_S_N_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="flowchart-M-0" transform="translate(128, 45.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"></rect><g class="label" style="" transform="translate(-90, -22.5)"><rect></rect><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>本次移動方向</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-C-1" transform="translate(281.5, 174.5)"><rect class="basic label-container" style="" x="-141.140625" y="-37.5" width="282.28125" height="75"></rect><g class="label" style="" transform="translate(-111.140625, -22.5)"><rect></rect><foreignObject width="222.28125" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>判定 4／6／中立</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-O-2" transform="translate(435, 45.5)"><rect class="basic label-container" style="" x="-135" y="-37.5" width="270" height="75"></rect><g class="label" style="" transform="translate(-105, -22.5)"><rect></rect><foreignObject width="210" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>指向對手的方向</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-D-5" transform="translate(281.5, 378.5)"><polygon points="112.5,0 225,-112.5 112.5,-225 0,-112.5" class="label-container" transform="translate(-112, 112.5)"></polygon><g class="label" style="" transform="translate(-75, -22.5)"><rect></rect><foreignObject width="150" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>值有改變？</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-S-7" transform="translate(281.5, 627.5)"><rect class="basic label-container" style="" x="-90" y="-37.5" width="180" height="75"></rect><g class="label" style="" transform="translate(-60, -22.5)"><rect></rect><foreignObject width="120" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>保存新值</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-N-9" transform="translate(281.5, 756.5)"><rect class="basic label-container" style="" x="-105" y="-37.5" width="210" height="75"></rect><g class="label" style="" transform="translate(-75, -22.5)"><rect></rect><foreignObject width="150" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>廣播新方向</p></span></div></foreignObject></g></g></g></g></g></svg>
+<span hidden aria-hidden="true">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart TD
+    M[&quot;本次移動方向&quot;] --&gt; C[&quot;判定 4／6／中立&quot;]
+    O[&quot;指向對手的方向&quot;] --&gt; C
+    C --&gt; D{&quot;值有改變？&quot;}
+    D --&gt;|有| S[&quot;保存新值&quot;]
+    S --&gt; N[&quot;廣播新方向&quot;]</span>
+</figure>
+<p><code>OnRelativeDirectionChanged</code> 是多播委派（Multicast Delegate）：其他物件可以綁定處理函式，<code>Broadcast()</code> 會通知這些接收者。本週保存的是目前方向，沒有歷史輸入佇列。</p>
+<p>按住移動鍵時，<code>SetupPlayerInputComponent()</code> 綁定的 <code>Triggered</code> 會持續呼叫 <code>Move()</code>，再進入 <code>DoMove()</code>。所以角色穿過對手後，即使沒有放開同一個鍵，也可能產生新的 4／6。放開或取消輸入時，則由 <code>StopMove()</code> 將目前值設回中立。</p>
+<p><strong>用教材的 Debug 顯示對照結果</strong></p>
+<p>在 PIE 遊戲畫面按 <code>~</code> 開啟 Console，輸入 <code>tnda.Debug.ShowCombatDebug on</code> 後按 Enter，再收起 Console，就能用 A／D 對照目前方向。畫面文字會把 <code>Forward6</code> 顯示為 <code>Forward 6</code>，把 <code>Backward4</code> 顯示為 <code>Backward 4</code>。</p>
+<table>
+<thead>
+<tr>
+<th>畫面標記</th>
+<th>代表的資料</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>玩家上方小球</td>
+<td>綠色為 6、紅色為 4、灰色為中立。</td>
+</tr>
+<tr>
+<td>綠色箭頭</td>
+<td>玩家指向對手的最後有效方向。</td>
+</tr>
+<tr>
+<td>藍色箭頭</td>
+<td>目標面向 <code>DesiredFacingYaw</code>；目前轉到哪裡要看角色本身。</td>
+</tr>
+<tr>
+<td>黃線、青色球、洋紅色箭頭</td>
+<td>分別表示雙方連線、戰鬥中點、攝影機的螢幕 X 軸。</td>
+</tr>
+</tbody></table>
+<p>繪製程式位於 <code>FightingPlayerCharacter.cpp</code> 的 <code>DrawCombatDebug()</code>，顯示的是角色已有的資料。</p>
+<h3 id="student-03-5">課前預習 2｜從共同角色 Tick 找到自動面向的可調參數</h3>
+<p><strong>兩個角色共用哪些程式</strong></p>
+<p><code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.h</code> 與 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCpuCharacter.h</code> 的類別宣告，都繼承 <code>AFightingCharacter</code>。1P 和 CPU 因此共用對手方向與自動面向的實作，各自保有自己的設定值。</p>
+<p>這次從 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>AFightingCharacter::<wbr>Tick()</code> 開始，對照同目錄 <code>FightingCharacter.h</code> 的欄位宣告。<code>Tick()</code> 是引擎每幀呼叫的更新入口；兩個角色自己的 <code>Tick()</code> 都透過 <code>Super::<wbr>Tick(DeltaSeconds)</code> 執行父類邏輯。</p>
+<p><strong>每幀如何轉向對手</strong></p>
+<p>以下是已核對的 C++ 呼叫與資料流。主要路徑是一般地面狀態下，已有有效對手方向時的更新。</p>
+<ol>
+<li><code>FightingCharacter.cpp</code> 的 <code>Tick()</code> 依序呼叫 <code>RefreshOpponentDirection()</code> 與 <code>UpdateFacing(DeltaSeconds)</code>。<code>DeltaSeconds</code> 是這次更新經過的秒數。</li>
+<li><code>RefreshOpponentDirection()</code> 將雙方位置交給 <code>UpdateHorizontalOpponentDirection()</code>，更新 <code>LastValidOpponentDirection</code>。後者只保留水平分量並將向量長度變成 1，讓這份資料只描述方向。</li>
+<li>有效方向透過 <code>LastValidOpponentDirection.Rotation().Yaw</code> 轉成目標角度 <code>DesiredFacingYaw</code>。Yaw 表示角色在水平面上朝向哪裡。</li>
+<li><code>UpdateFacing()</code> 讀取目前的 <code>GetActorRotation()</code>，以 <code>DesiredFacingYaw</code> 組出目標旋轉。它依 <code>bShouldSnap</code> 選擇立即套用，或交給 <code>FMath::<wbr>RInterpTo()</code> 逐幀追向，最後由 <code>SetActorRotation()</code> 寫回角色旋轉。</li>
+</ol>
+<figure class="flow-diagram">
+<svg id="week03-flow-2" width="100%" xmlns="http://www.w3.org/2000/svg" class="flowchart" style="max-width: 548px;" viewBox="0 0 548 607" role="img" aria-roledescription="flowchart-v2" aria-labelledby="week03-flow-2-title"><title id="week03-flow-2-title">每幀如何轉向對手</title><g><marker id="week03-flow-2_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-2_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-2_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="week03-flow-2_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="week03-flow-2_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="week03-flow-2_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M128,83L128,110L128,133" id="L_P_V_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_P_V_0" data-points="W3sieCI6MTI4LCJ5Ijo4M30seyJ4IjoxMjgsInkiOjExMH0seyJ4IjoxMjgsInkiOjEzN31d" marker-end="url(#week03-flow-2_flowchart-v2-pointEnd)"></path><path d="M128,212L128,239L128,262" id="L_V_T_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_V_T_0" data-points="W3sieCI6MTI4LCJ5IjoyMTJ9LHsieCI6MTI4LCJ5IjoyMzl9LHsieCI6MTI4LCJ5IjoyNjZ9XQ==" marker-end="url(#week03-flow-2_flowchart-v2-pointEnd)"></path><path d="M128,341L128,368L185.457,393.384" id="L_T_I_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_T_I_0" data-points="W3sieCI6MTI4LCJ5IjozNDF9LHsieCI6MTI4LCJ5IjozNjh9LHsieCI6MTg5LjExNjI3OTA2OTc2NzQ0LCJ5IjozOTV9XQ==" marker-end="url(#week03-flow-2_flowchart-v2-pointEnd)"></path><path d="M420,341L420,368L362.543,393.384" id="L_C_I_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_I_0" data-points="W3sieCI6NDIwLCJ5IjozNDF9LHsieCI6NDIwLCJ5IjozNjh9LHsieCI6MzU4Ljg4MzcyMDkzMDIzMjYsInkiOjM5NX1d" marker-end="url(#week03-flow-2_flowchart-v2-pointEnd)"></path><path d="M274,470L274,497L274,520" id="L_I_R_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_R_0" data-points="W3sieCI6Mjc0LCJ5Ijo0NzB9LHsieCI6Mjc0LCJ5Ijo0OTd9LHsieCI6Mjc0LCJ5Ijo1MjR9XQ==" marker-end="url(#week03-flow-2_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_P_V_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_V_T_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_T_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_R_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="flowchart-P-0" transform="translate(128, 45.5)"><rect class="basic label-container" style="" x="-90" y="-37.5" width="180" height="75"></rect><g class="label" style="" transform="translate(-60, -22.5)"><rect></rect><foreignObject width="120" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>雙方位置</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-V-1" transform="translate(128, 174.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"></rect><g class="label" style="" transform="translate(-90, -22.5)"><rect></rect><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>水平對手方向</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-T-3" transform="translate(128, 303.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"></rect><g class="label" style="" transform="translate(-90, -22.5)"><rect></rect><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>目標面向角度</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-I-5" transform="translate(274, 432.5)"><rect class="basic label-container" style="" x="-150" y="-37.5" width="300" height="75"></rect><g class="label" style="" transform="translate(-120, -22.5)"><rect></rect><foreignObject width="240" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>依速度做旋轉插值</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-C-6" transform="translate(420, 303.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"></rect><g class="label" style="" transform="translate(-90, -22.5)"><rect></rect><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>目前角色角度</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-R-9" transform="translate(274, 561.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"></rect><g class="label" style="" transform="translate(-90, -22.5)"><rect></rect><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 360px; text-align: center;"><span class="nodeLabel"><p>寫回角色角度</p></span></div></foreignObject></g></g></g></g></g></svg>
+<span hidden aria-hidden="true">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart TD
+    P[&quot;雙方位置&quot;] --&gt; V[&quot;水平對手方向&quot;]
+    V --&gt; T[&quot;目標面向角度&quot;]
+    T --&gt; I[&quot;依速度做旋轉插值&quot;]
+    C[&quot;目前角色角度&quot;] --&gt; I
+    I --&gt; R[&quot;寫回角色角度&quot;]</span>
+</figure>
+<p>這張圖畫的是平順轉身的分支。首次有效面向會直接對正；雙方水平距離不大於 10 公分時，方向資料沿用最後有效值。還沒有有效方向時保留原旋轉。<code>IsInNormalGroundState()</code> 也會檢查角色是否在地面、是否正在播放 Montage 或使用 Root Motion；不符合時暫停寫入角色旋轉。</p>
+<p><strong>從 C++ 宣告找到編輯器欄位</strong></p>
+<p><code>FightingCharacter.h</code> 中有這段宣告：</p>
+<pre><code class="language-cpp">UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = &quot;Fighting Character|Facing&quot;, meta = (ClampMin = &quot;0.0&quot;))
+float FacingInterpolationSpeed = 10.0f;
+</code></pre>
+<ul>
+<li><code>FacingInterpolationSpeed</code> 控制追向目標角度的速度。C++ 原生預設值為 <code>10</code>，Blueprint 可以覆寫；正值越小，追向越慢。特殊值如何處理，可以對照 <code>UpdateFacing()</code> 裡的 <code>bShouldSnap</code> 條件。</li>
+<li><code>EditAnywhere</code> 讓屬性能在預設值與執行個體的 Details 編輯。<code>BlueprintReadOnly</code> 則限制 Blueprint 圖表對此值的寫入，兩者管的是不同的操作。</li>
+<li><code>Category</code> 指定欄位放在 <code>Fighting Character &gt; Facing</code>；編輯器顯示名稱為 <code>Facing Interpolation Speed</code>。</li>
+</ul>
+<p>對應的角色 Blueprint 是 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingPlayerCharacter</code> 與 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingCpuCharacter</code>。Class Defaults 決定之後生成角色的起始設定；PIE 執行個體則是這次遊戲裡已生成的那一名角色。</p>
+<p>比較面向時，分開看三件事：<code>DesiredFacingYaw</code> 是想朝向哪裡，Actor Rotation 是目前轉到哪裡，<code>FacingInterpolationSpeed</code> 是追向速度。前兩者在轉身期間可以不同。</p>
+<p><strong>換邊測試工具</strong></p>
+<p>教材已有 <code>tnda.Debug.FighterOverlap on</code> 指令，可在 PIE Console 開啟，讓 1P 與 CPU 暫時能互相穿越。這樣就能用 A／D 做出地面換邊，測試雙方轉向的差異。</p>
+<h2 id="student-03-6">課前實作練習</h2>
+<h3 id="student-03-7">課前實作練習 1｜做出 1P 從右側開場的場景</h3>
+<p>調整 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code> 的 <code>PlayerStart</code> 與 <code>CpuStart</code> 出生位置，做出一個按下 Play 後，1P 就站在 CPU 螢幕右側的場景。沿用既有的出生點、角色與輸入設定。</p>
+<p>完成的場景要能展示：A 向左靠近 CPU，方向為 <code>Forward6</code>；D 向右遠離 CPU，方向為 <code>Backward4</code>。</p>
+<p>修改前先預測 A／D 的結果，完成後用 Debug 核對，記下出生位置與實際判定。依預習 1 的程式路徑，說明為什麼只改站位，就會改變同一個按鍵的 4／6 語意。</p>
+<h3 id="student-03-8">課前實作練習 2｜讓 CPU 立即轉向，1P 保持平順轉身</h3>
+<p>調整兩個角色 Blueprint 的既有面向設定，讓一般地面移動換邊後，CPU 立即面向 1P，而 1P 仍平順轉向 CPU。完成成果是一組能在 Play 中重現這個差異的角色設定。</p>
+<p>先依 <code>FacingInterpolationSpeed</code> 的宣告與 <code>UpdateFacing()</code> 選擇數值，預測雙方的轉身表現，再用換邊測試驗證。記下兩個角色使用的值與結果，並指出這個欄位宣告在哪個共同父類、哪個檔案。</p>
+<h2 id="student-03-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/multicast-delegates-in-unreal-engine">Epic Games：Multicast Delegates</a>：對照方向通知使用的多播委派與 <code>Broadcast()</code>。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-uproperties">Epic Games：Properties</a>：閱讀 Property Specifiers，分清 <code>EditAnywhere</code>、<code>BlueprintReadOnly</code> 與 <code>Category</code>。</li>
+<li><a href="https://dev.epicgames.com/documentation/unreal-engine/blueprint-editor-defaults-tab">Epic Games：Blueprint Editor Defaults Tab</a>：認識 Class Defaults 的用途。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Core/FMath/RInterpTo">Epic Games：FMath::RInterpTo</a>：對照目前旋轉、目標旋轉、更新時間與插值速度四個參數。</li>
+</ul>
+<h2 id="student-03-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> <code>week-03</code> 專案可編譯，<code>stage1</code> 可進入 PIE 並操作 1P。</li>
+<li><input disabled="" type="checkbox"> 能說明 A／D 與 4／6 的差別，並在程式裡找到方向通知與自動面向的路徑。</li>
+<li><input disabled="" type="checkbox"> 已做出右側開場，留有出生位置與 A／D 判定的紀錄，並將出生設定還原供課堂使用。</li>
+<li><input disabled="" type="checkbox"> 已做出 CPU 立即轉向、1P 平順轉身的差異，留有參數與結果紀錄，並還原角色預設值。</li>
+</ul>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+  <footer>TNDA · Week 03 · 學生版課前預習</footer>
+</body>
+</html>

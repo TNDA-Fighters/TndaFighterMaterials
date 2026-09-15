@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 03 教案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 03 · 助教教案</p>
+      <h1>TNDA Week 03 教案</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="教案導覽">
+        <p class="quick-nav-title">教案導覽</p>
+        <a class="nav-level-2" href="#teacher-03-1">課前實作練習</a>
+        <a class="nav-level-3" href="#teacher-03-2">課前實作練習 1｜做出 1P 從右側開場的場景</a>
+        <a class="nav-level-3" href="#teacher-03-4">課前實作練習 2｜讓 CPU 立即轉向，1P 保持平順轉身</a>
+        <a class="nav-level-2" href="#teacher-03-6">課堂示範</a>
+        <a class="nav-level-3" href="#teacher-03-7">課堂示範 1｜用向量內積判定前進 6 與後退 4</a>
+        <a class="nav-level-3" href="#teacher-03-9">課堂示範 2｜把對手方向轉成平順的角色面向</a>
+        <a class="nav-level-2" href="#teacher-03-11">課堂實作</a>
+        <a class="nav-level-3" href="#teacher-03-12">課堂實作 1｜把換邊後的轉身速度調慢</a>
+        <a class="nav-level-3" href="#teacher-03-15">課堂實作 2｜讓 CPU 開場就主動靠近 1P</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<p>本教案對應 <code>TndaFighter</code> 的 <code>week-03</code>（<code>f16e6510</code>）。原始碼、欄位宣告與資產路徑已核對；以下畫面描述是驗收預期，尚未補做本次 Editor／PIE 排練。Blueprint 的實際覆寫值需在備課時讀取並記錄。</p>
+<h2 id="teacher-03-1">課前實作練習</h2>
+<h3 id="teacher-03-2">課前實作練習 1｜做出 1P 從右側開場的場景</h3>
+<h4 id="teacher-03-3">細步驟解答</h4>
+<ol>
+<li>在 Content Browser 開啟 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code>。工具列 Play 的模式選擇 Selected Viewport，以便從遊戲畫面與編輯器交互核對。</li>
+<li>在 World Outliner 選取 <code>PlayerStart</code>，於 Details 的 <code>Player Start &gt; Player Start Tag</code> 確認值為 <code>PlayerStart</code>，記下 <code>Transform &gt; Location</code> 的 X、Y、Z。再對 <code>CpuStart</code> 做同樣檢查，其 <code>Player Start Tag</code> 應為 <code>CpuStart</code>。這兩個物件都是 Player Start Actor，程式用這個欄位辨識用途。</li>
+<li>在 Details 將兩個出生點的 Location 交換：<code>PlayerStart</code> 填入剛才記錄的 CPU 出生座標，<code>CpuStart</code> 填入原本玩家的出生座標。保留各自的 <code>Player Start Tag</code>，儲存關卡。沿用教材原始的左右站位時，交換後就是 1P 右、CPU 左。</li>
+<li>按 Play，確認能操作的 1P 出現在 CPU 的螢幕右側。在遊戲畫面按 <code>~</code> 開啟 Console，輸入 <code>tnda.Debug.ShowCombatDebug on</code>、按 Enter，再收起 Console。</li>
+<li>短按 A，讓 1P 向左靠近 CPU；按住期間應顯示 <code>Forward 6</code>，玩家上方小球為綠色。短按 D 則向右遠離，顯示 <code>Backward 4</code>、小球為紅色。鬆鍵後回到 <code>Neutral</code>。驗收時保留兩人間距，避免移動太久到達場地邊界。</li>
+<li>核對學生記錄的出生座標與方向判定。解答應指出：<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.cpp</code> 的 <code>AFightingPlayerCharacter::<wbr>DoMove()</code> 仍將 A／D 換算成畫面左右的世界移動方向；共同父類在 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>ClassifyRelativeDirection()</code> 比較移動方向與對手方向。交換站位使對手方向反轉，因此同一個鍵的 4／6 也交換。<code>SetCurrentRelativeDirection()</code> 只在分類值改變時保存並廣播。</li>
+<li>若站位沒有改變，回到關卡核對是否改到兩個出生點的 Location，以及兩個 <code>Player Start Tag</code> 是否仍各有一個。只改 World Outliner 顯示名稱不會交換出生用途。</li>
+<li>成果核對後停止 PIE，將兩個出生點的 Location 還原成步驟 2 記錄的值，再儲存關卡。</li>
+</ol>
+<h3 id="teacher-03-4">課前實作練習 2｜讓 CPU 立即轉向，1P 保持平順轉身</h3>
+<h4 id="teacher-03-5">細步驟解答</h4>
+<ol>
+<li>在 Content Browser 開啟 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingCpuCharacter</code>，點選工具列的 Class Defaults。在 Details 搜尋 <code>Facing Interpolation Speed</code>，記錄目前值；欄位分類是 <code>Fighting Character &gt; Facing</code>。再開啟 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingPlayerCharacter</code>，記錄同一欄位的值。</li>
+<li>對照 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.h</code>：<code>FacingInterpolationSpeed</code> 宣告在共同父類 <code>AFightingCharacter</code>，原生預設為 <code>10.0f</code>。<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.h</code> 與 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCpuCharacter.h</code> 都宣告繼承這個父類，所以兩個角色可分別設定同一個欄位。</li>
+<li>在 CPU 的 Class Defaults 將 <code>Facing Interpolation Speed</code> 設為 <code>0</code>；在 1P 的 Class Defaults 設為 <code>10</code>，各按 Enter 套用。分別 Compile 並 Save。這組答案以原生預設 <code>10</code> 作為 1P 平順轉身的比較值。</li>
+<li>回到 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code> 按 Play。CPU 應維持待機；若它自行移動，先檢查 CPU Class Defaults 的 <code>CPU Test Movement &gt; Test Movement Mode</code>，本題使用教材的 <code>關閉測試流程</code>。</li>
+<li>在遊戲 Console 輸入 <code>tnda.Debug.FighterOverlap on</code>。收起 Console，讓 1P 沿 A／D 方向穿過 CPU，移動到另一側再放開。雙方保持在一般地面狀態。</li>
+<li>換邊時，CPU 應直接轉到新的對手方向，1P 則有平順轉身的過程。驗收看角色本身的轉向；首次開場兩者都會直接對正，不能只用開場畫面判斷參數是否有效。</li>
+<li>對照 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>UpdateFacing()</code>：<code>bShouldSnap</code> 在首次面向或 <code>FacingInterpolationSpeed &lt;= 0.0f</code> 時成立，直接使用目標旋轉；其他情況呼叫 <code>FMath::<wbr>RInterpTo()</code>。因此 <code>0</code> 的效果是立即套用目標角度。雙方共用這段邏輯，各自讀取自己的速度值。</li>
+<li>若在同一次 PIE 繼續使用正常碰撞，等兩個角色分開後輸入 <code>tnda.Debug.FighterOverlap off</code>；膠囊仍相交時，指令會拒絕恢復。成果核對後停止 PIE，將兩個 Blueprint 的面向速度還原成步驟 1 記錄的值，Compile 並 Save。停止 PIE 也會清除當次 Overlap 暫存設定。</li>
+</ol>
+<h2 id="teacher-03-6">課堂示範</h2>
+<h3 id="teacher-03-7">課堂示範 1｜用向量內積判定前進 6 與後退 4</h3>
+<h4 id="teacher-03-8">示範重點</h4>
+<ul>
+<li><strong>示範目標</strong>：讓學生用兩個方向的關係，解釋換邊前後 A／D 為何得到不同的 4／6。程式重點是 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.cpp</code> 的 <code>DoMove()</code>，以及 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>ClassifyRelativeDirection()</code>。</li>
+<li><strong>兩個輸入向量</strong>：一個是玩家本次想走的世界方向，一個是由玩家指向 CPU 的方向。程式先移除 Z 並正規化，讓內積主要反映方向關係。兩個單位向量同向時內積為 <code>1</code>、反向為 <code>-1</code>、垂直為 <code>0</code>。</li>
+<li><strong>分類門檻</strong>：<code>FVector::<wbr>DotProduct()</code> 的結果嚴格大於 <code>0.1</code> 時為 <code>Forward6</code>，嚴格小於 <code>-0.1</code> 時為 <code>Backward4</code>，介於兩者之間、包含端點，皆為 <code>Neutral</code>。任一方向是零向量時也回傳中立。</li>
+<li><strong>畫面對照</strong>：以綠色對手方向箭頭、玩家上方的方向小球與 Debug 文字，說明同一個 D 輸入在穿越 CPU 前後會由 6 變成 4。純 W／S 在正常格鬥構圖中與對手方向垂直，因此是中立；斜向輸入仍依內積判定。</li>
+<li><strong>容易混淆的地方</strong>：判定使用輸入意圖，受阻時仍可能是 6；方向通知只在值改變時發出，持續按鍵與持續廣播是兩件事。<code>DrawCombatDebug()</code> 顯示目前值，不能把它當成通知次數或歷史輸入紀錄。</li>
+</ul>
+<h3 id="teacher-03-9">課堂示範 2｜把對手方向轉成平順的角色面向</h3>
+<h4 id="teacher-03-10">示範重點</h4>
+<ul>
+<li><strong>示範目標</strong>：分清「由對手方向求目標角度」與「讓目前角度逐幀追上目標」。程式集中在 <code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>RefreshOpponentDirection()</code>、<code>UpdateHorizontalOpponentDirection()</code> 與 <code>UpdateFacing()</code>。</li>
+<li><strong>朝向目標（Look At Rotation）</strong>：雙方位置先形成水平對手方向，再以 <code>LastValidOpponentDirection.Rotation().Yaw</code> 求出 <code>DesiredFacingYaw</code>。這就是本專案實作朝向目標旋轉的方式。</li>
+<li><strong>旋轉插值（Rotation Interpolation）</strong>：<code>FMath::<wbr>RInterpTo()</code> 讀取目前旋轉、目標旋轉、<code>DeltaSeconds</code> 與 <code>FacingInterpolationSpeed</code>，結果交給 <code>SetActorRotation()</code>。速度控制追向的快慢；角色實際面向可在一段過程中落後目標面向。</li>
+<li><strong>參數與比較基準</strong>：原生預設 <code>10</code> 提供平順追向；改成較小的正值會轉得較慢；<code>0</code> 走立即套用的分支。首次有效面向直接對正，轉身差異應以開場後的換邊來比較。藍色 Debug 箭頭只表示目標角度，不能單憑箭頭判斷插值快慢。</li>
+<li><strong>近距離保留方向</strong>：雙方水平距離不大於 10 公分時沿用最後有效方向，避免接近同一位置時方向反覆跳動。若從未取得有效方向，就保留目前旋轉。這個距離規則與追向速度分別控制不同的事情。</li>
+<li><strong>本週的適用狀態</strong>：<code>IsInNormalGroundState()</code> 限定一般地面待機或移動；離地、播放 Montage 或使用 Root Motion 時暫停寫入 Actor Rotation。方向分類與自動面向共用對手方向，分類不需要等角色完成轉身。</li>
+</ul>
+<h2 id="teacher-03-11">課堂實作</h2>
+<h3 id="teacher-03-12">課堂實作 1｜把換邊後的轉身速度調慢</h3>
+<h4 id="teacher-03-13">題目</h4>
+<p>將 PIE 中 1P 執行個體的 <code>Facing Interpolation Speed</code> 改為 <code>1</code>，做出換邊後明顯較慢的轉身。比較原值與新值的表現，完成成果要能展示 1P 逐漸轉向另一側的 CPU。</p>
+<p>在轉身尚未完成時，搭配 Debug 檢查同一個移動輸入的 4／6，說明方向判定是否也跟著延後，以及程式依據。</p>
+<h4 id="teacher-03-14">參考答案</h4>
+<ol>
+<li>以 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code> 進入 PIE，在 Console 分別執行 <code>tnda.Debug.ShowCombatDebug on</code> 與 <code>tnda.Debug.FighterOverlap on</code>。讓 1P 穿過 CPU 一次，先看原值的轉身表現。</li>
+<li>放開移動鍵，按 <code>Shift+F1</code> 釋放滑鼠。在 World Outliner 選取本次遊戲生成的 <code>BP_FightingPlayerCharacter</code> 執行個體，在 Details 搜尋 <code>Facing Interpolation Speed</code>，記下目前值。原生預設為 <code>10</code>，實際值以這個執行個體為準。</li>
+<li>將這名 1P 的欄位改為 <code>1</code>，按 Enter 套用。回到遊戲畫面點一下，沿相反方向穿過 CPU，再比較角色轉身。這次修改直接作用於目前的 1P。</li>
+<li>驗收應看到 1P 換邊後仍有明顯追向過程。CPU、目標方向箭頭與 1P 身體可以先後朝向不同方向；其中藍色箭頭代表 1P 的目標，身體才顯示實際轉到哪裡。</li>
+<li>持續按住同一個移動鍵穿越 CPU，離開雙方中心距離不大於 10 公分的方向保留區間後，4／6 會依新的對手方向更新，無須等待 1P 轉完身。以 1P 從左向右穿越為例，同一個 D 輸入會由 <code>Forward6</code> 變成 <code>Backward4</code>；放開輸入後是 <code>Neutral</code>。</li>
+<li>程式依據：<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingPlayerCharacter.cpp</code> 的 <code>DoMove()</code> 將 <code>MovementIntent</code> 與 <code>TryGetOpponentDirection()</code> 的結果交給分類；<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCharacter.cpp</code> 的 <code>ClassifyRelativeDirection()</code> 沒有讀取角色目前旋轉或 <code>FacingInterpolationSpeed</code>。速度只在 <code>UpdateFacing()</code> 寫入旋轉時使用。</li>
+<li>若轉身沒有變慢，先確認 Details 選到的是正在遊戲中的 1P Actor，且欄位確實為 <code>1</code>，並以開場後的地面換邊比較。成果核對後停止 PIE，執行個體的速度與兩個 Console 開關會隨這次遊戲結束而清除。</li>
+</ol>
+<h3 id="teacher-03-15">課堂實作 2｜讓 CPU 開場就主動靠近 1P</h3>
+<h4 id="teacher-03-16">題目</h4>
+<p>修改 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingCpuCharacter</code> 的 Class Defaults，利用既有的 <code>Test Movement Mode</code>，做出每次 Play 都會緩慢朝 1P 靠近的 CPU。</p>
+<p>完成成果是儲存了這項設定的 CPU Blueprint：開場時即使 1P 沒有輸入，CPU 也會主動靠近；1P 換到另一側後，CPU 會改向新的 1P 位置移動。結束再 Play 一次，應能重現相同行為。</p>
+<h4 id="teacher-03-17">參考答案</h4>
+<ol>
+<li>在 Content Browser 開啟 <code>/<wbr>Game/<wbr>Fighting/<wbr>Blueprints/<wbr>BP_FightingCpuCharacter</code>，點 Class Defaults，在 Details 搜尋 <code>Test Movement Mode</code>。欄位位於 <code>CPU Test Movement</code>，先記錄原值；原生預設為 <code>關閉測試流程</code>。</li>
+<li>將下拉選單改成 <code>往 1P 方向靠近（慢）</code>，對應 <code>EFightingCpuTestMovementMode::<wbr>ApproachPlayerSlow</code>。按 Compile，確認沒有編譯錯誤後 Save。</li>
+<li>開啟 <code>/<wbr>Game/<wbr>Fighting/<wbr>stage1</code> 並 Play，先不輸入移動。CPU 應主動靠近 1P；這次使用的是剛才儲存的 Blueprint 預設值。</li>
+<li>在遊戲 Console 輸入 <code>tnda.Debug.FighterOverlap on</code>，讓 1P 用 A／D 穿過 CPU 到另一側。CPU 應改變靠近方向，繼續朝 1P 的新位置移動。</li>
+<li>停止 PIE，再 Play 一次。CPU 應再次從開場就主動靠近，這才表示成果保存在 Class Defaults，而不只改到上一次遊戲的執行個體。</li>
+<li>程式依據：<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCpuCharacter.h</code> 宣告 <code>TestMovementMode</code>；<code>Source/<wbr>TndaFighter/<wbr>Fighting/<wbr>FightingCpuCharacter.cpp</code> 的 <code>AFightingCpuCharacter::<wbr>Tick()</code> 呼叫 <code>UpdateTestMovement()</code>。這個函式每幀透過 <code>TryGetOpponentDirection()</code> 取得由 CPU 指向 1P 的方向，慢速模式以 <code>0.25</code> 的輸入比例呼叫 <code>AddMovementInput()</code>。方向跟著目前對手位置更新，所以 1P 換邊後 CPU 也會改向。</li>
+<li>驗收看「會主動靠近、換邊後改向、再次 Play 仍有效」。既有模式提供持續的移動輸入，靠近後可能接觸並推動待機的 1P；題目不以自動保持距離或攻擊行為作為完成條件。若 CPU 不動，先核對 Class Defaults 的選項、Compile／Save 結果，以及執行的是 <code>stage1</code>。</li>
+<li>驗收與成果紀錄完成後停止 PIE，將 CPU Blueprint 的 <code>Test Movement Mode</code> 還原為步驟 1 記錄的值，再 Compile 並 Save，供後續課程使用。</li>
+</ol>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+  <footer>TNDA · Week 03 · 助教教案</footer>
+</body>
+</html>
