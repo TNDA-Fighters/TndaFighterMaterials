@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 04 教案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 04 · 助教教案</p>
+      <h1>TNDA Week 04 教案</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="教案導覽">
+<p class="quick-nav-title">教案導覽</p>
+<a class="nav-level-2" href="#teacher-04-1">課前實作練習</a>
+<a class="nav-level-3" href="#teacher-04-2">課前實作練習 1｜讓一段看得見的牆可以穿過</a>
+<a class="nav-level-3" href="#teacher-04-4">課前實作練習 2｜先改 C++、再改 Blueprint，膠囊半徑最後以誰為準？</a>
+<a class="nav-level-2" href="#teacher-04-6">課堂示範</a>
+<a class="nav-level-3" href="#teacher-04-7">課堂示範 1｜同一面牆如何回應角色與攝影機</a>
+<a class="nav-level-3" href="#teacher-04-9">課堂示範 2｜碰牆為何會停住，斜向移動為何能沿牆走</a>
+<a class="nav-level-2" href="#teacher-04-11">課堂實作</a>
+<a class="nav-level-3" href="#teacher-04-12">課堂實作 1｜把三段短牆加高到基準牆高度</a>
+<a class="nav-level-3" href="#teacher-04-15">課堂實作 2｜讓 CPU 開場後退，直到被牆擋住</a>
+</nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="teacher-04-1">課前實作練習</h2>
+<h3 id="teacher-04-2">課前實作練習 1｜讓一段看得見的牆可以穿過</h3>
+<h4 id="teacher-04-3">細步驟解答</h4>
+<ol>
+<li>在 Content Browser 開啟 <code>/Game/Fighting/stage1</code>，Play 模式選 <code>Selected Viewport</code>，出生方式使用既有 <code>Default Player Start</code>。停止 PIE 後，在 World Outliner 搜尋 <code>ArenaBoundary_Wall_00</code>，選取後按 F 聚焦。它位於 <code>Gameplay/ArenaBoundary</code>，是直接放置的 StaticMeshActor。</li>
+<li>在 Details 選取該 Actor 的 <code>StaticMeshComponent</code>，展開 <code>Collision</code> 與 <code>Collision Presets</code>。記錄原值：Preset 為 <code>BlockAll</code>、Collision Enabled 為 <code>Query and Physics</code>（API 名稱 <code>QueryAndPhysics</code>）、Object Type 為 <code>WorldStatic</code>，Pawn 與 Camera 回應皆為 <code>Block</code>。核對 Transform，避免操作時誤移牆面；驗收直接看分享桌面的設定與操作結果。</li>
+<li>分別選取既有 <code>PlayerStart</code>、<code>CpuStart</code>，記下 Location 的 X／Y／Z；保留各自的 <code>Player Start Tag</code>、旋轉與縮放。將兩者移到牆段中央附近的場內。可用的備課候選位置是 <code>PlayerStart</code> 的 X／Y=<code>2500／1800</code>、<code>CpuStart</code> 的 X／Y=<code>2250／1800</code>，Z 各沿用原值。這組水平座標依現行牆面幾何安排，尚未完成這組出生位置的 PIE 排練；開場後先核對實際位置。<code>Wall_00</code> 的內側面在 X=<code>2690</code>，中央 Y=<code>1800</code>，兩個候選位置都在場內且彼此不接觸。</li>
+<li>儲存本題修改的關卡／External Actor，按 Play。先以小幅 W／A／S／D 輸入辨認朝牆方向，再走向 <code>Wall_00</code> 的中央；方向相對遊戲畫面，不能把 D 固定當作世界 X 正向。原本應被牆擋住。若未接近牆就停下，按 <code>Shift+F1</code> 釋放滑鼠，核對兩名角色位置，確認水平間距尚未到 <code>650 cm</code>。本題不調整攝影機上限。</li>
+<li>停止 PIE，回到 <code>Wall_00</code> 的 Collision Presets，選 <code>Custom...</code>，只把 <code>Object Responses &gt; Pawn</code> 改成 <code>Ignore</code>。這一步是將既有組合改成可個別編輯的回應；核對 Object Type、Collision Enabled 與其餘各列回應均和原來相同。不要選 <code>NoCollision</code>，也不要隱藏或刪除牆。</li>
+<li>儲存後再次 Play，以相同路線穿過 <code>Wall_00</code>，現場展示「牆仍可見、1P 能穿過」。通過碰撞厚度後即可停止這輪，避免繼續走出擂台頂面而落下。場外沒有自動回場流程，重測使用新的 PIE。</li>
+<li>另開一輪 PIE，從場內接近相鄰 <code>Wall_01</code> 或 <code>Wall_23</code> 的中央，避開接縫，確認仍被阻擋。讓 CPU 與 1P 一起保持在測試區附近；若原出生位置造成距離限制先介入，可只微調兩個既有出生點的 X／Y，記錄新值，不把任何一人放到場外。現場依序操作指定牆與相鄰牆，請學生指出設定差異並解釋通行結果。</li>
+<li>核對解釋：<code>Source/TndaFighter/Fighting/FightingPlayerCharacter.cpp</code> 的 <code>Move()</code> 收到輸入，<code>DoMove()</code> 呼叫 <code>AddMovementInput()</code>；本題沒有改這些程式。1P 的 Capsule 是 Pawn，牆對 Pawn 改為 Ignore 後不再阻擋這條角色移動路徑；牆的模型與可見設定仍相同，所以外觀保留。相鄰牆沒有修改，仍按原回應阻擋。</li>
+<li>若牆仍擋住 1P，先確認選到 <code>Wall_00</code> 的元件、Pawn 列確為 Ignore，再確認角色沒碰到相鄰牆或 CPU。若角色根本到不了牆，先排除最大間距；不要一口氣關閉所有碰撞。設定、位置與結果的對照，才是本題驗收依據。</li>
+<li>停止 PIE，將 <code>Wall_00</code> 的 Collision Preset 還原成 <code>BlockAll</code>，核對 Pawn／Camera 均為 Block，將兩個出生點還原成步驟 3 記錄的完整位置。只保存本題涉及的關卡與 External Actor，重新 Play 確認指定牆恢復阻擋，再停止 PIE。</li>
+</ol>
+<h3 id="teacher-04-4">課前實作練習 2｜先改 C++、再改 Blueprint，膠囊半徑最後以誰為準？</h3>
+<h4 id="teacher-04-5">細步驟解答</h4>
+<p>準備：確認上一題已還原。開啟 <code>Source/TndaFighter/Fighting/</code> 下的 <code>FightingPlayerCharacter.cpp</code>、<code>FightingCpuCharacter.cpp</code>，兩個建構子都從 <code>InitCapsuleSize(35.0f, 90.0f)</code> 開始。開啟 <code>/Game/Fighting/Blueprints/</code> 下的 <code>BP_FightingPlayerCharacter</code>、<code>BP_FightingCpuCharacter</code>，選 Capsule，確認 <code>Shape &gt; Capsule Radius</code> 沿用父類預設 <code>35</code>。全程保持半高 <code>90</code>、縮放 <code>1,1,1</code>，Mesh 與牆設定不變。</p>
+<p>每次修改 C++，都先關閉 Editor，保存程式後以 <code>TndaFighterEditor / Win64 / Development</code> 完整建置，成功後重開同一專案。三步連續進行，中途保留 BP 的修改。</p>
+<ol>
+<li><strong>第 1 步：C++ 半徑 <code>35 → 50</code>。</strong> 兩個建構子改為 <code>InitCapsuleSize(50.0f, 90.0f)</code>，完整建置並重開。兩個 BP 與新 PIE 角色的半徑都變成 <code>50</code>。<strong>原因：此時 BP 還沒有自訂半徑，沿用 C++ 父類提供的預設值，因此父類改成 <code>50</code>，角色也跟著改成 <code>50</code>。</strong></li>
+<li><strong>第 2 步：BP 半徑 <code>50 → 20</code>。</strong> 停止 PIE，在兩個 BP 的 Capsule 將 <code>Capsule Radius</code> 改為 <code>20</code>，各按 Compile、Save，再開新 PIE，角色半徑變成 <code>20</code>。這次操作把 <code>20</code> 儲存成 BP 的自訂值，覆寫 C++ 提供的 <code>50</code>。保留這個設定進入下一步。</li>
+<li><strong>第 3 步：保留 BP 的 <code>20</code>，C++ 半徑 <code>50 → 80</code>。</strong> 兩個建構子改為 <code>InitCapsuleSize(80.0f, 90.0f)</code>，完整建置並重開。兩個 BP 與新 PIE 角色仍是 <code>20</code>。<strong>原因：C++ 的原生預設已改成 <code>80</code>，但 BP 保留了第 2 步儲存的自訂值 <code>20</code>；遊戲生成的是這兩個 BP 角色，所以仍使用 <code>20</code>。C++ 編譯有生效，只是 BP 的自訂值沒有被新的原生預設蓋掉。</strong></li>
+</ol>
+<p><strong>課堂驗收：</strong> 請學生遠端分享桌面，直接展示 C++ 參數、兩個 BP 的 Capsule 與 PIE 畫面，操作角色碰牆，並口頭說明第 1、3 步為何不同。需要查看遊戲角色的半徑時，按 <code>Shift+F1</code>，在 Outliner 選 PIE 生成的角色，再選 Capsule 查看 <code>Shape</code>。助教的判斷重點是：「第 1 步沿用父類預設；第 3 步已經有 BP 自訂值。」</p>
+<p><strong>完成後還原：</strong> 關閉 Editor，將兩個 C++ 半徑改回 <code>35.0f</code>，完整建置並重開；在兩個 BP 的 Capsule Radius 旁按 <code>Reset to Default</code>，回到沿用父類預設的 <code>35</code>，各按 Compile、Save。最後開新 PIE 確認兩名角色的半徑 <code>35</code>、半高 <code>90</code>。</p>
+<h2 id="teacher-04-6">課堂示範</h2>
+<h3 id="teacher-04-7">課堂示範 1｜同一面牆如何回應角色與攝影機</h3>
+<h4 id="teacher-04-8">示範重點</h4>
+<ul>
+<li><strong>物件、形狀與回應</strong>：以 <code>stage1</code> 的 <code>ArenaBoundary_Wall_00</code> 及角色 Capsule 區分看得見的模型與移動碰撞。牆為 <code>WorldStatic + QueryAndPhysics + BlockAll</code>；Object Type、啟用哪些碰撞用途與各 Channel 的 Response 是不同層次。允許 Physics 不等於已勾選 Simulate Physics。</li>
+<li><strong>角色與鏡頭使用不同查詢</strong>：角色 Capsule 是 Pawn，牆對 Pawn 的回應參與角色移動阻擋；<code>FightingCameraActor.cpp</code> 的建構子將 <code>CameraBoom-&gt;bDoCollisionTest</code> 設為 true、<code>ProbeChannel</code> 設為 <code>ECC_Camera</code>。Camera 是這裡的探測 Channel，不是把攝影機 Actor 的 Object Type 改成 Camera。</li>
+<li><strong>既有場地配置</strong>：共 24 段牆；<code>05</code>～<code>08</code> 是高牆，<code>17</code>～<code>19</code> 是短牆，其餘是基準牆。基準與短牆 Scale X／Y 同為 <code>2.5／0.3</code>，Z 分別為 <code>1.1／0.6</code>。<code>SM_Cube</code> 的 Pivot 在底部角落，保留 Location Z=<code>200</code>、只改 Scale Z，才可維持底部並改變牆頂高度。</li>
+<li><strong>已知限制</strong>：高牆阻擋 Camera 探測時，SpringArm 會縮短實際鏡頭距離，但 <code>TargetArmLength</code> 仍是期望值。角色可能因鏡頭過近而出框；本週不以雙方始終入鏡為完成條件。</li>
+<li><strong>規則分工</strong>：場地牆限制角色在場內，<code>MaxFighterDistance</code> 限制 1P 相對 CPU 的水平間距，SpringArm Collision Test 保護鏡頭位置。正常教材 BP 的最大間距為 <code>650 cm</code>，C++ fallback 的 <code>570 cm</code> 不可混寫成 BP 實際值。碰牆不觸發 Ring Out、KO 或回合結束。</li>
+<li><strong>概念對照</strong>：Blocking Volume 可提供不可見的阻擋區域，本教材使用可見 StaticMeshActor。若用 Unity 協助理解，可把外觀與 Collider 的分工、Layer 碰撞篩選當作近似概念；UE 的 Object Type、Response、Trace Channel 與 CharacterMovement 並非 Unity 類型或生命週期的一對一替換。</li>
+</ul>
+<h3 id="teacher-04-9">課堂示範 2｜碰牆為何會停住，斜向移動為何能沿牆走</h3>
+<h4 id="teacher-04-10">示範重點</h4>
+<ul>
+<li><strong>主動移動入口</strong>：玩家的 <code>FightingPlayerCharacter.cpp::DoMove()</code> 與 CPU 的 <code>FightingCpuCharacter.cpp::UpdateTestMovement()</code> 都使用 <code>AddMovementInput()</code>。前者取得玩家兩軸輸入，後者由測試模式提供方向與比例；CharacterMovement 接手處理實際移動。</li>
+<li><strong>以牆為方向基準</strong>：正對牆是朝牆內推進，切線是沿著牆面，斜向則同時含有兩者。碰撞可能擋住朝牆分量而保留沿牆分量，所以持續有輸入不代表角色一定前進，也不代表完全不能移動。這是平直牆面與一般地面狀態的概念說明，不把接縫、角落或台階行為化約成一條保證公式。</li>
+<li><strong>CPU 是否真的提供輸入</strong>：<code>TestMovementMode=Disabled</code> 時提前返回；取得有效對手方向後，<code>RetreatFromPlayerSlow</code> 使用反向與 <code>0.25</code> 的輸入比例。這個數字是輸入比例，不是保證每秒速度或「半速」。CPU 碰牆不會由此函式自動把模式切回 Disabled。</li>
+<li><strong>另一個位移入口</strong>：只帶讀 <code>ResolveGroundPushInteraction()</code> 內 <code>MovePairAlongAxis</code> 的局部片段。<code>AddActorWorldOffset(RequestedOffset, true, ...)</code> 以 Sweep 沿途檢查根元件碰撞；<code>AvailableOffset</code> 再用前後位置相減，取得實際完成位移。這是推擠直接要求位移的路徑，不是 CPU 主動移動，也不是 <code>AddMovementInput()</code> 的同義寫法。</li>
+<li><strong>判斷依據</strong>：一起看輸入來源／模式、碰撞設定與前後位置。動畫仍在走、模式仍為後退，都不能單獨證明角色有位移；CPU 完全不動，也不能直接認定已經碰牆。</li>
+</ul>
+<h2 id="teacher-04-11">課堂實作</h2>
+<h3 id="teacher-04-12">課堂實作 1｜把三段短牆加高到基準牆高度</h3>
+<h4 id="teacher-04-13">題目</h4>
+<p>將 <code>/Game/Fighting/stage1</code> 的 <code>ArenaBoundary_Wall_17</code>～<code>19</code> 三段短牆 Scale Z 從 <code>0.6</code> 改為 <code>1.1</code>，使牆頂與鄰接基準牆同高。</p>
+<p>保留位置、旋轉、Scale X／Y、Mesh 與碰撞設定。完成後三段牆仍從 Z=<code>200</code> 起算、頂部提高到 Z=<code>310</code>，接縫沒有新增缺口，1P 一般地面移動仍被阻擋；課堂分享桌面，展示外觀、Transform 與碰牆操作，並說明底部不動時牆頂為何升高。</p>
+<h4 id="teacher-04-14">參考答案</h4>
+<ol>
+<li>停止 PIE，在 World Outliner 搜尋 <code>ArenaBoundary_Wall_17</code>，選取後按 F 聚焦；再依序記錄 <code>18</code>、<code>19</code> 的 Transform 與 Collision。原 Scale 都是 <code>2.5,0.3,0.6</code>、Location Z 都是 <code>200</code>；X／Y 與旋轉各不相同，保持各自原值。</li>
+<li>按住 Ctrl 在 Outliner 選取這三段，確認剛好三個選取項目。於 Details 的 <code>Transform &gt; Scale</code> 確認比例鎖定圖示已解除；只在 Z 輸入 <code>1.1</code> 並按 Enter，X／Y 保持 <code>2.5／0.3</code>。若多選欄位不好辨認，可逐段修改同一個 Z 欄，不用縮放工具拖曳。</li>
+<li>逐段回讀：Location／Rotation 沒變，Scale 為 <code>2.5,0.3,1.1</code>，Mesh 仍為 <code>/Game/LevelPrototyping/Meshes/SM_Cube</code>，Collision 仍為 <code>WorldStatic + QueryAndPhysics + BlockAll</code>。本題不移牆、不改分類標記或材質。</li>
+<li>比較 <code>16→17→18→19→20</code> 的頂部與接縫。這個 Mesh 本地高度為 <code>100 cm</code>、Pivot 在底角，所以高度從 <code>100×0.6=60</code> 變為 <code>100×1.1=110 cm</code>；底部仍是 <code>200</code>，頂部便由 <code>260</code> 變為 <code>310</code>。場地地板頂面是 Z=<code>210</code>，所以可見牆高是 <code>100 cm</code>，不要把 Location Z 當成牆中心。</li>
+<li>保存本題涉及的關卡／External Actor。Play 後將雙方帶到這三段牆附近，在每段中央朝牆移動，確認 1P 被擋住，能再向內移動；再沿接縫移動，確認沒有新增可穿越缺口。若距離上限先介入，先讓雙方一起接近測試區；若需暫移出生點，只改既有出生點的場內 X／Y，先記錄並在收尾恢復。</li>
+<li>驗收時請學生分享桌面，依序展示三段修改後 Transform、整段外觀及碰牆結果，並口頭說明高度的計算方式。若牆底浮起，先核對 Location Z；若牆變寬，先核對比例鎖是否使 X／Y 也改變。高牆造成鏡頭縮近不等於這題的牆高修改失敗，必要時用編輯器視角核對形狀。</li>
+<li>現場展示完成後停止 PIE，將三段 Scale Z 還原為 <code>0.6</code>；比對原 Transform、碰撞與暫改的出生點，保存並確認三段恢復短牆外觀。</li>
+</ol>
+<h3 id="teacher-04-15">課堂實作 2｜讓 CPU 開場後退，直到被牆擋住</h3>
+<h4 id="teacher-04-16">題目</h4>
+<p>將 <code>/Game/Fighting/Blueprints/BP_FightingCpuCharacter</code> 的 <code>Test Movement Mode</code> 預設值改為 <code>RetreatFromPlayerSlow</code>（往 1P 方向遠離，慢），做出每次 Play 都會主動遠離 1P、碰牆後停在場內的 CPU。</p>
+<p>完成成果是保存了該模式的 Blueprint。沿用關卡原有完整碰撞，只修改這項既有設定；CPU 持續保持後退模式時也不能穿牆。課堂分享桌面，停止再 Play 一次，展示開場行為能重現，並說明持續後退模式為何沒有讓 CPU 穿牆。</p>
+<h4 id="teacher-04-17">參考答案</h4>
+<ol>
+<li>確認前三項實作的牆面碰撞、半徑、出生點與牆高均已恢復。停止 PIE，開啟 <code>/Game/Fighting/Blueprints/BP_FightingCpuCharacter</code>，按 <code>Class Defaults</code>，在 Details 搜尋 <code>Test Movement Mode</code>；分類是 <code>CPU Test Movement</code>。記錄原值，現行教材為 <code>關閉測試流程</code>（<code>Disabled</code>）。</li>
+<li>下拉選單選 <code>往 1P 方向遠離（慢）</code>，對應 <code>EFightingCpuTestMovementMode::RetreatFromPlayerSlow</code>。按 Compile，確認成功後 Save。只改此欄，不新增 AI Controller、Blueprint 節點或碰牆事件。</li>
+<li>開啟 <code>stage1</code>，按 Play 並保持 1P 不輸入。CPU 應從開場持續遠離 1P；到邊界後被牆擋住，繼續留在場內。最大間距規則可能在 CPU 遠離時校正 1P 位置，不能把這個畫面誤認為 CPU 已啟用推擠；本題看 CPU 是否接觸牆、是否持續保持後退模式。</li>
+<li>CPU 到牆後按 Pause、<code>Shift+F1</code>，選遊戲中的 CPU，直接查看 Location 與 <code>Test Movement Mode</code>。恢復執行、保持 1P 不輸入，稍後再 Pause 讀取一次；應仍是後退模式，位置留在牆內側且沒有持續穿透。判斷不能只靠行走動畫。</li>
+<li>停止 PIE，再按 Play。確認 CPU 又從開場主動後退，證明修改已保存在 Blueprint 預設值，而不是只改到上一輪執行個體。在分享畫面中指出 Blueprint 設定，並直接重現兩輪開場行為。</li>
+<li>程式依據：<code>Source/TndaFighter/Fighting/FightingCpuCharacter.h</code> 宣告 <code>TestMovementMode</code>；同目錄 <code>FightingCpuCharacter.cpp</code> 的 <code>Tick()</code> 呼叫 <code>UpdateTestMovement()</code>。後退慢速分支以 <code>-DirectionToPlayer</code>、<code>MovementScale=0.25f</code> 呼叫 <code>AddMovementInput()</code>，碰牆後沒有將模式改成 Disabled 的程式。<code>bRunPhysicsWithNoController=true</code> 讓現階段沒有自動 AI Controller 的 CPU 仍可使用這條移動路徑。</li>
+<li>若 CPU 從開場就完全不動，先核對是否改了正確 Blueprint 的 Class Defaults、Compile／Save 是否成功、PIE 是否生成該 CPU，以及對手是否有效。若 CPU 尚未碰牆就停止，核對位置與當次模式；不要新增停止或碰牆程式來湊出預期畫面。</li>
+<li>現場驗收完成後停止 PIE，將 CPU Blueprint 的模式還原為步驟 1 原值，再 Compile、Save；新 Play 確認 CPU 不再主動後退，最後停止 PIE。</li>
+</ol>
+
+<a class="back-link" href="#top">回到頁首</a>
+</article>
+    </main>
+  </div>
+  <footer>TNDA · Week 04 · 助教教案</footer>
+</body>
+</html>

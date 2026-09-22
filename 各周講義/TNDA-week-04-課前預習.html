@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 04 課前預習｜戰鬥區域碰撞限制</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+
+.flow-diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.flow-diagram svg { height: auto; margin-inline: auto; }
+
+
+
+
+
+  
+
+  
+#week04-flow-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week04-flow-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week04-flow-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week04-flow-1 .error-icon{fill:#552222;}#week04-flow-1 .error-text{fill:#552222;stroke:#552222;}#week04-flow-1 .edge-thickness-normal{stroke-width:1px;}#week04-flow-1 .edge-thickness-thick{stroke-width:3.5px;}#week04-flow-1 .edge-pattern-solid{stroke-dasharray:0;}#week04-flow-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#week04-flow-1 .edge-pattern-dashed{stroke-dasharray:3;}#week04-flow-1 .edge-pattern-dotted{stroke-dasharray:2;}#week04-flow-1 .marker{fill:#333333;stroke:#333333;}#week04-flow-1 .marker.cross{stroke:#333333;}#week04-flow-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#week04-flow-1 p{margin:0;}#week04-flow-1 .label{font-family:Microsoft JhengHei;color:#333;}#week04-flow-1 .cluster-label text{fill:#333;}#week04-flow-1 .cluster-label span{color:#333;}#week04-flow-1 .cluster-label span p{background-color:transparent;}#week04-flow-1 .label text,#week04-flow-1 span{fill:#333;color:#333;}#week04-flow-1 .node rect,#week04-flow-1 .node circle,#week04-flow-1 .node ellipse,#week04-flow-1 .node polygon,#week04-flow-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week04-flow-1 .rough-node .label text,#week04-flow-1 .node .label text,#week04-flow-1 .image-shape .label,#week04-flow-1 .icon-shape .label{text-anchor:middle;}#week04-flow-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week04-flow-1 .rough-node .label,#week04-flow-1 .node .label,#week04-flow-1 .image-shape .label,#week04-flow-1 .icon-shape .label{text-align:center;}#week04-flow-1 .node.clickable{cursor:pointer;}#week04-flow-1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week04-flow-1 .arrowheadPath{fill:#333333;}#week04-flow-1 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week04-flow-1 .flowchart-link{stroke:#333333;fill:none;}#week04-flow-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week04-flow-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week04-flow-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week04-flow-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week04-flow-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week04-flow-1 .cluster text{fill:#333;}#week04-flow-1 .cluster span{color:#333;}#week04-flow-1 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week04-flow-1 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week04-flow-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week04-flow-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week04-flow-1 rect.text{fill:none;stroke-width:0;}#week04-flow-1 .icon-shape,#week04-flow-1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week04-flow-1 .icon-shape p,#week04-flow-1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week04-flow-1 .icon-shape .label rect,#week04-flow-1 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week04-flow-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week04-flow-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week04-flow-1 .node .neo-node{stroke:#9370DB;}#week04-flow-1 [data-look="neo"].node rect,#week04-flow-1 [data-look="neo"].cluster rect,#week04-flow-1 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#week04-flow-1 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week04-flow-1 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-1 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week04-flow-1 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-1 [data-look="neo"].node circle .state-start{fill:#000000;}#week04-flow-1 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-1 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week04-flow-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week04-flow-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week04-flow-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week04-flow-2 .error-icon{fill:#552222;}#week04-flow-2 .error-text{fill:#552222;stroke:#552222;}#week04-flow-2 .edge-thickness-normal{stroke-width:1px;}#week04-flow-2 .edge-thickness-thick{stroke-width:3.5px;}#week04-flow-2 .edge-pattern-solid{stroke-dasharray:0;}#week04-flow-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#week04-flow-2 .edge-pattern-dashed{stroke-dasharray:3;}#week04-flow-2 .edge-pattern-dotted{stroke-dasharray:2;}#week04-flow-2 .marker{fill:#333333;stroke:#333333;}#week04-flow-2 .marker.cross{stroke:#333333;}#week04-flow-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#week04-flow-2 p{margin:0;}#week04-flow-2 .label{font-family:Microsoft JhengHei;color:#333;}#week04-flow-2 .cluster-label text{fill:#333;}#week04-flow-2 .cluster-label span{color:#333;}#week04-flow-2 .cluster-label span p{background-color:transparent;}#week04-flow-2 .label text,#week04-flow-2 span{fill:#333;color:#333;}#week04-flow-2 .node rect,#week04-flow-2 .node circle,#week04-flow-2 .node ellipse,#week04-flow-2 .node polygon,#week04-flow-2 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week04-flow-2 .rough-node .label text,#week04-flow-2 .node .label text,#week04-flow-2 .image-shape .label,#week04-flow-2 .icon-shape .label{text-anchor:middle;}#week04-flow-2 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week04-flow-2 .rough-node .label,#week04-flow-2 .node .label,#week04-flow-2 .image-shape .label,#week04-flow-2 .icon-shape .label{text-align:center;}#week04-flow-2 .node.clickable{cursor:pointer;}#week04-flow-2 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week04-flow-2 .arrowheadPath{fill:#333333;}#week04-flow-2 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week04-flow-2 .flowchart-link{stroke:#333333;fill:none;}#week04-flow-2 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week04-flow-2 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week04-flow-2 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week04-flow-2 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week04-flow-2 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week04-flow-2 .cluster text{fill:#333;}#week04-flow-2 .cluster span{color:#333;}#week04-flow-2 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week04-flow-2 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week04-flow-2 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week04-flow-2 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week04-flow-2 rect.text{fill:none;stroke-width:0;}#week04-flow-2 .icon-shape,#week04-flow-2 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week04-flow-2 .icon-shape p,#week04-flow-2 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week04-flow-2 .icon-shape .label rect,#week04-flow-2 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week04-flow-2 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week04-flow-2 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week04-flow-2 .node .neo-node{stroke:#9370DB;}#week04-flow-2 [data-look="neo"].node rect,#week04-flow-2 [data-look="neo"].cluster rect,#week04-flow-2 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#week04-flow-2 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week04-flow-2 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-2 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week04-flow-2 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-2 [data-look="neo"].node circle .state-start{fill:#000000;}#week04-flow-2 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-2 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week04-flow-2 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 04 · 學生版課前預習</p>
+      <h1>TNDA Week 04 課前預習｜戰鬥區域碰撞限制</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+<p class="quick-nav-title">本頁導覽</p>
+<a class="nav-level-2" href="#student-04-1">本週目標</a>
+<a class="nav-level-2" href="#student-04-2">課前準備</a>
+<a class="nav-level-2" href="#student-04-3">課前預習</a>
+<a class="nav-level-3" href="#student-04-4">課前預習 1｜從移動輸入找到角色碰撞與場地牆</a>
+<a class="nav-level-3" href="#student-04-5">課前預習 2｜角色還沒貼到牆，為什麼就停住？</a>
+<a class="nav-level-2" href="#student-04-6">課前實作練習</a>
+<a class="nav-level-3" href="#student-04-7">課前實作練習 1｜讓一段看得見的牆可以穿過</a>
+<a class="nav-level-3" href="#student-04-8">課前實作練習 2｜先改 C++、再改 Blueprint，膠囊半徑最後以誰為準？</a>
+<a class="nav-level-2" href="#student-04-9">官方參考資料</a>
+<a class="nav-level-2" href="#student-04-10">上課前確認</a>
+</nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="student-04-1">本週目標</h2>
+<ul>
+<li>找到角色移動與場地牆的碰撞設定，做出看得見但可穿過的指定牆段。</li>
+<li>依序調整 C++ 與 Blueprint 的膠囊半徑，用遊戲中的數值及碰牆位置解釋結果。</li>
+<li>分清角色碰牆、鏡頭碰牆與雙方最大距離三種限制。</li>
+</ul>
+<h2 id="student-04-2">課前準備</h2>
+<p>使用本週提供的 TndaFighter 教材，確認能編譯並開啟 <code>/Game/Fighting/stage1</code>，按 Play 後可用 W／A／S／D 操作 1P。PIE（Play In Editor）就是在編輯器內執行遊戲。</p>
+<p>本週教材以 <code>week-04</code>（<code>680b61ab</code>）為基準，已包含 CPU 膠囊初始化修正：1P 與 CPU 的建構子都使用 <code>InitCapsuleSize(35.0f, 90.0f)</code>。若手上的 CPU 程式仍是 <code>SetCapsuleSize()</code>，先向助教核對教材版本。</p>
+<p>準備能編輯 C++ 的 IDE。兩項練習都會修改教材設定，完成後還原。課堂以遠端分享桌面、實機操作與口頭說明驗收，請先熟悉重現成果的方式。</p>
+<h2 id="student-04-3">課前預習</h2>
+<h3 id="student-04-4">課前預習 1｜從移動輸入找到角色碰撞與場地牆</h3>
+<p><strong>先分清外觀、碰撞形狀與移動</strong></p>
+<p>Actor 是放進關卡或在遊戲中生成的物件；Component 是物件上負責某種工作的元件。本週先辨認三個元件：</p>
+<table>
+<thead>
+<tr>
+<th>對象</th>
+<th>元件</th>
+<th>本週要看什麼</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>角色外觀</td>
+<td>Skeletal Mesh，也就是有骨架與動畫的角色模型</td>
+<td>身體看起來在哪裡、動作如何播放。</td>
+</tr>
+<tr>
+<td>角色碰撞</td>
+<td>Capsule Component，膠囊形碰撞元件</td>
+<td>角色移動時，用什麼形狀檢查能否通過。</td>
+</tr>
+<tr>
+<td>場地牆</td>
+<td>StaticMeshComponent，靜態模型元件</td>
+<td>牆的模型及碰撞回應。</td>
+</tr>
+</tbody></table>
+<p>CharacterMovement 是 <code>ACharacter</code> 使用的移動元件。本週的地面移動以 Capsule 作為主要碰撞形狀；角色衣服、手臂或腳的外觀不等於這個膠囊的邊緣。</p>
+<p><strong>「自己是哪一類」與「遇到別人怎麼辦」</strong></p>
+<p>Object Type 是物件在碰撞系統中的類型。本教材的角色 Capsule 是 <code>Pawn</code>，場地牆是 <code>WorldStatic</code>。CPU 也是 Pawn，這個類型不表示一定由真人控制。</p>
+<p>Collision Response 是遇到指定 Channel 時的回應；Channel 可以先理解成碰撞查詢使用的分類。<code>Block</code> 表示阻擋，<code>Overlap</code> 表示可重疊，<code>Ignore</code> 表示忽略這種互動。Overlap 要發出事件還需要相關事件設定，選成 Overlap 不等於自動執行一段程式。</p>
+<p><code>Collision Presets</code> 把常用設定組成一個預設組合。牆原本使用 <code>BlockAll</code>，對 Pawn 為 Block；角色 Capsule 對 WorldStatic 也為 Block。判斷兩個物件是否互相阻擋時，要一起看雙方的類型與回應。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">碰撞設定參考</a></p>
+<p><strong>沿著原始碼走到元件設定</strong></p>
+<p>以下路徑都從 TndaFighter 專案根目錄算起。這條追蹤從收到移動值開始，到角色與牆的設定為止；這次不展開引擎內部如何逐步解算碰撞，也先略過 4／6 分類與推擠細節。</p>
+<ol>
+<li>開啟 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.cpp</code>，找到 <code>AFightingPlayerCharacter::Move()</code>。它從輸入值取出 <code>FVector2D</code>；X 是左右，Y 是前後，再呼叫 <code>DoMove(MovementVector.X, MovementVector.Y)</code>。</li>
+<li>同檔的 <code>AFightingPlayerCharacter::DoMove()</code> 以攝影機的水平朝向換算世界方向。世界方向是相對關卡座標的方向；攝影機轉了，畫面上的右方不一定仍是世界 X 正方向。程式最後分別呼叫 <code>AddMovementInput(ForwardDirection, Forward)</code> 與 <code>AddMovementInput(RightDirection, Right)</code>。</li>
+<li><code>AddMovementInput()</code> 提供的是方向與輸入比例，不是保證完成的位移。<code>Character</code> 會由引擎的移動流程處理這份輸入；這是引擎接手的邊界，不是 <code>DoMove()</code> 裡再直接呼叫一個「碰牆函式」。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APawn/AddMovementInput">API 說明</a></li>
+<li>對照 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.h</code> 的 <code>AFightingPlayerCharacter : public AFightingCharacter</code>，再看同目錄 <code>FightingCharacter.h</code> 的 <code>AFightingCharacter : public ACharacter</code>。冒號後的 <code>public</code> 表示公開繼承；循著這條關係，可找到角色沿用的 Capsule 與 CharacterMovement。</li>
+<li>回到玩家建構子 <code>AFightingPlayerCharacter::AFightingPlayerCharacter()</code>，找到 <code>GetCapsuleComponent()-&gt;InitCapsuleSize(35.0f, 90.0f)</code>。在 <code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code> 對照繼承的 Capsule；最後在 <code>stage1</code> 找到 <code>ArenaBoundary_Wall_00</code> 的 StaticMeshComponent，比較雙方的 Collision 設定。</li>
+</ol>
+<figure class="flow-diagram"><svg id="week04-flow-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 1512px; background-color: rgb(255, 255, 255);" viewBox="0 0 1512 285.5" role="graphics-document document" aria-roledescription="流程圖" aria-label="課前預習 1 流程圖"><g><marker id="week04-flow-1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-1_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week04-flow-1_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M268,68L295,68L318,68" id="week04-flow-1-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjY4LCJ5Ijo2OH0seyJ4IjoyOTUsInkiOjY4fSx7IngiOjMyMiwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week04-flow-1_flowchart-v2-pointEnd)"/><path d="M582,68L609,68L642,68" id="week04-flow-1-L_B_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NTgyLCJ5Ijo2OH0seyJ4Ijo2MDksInkiOjY4fSx7IngiOjY0NiwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week04-flow-1_flowchart-v2-pointEnd)"/><path d="M886,68L923,68L950.368,81.03" id="week04-flow-1-L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6ODg2LCJ5Ijo2OH0seyJ4Ijo5MjMsInkiOjY4fSx7IngiOjk1My45Nzk5MzMxMTAzNjc5LCJ5Ijo4Mi43NX1d" data-look="classic" marker-end="url(#week04-flow-1_flowchart-v2-pointEnd)"/><path d="M896,217.5L923,217.5L950.368,204.47" id="week04-flow-1-L_E_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_D_0" data-points="W3sieCI6ODk2LCJ5IjoyMTcuNX0seyJ4Ijo5MjMsInkiOjIxNy41fSx7IngiOjk1My45Nzk5MzMxMTAzNjc5LCJ5IjoyMDIuNzV9XQ==" data-look="classic" marker-end="url(#week04-flow-1_flowchart-v2-pointEnd)"/><path d="M1210,142.75L1237,142.75L1260,142.75" id="week04-flow-1-L_D_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_F_0" data-points="W3sieCI6MTIxMCwieSI6MTQyLjc1fSx7IngiOjEyMzcsInkiOjE0Mi43NX0seyJ4IjoxMjY0LCJ5IjoxNDIuNzV9XQ==" data-look="classic" marker-end="url(#week04-flow-1_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week04-flow-1-flowchart-A-0" data-look="classic" transform="translate(138, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>取得左右與前後輸入</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-1-flowchart-B-1" data-look="classic" transform="translate(452, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>依畫面換算世界方向</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-1-flowchart-C-3" data-look="classic" transform="translate(766, 68)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"/><g class="label" style="" transform="translate(-90, -22.5)"><rect/><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>送出移動意圖</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-1-flowchart-D-5" data-look="classic" transform="translate(1080, 142.75)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>引擎處理角色移動</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-1-flowchart-E-6" data-look="classic" transform="translate(766, 217.5)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>膠囊與牆的碰撞設定</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-1-flowchart-F-9" data-look="classic" transform="translate(1384, 142.75)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"/><g class="label" style="" transform="translate(-90, -22.5)"><rect/><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>得到實際位置</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week04-flow-1-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week04-flow-1-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;取得左右與前後輸入&quot;] --&gt; B[&quot;依畫面換算世界方向&quot;]
+    B --&gt; C[&quot;送出移動意圖&quot;]
+    C --&gt; D[&quot;引擎處理角色移動&quot;]
+    E[&quot;膠囊與牆的碰撞設定&quot;] --&gt; D
+    D --&gt; F[&quot;得到實際位置&quot;]</code></pre></details><p>前三個節點對應 <code>Move()</code>、<code>DoMove()</code> 與 <code>AddMovementInput()</code>，後半是引擎責任的簡化表示。讀圖時分開問：程式收到輸入了嗎？碰撞設定允許角色往那裡走嗎？</p>
+<p><strong>測試時還有另一條距離規則</strong></p>
+<p>本教材的 <code>BP_FightingCamera</code> 將 1P 與 CPU 的最大水平間距設為 <code>650 cm</code>。即使前方沒有牆，1P 遠離 CPU 仍可能被這條規則限制；它與場地牆分開運作。練習時讓雙方都從指定牆附近的場內開始，避免還沒碰牆就先到達最大間距。教材沒有把場外出生角色自動送回場內的功能。</p>
+<h3 id="student-04-5">課前預習 2｜角色還沒貼到牆，為什麼就停住？</h3>
+<p><strong>膠囊半徑與半高</strong></p>
+<p>Capsule Radius 是膠囊在水平面的半徑；Capsule Half Height 是從中心到頂端或底端的距離，包含圓頂。本題單位皆為公分（cm）。半徑 <code>35</code> 代表水平直徑 <code>70</code>；半高 <code>90</code> 代表總高度 <code>180</code>。這些數字描述碰撞形狀，不是 Mesh 的身高或肩寬。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UCapsuleComponent">Capsule 元件參考</a></p>
+<p>在牆段中央、角色與牆正常阻擋、縮放不變的條件下，膠囊外緣先接觸牆面，角色中心才會停下。因此實際半徑越大，中心通常在離牆較遠處停止；只改 Capsule Radius 不會把角色 Mesh 一起放大。比較時要看角色中心與同一面牆的距離，不能只看某個動畫姿勢的手或腳。</p>
+<p><strong>從兩個建構子追到各自的 Blueprint</strong></p>
+<p>建構子是建立物件時提供初始設定的 C++ 函式，名稱與類別相同。<code>GetCapsuleComponent()</code> 取得此角色的膠囊元件；<code>-&gt;</code> 表示透過取得的元件呼叫功能。<code>35.0f</code>、<code>90.0f</code> 是帶小數的數值寫法，<code>f</code> 表示 <code>float</code> 型別。</p>
+<ol>
+<li><p>在 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.cpp</code> 找到 <code>AFightingPlayerCharacter::AFightingPlayerCharacter()</code>；在同目錄 <code>FightingCpuCharacter.cpp</code> 找到 <code>AFightingCpuCharacter::AFightingCpuCharacter()</code>。</p>
+</li>
+<li><p>本週提供的修正版中，兩個建構子都呼叫下列初始化。第一個參數是半徑，第二個是半高：</p>
+<pre><code class="language-cpp">GetCapsuleComponent()-&gt;InitCapsuleSize(35.0f, 90.0f);
+</code></pre>
+</li>
+<li><p>對照 <code>FightingPlayerCharacter.h</code>、<code>FightingCpuCharacter.h</code> 與 <code>FightingCharacter.h</code>，確認兩條繼承關係都是「各自的角色類別 → <code>AFightingCharacter</code> → <code>ACharacter</code>」。兩名角色共用父類能力，仍各有自己的元件與設定。</p>
+</li>
+<li><p>在 <code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code> 與 <code>/Game/Fighting/Blueprints/BP_FightingCpuCharacter</code> 找到繼承的 Capsule，對照 <code>Shape</code> 的 <code>Capsule Radius</code>、<code>Capsule Half Height</code>。本題調整的是這個元件，不是旁邊的 Mesh。</p>
+</li>
+<li><p>Play 後再看遊戲中生成的兩名角色。PIE 執行個體是這次遊戲裡的角色物件，它的 Capsule 值才是當次測試採用的碰撞尺寸。</p>
+</li>
+</ol>
+<figure class="flow-diagram"><svg id="week04-flow-2" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 904px; background-color: rgb(255, 255, 255);" viewBox="0 0 904 398" role="graphics-document document" aria-roledescription="流程圖" aria-label="課前預習 2 流程圖"><g><marker id="week04-flow-2_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week04-flow-2_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week04-flow-2_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M268,90.5L295,90.5L318,90.5" id="week04-flow-2-L_A_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_C_0" data-points="W3sieCI6MjY4LCJ5Ijo5MC41fSx7IngiOjI5NSwieSI6OTAuNX0seyJ4IjozMjIsInkiOjkwLjV9XQ==" data-look="classic" marker-end="url(#week04-flow-2_flowchart-v2-pointEnd)"/><path d="M268,307.5L295,307.5L318,307.5" id="week04-flow-2-L_B_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_D_0" data-points="W3sieCI6MjY4LCJ5IjozMDcuNX0seyJ4IjoyOTUsInkiOjMwNy41fSx7IngiOjMyMiwieSI6MzA3LjV9XQ==" data-look="classic" marker-end="url(#week04-flow-2_flowchart-v2-pointEnd)"/><path d="M582,90.5L609,90.5L632,90.5" id="week04-flow-2-L_C_E_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_E_0" data-points="W3sieCI6NTgyLCJ5Ijo5MC41fSx7IngiOjYwOSwieSI6OTAuNX0seyJ4Ijo2MzYsInkiOjkwLjV9XQ==" data-look="classic" marker-end="url(#week04-flow-2_flowchart-v2-pointEnd)"/><path d="M582,307.5L609,307.5L632,307.5" id="week04-flow-2-L_D_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_F_0" data-points="W3sieCI6NTgyLCJ5IjozMDcuNX0seyJ4Ijo2MDksInkiOjMwNy41fSx7IngiOjYzNiwieSI6MzA3LjV9XQ==" data-look="classic" marker-end="url(#week04-flow-2_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week04-flow-2-flowchart-A-0" data-look="classic" transform="translate(138, 90.5)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>玩家建構子的尺寸</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-2-flowchart-C-1" data-look="classic" transform="translate(452, 90.5)"><rect class="basic label-container" style="" x="-130" y="-82.5" width="260" height="165"/><g class="label" style="" transform="translate(-100, -67.5)"><rect/><foreignObject width="200" height="135"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>玩家 Blueprint 膠囊設定</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-2-flowchart-B-2" data-look="classic" transform="translate(138, 307.5)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>CPU 建構子的尺寸</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-2-flowchart-D-3" data-look="classic" transform="translate(452, 307.5)"><rect class="basic label-container" style="" x="-130" y="-82.5" width="260" height="165"/><g class="label" style="" transform="translate(-100, -67.5)"><rect/><foreignObject width="200" height="135"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>CPU Blueprint 膠囊設定</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-2-flowchart-E-5" data-look="classic" transform="translate(766, 90.5)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>遊戲中玩家的實際尺寸</p></span></div></foreignObject></g></g><g class="node default" id="week04-flow-2-flowchart-F-7" data-look="classic" transform="translate(766, 307.5)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>遊戲中 CPU 的實際尺寸</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week04-flow-2-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week04-flow-2-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;玩家建構子的尺寸&quot;] --&gt; C[&quot;玩家 Blueprint 膠囊設定&quot;]
+    B[&quot;CPU 建構子的尺寸&quot;] --&gt; D[&quot;CPU Blueprint 膠囊設定&quot;]
+    C --&gt; E[&quot;遊戲中玩家的實際尺寸&quot;]
+    D --&gt; F[&quot;遊戲中 CPU 的實際尺寸&quot;]</code></pre></details><p>這張圖是設定來源的追蹤，不表示原生數字一定會原封不動傳到最右側。C++ 提供原生預設，Blueprint 能儲存自己的設定，PIE 則顯示本次生成結果。修改程式後，還必須確認編譯成功且編輯器載入新結果；只看到原始碼上的數字改變，不能判定遊戲中的半徑已改變。</p>
+<h2 id="student-04-6">課前實作練習</h2>
+<h3 id="student-04-7">課前實作練習 1｜讓一段看得見的牆可以穿過</h3>
+<p>只把 <code>/Game/Fighting/stage1</code> 中 <code>ArenaBoundary_Wall_00</code> 對 <code>Pawn</code> 的回應改為 <code>Ignore</code>，做出「牆仍看得見，1P 可以穿過它，相鄰牆段仍會擋住角色」的場景。</p>
+<p>保留這段牆的 Mesh、Transform、<code>WorldStatic</code> 類型及其他 Channel 回應，也不修改角色 Capsule。可調整既有 <code>PlayerStart</code> 與 <code>CpuStart</code> 的水平位置，讓雙方從牆附近的場內開始；測試時雙方間距須小於 <code>650 cm</code>。</p>
+<p>先預測修改後的通行情況。課堂上分享桌面，直接展示指定牆可穿過、相鄰牆仍會阻擋，並指出改動的回應欄位。依預習 1 找到接收輸入與送出移動意圖的檔案、函式，口頭說明為什麼牆仍看得見，阻擋結果卻不同。</p>
+<h3 id="student-04-8">課前實作練習 2｜先改 C++、再改 Blueprint，膠囊半徑最後以誰為準？</h3>
+<p>對 1P 與 CPU 依序完成以下三個階段，讓每個階段的設定都用於新一輪 PIE，並確認膠囊大小與碰牆結果。階段之間保留前一步設定：</p>
+<ol>
+<li>兩個 C++ 建構子的半徑由 <code>35</code> 改為 <code>50</code>，確認新編譯結果已載入。</li>
+<li>兩個 Blueprint 的 <code>Capsule Radius</code> 由 <code>50</code> 改為 <code>20</code>，保存為下一輪遊戲使用的設定。</li>
+<li>保留 Blueprint 的 <code>20</code>，只把 C++ 半徑由 <code>50</code> 改為 <code>80</code>，再次確認新編譯結果已載入。</li>
+</ol>
+<p>半高維持 <code>90</code>，Mesh、縮放與牆的設定保持不變；測試避開牆角、另一名角色接觸及最大距離限制。C++ 變更採完整建置後重新載入，不使用 Live Coding。</p>
+<p>課堂上遠端分享桌面，直接展示 C++ 參數、BP Capsule 與 PIE 畫面，並口頭說明：「為什麼第 1 步 C++ <code>35 → 50</code> 會改變角色半徑，第 3 步 C++ <code>50 → 80</code> 卻沒有？」</p>
+<h2 id="student-04-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">Epic Games：Collision Response Reference</a>：對照 Object Type、Collision Enabled、Presets 與各 Channel 的回應。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APawn/AddMovementInput">Epic Games：APawn::AddMovementInput</a>：確認世界方向與輸入比例的用途。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UCapsuleComponent">Epic Games：UCapsuleComponent</a>：查看半徑、半高與 <code>InitCapsuleSize()</code>。</li>
+</ul>
+<h2 id="student-04-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 本週教材可編譯，<code>stage1</code> 可進入 PIE，兩個角色建構子皆使用指定的膠囊初始化。</li>
+<li><input disabled="" type="checkbox"> 能沿兩條預習路徑找到 C++、Blueprint 元件及遊戲實例，並分清外觀、碰撞回應與碰撞尺寸。</li>
+<li><input disabled="" type="checkbox"> 已做出指定牆可穿過、相鄰牆仍阻擋的場景，能分享桌面操作並解釋原因；牆面碰撞與出生點已還原。</li>
+<li><input disabled="" type="checkbox"> 已依序完成兩名角色的三次半徑修改，能分享桌面演示並說明第 1、3 步結果不同的原因；練習後已將 C++ 半徑還原為 <code>35</code>，並讓 BP 回到沿用父類預設的狀態。</li>
+</ul>
+
+<a class="back-link" href="#top">回到頁首</a>
+</article>
+    </main>
+  </div>
+  <footer>TNDA · Week 04 · 學生版課前預習</footer>
+</body>
+</html>
