@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 05 教案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 05 · 助教教案</p>
+      <h1>TNDA Week 05 教案</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="教案導覽">
+<p class="quick-nav-title">教案導覽</p>
+<a class="nav-level-2" href="#teacher-05-1">課前實作練習</a>
+<a class="nav-level-3" href="#teacher-05-2">課前實作練習 1｜讓缺少 Montage 的角色拒絕攻擊，仍可正常移動</a>
+<a class="nav-level-3" href="#teacher-05-4">課前實作練習 2｜做出慢速攻擊，讓操作鎖定跟著播放結束</a>
+<a class="nav-level-2" href="#teacher-05-6">課堂示範</a>
+<a class="nav-level-3" href="#teacher-05-7">課堂示範 1｜Animation Montage 的核心機制與編輯</a>
+<a class="nav-level-3" href="#teacher-05-9">課堂示範 2｜用 Montage 結束通知管理攻擊鎖定與恢復</a>
+<a class="nav-level-2" href="#teacher-05-11">課堂實作</a>
+<a class="nav-level-3" href="#teacher-05-12">課堂實作 1｜把攻擊起手的姿勢混合拉長</a>
+<a class="nav-level-3" href="#teacher-05-15">課堂實作 2｜讓每次正常攻擊結束留下可見的 Log</a>
+</nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="teacher-05-1">課前實作練習</h2>
+<h3 id="teacher-05-2">課前實作練習 1｜讓缺少 Montage 的角色拒絕攻擊，仍可正常移動</h3>
+<h4 id="teacher-05-3">細步驟解答</h4>
+<p>本教案採 TndaFighter <code>week-05</code>（<code>44e6c65</code>）、UE 5.8。下列步驟是依 tag 原始碼、既有 MCP 驗收資料與 UE 文件整理的帶課操作，尚未在本次 session 完成 Editor／PIE 排練；欄位以英文名稱定位，若編輯器翻譯不同，以資產路徑及 C++ 欄位名核對。</p>
+<ol>
+<li>先確認 Xbox 搖桿。Windows 辨識裝置後，開啟 <code>/Game/Fighting/stage1</code>，按 Play 並點一下遊戲畫面取得焦點。在場地中央依序測十字方向鍵、放開停止、X 單按與長按、放開再按。若鍵盤正常而搖桿無反應，先檢查 Windows 裝置連線及遊戲視窗焦點，不先改 IMC。需要釋放滑鼠時按 Shift+F1，結束測試按 Esc。</li>
+<li>停止 PIE，按 Ctrl+Space 開啟 Content Drawer，進入 <code>Content/Fighting/Blueprints</code>，雙擊 <code>BP_FightingPlayerCharacter</code>。若看到精簡資料畫面，開啟完整 Blueprint Editor，再點上方 <strong>Class Defaults</strong>。</li>
+<li>在 Details 搜尋 <code>Basic Attack Montage</code>（C++ 名稱 <code>BasicAttackMontage</code>）。原教材參照應為 <code>AM_Attack_01</code>。這是類別預設值，不是場景中玩家實例的屬性；不要使用「重設為原生預設」代替指定原教材參照。</li>
+<li>用資產選擇欄的清除功能將值設為 <strong>None</strong>，按 Compile，再按 Save／Ctrl+S。只保存這個 BP；CPU BP 的參照保持原樣。</li>
+<li>回到 <code>stage1</code> 開新 PIE，打開 <strong>Window → Developer Tools → Output Log</strong>，清除搜尋條件或搜尋 <code>Attack rejected</code>，確認 Warning 類別可見。讓玩家站在地面，保留有效 CPU 對手，按一次搖桿 X。</li>
+<li>驗收時同時看三件事：玩家沒有出拳、Log 包含 <code>command=X montage=None</code> 及 <code>reason=invalid animation configuration</code>、十字方向鍵仍能移動。可再用 U 交叉確認；不要求截圖或另外提交紀錄。</li>
+<li>口頭解答：<code>AFightingCharacter::TryExecuteCommand()</code> 在動畫設定檢查處返回，尚未執行成功播放後的 <code>bIsAttacking = true</code>。玩家 BP 清空參照，不代表 C++ 壞掉，也不會改到 CPU BP。</li>
+<li>若沒有 Warning，先確認控制焦點、BP 是否編譯儲存、是否仍在攻擊／離地／無對手等更早就被拒絕的條件。這些早期拒絕不一定產生同一筆 Warning，不要直接把沒有 Log 判為課題成功。</li>
+<li>停止 PIE，將玩家 BP 的 <code>Basic Attack Montage</code> 明確指定回 <code>/Game/Fighting/Anims/AM_Attack_01</code>，Compile、Save。重新 Play 確認 X 可播放一次，結束後仍可移動；此狀態才是練習 2 的起點。</li>
+</ol>
+<h3 id="teacher-05-4">課前實作練習 2｜做出慢速攻擊，讓操作鎖定跟著播放結束</h3>
+<h4 id="teacher-05-5">細步驟解答</h4>
+<ol>
+<li>確認已停止 PIE，玩家 BP 已指定 <code>AM_Attack_01</code>。開啟 <code>Content/Fighting/Anims/AM_Attack_01</code>，先確認原始條件：片段範圍 <code>0～1</code> 秒、Play Rate <code>1</code>、Loop Count <code>1</code>、<code>Default</code> Section 的 Next 為 None、Slot 為 <code>DefaultGroup.DefaultSlot</code>，Auto Blend Out 開啟。</li>
+<li>先以原始倍率在場地中央出拳一次，再停止 PIE。這是獨立比較的起點；不要沿用練習 1 的 None，也不要同時改 Blend 設定。</li>
+<li>在 Montage 時間軸點選 <code>MM_Attack_01</code> 的<strong>動畫片段</strong>，到 Details 找 <strong>Play Rate</strong>，從 <code>1</code> 改成 <code>0.5</code>，按 Ctrl+S。不要改預覽播放器的暫時速度、Montage 全域倍率或原始 Sequence。</li>
+<li>開新 PIE。先按 X 出招，再持續按住一個可移動方向。播放與完整淡出尚未結束時，角色預期不能主動移動；完整收尾後，持續按住的方向恢復移動。放開方向與 X，再按一次 X，應能再次出拳。</li>
+<li>另做一次重按測試：攻擊中放開並重按 X，隨後放開，確認原攻擊不重啟，結束後也不自動補播。再一次新的按下才是下一次出招機會。</li>
+<li>需要查看狀態時，PIE 中按 Shift+F1，在 World Outliner 選玩家執行個體；Details 搜尋 <code>Is Attacking</code> 與 <code>Current Command</code>。攻擊中預期為 <code>true</code>／<code>X</code>，收尾後為 <code>false</code>／<code>None</code>。欄位唯讀，不以修改它們完成題目；若面板無法即時看清，先依持續方向輸入、再次出招的結果驗收。</li>
+<li>口頭解答：改動的是共用 Montage 裡的片段倍率，原 Sequence 資料及 C++ 播放入口保持原樣。<code>OnMontageEnded</code> 經 <code>HandleAttackEnded()</code> 呼叫 <code>FinishAttack()</code>，才清除狀態；程式沒有固定等一秒的解鎖 Timer。CPU 也引用同一個 Montage，但沒有自主攻擊 AI，因此不會因調倍率而自己出招。</li>
+<li>若看不出變慢，檢查是否只改了預覽速度、是否已儲存正確資產、玩家是否仍引用原 Montage；若無法恢復移動，先核對 Loop Count、Section 連接與 Auto Blend Out。不要用手改 <code>bIsAttacking</code> 掩蓋設定問題。</li>
+<li>停止 PIE，把片段 Play Rate 還原 <code>1</code> 並儲存，確認未改動 Blend In <code>0.10</code>、Blend Out <code>0.15</code>、Trigger Time <code>-1</code>。重開 PIE 確認恢復教材原始行為。</li>
+</ol>
+<h2 id="teacher-05-6">課堂示範</h2>
+<h3 id="teacher-05-7">課堂示範 1｜Animation Montage 的核心機制與編輯</h3>
+<h4 id="teacher-05-8">示範重點</h4>
+<ul>
+<li>用 <code>MM_Attack_01</code>、<code>AM_Attack_01</code> 與 <code>ABP_Manny_Combat</code> 說明三個責任：Sequence 提供動作、Montage 安排片段與播放、Slot 讓動作進入 AnimGraph。<code>BasicAttackMontage</code> 是角色 BP 保存的參照，<code>Montage_Play()</code> 才是程式啟動播放的位置。</li>
+<li>以現有 Montage 認識時間軸、片段 Details、Asset Details、Section 與 Slot。示範 End Time <code>1 → 0.8</code> 後還原，再獨立示範片段 Play Rate <code>1 → 0.5</code> 後還原；片段使用範圍與速度會改變，原始動畫資料沒有被重寫。</li>
+<li>分開比較 Blend In <code>0.10 → 0.30</code> 與 Blend Out <code>0.15 → 0.30</code>，每次只改一項、儲存、進 PIE，再停止並還原。混合調整的是姿勢權重過渡，不等同於動作半速；維持 Auto Blend Out 與 Trigger Time <code>-1</code>，不把延長 Blend Out 說成整招必定等量延長。</li>
+<li>核對 <code>Default → None</code> 的單次 Section 接續與 <code>DefaultGroup.DefaultSlot</code>。AnimGraph 主路徑是 <code>Main States → DefaultGroup.DefaultSlot → Control Rig → Output Pose</code>。Slot 名稱必須對得上，本週不新增 Slot 或改 Skeleton。</li>
+<li>遊戲畫面依序使用 <a href="https://www.youtube.com/watch?v=_JDHHFiPZ3I&t=26s">Tekken 101：00:26</a> 的準備、生效、恢復，以及 <a href="https://www.youtube.com/watch?v=75IUhzlqHAg&t=20s">TEKKEN 8 BEST SLOWMOS：00:20</a>。戰鬥的 Active 需要命中判定，與「拳頭伸出去」不等同；本週只有播放，沒有 Hitbox。慢動作只能作視覺對照，不能宣稱《TEKKEN 8》一定使用 Montage Play Rate；世界時間倍率是另一種控制層。</li>
+<li>詳細點選、還原、逐頁話術與影片備案見同週教師講稿。最後銜接課堂實作 1：只拉長 Blend In。</li>
+</ul>
+<h3 id="teacher-05-9">課堂示範 2｜用 Montage 結束通知管理攻擊鎖定與恢復</h3>
+<h4 id="teacher-05-10">示範重點</h4>
+<ul>
+<li>核心順序是「資格與設定有效 → 播放成功 → 設定攻擊狀態 → 播放與淡出 → 完整結束通知 → 清理」。沒有成功播放就不能留下鎖定，開始淡出也不能提早解鎖。</li>
+<li><code>DoMove()</code> 先保存目前 4／6 語意，再阻擋攻擊中的 <code>AddMovementInput()</code>；<code>IsInNormalGroundState()</code> 則限制自動面向與自訂推擠。重力、碰撞及攝影機最大距離修正仍有效，不能把此處說成整個角色停止更新。</li>
+<li><code>Instance-&gt;OnMontageEnded</code> 綁定 <code>HandleAttackEnded()</code>；接到屬於當次播放的通知，才執行 <code>FinishAttack(false)</code>。播放身分只點出「避免舊通知解開新攻擊」，不展開弱參照與實例管理細節。</li>
+<li><code>CancelAttack()</code> 的 <code>Stop()</code> 開始淡出，仍須等完整結束。tag 沒有永久取消 Console 指令，課堂以程式帶讀中斷分支，不要求學生建立按鍵、呼叫測試 fixture 或改內部狀態。</li>
+<li><code>Started</code> 讓本教材每次按下只嘗試一次；鎖定中重按會被共用入口拒絕，不會排隊。<code>HandleAttackEnded()</code> 的 <code>Attack ended</code> 日誌原為 Verbose，銜接課堂實作 2 時只調整這筆等級。</li>
+<li>最後用 <a href="https://www.youtube.com/watch?v=_JDHHFiPZ3I&t=26s">Tekken 101：00:26</a> 與 <a href="https://www.youtube.com/watch?v=_JDHHFiPZ3I&t=54s">00:54</a> 說明 Frame Data 與雙方恢復時間差。<code>+5F</code> 表示攻擊方早 5 幀恢復，可用來維持壓制；下一招仍需考慮起手速度、距離與對手應對。+5F 是使用者提供的教學例，未逐格確認片中的特定招式；本週沒有防禦硬直或 Frame Advantage 計算。</li>
+</ul>
+<h2 id="teacher-05-11">課堂實作</h2>
+<h3 id="teacher-05-12">課堂實作 1｜把攻擊起手的姿勢混合拉長</h3>
+<h4 id="teacher-05-13">題目</h4>
+<p>以原始片段播放倍率 <code>1</code> 為基準，把 <code>/Game/Fighting/Anims/AM_Attack_01</code> 的 Blend In 從 <code>0.10</code> 秒改成 <code>0.30</code> 秒並儲存。只調整這一項，保留片段、Slot、Section、Blend Out 與 Auto Blend Out。</p>
+<p>分享桌面展示新數值與起手姿勢的過渡，在 PIE 按搖桿 X 或鍵盤 U，確認仍只播放一次、結束後能恢復移動。口頭說明：拉長姿勢混合與降低片段 Play Rate，改變的是同一件事嗎？</p>
+<h4 id="teacher-05-14">參考答案</h4>
+<ol>
+<li>停止 PIE，確認片段 Play Rate 已還原 <code>1</code>，玩家 BP 的 Montage 參照有效。</li>
+<li>開啟 <code>AM_Attack_01</code>，在 <strong>Asset Details → Blend In</strong> 展開混合設定，把 <strong>Blend Time</strong> 從 <code>0.10</code> 改成 <code>0.30</code>，Ctrl+S。不要改片段 Details 的 Play Rate；若面板未顯示，從 Window 開啟 Asset Details。</li>
+<li>進 <code>stage1</code> 的 PIE，從待機出拳，比較進入攻擊姿勢的過渡。保持玩家遠離牆與 CPU，完整結束後再試移動及下一次攻擊。需要回看原值時，停止 PIE、還原 <code>0.10</code> 並儲存後獨立比較，不在同次播放中改值。</li>
+<li>答案：Blend In 改變姿勢混合的過渡時間，Play Rate 改變片段播放速度；前者不等於把原始攻擊動畫拉成三倍長。混合差異以實際畫面判讀，不預先承諾固定的視覺幅度。</li>
+<li>如果看到整招變慢，檢查前題 Play Rate 是否尚未還原；若只有預覽變化而 PIE 無差異，檢查資產儲存與角色引用。驗收同時看設定、畫面和操作恢復。</li>
+<li>停止 PIE，將 Blend In 還原 <code>0.10</code>、儲存，確認 Blend Out 仍為 <code>0.15</code>。這項改動發生在雙方共用的 Montage，不是玩家 BP 的個別覆寫。</li>
+</ol>
+<h3 id="teacher-05-15">課堂實作 2｜讓每次正常攻擊結束留下可見的 Log</h3>
+<h4 id="teacher-05-16">題目</h4>
+<p>在 <code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 的 <code>HandleAttackEnded()</code> 中，只把既有 <code>Attack ended</code> 那一筆 <code>UE_LOG</code> 的等級從 <code>Verbose</code> 改成 <code>Log</code>，保留文字、參數與收尾邏輯。完成建置後，做出每次正常收尾都能在 Output Log 看到紀錄的版本。</p>
+<p>分享桌面展示該行修改、正常攻擊結束後的一筆 Log，以及恢復移動和再次出招。Log 應包含角色、<code>command=X</code>、Montage、instance 與 <code>interrupted=0</code>；攻擊中重按不會為被拒絕的輸入多生一筆結束紀錄。口頭說明：這筆 Log 對應的是按下攻擊鍵，還是某次播放完整結束？</p>
+<h4 id="teacher-05-17">參考答案</h4>
+<ol>
+<li>先把前題的資產設定還原並儲存，停止 PIE、關閉 Unreal Editor。在 IDE 開啟教材專案的 <code>FightingCharacter.cpp</code>，找到 <code>HandleAttackEnded()</code>。tag 的位置約在第 460 行，以函式及 <code>Attack ended</code> 文字定位，不依賴修改後行號。</li>
+<li>將該筆 <code>UE_LOG(LogTndaFighter, Verbose, ...)</code> 改為 <code>UE_LOG(LogTndaFighter, Log, ...)</code>。只改 <code>Verbose</code> 這個引數；<code>Attack started</code>、<code>Attack cancel</code> 與 <code>FinishAttack(false)</code> 保持原樣。</li>
+<li>儲存 C++，在已配置的 IDE 選 <strong>Development Editor／Win64</strong>，建置 <strong>TndaFighter</strong>。本題採關閉 Editor 後的完整建置，不混用 Live Coding。確認建置成功再重新開啟 <code>TndaFighter.uproject</code>；建置失敗先處理錯誤，不以舊 DLL 驗收。</li>
+<li>開啟 Output Log。在底部 Console 輸入 <code>log LogTndaFighter Log</code>，確保不是先前開啟的 Verbose 讓原紀錄本來就可見。清除不相關搜尋條件，再以 <code>Attack ended</code> 篩選。</li>
+<li>開新 PIE，按一次 X，等完整正常結束。驗收一筆包含 <code>command=X</code>、<code>AM_Attack_01</code>、<code>instance=</code>、<code>interrupted=0</code> 的紀錄；記錄出現前後都用實際移動及再次出招確認行為。</li>
+<li>另一次攻擊中放開、重按 X 後再放開。預期原攻擊只收尾一次，鎖定中的輸入沒有新增播放，因此不應多出第二筆結束紀錄。驗收不要把停止 PIE 的清理或其他角色播放混進計數。</li>
+<li>答案：日誌位於 <code>HandleAttackEnded()</code> 的身分檢查之後、<code>FinishAttack(false)</code> 之前，記錄的是當次播放收尾，不是每一次按鍵。<code>interrupted=0</code> 表示正常結束；此題不要求製造中斷。</li>
+<li>若沒有 Log，先確認重建成功且 Editor 載入新版本、搜尋條件與日誌等級正確、攻擊確實完整播放。若根本沒有攻擊，回頭檢查 Montage 參照，不能在收尾函式加更多狀態修改繞過原因。</li>
+<li>展示完成後關閉 Editor，將同一引數還原 <code>Verbose</code>，重新完整建置後再開啟專案。助教在自己的排練紀錄保存版本、建置方式與結果；學生不另交證明檔。</li>
+</ol>
+
+<a class="back-link" href="#top">回到頁首</a>
+</article>
+    </main>
+  </div>
+  <footer>TNDA · Week 05 · 助教教案</footer>
+</body>
+</html>

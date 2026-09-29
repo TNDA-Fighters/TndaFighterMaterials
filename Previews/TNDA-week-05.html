@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 05 課前預習｜基本攻擊與 Animation Montage</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+
+.flow-diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.flow-diagram svg { height: auto; margin-inline: auto; }
+
+
+
+
+
+  
+
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+
+#week05-flow-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week05-flow-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week05-flow-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week05-flow-1 .error-icon{fill:#552222;}#week05-flow-1 .error-text{fill:#552222;stroke:#552222;}#week05-flow-1 .edge-thickness-normal{stroke-width:1px;}#week05-flow-1 .edge-thickness-thick{stroke-width:3.5px;}#week05-flow-1 .edge-pattern-solid{stroke-dasharray:0;}#week05-flow-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#week05-flow-1 .edge-pattern-dashed{stroke-dasharray:3;}#week05-flow-1 .edge-pattern-dotted{stroke-dasharray:2;}#week05-flow-1 .marker{fill:#333333;stroke:#333333;}#week05-flow-1 .marker.cross{stroke:#333333;}#week05-flow-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#week05-flow-1 p{margin:0;}#week05-flow-1 .label{font-family:Microsoft JhengHei;color:#333;}#week05-flow-1 .cluster-label text{fill:#333;}#week05-flow-1 .cluster-label span{color:#333;}#week05-flow-1 .cluster-label span p{background-color:transparent;}#week05-flow-1 .label text,#week05-flow-1 span{fill:#333;color:#333;}#week05-flow-1 .node rect,#week05-flow-1 .node circle,#week05-flow-1 .node ellipse,#week05-flow-1 .node polygon,#week05-flow-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week05-flow-1 .rough-node .label text,#week05-flow-1 .node .label text,#week05-flow-1 .image-shape .label,#week05-flow-1 .icon-shape .label{text-anchor:middle;}#week05-flow-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week05-flow-1 .rough-node .label,#week05-flow-1 .node .label,#week05-flow-1 .image-shape .label,#week05-flow-1 .icon-shape .label{text-align:center;}#week05-flow-1 .node.clickable{cursor:pointer;}#week05-flow-1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week05-flow-1 .arrowheadPath{fill:#333333;}#week05-flow-1 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week05-flow-1 .flowchart-link{stroke:#333333;fill:none;}#week05-flow-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week05-flow-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week05-flow-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week05-flow-1 .cluster text{fill:#333;}#week05-flow-1 .cluster span{color:#333;}#week05-flow-1 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week05-flow-1 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week05-flow-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week05-flow-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week05-flow-1 rect.text{fill:none;stroke-width:0;}#week05-flow-1 .icon-shape,#week05-flow-1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-1 .icon-shape p,#week05-flow-1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week05-flow-1 .icon-shape .label rect,#week05-flow-1 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week05-flow-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week05-flow-1 .node .neo-node{stroke:#9370DB;}#week05-flow-1 [data-look="neo"].node rect,#week05-flow-1 [data-look="neo"].cluster rect,#week05-flow-1 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#week05-flow-1 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week05-flow-1 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-1 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week05-flow-1 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-1 [data-look="neo"].node circle .state-start{fill:#000000;}#week05-flow-1 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-1 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week05-flow-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week05-flow-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week05-flow-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week05-flow-2 .error-icon{fill:#552222;}#week05-flow-2 .error-text{fill:#552222;stroke:#552222;}#week05-flow-2 .edge-thickness-normal{stroke-width:1px;}#week05-flow-2 .edge-thickness-thick{stroke-width:3.5px;}#week05-flow-2 .edge-pattern-solid{stroke-dasharray:0;}#week05-flow-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#week05-flow-2 .edge-pattern-dashed{stroke-dasharray:3;}#week05-flow-2 .edge-pattern-dotted{stroke-dasharray:2;}#week05-flow-2 .marker{fill:#333333;stroke:#333333;}#week05-flow-2 .marker.cross{stroke:#333333;}#week05-flow-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#week05-flow-2 p{margin:0;}#week05-flow-2 .label{font-family:Microsoft JhengHei;color:#333;}#week05-flow-2 .cluster-label text{fill:#333;}#week05-flow-2 .cluster-label span{color:#333;}#week05-flow-2 .cluster-label span p{background-color:transparent;}#week05-flow-2 .label text,#week05-flow-2 span{fill:#333;color:#333;}#week05-flow-2 .node rect,#week05-flow-2 .node circle,#week05-flow-2 .node ellipse,#week05-flow-2 .node polygon,#week05-flow-2 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week05-flow-2 .rough-node .label text,#week05-flow-2 .node .label text,#week05-flow-2 .image-shape .label,#week05-flow-2 .icon-shape .label{text-anchor:middle;}#week05-flow-2 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week05-flow-2 .rough-node .label,#week05-flow-2 .node .label,#week05-flow-2 .image-shape .label,#week05-flow-2 .icon-shape .label{text-align:center;}#week05-flow-2 .node.clickable{cursor:pointer;}#week05-flow-2 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week05-flow-2 .arrowheadPath{fill:#333333;}#week05-flow-2 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week05-flow-2 .flowchart-link{stroke:#333333;fill:none;}#week05-flow-2 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-2 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week05-flow-2 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-2 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week05-flow-2 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week05-flow-2 .cluster text{fill:#333;}#week05-flow-2 .cluster span{color:#333;}#week05-flow-2 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week05-flow-2 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week05-flow-2 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week05-flow-2 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week05-flow-2 rect.text{fill:none;stroke-width:0;}#week05-flow-2 .icon-shape,#week05-flow-2 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-2 .icon-shape p,#week05-flow-2 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week05-flow-2 .icon-shape .label rect,#week05-flow-2 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-2 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week05-flow-2 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week05-flow-2 .node .neo-node{stroke:#9370DB;}#week05-flow-2 [data-look="neo"].node rect,#week05-flow-2 [data-look="neo"].cluster rect,#week05-flow-2 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#week05-flow-2 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week05-flow-2 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-2 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week05-flow-2 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-2 [data-look="neo"].node circle .state-start{fill:#000000;}#week05-flow-2 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-2 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-2 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week05-flow-3{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week05-flow-3 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week05-flow-3 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week05-flow-3 .error-icon{fill:#552222;}#week05-flow-3 .error-text{fill:#552222;stroke:#552222;}#week05-flow-3 .edge-thickness-normal{stroke-width:1px;}#week05-flow-3 .edge-thickness-thick{stroke-width:3.5px;}#week05-flow-3 .edge-pattern-solid{stroke-dasharray:0;}#week05-flow-3 .edge-thickness-invisible{stroke-width:0;fill:none;}#week05-flow-3 .edge-pattern-dashed{stroke-dasharray:3;}#week05-flow-3 .edge-pattern-dotted{stroke-dasharray:2;}#week05-flow-3 .marker{fill:#333333;stroke:#333333;}#week05-flow-3 .marker.cross{stroke:#333333;}#week05-flow-3 svg{font-family:Microsoft JhengHei;font-size:30px;}#week05-flow-3 p{margin:0;}#week05-flow-3 .label{font-family:Microsoft JhengHei;color:#333;}#week05-flow-3 .cluster-label text{fill:#333;}#week05-flow-3 .cluster-label span{color:#333;}#week05-flow-3 .cluster-label span p{background-color:transparent;}#week05-flow-3 .label text,#week05-flow-3 span{fill:#333;color:#333;}#week05-flow-3 .node rect,#week05-flow-3 .node circle,#week05-flow-3 .node ellipse,#week05-flow-3 .node polygon,#week05-flow-3 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week05-flow-3 .rough-node .label text,#week05-flow-3 .node .label text,#week05-flow-3 .image-shape .label,#week05-flow-3 .icon-shape .label{text-anchor:middle;}#week05-flow-3 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week05-flow-3 .rough-node .label,#week05-flow-3 .node .label,#week05-flow-3 .image-shape .label,#week05-flow-3 .icon-shape .label{text-align:center;}#week05-flow-3 .node.clickable{cursor:pointer;}#week05-flow-3 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week05-flow-3 .arrowheadPath{fill:#333333;}#week05-flow-3 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week05-flow-3 .flowchart-link{stroke:#333333;fill:none;}#week05-flow-3 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-3 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week05-flow-3 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-3 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week05-flow-3 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week05-flow-3 .cluster text{fill:#333;}#week05-flow-3 .cluster span{color:#333;}#week05-flow-3 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week05-flow-3 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week05-flow-3 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week05-flow-3 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week05-flow-3 rect.text{fill:none;stroke-width:0;}#week05-flow-3 .icon-shape,#week05-flow-3 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-3 .icon-shape p,#week05-flow-3 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week05-flow-3 .icon-shape .label rect,#week05-flow-3 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-3 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week05-flow-3 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week05-flow-3 .node .neo-node{stroke:#9370DB;}#week05-flow-3 [data-look="neo"].node rect,#week05-flow-3 [data-look="neo"].cluster rect,#week05-flow-3 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-3 [data-look="neo"].swimlane.cluster rect{filter:none;}#week05-flow-3 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week05-flow-3 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-3 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week05-flow-3 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-3 [data-look="neo"].node circle .state-start{fill:#000000;}#week05-flow-3 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-3 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-3 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week05-flow-4{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week05-flow-4 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week05-flow-4 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week05-flow-4 .error-icon{fill:#552222;}#week05-flow-4 .error-text{fill:#552222;stroke:#552222;}#week05-flow-4 .edge-thickness-normal{stroke-width:1px;}#week05-flow-4 .edge-thickness-thick{stroke-width:3.5px;}#week05-flow-4 .edge-pattern-solid{stroke-dasharray:0;}#week05-flow-4 .edge-thickness-invisible{stroke-width:0;fill:none;}#week05-flow-4 .edge-pattern-dashed{stroke-dasharray:3;}#week05-flow-4 .edge-pattern-dotted{stroke-dasharray:2;}#week05-flow-4 .marker{fill:#333333;stroke:#333333;}#week05-flow-4 .marker.cross{stroke:#333333;}#week05-flow-4 svg{font-family:Microsoft JhengHei;font-size:30px;}#week05-flow-4 p{margin:0;}#week05-flow-4 .label{font-family:Microsoft JhengHei;color:#333;}#week05-flow-4 .cluster-label text{fill:#333;}#week05-flow-4 .cluster-label span{color:#333;}#week05-flow-4 .cluster-label span p{background-color:transparent;}#week05-flow-4 .label text,#week05-flow-4 span{fill:#333;color:#333;}#week05-flow-4 .node rect,#week05-flow-4 .node circle,#week05-flow-4 .node ellipse,#week05-flow-4 .node polygon,#week05-flow-4 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week05-flow-4 .rough-node .label text,#week05-flow-4 .node .label text,#week05-flow-4 .image-shape .label,#week05-flow-4 .icon-shape .label{text-anchor:middle;}#week05-flow-4 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week05-flow-4 .rough-node .label,#week05-flow-4 .node .label,#week05-flow-4 .image-shape .label,#week05-flow-4 .icon-shape .label{text-align:center;}#week05-flow-4 .node.clickable{cursor:pointer;}#week05-flow-4 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week05-flow-4 .arrowheadPath{fill:#333333;}#week05-flow-4 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week05-flow-4 .flowchart-link{stroke:#333333;fill:none;}#week05-flow-4 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-4 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week05-flow-4 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-4 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week05-flow-4 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week05-flow-4 .cluster text{fill:#333;}#week05-flow-4 .cluster span{color:#333;}#week05-flow-4 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week05-flow-4 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week05-flow-4 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week05-flow-4 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week05-flow-4 rect.text{fill:none;stroke-width:0;}#week05-flow-4 .icon-shape,#week05-flow-4 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week05-flow-4 .icon-shape p,#week05-flow-4 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week05-flow-4 .icon-shape .label rect,#week05-flow-4 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week05-flow-4 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week05-flow-4 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week05-flow-4 .node .neo-node{stroke:#9370DB;}#week05-flow-4 [data-look="neo"].node rect,#week05-flow-4 [data-look="neo"].cluster rect,#week05-flow-4 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-4 [data-look="neo"].swimlane.cluster rect{filter:none;}#week05-flow-4 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week05-flow-4 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-4 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week05-flow-4 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-4 [data-look="neo"].node circle .state-start{fill:#000000;}#week05-flow-4 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-4 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week05-flow-4 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 05 · 學生版課前預習</p>
+      <h1>TNDA Week 05 課前預習｜基本攻擊與 Animation Montage</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+<p class="quick-nav-title">本頁導覽</p>
+<a class="nav-level-2" href="#student-05-1">本週目標</a>
+<a class="nav-level-2" href="#student-05-2">課前準備</a>
+<a class="nav-level-2" href="#student-05-3">課前預習</a>
+<a class="nav-level-3" href="#student-05-4">課前預習 1｜從 Xbox 搖桿找到移動與出拳的程式入口</a>
+<a class="nav-level-3" href="#student-05-5">課前預習 2｜攻擊何時結束，角色何時能再次移動？</a>
+<a class="nav-level-2" href="#student-05-6">課前實作練習</a>
+<a class="nav-level-3" href="#student-05-7">課前實作練習 1｜讓缺少 Montage 的角色拒絕攻擊，仍可正常移動</a>
+<a class="nav-level-3" href="#student-05-8">課前實作練習 2｜做出慢速攻擊，讓操作鎖定跟著播放結束</a>
+<a class="nav-level-2" href="#student-05-9">官方參考資料</a>
+<a class="nav-level-2" href="#student-05-10">上課前確認</a>
+</nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="student-05-1">本週目標</h2>
+<ul>
+<li>用 Xbox 搖桿操作移動與出拳，說明實體按鍵如何經過 Enhanced Input 接到 C++。</li>
+<li>分清動畫片段、Montage 與 Slot 的用途，找到角色使用的攻擊動畫設定。</li>
+<li>追到攻擊結束通知，說明角色何時恢復移動與再次出招的資格。</li>
+<li>完成兩個可還原的設定練習，於課堂分享桌面、實際操作並口頭說明。</li>
+</ul>
+<h2 id="student-05-2">課前準備</h2>
+<p>使用講師提供的 TndaFighter <code>week-05</code> 教材（<code>44e6c65</code>）與 UE 5.8。開啟 <code>/Game/Fighting/stage1</code>；本週已包含搖桿十字方向鍵移動、X 出拳，以及鍵盤 U 的同等攻擊操作。出拳成功以動畫播放為準，尚未加入命中、扣血或連段。</p>
+<p>準備可被 Windows 辨識的 Xbox 搖桿，並確認能在 PIE（Play In Editor，編輯器內執行遊戲）操控角色。課堂需分享 UE 畫面、設定與 Output Log，不必另交截圖或測量紀錄。四向操作與出拳先使用教材原始設定測試，兩項練習各自從原始設定開始。</p>
+<p>本頁的 <code>Source/...</code> 路徑以教材專案根目錄為起點；<code>/Game/...</code> 是 Content Browser 的資產路徑，例如 <code>/Game/Fighting/Anims/AM_Attack_01</code> 對應 <code>Content/Fighting/Anims/AM_Attack_01</code>。</p>
+<h2 id="student-05-3">課前預習</h2>
+<h3 id="student-05-4">課前預習 1｜從 Xbox 搖桿找到移動與出拳的程式入口</h3>
+<p><strong>先用原始設定確認操作</strong></p>
+<p><img src="../images/week-05-gamepad-x-button.png" alt="綠框是十字方向鍵，紅框是 Xbox X 按鈕"></p>
+<p>綠框的十字方向鍵控制移動，紅框的 X 按鈕觸發攻擊。先確認上、下、左、右都能移動，放開後會停下；再按 X 出拳，長按不連發。放開 X 並等這次攻擊完整結束，再按一次，應能再次出拳。測試時離開牆面和另一個角色，避免把碰撞阻擋誤認為輸入失效。圖片由講師提供。</p>
+<p><strong>同一個 X，可能是在說不同東西</strong></p>
+<table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>本週代表什麼</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>搖桿 X 按鈕</td>
+<td>實體按鈕，在 UE 的 Key 名稱是 <code>Gamepad_FaceButton_Left</code>。</td>
+</tr>
+<tr>
+<td>攻擊語意 <code>X</code></td>
+<td>程式收到的招式名稱，命名沿用搖桿 X；鍵盤 U 也送出這個名稱。</td>
+</tr>
+<tr>
+<td>二維輸入的 X 軸</td>
+<td><code>IA_Move</code> 的左右數值，與攻擊名稱無關；Y 軸是前後數值。</td>
+</tr>
+<tr>
+<td>4／6 方向</td>
+<td>相對對手的遠離／靠近，不是十字方向鍵本身的名稱。</td>
+</tr>
+</tbody></table>
+<p>Input Mapping Context（IMC）是按鍵對應表，Input Action（IA）代表遊戲收到的動作。Modifier 會調整輸入值，例如交換軸向或反轉正負。這些資產先產生輸入資料，C++ 再決定角色如何反應。</p>
+<p><code>IA_Move</code> 使用二維向量；<code>IA_Attack1</code> 使用 Boolean，表示按下與放開。不要把「Boolean 動作」當成 <code>bIsAttacking</code>：前者是輸入，後者是角色已接受攻擊後的狀態。</p>
+<p><strong>按鍵到動作的資料變化</strong></p>
+<table>
+<thead>
+<tr>
+<th>十字方向鍵</th>
+<th>UE Key</th>
+<th><code>IA_Move</code> 數值（左右，前後）</th>
+<th>Modifier</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上</td>
+<td><code>Gamepad_DPad_Up</code></td>
+<td><code>(0, 1)</code></td>
+<td><code>SwizzleAxis</code>：YXZ</td>
+</tr>
+<tr>
+<td>下</td>
+<td><code>Gamepad_DPad_Down</code></td>
+<td><code>(0, -1)</code></td>
+<td><code>SwizzleAxis</code>：YXZ、<code>Negate</code></td>
+</tr>
+<tr>
+<td>左</td>
+<td><code>Gamepad_DPad_Left</code></td>
+<td><code>(-1, 0)</code></td>
+<td><code>Negate</code></td>
+</tr>
+<tr>
+<td>右</td>
+<td><code>Gamepad_DPad_Right</code></td>
+<td><code>(1, 0)</code></td>
+<td>無</td>
+</tr>
+</tbody></table>
+<p>這些方向以目前攝影機的水平朝向為基準，不是世界座標固定的正 X、正 Y。搖桿 X 與鍵盤 U 則都對應 <code>/Game/Fighting/Input/Actions/IA_Attack1</code>，再由 C++ 送出名稱 <code>X</code>。</p>
+<p><strong>閱讀路徑 A：共同輸入設定與移動分支</strong></p>
+<ol>
+<li>從 <code>Source/TndaFighter/Fighting/FightingPlayerController.cpp</code> 的 <code>AFightingPlayerController::SetupInputComponent()</code> 開始。它將 <code>DefaultMappingContexts</code> 逐一交給本機玩家的 <code>AddMappingContext()</code>，讓按鍵對應表生效。</li>
+<li>到 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.h</code> 看 <code>MoveAction</code>、<code>AttackAction</code> 宣告，再到同名 <code>.cpp</code> 的 <code>SetupPlayerInputComponent()</code>。<code>BindAction()</code> 將 IA、事件種類及接收函式綁在一起。</li>
+<li>沿同檔的 <code>Move()</code> → <code>DoMove()</code> 往下看。<code>Move()</code> 取出 <code>FVector2D</code>，<code>DoMove()</code> 取得攝影機水平方向、換算移動意圖並更新 4／6；符合操作條件時，終點是 <code>AddMovementInput()</code>。此處只讀資料怎麼傳，不重算前幾週的方向公式。</li>
+<li>找 <code>StopMove()</code>：它綁在 <code>Completed</code>／<code>Canceled</code>，清除保存的推擠意圖，並把相對方向設回 <code>Neutral</code>。實際減速與停止仍由移動系統處理。</li>
+</ol>
+<figure class="flow-diagram"><svg id="week05-flow-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 1691.52px; background-color: rgb(255, 255, 255);" viewBox="0 0 1691.515625 130" role="graphics-document document" aria-roledescription="流程圖" aria-label="預習流程圖 1"><g><marker id="week05-flow-1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-1_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week05-flow-1_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M206,65L218,65L226,65" id="week05-flow-1-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjA2LCJ5Ijo2NX0seyJ4IjoyMTgsInkiOjY1fSx7IngiOjIzMCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-1_flowchart-v2-pointEnd)"/><path d="M478,65L490,65L498,65" id="week05-flow-1-L_B_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NDc4LCJ5Ijo2NX0seyJ4Ijo0OTAsInkiOjY1fSx7IngiOjUwMiwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-1_flowchart-v2-pointEnd)"/><path d="M750,65L762,65L770,65" id="week05-flow-1-L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6NzUwLCJ5Ijo2NX0seyJ4Ijo3NjIsInkiOjY1fSx7IngiOjc3NCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-1_flowchart-v2-pointEnd)"/><path d="M1022,65L1034,65L1042,65" id="week05-flow-1-L_D_E_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MTAyMiwieSI6NjV9LHsieCI6MTAzNCwieSI6NjV9LHsieCI6MTA0NiwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-1_flowchart-v2-pointEnd)"/><path d="M1294,65L1306,65L1314,65" id="week05-flow-1-L_E_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MTI5NCwieSI6NjV9LHsieCI6MTMwNiwieSI6NjV9LHsieCI6MTMxOCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-1_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week05-flow-1-flowchart-A-0" data-look="classic" transform="translate(107, 65)"><rect class="basic label-container" style="" x="-99" y="-34.5" width="198" height="69"/><g class="label" style="" transform="translate(-75, -22.5)"><rect/><foreignObject width="150" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>十字方向鍵</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-1-flowchart-B-1" data-look="classic" transform="translate(354, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>按鍵對應表 IMC</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-1-flowchart-C-3" data-look="classic" transform="translate(626, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>移動動作：二維數值</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-1-flowchart-D-5" data-look="classic" transform="translate(898, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>Triggered：持續呼叫 Move</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-1-flowchart-E-7" data-look="classic" transform="translate(1170, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>DoMove：換算方向</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-1-flowchart-F-9" data-look="classic" transform="translate(1500.7578125, 65)"><rect class="basic label-container" style="" x="-182.7578125" y="-57" width="365.515625" height="114"/><g class="label" style="" transform="translate(-158.7578125, -45)"><rect/><foreignObject width="317.515625" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>AddMovementInput：送出移動</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week05-flow-1-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week05-flow-1-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;十字方向鍵&quot;] --&gt; B[&quot;按鍵對應表 IMC&quot;]
+    B --&gt; C[&quot;移動動作：二維數值&quot;]
+    C --&gt; D[&quot;Triggered：持續呼叫 Move&quot;]
+    D --&gt; E[&quot;DoMove：換算方向&quot;]
+    E --&gt; F[&quot;AddMovementInput：送出移動&quot;]</code></pre></details><p>圖表示可移動時的主要路徑。<code>Triggered</code> 的行為取決於 IA 的設定；本教材使用的移動設定會在按住時持續更新，不代表所有 IA 都會如此。</p>
+<p><strong>閱讀路徑 B：出拳分支到角色的 Montage 設定</strong></p>
+<ol>
+<li>在同一個 <code>SetupPlayerInputComponent()</code> 找 <code>AttackAction</code>：攻擊綁的是 <code>Started</code>，接到 <code>AFightingPlayerCharacter::Attack()</code>。</li>
+<li><code>Attack()</code> 呼叫 <code>TryExecuteCommand(TEXT(&quot;X&quot;))</code>。<code>TEXT(&quot;X&quot;)</code> 表示文字 X；參數型別 <code>FName</code> 用來保存這個名稱。<code>AFightingPlayerCharacter::TryExecuteCommand()</code> 先檢查 Controller，再以 <code>Super::TryExecuteCommand()</code> 呼叫父類版本；<code>Super::</code> 就是「交給父類處理」。</li>
+<li>到 <code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 的 <code>AFightingCharacter::TryExecuteCommand()</code>。這是玩家與 CPU 共用的攻擊入口，先檢查語意、狀態、對手與動畫設定，才呼叫 <code>Montage_Play()</code>。</li>
+<li>最後到 <code>Source/TndaFighter/Fighting/FightingCharacter.h</code> 找 <code>BasicAttackMontage</code>，再對照 <code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code> 的 Class Defaults。<code>EditDefaultsOnly</code> 表示在類別預設值設定，這題不改 PIE 執行個體；教材 BP 指向 <code>/Game/Fighting/Anims/AM_Attack_01</code>。</li>
+</ol>
+<figure class="flow-diagram"><svg id="week05-flow-2" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 1624px; background-color: rgb(255, 255, 255);" viewBox="0 0 1624 130" role="graphics-document document" aria-roledescription="流程圖" aria-label="預習流程圖 2"><g><marker id="week05-flow-2_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-2_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week05-flow-2_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M256,65L268,65L276,65" id="week05-flow-2-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjU2LCJ5Ijo2NX0seyJ4IjoyNjgsInkiOjY1fSx7IngiOjI4MCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-2_flowchart-v2-pointEnd)"/><path d="M528,65L540,65L548,65" id="week05-flow-2-L_B_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NTI4LCJ5Ijo2NX0seyJ4Ijo1NDAsInkiOjY1fSx7IngiOjU1MiwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-2_flowchart-v2-pointEnd)"/><path d="M800,65L812,65L820,65" id="week05-flow-2-L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6ODAwLCJ5Ijo2NX0seyJ4Ijo4MTIsInkiOjY1fSx7IngiOjgyNCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-2_flowchart-v2-pointEnd)"/><path d="M1072,65L1084,65L1092,65" id="week05-flow-2-L_D_E_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MTA3MiwieSI6NjV9LHsieCI6MTA4NCwieSI6NjV9LHsieCI6MTA5NiwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-2_flowchart-v2-pointEnd)"/><path d="M1344,65L1356,65L1364,65" id="week05-flow-2-L_E_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MTM0NCwieSI6NjV9LHsieCI6MTM1NiwieSI6NjV9LHsieCI6MTM2OCwieSI6NjV9XQ==" data-look="classic" marker-end="url(#week05-flow-2_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week05-flow-2-flowchart-A-0" data-look="classic" transform="translate(132, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>搖桿 X／鍵盤 U</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-2-flowchart-B-1" data-look="classic" transform="translate(404, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>攻擊動作 IA_Attack1</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-2-flowchart-C-3" data-look="classic" transform="translate(676, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>Started：呼叫 Attack</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-2-flowchart-D-5" data-look="classic" transform="translate(948, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>玩家入口：確認控制權</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-2-flowchart-E-7" data-look="classic" transform="translate(1220, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>共同入口：檢查攻擊資格</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-2-flowchart-F-9" data-look="classic" transform="translate(1492, 65)"><rect class="basic label-container" style="" x="-124" y="-57" width="248" height="114"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>播放 BP 指定的 Montage</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week05-flow-2-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week05-flow-2-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;搖桿 X／鍵盤 U&quot;] --&gt; B[&quot;攻擊動作 IA_Attack1&quot;]
+    B --&gt; C[&quot;Started：呼叫 Attack&quot;]
+    C --&gt; D[&quot;玩家入口：確認控制權&quot;]
+    D --&gt; E[&quot;共同入口：檢查攻擊資格&quot;]
+    E --&gt; F[&quot;播放 BP 指定的 Montage&quot;]</code></pre></details><p>這裡有三種動畫名詞：AnimSequence 是原始動作資料，本週用 <code>MM_Attack_01</code>；Montage 安排怎麼使用及播放片段，本週用 <code>AM_Attack_01</code>；Slot 是 Montage 進入 AnimGraph 的接點，本週是 <code>DefaultGroup.DefaultSlot</code>。角色 BP 保存 Montage 參照，C++ 讀取參照後啟動播放。</p>
+<p>這兩個分支的 C++ 呼叫與綁定已核對 <code>week-05</code> 原始碼。硬體輸入經 Enhanced Input 呼叫綁定函式，是引擎負責的串接；資產對應及 Slot 配置依教材已有的 MCP 查證紀錄。本週預習不要求新增 Blueprint 接線，也不追引擎內部的輸入實作。</p>
+<h3 id="student-05-5">課前預習 2｜攻擊何時結束，角色何時能再次移動？</h3>
+<p><strong>先分清播放、混合與通知</strong></p>
+<ul>
+<li>Play Rate 是播放倍率。片段設為 <code>0.5</code>，該片段以半速播放；它不會自動把整個世界一起放慢。</li>
+<li>Blend In／Blend Out 是從原姿勢進入攻擊、再退出攻擊姿勢的混合過程。開始淡出不等於攻擊已完整結束。</li>
+<li>Callback（回呼）是事件發生時，系統回頭呼叫我們登記的函式。這裡登記的是 Montage 結束通知。</li>
+<li><code>bIsAttacking</code> 是攻擊鎖定狀態；<code>CurrentCommand</code> 是本次已接受的招式名稱。它們都是執行時唯讀觀察欄位，不是練習用的開關。</li>
+</ul>
+<p><strong>閱讀路徑：播放成功到恢復操作</strong></p>
+<ol>
+<li>從 <code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 的 <code>TryExecuteCommand()</code> 接續預習 1。找到 <code>Montage_Play()</code> 的結果與當次播放實例檢查。只有播放成功，才保存 <code>CurrentCommand</code> 並將 <code>bIsAttacking</code> 設為 <code>true</code>。</li>
+<li>找 <code>Instance-&gt;OnMontageEnded.BindUObject(...)</code>。它把這次播放的結束通知綁到 <code>HandleAttackEnded()</code>；<code>-&gt;</code> 表示透過物件指標存取成員。此處只需辨認「誰的通知、交給誰處理」，不展開指標管理。</li>
+<li>到同檔 <code>HandleAttackEnded()</code>。它確認通知屬於目前這次播放，再呼叫 <code>FinishAttack(false)</code>。後者清除播放身分、將 <code>bIsAttacking</code> 設回 <code>false</code>，並把 <code>CurrentCommand</code> 清為 <code>None</code>。</li>
+<li>對照 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.cpp</code> 的 <code>DoMove()</code>：方向語意先更新，再檢查 <code>bIsAttacking</code>。攻擊中提前返回，不送出 <code>AddMovementInput()</code>；收尾後若仍按住方向，下一次 <code>Triggered</code> 就能沿正常路徑移動。已經放開的方向不會由收尾函式補送。</li>
+<li>最後對照玩家 PIE 執行個體中的 <code>Is Attacking</code> 與 <code>Current Command</code>。有效攻擊期間預期是 <code>true</code>／<code>X</code>，完整收尾後是 <code>false</code>／<code>None</code>；用操作結果一起判讀，不只看動畫似乎停了。</li>
+</ol>
+<figure class="flow-diagram"><svg id="week05-flow-3" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 1643.17px; background-color: rgb(255, 255, 255);" viewBox="0 0 1643.171875 136" role="graphics-document document" aria-roledescription="流程圖" aria-label="預習流程圖 3"><g><marker id="week05-flow-3_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-3_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week05-flow-3_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M268,68L295,68L318,68" id="week05-flow-3-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjY4LCJ5Ijo2OH0seyJ4IjoyOTUsInkiOjY4fSx7IngiOjMyMiwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week05-flow-3_flowchart-v2-pointEnd)"/><path d="M582,68L609,68L632,68" id="week05-flow-3-L_B_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NTgyLCJ5Ijo2OH0seyJ4Ijo2MDksInkiOjY4fSx7IngiOjYzNiwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week05-flow-3_flowchart-v2-pointEnd)"/><path d="M896,68L923,68L946,68" id="week05-flow-3-L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6ODk2LCJ5Ijo2OH0seyJ4Ijo5MjMsInkiOjY4fSx7IngiOjk1MCwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week05-flow-3_flowchart-v2-pointEnd)"/><path d="M1320.219,68L1347.219,68L1370.219,68" id="week05-flow-3-L_D_E_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MTMyMC4yMTg3NSwieSI6Njh9LHsieCI6MTM0Ny4yMTg3NSwieSI6Njh9LHsieCI6MTM3NC4yMTg3NSwieSI6Njh9XQ==" data-look="classic" marker-end="url(#week05-flow-3_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week05-flow-3-flowchart-A-0" data-look="classic" transform="translate(138, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>播放成功：設定鎖定</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-3-flowchart-B-1" data-look="classic" transform="translate(452, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>播放與淡出：仍鎖定</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-3-flowchart-C-3" data-look="classic" transform="translate(766, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>完整結束：發出通知</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-3-flowchart-D-5" data-look="classic" transform="translate(1135.109375, 68)"><rect class="basic label-container" style="" x="-185.109375" y="-60" width="370.21875" height="120"/><g class="label" style="" transform="translate(-155.109375, -45)"><rect/><foreignObject width="310.21875" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>HandleAttackEnded：確認當次播放</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-3-flowchart-E-7" data-look="classic" transform="translate(1504.6953125, 68)"><rect class="basic label-container" style="" x="-130.4765625" y="-60" width="260.953125" height="120"/><g class="label" style="" transform="translate(-100.4765625, -45)"><rect/><foreignObject width="200.953125" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>FinishAttack：清除狀態</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week05-flow-3-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week05-flow-3-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;播放成功：設定鎖定&quot;] --&gt; B[&quot;播放與淡出：仍鎖定&quot;]
+    B --&gt; C[&quot;完整結束：發出通知&quot;]
+    C --&gt; D[&quot;HandleAttackEnded：確認當次播放&quot;]
+    D --&gt; E[&quot;FinishAttack：清除狀態&quot;]</code></pre></details><figure class="flow-diagram"><svg id="week05-flow-4" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 899px; background-color: rgb(255, 255, 255);" viewBox="0 0 899 263.25" role="graphics-document document" aria-roledescription="流程圖" aria-label="預習流程圖 4"><g><marker id="week05-flow-4_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="week05-flow-4_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="week05-flow-4_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M268,142.75L295,142.75L318,142.75" id="week05-flow-4-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjY4LCJ5IjoxNDIuNzV9LHsieCI6Mjk1LCJ5IjoxNDIuNzV9LHsieCI6MzIyLCJ5IjoxNDIuNzV9XQ==" data-look="classic" marker-end="url(#week05-flow-4_flowchart-v2-pointEnd)"/><path d="M510.318,106.068L589,68L627,68" id="week05-flow-4-L_B_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NTEwLjMxNzg4NDQwNTY3MDY3LCJ5IjoxMDYuMDY3ODg0NDA1NjcwNjd9LHsieCI6NTg5LCJ5Ijo2OH0seyJ4Ijo2MzEsInkiOjY4fV0=" data-look="classic" marker-end="url(#week05-flow-4_flowchart-v2-pointEnd)"/><path d="M510.318,179.432L589,217.5L637,217.5" id="week05-flow-4-L_B_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_D_0" data-points="W3sieCI6NTEwLjMxNzg4NDQwNTY3MDY3LCJ5IjoxNzkuNDMyMTE1NTk0MzI5MzN9LHsieCI6NTg5LCJ5IjoyMTcuNX0seyJ4Ijo2NDEsInkiOjIxNy41fV0=" data-look="classic" marker-end="url(#week05-flow-4_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(589, 68)"><g class="label" data-id="L_B_C_0" transform="translate(-15, -22.5)"><foreignObject width="30" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>是</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(589, 217.5)"><g class="label" data-id="L_B_D_0" transform="translate(-15, -22.5)"><foreignObject width="30" height="45"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>否</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="week05-flow-4-flowchart-A-0" data-look="classic" transform="translate(138, 142.75)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>DoMove：更新方向語意</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-4-flowchart-B-1" data-look="classic" transform="translate(434.5, 142.75)"><polygon points="112.5,0 225,-112.5 112.5,-225 0,-112.5" class="label-container" transform="translate(-112, 112.5)"/><g class="label" style="" transform="translate(-75, -22.5)"><rect/><foreignObject width="150" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>正在攻擊？</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-4-flowchart-C-3" data-look="classic" transform="translate(761, 68)"><rect class="basic label-container" style="" x="-130" y="-60" width="260" height="120"/><g class="label" style="" transform="translate(-100, -45)"><rect/><foreignObject width="200" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel"><p>清除移動意圖，返回</p></span></div></foreignObject></g></g><g class="node default" id="week05-flow-4-flowchart-D-5" data-look="classic" transform="translate(761, 217.5)"><rect class="basic label-container" style="" x="-120" y="-37.5" width="240" height="75"/><g class="label" style="" transform="translate(-90, -22.5)"><rect/><foreignObject width="180" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel"><p>送出移動輸入</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="week05-flow-4-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="week05-flow-4-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;DoMove：更新方向語意&quot;] --&gt; B{&quot;正在攻擊？&quot;}
+    B --&gt;|是| C[&quot;清除移動意圖，返回&quot;]
+    B --&gt;|否| D[&quot;送出移動輸入&quot;]</code></pre></details><p><code>HandleAttackEnded()</code> → <code>FinishAttack()</code> 與 <code>DoMove()</code> 的條件已由 tag 原始碼確認；引擎發出結束事件的時機另有教材既有 PIE 驗收紀錄支持。本次文件撰寫沒有重新操作 PIE。先讀懂這條路徑，再用練習 2 的動畫設定變化驗證解鎖時機。</p>
+<p><strong>本週先讀到這裡</strong></p>
+<p>正常結束與取消後的淡出都要完整收尾。失去對手、播放者重建及關閉世界的保護流程留在課堂與教師補充。本週也沒有「把攻擊中按過的 X 排隊，解鎖後補播」的機制。</p>
+<h2 id="student-05-6">課前實作練習</h2>
+<h3 id="student-05-7">課前實作練習 1｜讓缺少 Montage 的角色拒絕攻擊，仍可正常移動</h3>
+<p>只調整 <code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code> 的 Class Defaults，把 <code>BasicAttackMontage</code> 清為 None，編譯並儲存。先依預習路徑預測按下 X 後的結果，再親自操作驗證。</p>
+<p>課堂分享桌面時，展示儲存的設定；在 <code>stage1</code>、對手有效且角色正常站在地面時，按搖桿 X 應沒有出拳。Output Log 要看得到包含 <code>command=X</code>、<code>montage=None</code> 與 <code>reason=invalid animation configuration</code> 的 Warning，角色仍能用十字方向鍵移動。鍵盤 U 與方向鍵可作對照，不能取代實體搖桿確認。</p>
+<p>口頭說明：哪個函式拒絕了這次攻擊，為什麼角色沒有被鎖住？修改只限玩家 BP 的 Montage 參照，不改 CPU、C++ 或其他輸入設定。完成展示後能還原原始參照；下一題從已配置 <code>AM_Attack_01</code> 的狀態開始。</p>
+<h3 id="student-05-8">課前實作練習 2｜做出慢速攻擊，讓操作鎖定跟著播放結束</h3>
+<p>在角色已配置 <code>AM_Attack_01</code> 的前提下，把 <code>/Game/Fighting/Anims/AM_Attack_01</code> 內 <code>MM_Attack_01</code> 片段的 Play Rate 從 <code>1</code> 改成 <code>0.5</code> 並儲存，做出較慢的單次攻擊。先用預習的回呼路徑預測解鎖時機，再用實際操作驗證。</p>
+<p>課堂分享桌面時，展示片段的新倍率及 PIE 操作：攻擊完整結束前仍不能主動移動或重啟攻擊；結束後，持續按住的方向輸入恢復移動，放開並再次按下 X 也能重新出招。</p>
+<p>只改 Montage 片段的 Play Rate，保留完整片段、Loop Count 1、Slot、單一非循環 Section 及 Auto Blend Out。不要修改原始 AnimSequence、C++、Blend In／Out 或狀態欄位。</p>
+<p>口頭說明：動作變慢後，哪個通知讓角色恢復移動，而不是固定等一秒？完成展示後能還原 Play Rate，避免影響課堂的姿勢混合比較。</p>
+<h2 id="student-05-9">官方參考資料</h2>
+<p>以下使用 Epic UE 5.8 文件；先讀與本週名詞相關的段落即可。</p>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine">Enhanced Input</a>：Input Actions、Mapping Contexts 與 Trigger States。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-in-unreal-engine">Animation Montage</a>：片段、Section 與 Montage 的用途。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-editor-in-unreal-engine">Montage 編輯與使用</a>：片段 Play Rate、Blend In／Out 與播放通知。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-slots-in-unreal-engine">Animation Slots</a>：Montage 如何接入 AnimGraph。</li>
+</ul>
+<h2 id="student-05-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 能用講師提供的 <code>week-05</code> 開啟 <code>stage1</code>，並以實體 Xbox 搖桿完成四向移動、放開停止、X 出拳與再次出拳。</li>
+<li><input disabled="" type="checkbox"> 能分清搖桿 X、攻擊語意 X 與二維輸入的 X 軸。</li>
+<li><input disabled="" type="checkbox"> 找得到 <code>SetupPlayerInputComponent()</code>、兩個類別的 <code>TryExecuteCommand()</code> 與玩家 BP 的 Montage 參照。</li>
+<li><input disabled="" type="checkbox"> 能沿 <code>OnMontageEnded</code> → <code>HandleAttackEnded()</code> → <code>FinishAttack()</code> 解釋收尾，並指出 <code>DoMove()</code> 的操作限制。</li>
+<li><input disabled="" type="checkbox"> 能現場展示練習 1 的 None 設定、Warning 與仍可移動的結果，並口頭說明原因。</li>
+<li><input disabled="" type="checkbox"> 能現場展示練習 2 的半速攻擊、鎖定與恢復操作，並口頭說明原因。</li>
+<li><input disabled="" type="checkbox"> 已還原玩家 Montage 參照與片段 Play Rate，且知道如何在課堂重新做出兩項成果。</li>
+</ul>
+
+<a class="back-link" href="#top">回到頁首</a>
+</article>
+    </main>
+  </div>
+  <footer>TNDA · Week 05 · 學生版課前預習</footer>
+</body>
+</html>
