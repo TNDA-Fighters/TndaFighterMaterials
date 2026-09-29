@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>TNDA：UE 5.8 單機 3D 格鬥遊戲｜教材專案規劃</title>
+  <title>TNDA：UE5 Fighter Game</title>
   <style>
 :root {
   color-scheme: light;
@@ -41,6 +41,23 @@ h1, h2, h3 { color: #0f172a; line-height: 1.3; overflow-wrap: anywhere; }
 h1 { margin: 0 0 1.75rem; padding-bottom: 1rem; border-bottom: 3px solid var(--accent); font-size: clamp(2rem, 4.5vw, 2.75rem); }
 h2 { margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); font-size: clamp(1.5rem, 3vw, 1.85rem); scroll-margin-top: 1.5rem; }
 h2:target { border-bottom-color: var(--accent); }
+.week-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem 1.5rem; }
+.week-heading__title { flex: 1; }
+.week-resources { display: flex; flex: none; flex-wrap: wrap; max-width: 100%; gap: 0.5rem; font-size: 0.875rem; font-weight: 650; line-height: 1.5; }
+.week-resources a, .week-resources__pending { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0.45rem 0.9rem; border: 1px solid; border-radius: 999px; }
+.week-resources a { color: #1e40af; background: #eff6ff; border-color: #bfdbfe; text-decoration: none; box-shadow: 0 2px 4px rgb(15 23 42 / 4%); transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.week-resources a[href^="Slides/"] { color: #6b21a8; background: #faf5ff; border-color: #e9d5ff; }
+@media (hover: hover) {
+  .week-resources a:hover { background: #dbeafe; border-color: #93c5fd; box-shadow: 0 4px 10px rgb(29 78 216 / 12%); transform: translateY(-2px); }
+  .week-resources a[href^="Slides/"]:hover { background: #f3e8ff; border-color: #d8b4fe; box-shadow: 0 4px 10px rgb(107 33 168 / 12%); }
+}
+.week-resources a:active { transform: translateY(0); box-shadow: none; }
+.week-resources a:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+.week-resources__pending { color: var(--muted); background: #f8fafc; border-color: var(--line); border-style: dashed; font-weight: 400; }
+@media (prefers-reduced-motion: reduce) {
+  .week-resources a { transition: none; }
+  .week-resources a:hover { transform: none; }
+}
 h3 { margin: 1.75rem 0 0.65rem; font-size: 1.25rem; }
 p { margin: 0.65rem 0 1rem; }
 ul, ol { margin: 0.7rem 0 1.2rem; padding-left: 1.5rem; }
@@ -70,6 +87,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
   .week-jump-label { display: block; margin-bottom: 0.35rem; color: #0f172a; font-size: 16px; font-weight: 750; }
   .week-jump { display: block; }
   h2 { scroll-margin-top: 7rem; }
+  .week-heading { flex-direction: column; gap: 0.5rem; }
 }
 @media (max-width: 600px) {
   .page-shell { width: 100%; margin: 0; }
@@ -90,12 +108,13 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#week-02">跳到教材內容</a>
+  <a class="skip-link" href="#week-01">跳到教材內容</a>
   <div class="page-shell">
     <aside class="week-sidebar" aria-label="週次快速導覽">
       <nav class="week-nav" aria-labelledby="week-nav-title">
         <p class="week-nav__title" id="week-nav-title">週次導覽</p>
         <ol>
+          <li><a href="#week-01"><span class="week-number">Week 01</span><span class="week-title">課程介紹、開發環境與 Third Person 專案</span></a></li>
           <li><a href="#week-02"><span class="week-number">Week 02</span><span class="week-title">雙角色入場與基礎格鬥攝影機</span></a></li>
           <li><a href="#week-03"><span class="week-number">Week 03</span><span class="week-title">相對方向與自動面向</span></a></li>
           <li><a href="#week-04"><span class="week-number">Week 04</span><span class="week-title">戰鬥區域碰撞限制</span></a></li>
@@ -117,6 +136,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
       </nav>
       <label class="week-jump-label" for="week-jump">快速切換週次</label>
       <select class="week-jump" id="week-jump">
+        <option value="#week-01">Week 01｜課程介紹、開發環境與 Third Person 專案</option>
         <option value="#week-02">Week 02｜雙角色入場與基礎格鬥攝影機</option>
         <option value="#week-03">Week 03｜相對方向與自動面向</option>
         <option value="#week-04">Week 04｜戰鬥區域碰撞限制</option>
@@ -138,7 +158,22 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
     </aside>
   <main id="main-content">
 <h1>TNDA：UE 5.8 單機 3D 格鬥遊戲｜教材專案規劃</h1>
-<h2 id="week-02" tabindex="-1"><code>week-02</code>｜雙角色入場與基礎格鬥攝影機</h2>
+<h2 class="week-heading" id="week-01" tabindex="-1"><span class="week-heading__title"><code>week-01</code>｜課程介紹、開發環境與 Third Person 專案</span><span class="week-resources"><a href="Previews/TNDA-week-01.html" aria-label="week-01 課前預習" target="_blank" rel="noopener noreferrer">課前預習</a> <a href="Slides/18週課綱簡報.pdf" aria-label="week-01 課程介紹講義" target="_blank" rel="noopener noreferrer">課程介紹講義</a> <a href="Slides/TNDA-week-01.pdf" aria-label="week-01 講義" target="_blank" rel="noopener noreferrer">講義</a></span></h2>
+<h3>課程介紹</h3>
+<p>介紹 18 週的課程安排與單機 3D 格鬥遊戲專案目標，從開發環境、角色操作與攝影機，逐步加入攻擊、傷害、連段、CPU AI、回合流程及 UI，最後完成特效音效、主選單與遊戲封裝。</p>
+<p>課程介紹講義：<a href="Slides/18週課綱簡報.pdf" target="_blank" rel="noopener noreferrer">18 週課綱簡報</a>。</p>
+<h3>專案展示內容</h3>
+<p>完成開發環境準備，使用 <code>ThirdPersonTemplate</code> 教材專案比較四種玩法起點，並將 Combat 關卡設為專案的啟動內容。</p>
+<ul>
+<li>安裝 Unreal Engine 5.8、Visual Studio 2026 與 Unreal C++ 開發所需元件，並以 GitHub Desktop 開啟教材版本庫及查看檔案變更。</li>
+<li>從 <code>ThirdPersonTemplate.uproject</code> 產生 <code>ThirdPersonTemplate.sln</code>，以 Visual Studio 的 F7 完成編譯，再以 F5 啟動 Unreal Editor。</li>
+<li>使用 PIE 體驗 <code>Lvl_ThirdPerson</code>、<code>Lvl_Combat</code>、<code>Lvl_Platforming</code> 與 <code>Lvl_SideScrolling</code>，比較角色操作、鏡頭、關卡互動與遊戲目標。</li>
+<li>將 <code>Editor Startup Map</code> 與 <code>Game Default Map</code> 設為 <code>Lvl_Combat</code>。</li>
+<li>重新開啟專案後直接進入 Combat 關卡，並確認 PIE 可以正常操作角色。</li>
+</ul>
+<h3>核心導入技術</h3>
+<p><code>Unreal C++ 開發環境</code>、<code>專案檔產生／編譯與偵錯</code>、<code>GitHub Desktop 版本控制</code>、<code>Third Person Template</code>、<code>PIE</code>、<code>預設關卡設定</code></p>
+<h2 class="week-heading" id="week-02" tabindex="-1"><span class="week-heading__title"><code>week-02</code>｜雙角色入場與基礎格鬥攝影機</span><span class="week-resources"><a href="Previews/TNDA-week-02.html" aria-label="week-02 課前預習" target="_blank" rel="noopener noreferrer">課前預習</a> <a href="Slides/TNDA-week-02.pdf" aria-label="week-02 講義" target="_blank" rel="noopener noreferrer">講義</a></span></h2>
 <h3>專案展示內容</h3>
 <p>Play 後直接進入 <code>stage1</code>。PlayerController Possess 1P，CPU 由場上的 Spawner 生成並保持原位；1P 可使用 W／A／S／D 移動。</p>
 <ul>
@@ -155,7 +190,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Gameplay Framework／SpawnActor／Pawn Possession</code>、<code>Enhanced Input</code>、<code>Animation Blueprint／Blend Space</code>、<code>CameraActor／SpringArm</code>、<code>戰鬥中點／垂直向量／距離插值／換邊旋轉策略</code></p>
-<h2 id="week-03" tabindex="-1"><code>week-03</code>｜相對方向與自動面向</h2>
+<h2 class="week-heading" id="week-03" tabindex="-1"><span class="week-heading__title"><code>week-03</code>｜相對方向與自動面向</span><span class="week-resources"><a href="Previews/TNDA-week-03.html" aria-label="week-03 課前預習" target="_blank" rel="noopener noreferrer">課前預習</a> <a href="Slides/TNDA-week-03.pdf" aria-label="week-03 講義" target="_blank" rel="noopener noreferrer">講義</a></span></h2>
 <h3>專案展示內容</h3>
 <p>建立雙方共用的戰鬥軸與對手參照。實體移動輸入先轉成相對於對手的方向語意，角色在一般移動期間持續轉向對方。</p>
 <ul>
@@ -168,7 +203,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Opponent Reference</code>、<code>戰鬥軸</code>、<code>4／6 相對方向正規化</code>、<code>Vector／Dot Product</code>、<code>Look At Rotation／Rotation Interpolation</code></p>
-<h2 id="week-04" tabindex="-1"><code>week-04</code>｜戰鬥區域碰撞限制</h2>
+<h2 class="week-heading" id="week-04" tabindex="-1"><span class="week-heading__title"><code>week-04</code>｜戰鬥區域碰撞限制</span><span class="week-resources"><a href="Previews/TNDA-week-04.html" aria-label="week-04 課前預習" target="_blank" rel="noopener noreferrer">課前預習</a> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>以場地碰撞圍出可移動的戰鬥區域，讓角色留在區域內。本週只處理不可穿越的邊界，不實作 Ring Out。</p>
 <ul>
@@ -181,7 +216,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Blocking Volume</code>、<code>Collision Preset／Channel Response</code>、<code>CharacterMovement Collision</code>、<code>場地邊界配置</code></p>
-<h2 id="week-05" tabindex="-1"><code>week-05</code>｜基本攻擊與 Animation Montage</h2>
+<h2 class="week-heading" id="week-05" tabindex="-1"><span class="week-heading__title"><code>week-05</code>｜基本攻擊與 Animation Montage</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>使用既有 <code>MM_Attack_01</code> AnimSequence 建立可播放及編輯的 <code>AM_Attack_01</code> Animation Montage。U 鍵是本週的測試鍵，按下後送出攻擊語意 <code>X</code>。</p>
 <ul>
@@ -194,7 +229,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Animation Montage</code>、<code>Anim Slot</code>、<code>Montage Playback</code>、<code>Montage Callback</code>、<code>Action Lock／Input Gating</code></p>
-<h2 id="week-06" tabindex="-1"><code>week-06</code>｜Command DataTable 與資料驅動放招</h2>
+<h2 class="week-heading" id="week-06" tabindex="-1"><span class="week-heading__title"><code>week-06</code>｜Command DataTable 與資料驅動放招</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立 Command CSV、<code>FTableRowBase</code> 資料結構與 Command DataTable。攻擊入口依語意指令 <code>X</code> 查表取得 <code>AM_Attack_01</code>，不再由程式硬編碼 Montage。</p>
 <ul>
@@ -207,7 +242,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>DataTable／CSV Reimport</code>、<code>FTableRowBase</code>、<code>Command Row Lookup</code>、<code>Input Mapping Context</code>、<code>資料驗證</code></p>
-<h2 id="week-07" tabindex="-1"><code>week-07</code>｜Hitbox、Hurtbox 與資料驅動傷害</h2>
+<h2 class="week-heading" id="week-07" tabindex="-1"><span class="week-heading__title"><code>week-07</code>｜Hitbox、Hurtbox 與資料驅動傷害</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立獨立的 Damage CSV／DataTable、角色生命值，以及攻擊用 Hitbox 與受擊用 Hurtbox。Command Row 只保存 Damage Row 的參照、本招使用的 Hitbox 與允許命中的 Hurtbox 清單；實際扣血值由 Damage DataTable 提供。</p>
 <ul>
@@ -220,7 +255,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Damage DataTable</code>、<code>Hitbox／Hurtbox</code>、<code>Anim Notify State</code>、<code>Overlap Collision</code>、<code>Health Component</code>、<code>單次揮擊命中集合</code></p>
-<h2 id="week-08" tabindex="-1"><code>week-08</code>｜Frame Data 與 Command Link 執行模型</h2>
+<h2 class="week-heading" id="week-08" tabindex="-1"><span class="week-heading__title"><code>week-08</code>｜Frame Data 與 Command Link 執行模型</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>正式建立 Startup、Active、Recovery 的 Frame Data 執行模型，並用 Montage 時間軸上的 Notify 控制輸入預約、接招時機與 Recovery 起點。Frame 是設計及驗收單位；執行階段依 Montage 時間與事件運作，不以 Tick 累加整數幀。</p>
 <ul>
@@ -233,7 +268,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Frame Data</code>、<code>CommandBuffer</code>、<code>Command Link Notify</code>、<code>中斷與結束清理</code></p>
-<h2 id="week-09" tabindex="-1"><code>week-09</code>｜CPU AI 接近與選招</h2>
+<h2 class="week-heading" id="week-09" tabindex="-1"><span class="week-heading__title"><code>week-09</code>｜CPU AI 接近與選招</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立 CPU 的基本決策流程。CPU 根據與 1P 的距離決定接近或攻擊，並呼叫玩家共用的選招與攻擊入口，不模擬鍵盤輸入。</p>
 <ul>
@@ -247,7 +282,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>AIController</code>、<code>StateTree</code>、<code>Evaluator／Task／Transition</code>、<code>距離決策</code>、<code>玩家與 AI 共用攻擊介面</code></p>
-<h2 id="week-10" tabindex="-1"><code>week-10</code>｜防禦、硬直與集中式戰鬥狀態</h2>
+<h2 class="week-heading" id="week-10" tabindex="-1"><span class="week-heading__title"><code>week-10</code>｜防禦、硬直與集中式戰鬥狀態</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立 Neutral、Attacking、Defending、Hitstun、Blockstun 與 KnockedOut 等集中式戰鬥狀態。命中流程依 Defense Intent 決定進入一般受擊或防禦結果。</p>
 <ul>
@@ -261,7 +296,7 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Combat State Machine</code>、<code>Defense Intent</code>、<code>Hit Resolution</code>、<code>Gameplay Timer</code>、<code>自訂 Console 指令</code></p>
-<h2 id="week-11" tabindex="-1"><code>week-11</code>｜基本連段</h2>
+<h2 class="week-heading" id="week-11" tabindex="-1"><span class="week-heading__title"><code>week-11</code>｜基本連段</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>以 Command DataTable 定義三段基本連段。<code>AM_Attack_01</code>～<code>03</code> 是由對應 <code>MM_Attack_01</code>～<code>03</code> AnimSequence 建立的可播放 Montage；本週的第三段刻意再次使用 <code>AM_Attack_01</code>。</p>
 <pre><code class="language-text">X       → AM_Attack_01
@@ -278,7 +313,7 @@ XXX     → AM_Attack_01
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Combo Step／Chain State</code>、<code>Allowed Follow-up</code>、<code>Pending Command Consumption</code>、<code>資料驅動連段</code>、<code>玩家與 AI 共用連段入口</code></p>
-<h2 id="week-12" tabindex="-1"><code>week-12</code>｜相對方向分支連段</h2>
+<h2 class="week-heading" id="week-12" tabindex="-1"><span class="week-heading__title"><code>week-12</code>｜相對方向分支連段</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>在基本連段加入 6X 分支，並沿用 <code>week-03</code> 的相對方向與 <code>week-08</code> 的 CommandBuffer。</p>
 <pre><code class="language-text">X       → AM_Attack_01
@@ -296,7 +331,7 @@ XX6X    → AM_Attack_03
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Command Pattern Matching</code>、<code>方向輸入快照</code>、<code>Context Snapshot</code>、<code>分支具體度／優先規則</code>、<code>資料驅動分支</code></p>
-<h2 id="week-13" tabindex="-1"><code>week-13</code>｜回合基本流程與自動再戰</h2>
+<h2 class="week-heading" id="week-13" tabindex="-1"><span class="week-heading__title"><code>week-13</code>｜回合基本流程與自動再戰</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立 Preparing、Ready、Fight 與 RoundOver 等回合狀態。任一方生命值歸零時產生唯一的 <code>Round Result</code>，寫入 Log，等待 2 秒後完整重設並自動開始下一場。本週尚未加入正式 Round Timer 與結算 UI。</p>
 <pre><code class="language-text">READY → FIGHT → KO → Round Result Log → 等待 2 秒 → Reset → 下一場 READY
@@ -311,7 +346,7 @@ XX6X    → AM_Attack_03
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Round State Machine</code>、<code>READY／FIGHT Gating</code>、<code>KO 判定</code>、<code>Round Result</code>、<code>Round Reset</code></p>
-<h2 id="week-14" tabindex="-1"><code>week-14</code>｜倒數計時與特殊結算</h2>
+<h2 class="week-heading" id="week-14" tabindex="-1"><span class="week-heading__title"><code>week-14</code>｜倒數計時與特殊結算</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>加入 Round Timer、Time Over 與 Draw。傷害與時間到期先進入 Pending Resolution，再由單一入口依固定優先順序結算，避免 KO 與 Time Over 在同一幀產生兩次結果。</p>
 <p>結算優先順序如下：</p>
@@ -338,7 +373,7 @@ tnda.Debug.RoundScenario cpu_timeover_win
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Round Timer</code>、<code>Time Over</code>、<code>Pending Resolution</code>、<code>Double KO／Draw</code>、<code>結算優先規則</code></p>
-<h2 id="week-15" tabindex="-1"><code>week-15</code>｜戰鬥 HUD 與結算 UI</h2>
+<h2 class="week-heading" id="week-15" tabindex="-1"><span class="week-heading__title"><code>week-15</code>｜戰鬥 HUD 與結算 UI</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立事件驅動的 Battle HUD，顯示 1P／CPU 生命值、倒數時間、READY／FIGHT 與連段資訊。回合結束後顯示勝負或 Draw，並停用 <code>week-13</code>～<code>week-14</code> 的自動再戰。</p>
 <ul>
@@ -351,7 +386,7 @@ tnda.Debug.RoundScenario cpu_timeover_win
 </ul>
 <h3>核心導入技術</h3>
 <p><code>UMG</code>、<code>事件驅動 UI</code>、<code>Battle HUD</code>、<code>Result UI</code>、<code>Widget 按鈕事件</code></p>
-<h2 id="week-16" tabindex="-1"><code>week-16</code>｜戰鬥特效與音效</h2>
+<h2 class="week-heading" id="week-16" tabindex="-1"><span class="week-heading__title"><code>week-16</code>｜戰鬥特效與音效</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>示範 Niagara System 與 Emitter 編輯，製作 Hit、Block 與 Combo 的視覺回饋及一次性音效。C++ 命中結算只送出戰鬥表現事件，由 Blueprint 依事件資料選擇 Niagara 與音效。</p>
 <ul>
@@ -364,7 +399,7 @@ tnda.Debug.RoundScenario cpu_timeover_win
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Niagara System／Emitter</code>、<code>User Parameter</code>、<code>One-shot Audio</code>、<code>C++／Blueprint 事件串接</code>、<code>戰鬥規則與表現分離</code></p>
-<h2 id="week-17" tabindex="-1"><code>week-17</code>｜主選單、非同步載入與完整遊戲流程</h2>
+<h2 class="week-heading" id="week-17" tabindex="-1"><span class="week-heading__title"><code>week-17</code>｜主選單、非同步載入與完整遊戲流程</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>建立主選單與對戰準備畫面，使用 Soft Reference 非同步載入戰鬥場地、角色、動畫、Niagara 與音效，並正式接通 <code>week-15</code> 的 <code>&lt;回主選單&gt;</code>。</p>
 <pre><code class="language-text">主選單
@@ -385,7 +420,7 @@ tnda.Debug.RoundScenario cpu_timeover_win
 </ul>
 <h3>核心導入技術</h3>
 <p><code>Soft Reference</code>、<code>Async Loading／Streamable Handle</code>、<code>Loading State</code>、<code>Level Streaming／資源卸載</code>、<code>完整遊戲流程</code></p>
-<h2 id="week-18" tabindex="-1"><code>week-18</code>｜Build、Cook、Stage 與 Package</h2>
+<h2 class="week-heading" id="week-18" tabindex="-1"><span class="week-heading__title"><code>week-18</code>｜Build、Cook、Stage 與 Package</span><span class="week-resources"><span class="week-resources__pending">課前預習（尚未提供）</span> <span class="week-resources__pending">講義（尚未提供）</span></span></h2>
 <h3>專案展示內容</h3>
 <p>沿用 <code>week-17</code> 的完整專案示範 Build、Cook、Stage、Package 與封裝故障排除，不建立新的 <code>week-18</code> 教材專案。</p>
 <ul>
