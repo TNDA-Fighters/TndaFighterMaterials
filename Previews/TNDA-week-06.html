@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 06 課前預習｜Command DataTable 與資料驅動放招</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+.diagram-source { margin: 1rem 0 1.5rem; }
+
+.project-link { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; margin-top: 0.85rem; padding: 0.5rem 1rem; border: 1px solid #99f6e4; border-radius: 999px; background: #f0fdfa; color: #115e59; font-weight: 700; text-decoration: none; }
+.project-link:hover { background: #ccfbf1; color: #134e4a; border-color: #5eead4; }
+.project-link:focus-visible { outline: 3px solid #facc15; outline-offset: 4px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 06 · 學生版課前預習</p>
+      <h1>TNDA Week 06 課前預習｜Command DataTable 與資料驅動放招</h1>
+      <a class="project-link" href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-06" target="_blank" rel="noopener noreferrer" aria-label="week-06 示範專案">示範專案</a>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+        <p class="quick-nav-title">本頁導覽</p>
+        <a class="nav-level-2" href="#student-06-1">本週目標</a>
+<a class="nav-level-2" href="#student-06-2">課前準備</a>
+<a class="nav-level-2" href="#student-06-3">課前預習</a>
+<a class="nav-level-3" href="#student-06-4">課前預習 1｜按鍵、輸入動作與 X／Y 語意</a>
+<a class="nav-level-3" href="#student-06-5">課前預習 2｜從放招入口追到資料表的動畫設定</a>
+<a class="nav-level-2" href="#student-06-6">課前實作練習</a>
+<a class="nav-level-3" href="#student-06-7">課前實作練習 1｜對調鍵盤 U／I，保留搖桿 X／Y</a>
+<a class="nav-level-3" href="#student-06-8">課前實作練習 2｜讓前方攻擊改播第三份動畫</a>
+<a class="nav-level-2" href="#student-06-9">官方參考資料</a>
+<a class="nav-level-2" href="#student-06-10">上課前確認</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="student-06-1">本週目標</h2>
+<ul>
+<li>能沿輸入映射、X／Y 語意、選招與播放呼叫，找出改鍵位及改招式應操作的物件。</li>
+<li>能修改既有招式資料，展示動畫、倍率與鏡頭的差異，解釋 Reimport 與當次招式副本的關係。</li>
+</ul>
+<h2 id="student-06-2">課前準備</h2>
+<p><a href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-06" target="_blank" rel="noopener noreferrer">使用 <code>week-06</code> 的教材專案</a>，確認 <code>/Game/Fighting/stage1</code> 能進入 PIE（在編輯器內執行遊戲）。沿用 WASD 移動、U／搖桿 X 攻擊、I／搖桿 Y 第二攻擊；兩項課前實作各從交付的原始設定開始。</p>
+<p>本週需要能編輯專案根目錄 <code>_DataTable/CommandTable.csv</code>，並開啟既有 DataTable 與 Input Mapping Context。原始碼路徑均相對於 TndaFighter 根目錄；<code>/Game/</code> 是 Content Browser 的 <code>Content/</code>。</p>
+<h2 id="student-06-3">課前預習</h2>
+<h3 id="student-06-4">課前預習 1｜按鍵、輸入動作與 X／Y 語意</h3>
+<p><strong>先認識三層輸入</strong></p>
+<p>U／I 是實體鍵盤按鍵；Input Action 是「要做什麼」的輸入動作；X／Y 是選招程式收到的攻擊語意。X／Y 名稱沿用 Xbox 按鈕，不能直接當成鍵盤 X／Y。<code>/Game/Fighting/Input/IMC_Combat</code> 把 U 接到 Boolean 型別的 <code>Actions/IA_Attack1</code>、I 接到 <code>Actions/IA_Attack2</code>，搖桿 X／Y 也各接到同一個 Action。</p>
+<p>6 表示靠近對手，4 表示遠離對手，與角色站在螢幕哪一邊有關。1P 在對手左邊時，D 通常是 6；換邊後 A 才是 6。8／2 是本教材 W／S 的方向語意，不代表跳躍／蹲下。<code>6,X</code> 表示按住 6 時按下 X，逗號不表示輸入歷史。</p>
+<p><strong>從事件繫結追到放招入口</strong></p>
+<p>閱讀 <code>Source/TndaFighter/Fighting/FightingPlayerCharacter.cpp</code> 的 <code>AFightingPlayerCharacter::SetupPlayerInputComponent()</code>、<code>Attack()</code>、<code>SampleAttackDirections()</code> 與 <code>TryExecuteCommand()</code>。</p>
+<ol>
+<li><code>SetupPlayerInputComponent()</code> 把 <code>AttackAction</code> 的 <code>Started</code> 綁到 <code>Attack(..., FName("X"))</code>，把 <code>AttackAction2</code> 綁到同一函式的 Y 引數。此版本按下時嘗試一次，長按不連發。</li>
+<li>引擎送出繫結的事件時，<code>Attack()</code> 取得 X／Y，再呼叫 <code>SampleAttackDirections()</code>。這一步直接讀 Enhanced Player Input 的 <code>MoveAction</code> 當下 Axis2D 值，不取前一個移動事件留下的方向。</li>
+<li><code>SampleAttackDirections()</code> 以攝影機水平角度與雙方位置判定 4／6，並從移動 Y 軸產生 8／2；輸出是一組方向整數。來源無效時輸出空集合，仍可比對單鍵招。</li>
+<li><code>Attack()</code> 把攻擊語意與方向集合交給玩家 <code>TryExecuteCommand()</code>；玩家有有效控制者時再呼叫共同父類入口，接續預習 2。</li>
+</ol>
+<p>C++ 呼叫已確認；從實體鍵到 Action 事件由 Enhanced Input 執行，串接依據是當次 IMC 回讀與 <code>BindAction</code> 兩側配置，事件實際觸發仍須在 PIE 操作。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 785 205" role="img" aria-label="鍵盤 U 或搖桿 X，接著第一攻擊動作，接著按下時送出 X，接著共同放招入口，接著當下移動輸入，接著相對方向集合" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arrow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M182 55 L211 55" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M361 55 L390 55" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M540 55 L622 107" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M261 167 L390 167" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M540 167 L622 107" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<rect x="12" y="18" width="170" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="97.0" y="56" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">鍵盤 U 或搖桿 X</text>
+<rect x="211" y="18" width="150" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="286.0" y="56" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">第一攻擊動作</text>
+<rect x="390" y="18" width="150" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="465.0" y="56" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">按下時送出 X</text>
+<rect x="622" y="70" width="150" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="697.0" y="108" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">共同放招入口</text>
+<rect x="111" y="130" width="150" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="186.0" y="168" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">當下移動輸入</text>
+<rect x="390" y="130" width="150" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="465.0" y="168" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">相對方向集合</text>
+</svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;鍵盤 U 或搖桿 X&quot;] --&gt; B[&quot;第一攻擊動作&quot;]
+    B --&gt; C[&quot;按下時送出 X&quot;]
+    D[&quot;當下移動輸入&quot;] --&gt; E[&quot;相對方向集合&quot;]
+    C --&gt; F[&quot;共同放招入口&quot;]
+    E --&gt; F
+</code></pre></details>
+<p><strong>修改時先找責任</strong></p>
+<p><code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code> 的 <code>AttackAction</code>、<code>AttackAction2</code>、<code>MoveAction</code> 各參照上述三個 Action。要換實體鍵位就改 IMC；要改 X／Y 對應的動畫就改招式表。兩筆搖桿映射是獨立接線，交換鍵盤 U／I 不必交換搖桿。</p>
+<h3 id="student-06-5">課前預習 2｜從放招入口追到資料表的動畫設定</h3>
+<p><strong>先分清來源、資產與副本</strong></p>
+<p>CSV 是編輯來源；DataTable 是匯入後的資產；Row 是一列設定。Row Name 是列的識別，這裡由 <code>ID</code> 欄匯入；<code>Command</code> 則是表格登記的 TableId。<code>Keys</code> 才是招式的輸入條件，X 不是 Row Name。</p>
+<p><code>Source/TndaFighter/DataTable/TndaCommandData.h</code> 的 <code>FTndaCommandRow : FTableRowBase</code> 宣告 Title、Keys、Montage、PlayRate、Priority、CameraShot 六個欄位。加上被匯入器消耗的 ID，CSV 共七欄。Reader 把字串解析成可用的 <code>FTndaCommand</code>，其中 Montage 是資產參照；複製招式資料不等於複製動畫資產。</p>
+<table>
+<thead>
+<tr>
+<th>ID／Row Name</th>
+<th>Keys</th>
+<th>Montage</th>
+<th>PlayRate</th>
+<th>Priority</th>
+<th>CameraShot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>X</td>
+<td>AM_Attack_01</td>
+<td>1.0</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6,X</td>
+<td>AM_Attack_01</td>
+<td>1.0</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Y</td>
+<td>AM_Attack_02</td>
+<td>1.0</td>
+<td>0</td>
+<td>UpperBodyCloseUp</td>
+</tr>
+</tbody>
+</table>
+<p><strong>從條件比對追到播放</strong></p>
+<ol>
+<li>從 <code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 的 <code>AFightingCharacter::TryExecuteCommand()</code> 開始。已有攻擊、沒有有效對手或不在一般地面狀態時，拒絕新的嘗試，不排隊。</li>
+<li>入口呼叫 <code>Source/TndaFighter/DataTable/TndaCommandReader.cpp</code> 的 <code>UTndaCommandReader::TrySelectCommand()</code>。Reader 經 <code>TndaDataTableSubsystem.cpp</code> 的 <code>FindPreparedTable("Command")</code> 取得整理好的招式。</li>
+<li><code>Prepare()</code> 將招式依 Priority 大到小、同值時有方向者優先、最後數值 ID 小到大排序。<code>TrySelectCommand()</code> 從前往後找第一筆攻擊語意相同、方向條件成立的資料，複製到 <code>Selected</code>。單鍵 X 沒有額外方向條件，按 6 時也可成為候選。</li>
+<li>回到共同角色，確認 AnimInstance 與播放引數有效後呼叫 <code>Montage_Play(Selected.Montage, Selected.PlayRate, ...)</code>。成功才把資料移入 <code>CurrentAttack</code>，儲存當次招式、鎖住新攻擊。</li>
+</ol>
+<p>以上為已確認原始碼路徑；表格三列與三份動畫內容也由本次 Editor 回讀。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 1019 135" role="img" aria-label="X／Y 與方向集合，接著取得 Command 表，接著依排序找第一筆符合，接著取得招式資料副本，接著播放指定動畫與倍率" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arrow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M183 67 L211 67" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<path d="M382 67 L410 67" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<path d="M595 67 L623 67" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<path d="M794 67 L822 67" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<rect x="12" y="30" width="171" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="97.5" y="68" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">X／Y 與方向集合</text>
+<rect x="211" y="30" width="171" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="296.5" y="68" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">取得 Command 表</text>
+<rect x="410" y="30" width="185" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="502.5" y="68" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">依排序找第一筆符合</text>
+<rect x="623" y="30" width="171" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="708.5" y="68" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">取得招式資料副本</text>
+<rect x="822" y="30" width="185" height="74" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="914.5" y="68" text-anchor="middle" dominant-baseline="middle" font-size="18" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">播放指定動畫與倍率</text>
+</svg></figure>
+<details class="diagram-source"><summary>查看流程圖原始碼</summary><pre><code class="language-mermaid">%%{init: {&quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;30px&quot;, &quot;fontFamily&quot;: &quot;Microsoft JhengHei&quot;}, &quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 52, &quot;rankSpacing&quot;: 54, &quot;curve&quot;: &quot;linear&quot;}}}%%
+flowchart LR
+    A[&quot;X／Y 與方向集合&quot;] --&gt; B[&quot;取得 Command 表&quot;]
+    B --&gt; C[&quot;依排序找第一筆符合&quot;]
+    C --&gt; D[&quot;取得招式資料副本&quot;]
+    D --&gt; E[&quot;播放指定動畫與倍率&quot;]
+</code></pre></details>
+<p><strong>改值何時生效</strong></p>
+<p>只儲存 CSV 不會自動更新 <code>DT_Command</code>，必須 Reimport。有效表格變動使 Reader 快取失效，下一次查詢才重建；正在播放的 <code>CurrentAttack</code> 保留原資料。PlayRate 是當次播放倍率，<code>0.5</code> 會降低播放速度；它與 Montage 片段自己的 Play Rate 是不同設定層。CameraShot 也是同一筆招式資料的一部分，Y 列目前要求上半身特寫。</p>
+<h2 id="student-06-6">課前實作練習</h2>
+<h3 id="student-06-7">課前實作練習 1｜對調鍵盤 U／I，保留搖桿 X／Y</h3>
+<p>在既有 <code>IMC_Combat</code> 對調兩筆鍵盤攻擊映射，讓 U 送出 Y、I 送出 X。保留搖桿 X／Y、角色 Blueprint、C++ 與 Command 表。</p>
+<p>上課分享桌面，展示 IMC 新設定；不按方向時，U 應播放第二攻擊並出現特寫，I 應播放基本攻擊，再用搖桿 X／Y 展示原對應。說明：為什麼只改鍵盤接線，招式表與搖桿設定仍可保留？展示後恢復原始設定。</p>
+<h3 id="student-06-8">課前實作練習 2｜讓前方攻擊改播第三份動畫</h3>
+<p>從原始鍵位設定開始，只把 <code>_DataTable/CommandTable.csv</code> 的 ID 2 <code>Montage</code> 改為既有 <code>AM_Attack_03</code>，並讓 <code>DT_Command</code> 採用這份更新。保留其他列、欄位與動畫資產。</p>
+<p>分享桌面展示來源列及匯入結果；不按方向按 U 維持基本攻擊，按住朝向對手的 6 再按 U 改播第三份動畫，放開方向後回到基本攻擊。說明：兩列都有 X，為什麼選到不同動畫？展示後恢復原始資料。</p>
+<h2 id="student-06-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine">Enhanced Input</a>：查 Input Action、Mapping Context 與事件階段。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/data-driven-gameplay-elements-in-unreal-engine">Data Driven Gameplay Elements</a>：查 DataTable、Row Struct 與 CSV 匯入。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-in-unreal-engine">Animation Montage</a>：查 Montage 的播放、Slot 與 Section。</li>
+</ul>
+<h2 id="student-06-10">上課前確認</h2>
+<ul>
+<li><input type="checkbox" disabled> 本週專案能編譯並進入 stage1，鍵盤與需展示的搖桿輸入可用。</li>
+<li><input type="checkbox" disabled> 能沿兩個閱讀路徑指出 IMC、Action、Keys、Row Name 與 Montage 的責任。</li>
+<li><input type="checkbox" disabled> 已完成 U／I 對調與搖桿保留展示，能說明三層接線，且已還原。</li>
+<li><input type="checkbox" disabled> 已完成 ID 2 替換動畫與有／無方向展示，能說明方向列勝出，CSV 與表格已還原。</li>
+</ul>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

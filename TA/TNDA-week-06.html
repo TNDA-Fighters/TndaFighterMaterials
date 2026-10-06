@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 06 教案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+.diagram-source { margin: 1rem 0 1.5rem; }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 06 · 助教教案</p>
+      <h1>TNDA Week 06 教案</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="教案導覽">
+        <p class="quick-nav-title">教案導覽</p>
+        <a class="nav-level-2" href="#teacher-06-1">課前實作練習</a>
+<a class="nav-level-3" href="#teacher-06-2">課前實作練習 1｜對調鍵盤 U／I，保留搖桿 X／Y</a>
+<a class="nav-level-3" href="#teacher-06-4">課前實作練習 2｜讓前方攻擊改播第三份動畫</a>
+<a class="nav-level-2" href="#teacher-06-6">課堂示範</a>
+<a class="nav-level-3" href="#teacher-06-7">課堂示範 1｜CSV 如何成為遊戲讀得到的招式資料？</a>
+<a class="nav-level-3" href="#teacher-06-9">課堂示範 2｜同一個 X 怎麼選招，選中資料又如何決定鏡頭？</a>
+<a class="nav-level-2" href="#teacher-06-11">課堂實作</a>
+<a class="nav-level-3" href="#teacher-06-12">課堂實作 1｜只把基本攻擊調成半速</a>
+<a class="nav-level-3" href="#teacher-06-15">課堂實作 2｜保留 Y 招動畫，取消它的特寫鏡頭</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="teacher-06-1">課前實作練習</h2>
+<h3 id="teacher-06-2">課前實作練習 1｜對調鍵盤 U／I，保留搖桿 X／Y</h3>
+<h4 id="teacher-06-3">細步驟解答</h4>
+<ol>
+<li>停止 PIE，在 Content Browser 雙擊 <code>/Game/Fighting/Input/IMC_Combat</code>。展開 <code>IA_Attack1</code>、<code>IA_Attack2</code> 的 Mappings，找出目前為 U、I 的鍵盤列；確認兩筆搖桿列仍是 <code>Gamepad_FaceButton_Left</code>／<code>Gamepad_FaceButton_Top</code>。</li>
+<li>只把 <code>IA_Attack1</code> 的 U 改為 I，把 <code>IA_Attack2</code> 的 I 改為 U；使用鍵位欄的選擇器或點選捕捉鍵位。保留原 Action、Modifiers、Triggers 與其他 15 筆映射，儲存 IMC。</li>
+<li>開啟 <code>stage1</code> 並 Play，點一下遊戲視窗取得輸入。放開方向後分別短按 U、I，每次等待動作完整結束。U 預期是 <code>AM_Attack_02</code> 與特寫，I 是 <code>AM_Attack_01</code>。搖桿 X／Y 分別保持基本／第二攻擊；沒有搖桿裝置時，明列此項未展示，不以鍵盤測試代替。</li>
+<li>請學生指出 IMC、Action 與 C++ 繫結的三層責任。表格只接收 X／Y，不知道實體 U／I；同 Action 的搖桿列未改，所以保留對應。</li>
+<li>停止 PIE，把第一攻擊鍵位還原 U、第二攻擊還原 I，儲存並重開 PIE 確認。下一題以還原後的設定開始。</li>
+</ol>
+<h3 id="teacher-06-4">課前實作練習 2｜讓前方攻擊改播第三份動畫</h3>
+<h4 id="teacher-06-5">細步驟解答</h4>
+<ol>
+<li>確認 U／I 已還原。停止 PIE，以 UTF-8 編輯器開啟專案 <code>_DataTable/CommandTable.csv</code>；只將 ID 2 的 <code>AM_Attack_01</code> 改成 <code>AM_Attack_03</code>，保留 <code>"6,X"</code> 的 CSV 引號與七個欄位，儲存來源。</li>
+<li>在 Content Browser 右鍵 <code>/Game/DataTable/DT_Command</code>，選 Reimport，開表確認 Row 2 的 Montage 已改成短名 <code>AM_Attack_03</code>；Row 1 仍為 <code>AM_Attack_01</code>，兩列 Priority 仍為 0。儲存表格。</li>
+<li>在 <code>stage1</code> Play，先放開方向短按 U，再依雙方站位按住朝向對手的 A 或 D 並短按 U。每次等攻擊完整結束；後者預期改播第三份動畫。放開方向後再按 U，預期回到第一份。</li>
+<li>同 Priority 時，符合的方向列排在單鍵列前。不要只以兩個相同動畫辨認選中列；本題刻意換成不同動畫，讓差異可見。無方向或尚在攻擊鎖定時，分別可能選基本招或拒絕新招。</li>
+<li>停止 PIE，把 CSV Row 2 Montage 還原 <code>AM_Attack_01</code>，再 Reimport、儲存表格並核對。不能只在表格手動改回而留下錯誤 CSV。</li>
+</ol>
+<h2 id="teacher-06-6">課堂示範</h2>
+<h3 id="teacher-06-7">課堂示範 1｜CSV 如何成為遊戲讀得到的招式資料？</h3>
+<h4 id="teacher-06-8">示範重點</h4>
+<p>以 CSV、DataTable、FTndaCommandRow 和 FTndaCommand 分清來源、匯入格式、整理結果與當次副本。ID 是列名，Command 是 TableId；兩者都不等於 X／Y。有效 Reimport 使下一次查詢重建，當次播放不改倍率；任何驗證錯誤使整表不可用，不是略過壞列。GameInstanceSubsystem 是同次遊戲共用的入口；Unity 對照可類比共用資料管理責任，但不等於 ScriptableObject 或 MonoBehaviour 的生命週期。</p>
+<h3 id="teacher-06-9">課堂示範 2｜同一個 X 怎麼選招，選中資料又如何決定鏡頭？</h3>
+<h4 id="teacher-06-10">示範重點</h4>
+<p>按攻擊當下取方向，候選先看 Priority，再看有無方向條件，最後看數值 ID；方向列沒有天然的絕對優先權。Priority 不會打斷正在播放的攻擊。CameraShot 隨選中資料儲存，None 與 UpperBodyCloseUp 只選已有構圖，不增加鏡頭型別。</p>
+<h2 id="teacher-06-11">課堂實作</h2>
+<h3 id="teacher-06-12">課堂實作 1｜只把基本攻擊調成半速</h3>
+<h4 id="teacher-06-13">題目</h4>
+<p>只把 CSV ID 1 的 PlayRate 從 1.0 改為 0.5，匯入到既有 <code>DT_Command</code>；保留 ID 2 與 Montage 素材設定。分享桌面展示兩列倍率、不按方向的半速基本攻擊，以及按住 6 後仍以原速播放的前方攻擊。兩招結束後都應恢復移動。說明：相同動畫為什麼只有一招變慢？</p>
+<h4 id="teacher-06-14">參考答案</h4>
+<ol>
+<li>停止 PIE，先核對 ID 1、2 都使用 <code>AM_Attack_01</code>、PlayRate 都是 1.0。只將 <code>_DataTable/CommandTable.csv</code> Row 1 的 PlayRate 改為 0.5，儲存。</li>
+<li>右鍵 <code>DT_Command</code> Reimport，核對 Row 1=0.5、Row 2=1.0 並儲存。不要開 Montage 片段修改其 Play Rate。</li>
+<li>Play 後以 U、6+U 比較，等各自完整淡出後再試移動。兩筆招式使用不同資料副本，Row 1 的播放呼叫收到 0.5，Row 2 收到 1.0。</li>
+<li>停止 PIE，將來源 Row 1 恢復 1.0，Reimport、儲存並核對。</li>
+</ol>
+<h3 id="teacher-06-15">課堂實作 2｜保留 Y 招動畫，取消它的特寫鏡頭</h3>
+<h4 id="teacher-06-16">題目</h4>
+<p>只在 DataTable Editor 把 ID 3 的 CameraShot 改為 None，保留 CSV 原值與第二攻擊動畫。分享桌面展示按 I 仍播放第二攻擊、鏡頭維持正常構圖；接著由原 CSV Reimport，展示特寫恢復。說明：為什麼 Reimport 會覆蓋剛剛在表格改的值？</p>
+<h4 id="teacher-06-17">參考答案</h4>
+<ol>
+<li>停止 PIE，先核對 CSV Row 3 為 <code>UpperBodyCloseUp</code>、表格起始值相同。雙擊 <code>DT_Command</code>，選 Row 3，在 Row Editor 的 CameraShot 下拉選 None，保留 Montage=<code>AM_Attack_02</code>、PlayRate=1.0；儲存。</li>
+<li>Play，放開方向按 I，預期第二攻擊照常播放、沒有特殊構圖；等結束後停止 PIE。</li>
+<li>不先手動改回表格，也不回寫 CSV。直接在 Content Browser 右鍵該表 Reimport，核對 Row 3 又是 <code>UpperBodyCloseUp</code>，儲存，重開 PIE 按 I 展示恢復。</li>
+<li>enum 中文顯示名稱是編輯器標籤；CSV 使用原生 enum token。Reimport 重新由正式來源建立列，因此會覆蓋表格中的暫時修改。</li>
+</ol>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
