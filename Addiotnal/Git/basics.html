@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="TNDA Git 基本操作學生講義：使用 GitHub Desktop 上傳 UE 專案、Commit、Push、Pull、Clone，附操作截圖、範例與指令補充。"><title>Git 基本操作｜TNDA 學生講義</title><style>
+:root{color-scheme:light;--canvas:#eef3f8;--paper:#fff;--ink:#172033;--muted:#526176;--line:#d5dfeb;--blue:#1d4ed8;--blue-soft:#eff6ff;--teal:#126b64;--code:#f1f5f9}
+*{box-sizing:border-box;min-width:0}html{scroll-behavior:smooth;scroll-padding-top:2rem}body{margin:0;background:var(--canvas);color:var(--ink);font:17px/1.85 system-ui,-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;overflow-wrap:anywhere}a{color:var(--blue);text-underline-offset:.2em}a:hover{color:#102e8b}button,select,input{font:inherit}button,a,input,summary,select{-webkit-tap-highlight-color:transparent}:focus-visible{outline:3px solid #2563eb;outline-offset:4px}.skip-link{position:fixed;top:.5rem;left:1rem;background:#fff;padding:.6rem 1rem;z-index:30;transform:translateY(-180%)}.skip-link:focus{transform:none}
+.topbar{max-width:1320px;margin:0 auto;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}.brand{font-size:.85rem;letter-spacing:.13em;font-weight:800;color:#334155;text-decoration:none}.topbar a:last-child{font-size:.85rem}.shell{max-width:1320px;margin:0 auto 4rem;padding:0 2rem;display:grid;grid-template-columns:230px minmax(0,1fr);gap:2rem}.sidebar{position:sticky;top:1.5rem;align-self:start;max-height:calc(100vh - 3rem);overflow:auto;padding:.75rem 0 1rem}.sidebar h2{font-size:.78rem;letter-spacing:.12em;color:var(--muted);margin:0 0 .75rem;padding-left:.85rem}.toc{list-style:none;margin:0;padding:0}.toc a{display:block;color:#3d4c63;padding:.45rem .85rem;text-decoration:none;border-left:3px solid transparent;font-size:.88rem;line-height:1.6;border-radius:0 .4rem .4rem 0}.toc a:hover,.toc a[aria-current="location"]{color:var(--blue);background:#e2eafa;border-left-color:var(--blue)}.sidebar .source-link{display:block;margin:1.25rem .85rem;font-size:.85rem}.mobile-nav{display:none}main{background:var(--paper);border:1px solid var(--line);border-radius:1rem;padding:3rem 3.25rem;box-shadow:0 10px 35px #17203306}.eyebrow{color:var(--teal);font-size:.8rem;letter-spacing:.13em;font-weight:800;margin:0 0 1rem}h1{font-size:clamp(2.15rem,4vw,3.1rem);line-height:1.28;letter-spacing:-.04em;margin:0 0 1rem}h1 span{display:block;font-weight:500;font-size:.49em;line-height:1.65;letter-spacing:0;margin-top:.5rem;color:var(--muted)}.intro{font-size:1.08rem;margin:0 0 1.5rem;max-width:42rem}.meta{display:flex;gap:.6rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}.meta span{padding:.12rem .65rem;border:1px solid var(--line);border-radius:2rem}.hero-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0 2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.55rem 1.05rem;border:1px solid var(--line);border-radius:.5rem;background:#fff;color:var(--ink);text-decoration:none;font-size:.9rem;cursor:pointer}.button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.button:hover{background:#f0f5fc}.button.primary:hover{background:#163ca8}.workflow{display:flex;list-style:none;padding:0;margin:1.5rem 0 0;gap:.5rem;flex-wrap:wrap}.workflow li{font-size:.88rem;display:flex;align-items:center;gap:.5rem;font-weight:650}.workflow li:not(:last-child):after{content:'→';color:#899bb4;padding:0 .2rem}.workflow span{border-bottom:2px solid #b3c5df;padding:.2rem .3rem}
+section.lesson{padding-top:2.75rem;margin-top:2.75rem;border-top:1px solid var(--line);scroll-margin-top:1.5rem}h2{font-size:1.7rem;line-height:1.4;letter-spacing:-.02em;margin:0 0 .8rem}h3{font-size:1.12rem;line-height:1.6;margin:1.8rem 0 .5rem}p{margin:.7rem 0 1rem}ol,ul{padding-left:1.6rem}li{padding-left:.2rem;margin:.4rem 0}.steps li{margin:.7rem 0}.steps li::marker{font-weight:800;color:var(--blue)}.watch{display:inline-block;font-size:.83rem;color:var(--teal);margin:0 0 1rem;text-decoration:none}.watch:hover{text-decoration:underline}.table-wrap{overflow-x:auto;margin:1.1rem 0 1.6rem;border:1px solid var(--line);border-radius:.5rem}table{width:100%;border-collapse:collapse;text-align:left;font-size:.92rem;line-height:1.7}th{background:#eaf0f7;color:#253750;font-weight:750}th,td{padding:.8rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}th:first-child,td:first-child{width:31%}tbody tr:nth-child(even){background:#fafbfd}.table-wrap code{overflow-wrap:anywhere}code{font-family:Consolas,"Courier New",monospace;font-size:.91em;color:#8b1d4a;background:#f1f3f7;padding:.1rem .3rem;border-radius:.2rem}pre{background:var(--code);padding:1.2rem 1.3rem;overflow:auto;border-radius:.5rem;font-size:.9rem;line-height:1.8;margin:1rem 0 1.5rem;border:1px solid #e3e9f1}pre code{padding:0;background:none;color:#213044;font-size:1em;white-space:pre}.code-wrap{position:relative}.copy{position:absolute;top:.65rem;right:.65rem;padding:.25rem .55rem;background:#fff;border:1px solid #c7d2e1;border-radius:.3rem;font-size:.75rem;cursor:pointer;min-height:32px}.code-wrap pre{padding-top:2.8rem}figure{margin:1.8rem 0;background:#f8fafc;border:1px solid var(--line);border-radius:.6rem;overflow:hidden}figure a{display:block}figure img{display:block;width:100%;height:auto}figcaption{font-size:.82rem;color:var(--muted);line-height:1.65;padding:.75rem 1rem}.figure-narrow{max-width:36rem;margin-left:auto;margin-right:auto}.note{border-left:3px solid var(--teal);padding:.2rem 0 .2rem 1rem;margin:1.4rem 0;color:#294747}.note strong{color:#115b55}.checklist{list-style:none;padding:0}.checklist li{margin:0;border-bottom:1px solid #e4ebf3}.checklist label{display:flex;gap:.8rem;align-items:flex-start;padding:.8rem .2rem;cursor:pointer}.checklist input{width:1.1rem;height:1.1rem;flex:0 0 auto;accent-color:var(--teal);margin:.4rem 0 0}.checklist label:has(input:checked){color:#536879}.progress-text{font-size:.86rem;color:var(--teal);font-weight:700}.quiz details{border-bottom:1px solid var(--line);padding:.7rem 0}.quiz summary{cursor:pointer;font-weight:650;padding:.4rem .2rem;min-height:44px}.quiz details p{margin:.5rem 0 .8rem;padding-left:1.5rem;color:#334e63}.reference{font-size:.9rem}.reference a{overflow-wrap:anywhere}.foot{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid var(--line);padding-top:1.5rem;margin-top:3rem;font-size:.85rem;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:1050px){.shell{grid-template-columns:190px minmax(0,1fr);gap:1.2rem;padding:0 1.25rem}main{padding:2.5rem 2rem}.topbar{padding:1rem 1.25rem}.toc a{font-size:.82rem}}
+@media(max-width:780px){html{scroll-padding-top:6.5rem}.topbar{padding:.85rem 1rem}.shell{display:block;padding:0 .8rem}.sidebar{display:none}.mobile-nav{display:block;position:sticky;top:0;z-index:10;background:#eef3f8f5;padding:.6rem 1rem;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.mobile-nav label{font-size:.72rem;font-weight:700;color:var(--muted);display:block}.mobile-nav select{width:100%;font-size:.9rem;border:1px solid #c7d2e1;background:#fff;border-radius:.4rem;min-height:40px;padding:.4rem}.shell{margin-top:.8rem}main{padding:2rem 1.3rem}.intro{font-size:1rem}section.lesson{scroll-margin-top:6.5rem}h2{font-size:1.5rem}.table-wrap{font-size:.85rem}th,td{padding:.65rem .7rem}.brand{letter-spacing:.04em;font-size:.78rem}.topbar a:last-child{font-size:.78rem}.workflow{gap:.3rem}.workflow li{font-size:.8rem}.hero-actions .button{flex:1}body{font-size:16px}.foot{flex-direction:column}}
+@media(max-width:780px){html{scroll-padding-top:0}}
+@media print{.command-supplement{border-left:0;border-top:1px solid #999;padding:8pt 0 0;margin:12pt 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{size:A4;margin:15mm}html,body{background:#fff;color:#111;font-size:10pt;line-height:1.6}.topbar,.sidebar,.mobile-nav,.hero-actions,.skip-link,.copy,.foot,.progress-text,.watch,.meta{display:none!important}.shell{display:block;max-width:none;margin:0;padding:0}main{border:0;box-shadow:none;border-radius:0;margin:0;padding:0}.eyebrow{font-size:8pt;margin-bottom:6pt}h1{font-size:25pt}h2{font-size:17pt}h3{font-size:12pt}section.lesson{margin-top:20pt;padding-top:16pt}h2,h3{break-after:avoid}p,li{orphans:3;widows:3}table{font-size:9pt}thead{display:table-header-group}.table-wrap{overflow:visible;border-radius:0}tr,figure,pre,.quiz details{break-inside:avoid}figure{max-width:135mm;max-height:none;margin:12pt auto}figure img{max-height:78mm;object-fit:contain;background:#fff}figcaption{font-size:8pt}pre{white-space:pre-wrap;padding:8pt!important;font-size:9pt}pre code{white-space:pre-wrap;overflow-wrap:anywhere}.checklist label{padding:5pt 0}.quiz details p{display:block!important}.quiz summary{list-style:none}.quiz summary::marker{content:''}a{color:inherit;text-decoration:none}.reference a{text-decoration:underline}.workflow{margin-bottom:12pt}.note{border-color:#666}}
+
+.command-supplement{border-top:2px solid var(--line);margin-top:2rem;padding-top:1.25rem;font-size:.95rem;line-height:1.8;color:#42536a}.command-supplement>h3:first-child{margin-top:0;color:var(--teal)}.command-supplement h4{font-size:1rem;margin:1.2rem 0 .5rem}.supplement-intro{font-size:.85rem;color:var(--muted)}
+
+.workflow-step{display:flex;flex-direction:column;align-items:center}.workflow-step small{font-size:.7rem;font-weight:400;color:var(--muted);line-height:1.5;margin-top:.35rem}.workflow li:not(:last-child):after{align-self:flex-start;margin-top:.2rem}
+.branch-diagram{background:#fff}.branch-diagram-scroll{overflow-x:auto;padding:1rem}.branch-diagram svg{display:block;width:100%;min-width:760px;height:auto}.branch-diagram text{font-family:"Segoe UI","Microsoft JhengHei",sans-serif}.branch-diagram .commit-label{font-size:15px;fill:#172033}.branch-diagram .commit-id{font-size:16px;font-weight:750;fill:#fff}.branch-diagram .branch-main{stroke:#1d4ed8}.branch-diagram .branch-feature{stroke:#b65a16}.branch-diagram .branch-line{fill:none;stroke-width:4}.branch-diagram .branch-caption{font-size:14px;fill:#526176}@media print{.branch-diagram svg{min-width:0}.branch-diagram-scroll{overflow:visible}}
+</style></head>
+<body id="top"><a class="skip-link" href="#main">跳到講義內容</a>
+<header class="topbar"><a class="brand" href="../../index.html">TNDA / UE 程式設計</a><a href="../../index.html#supplement-git">← 返回課程教材</a></header>
+<div class="mobile-nav"><label for="chapter-jump">本頁章節</label><select id="chapter-jump"><option value="overview">學習目標與基本觀念</option><option value="create">建立自己的儲存庫</option><option value="project">放入 UE 專案</option><option value="commit">Commit 與 Push</option><option value="readme">README 與同步</option><option value="clone">Clone 與遠端設定</option><option value="ignore">忽略規則與檔案完整性</option><option value="branch">補充：分支Branch</option><option value="git-lfs">補充：大檔案管理LFS</option><option value="commit-message">補充：Git commit message</option><option value="pages">補充：GitHub Pages</option><option value="references">參考資料</option></select></div>
+<div class="shell"><aside class="sidebar"><nav aria-label="講義章節"><h2>本頁章節</h2><ol class="toc"><li><a href="#overview">學習目標與基本觀念</a></li><li><a href="#create">建立自己的儲存庫</a></li><li><a href="#project">放入 UE 專案</a></li><li><a href="#commit">Commit 與 Push</a></li><li><a href="#readme">README 與同步</a></li><li><a href="#clone">Clone 與遠端設定</a></li><li><a href="#ignore">忽略規則與檔案完整性</a></li><li><a href="#branch">補充：分支Branch</a></li><li><a href="#git-lfs">補充：大檔案管理LFS</a></li><li><a href="#commit-message">補充：Git commit message</a></li><li><a href="#pages">補充：GitHub Pages</a></li><li><a href="#references">參考資料</a></li></ol></nav><a class="source-link" href="../../index.html">← 回首頁</a></aside>
+<main id="main"><div class="eyebrow">補充課程 · 學生操作講義</div><h1>Git 基本操作<span>把 UE 專案上傳、同步，並完成作業繳交</span></h1><p class="intro">從第一個儲存庫開始，學會把修改記錄成版本，再把最新成果交到 GitHub。以 GitHub Desktop 操作為主，附實際操作畫面與指令補充。</p><div class="meta"><span>Windows</span><span>GitHub Desktop</span><span>UE 專案版本管理</span></div><div class="hero-actions"><a class="button primary" href="#create">開始操作</a></div><ol class="workflow" aria-label="日常操作流程"><li><div class="workflow-step"><span>取得更新</span><small>Fetch/Pull</small></div></li><li><div class="workflow-step"><span>修改與儲存</span><small>Modify/Save</small></div></li><li><div class="workflow-step"><span>Commit</span><small>Commit</small></div></li><li><div class="workflow-step"><span>推送更新</span><small>Push</small></div></li><li><div class="workflow-step"><span>網頁確認</span><small>Check</small></div></li></ol>
+<section class="lesson" id="overview" aria-labelledby="heading-overview"><h2 id="heading-overview" tabindex="-1">學習目標與基本觀念</h2>
+<p>本講義帶你把 UE 專案放進自己的 GitHub 儲存庫，記錄每次修改，並在另一個資料夾取回專案。完成後，你應能提供可供老師檢查的儲存庫網址，並說明最新版本做了哪些修改。</p>
+<h3>開始前先準備</h3>
+<ul><li>登入自己的 GitHub 帳號，安裝並登入 <a href="https://github.com/apps/desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop</a>。</li><li>準備課程指定的 UE 專案，以及可正常開啟該專案的引擎版本。</li><li>使用一般本機資料夾練習，例如 F:\GitPractice。本講義的操作以 GitHub Desktop 為主；只有閱讀並執行指令補充時，才另外準備 <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git for Windows 與 Git Bash</a>。</li></ul>
+<h3>先分清楚三個工具</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">名稱</th><th scope="col">用途</th></tr></thead><tbody>
+<tr><td>Git</td><td>記錄專案版本與修改歷史的工具。</td></tr>
+<tr><td>GitHub</td><td>託管遠端儲存庫的網站，讓其他人取得你推送的版本。</td></tr>
+<tr><td>GitHub Desktop</td><td>在電腦上用圖形介面執行 Git 操作的程式。</td></tr>
+</tbody></table></div>
+<h3>每次完成作業都走一次</h3>
+<p>取得遠端更新 → 修改並儲存檔案 → 檢查 Changes → Commit → Push → 到 GitHub 確認。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">操作</th><th scope="col">實際發生的事</th></tr></thead><tbody>
+<tr><td>Save 儲存</td><td>把編輯內容寫入本機檔案。</td></tr>
+<tr><td>Commit 提交</td><td>把選取的修改記錄成一個本機版本。</td></tr>
+<tr><td>Push 推送</td><td>把本機提交傳到遠端儲存庫。</td></tr>
+<tr><td>Fetch 抓取</td><td>取得遠端更新資訊與物件，不直接整合進目前分支。</td></tr>
+<tr><td>Pull 拉取</td><td>取得並整合遠端更新到目前本機分支。</td></tr>
+</tbody></table></div>
+<p>範例畫面的分支名稱是 master；你的畫面可能是 main。操作時以 <code>Current branch</code> 顯示的名稱為準，不必為了跟範例一樣而改名。</p>
+</section>
+<section class="lesson" id="create" aria-labelledby="heading-create"><h2 id="heading-create" tabindex="-1">一 建立自己的儲存庫</h2>
+<p>先在 GitHub 建立遠端儲存庫，再把它 clone 到本機。以下使用自己的帳號與練習名稱，不要把老師的網址當成自己的作業繳交位置。</p>
+<ol class="steps"><li>在 GitHub 選擇 <code>New repository</code>，確認 Owner 是自己的帳號。</li><li>輸入容易辨識的 Repository name，例如 TNDA-GitPractice。</li><li>依本課的作業規範選擇 Public/Private，Public是網路上任何人都可以看到該Repository，Private是只有設定指定權限的人才看得到（如果沒設就是只有自己看得到）</li><li>從空儲存庫開始時，先不加入 README、<code>.gitignore</code> 或授權檔，按 Create repository。</li><li>複製該儲存庫的 HTTPS 網址，在 GitHub Desktop 選 File → <code>Clone repository</code> → URL，貼上網址並設定本機路徑。</li><li>完成後確認 <code>Current repository</code> 是剛建立的儲存庫，再按 <code>Show in Explorer</code> 檢查實際資料夾。</li></ol>
+<figure><a href="assets/git/new-repository-entry.png" target="_blank" rel="noopener" aria-label="開啟 New repository 入口截圖"><img src="assets/git/new-repository-entry.png" width="1079" height="455" alt="儲存庫列表右上角的 New repository 按鈕，以橘色箭頭標示。" loading="lazy" decoding="async"></a><figcaption>建立入口　點選右上角的 New repository。 點圖可放大。</figcaption></figure>
+<figure><a href="assets/git/new-repository-settings.png" target="_blank" rel="noopener" aria-label="開啟建立儲存庫設定截圖"><img src="assets/git/new-repository-settings.png" width="831" height="819" alt="建立儲存庫表單，包含 Owner、Repository name、可見性、README、gitignore 與授權設定。" loading="lazy" decoding="async"></a><figcaption>建立設定　圖片示範 Owner 欄位的位置；本課請選自己的帳號並將可見性設為 Public。依上方的空儲存庫流程，README 與 gitignore 先不加入，之後再放入課程專案的設定。 點圖可放大。</figcaption></figure>
+<h3>操作完成後確認</h3>
+<ul><li>GitHub 網頁上的擁有者與儲存庫名稱正確。</li><li>本機資料夾中有隱藏的 .git 資料夾。它保存版本歷史與遠端設定，平常不需要修改。</li><li>空儲存庫還沒有提交與專案內容，這是正常狀態。</li></ul>
+<h3>要更改專案能見度（Public/Private）怎麼辦？</h3>
+<p>進入該儲存庫的 Settings → General，往下找到 Danger Zone，使用 Change repository visibility 改成 Public，並依畫面完成確認。變更可見性會公開儲存庫內容；先確認這是要繳交的課程專案。</p>
+</section>
+<section class="lesson" id="project" aria-labelledby="heading-project"><h2 id="heading-project" tabindex="-1">二 放入 UE 專案並檢查檔案</h2>
+<p>專案可以來自老師提供的壓縮檔，也可以是你在 Unreal Engine 中自行建立的專案。版本管理的起點取決於你是否已有本機專案，以及是否已建立 GitHub 儲存庫；選擇下列一種方式開始即可。複製或搬移內容前，先關閉正在寫入專案檔案的 UE 編輯器。</p>
+<h3>方式一 先 Clone 空儲存庫再放入專案</h3>
+<ol class="steps">
+<li>依上一章在 GitHub 建立自己的空儲存庫，再用 GitHub Desktop 的 File → Clone repository 將它 Clone 到本機。</li>
+<li>在 Desktop 確認 Current repository 正確，按 Show in Explorer，找到含有 <code>.git</code> 的儲存庫資料夾。</li>
+<li>若已有 UE 專案，將 <code>.uproject</code>、Content、Config 與其他必要檔案複製到這個資料夾；來源可以是解壓縮後的課程專案，也可以是自己原本建立的專案。保留目標資料夾的 <code>.git</code>。</li>
+<li>若尚未建立 UE 專案，可先在 Unreal Engine 建立專案，再把必要內容放入儲存庫。也可直接建立在儲存庫內；UE 通常會依專案名稱新增子資料夾，請確認實際路徑，並核對忽略規則的適用位置。</li>
+<li>第一次 Commit 前加入 UE 的 <code>.gitignore</code>；需要 Git LFS 時也先設定好，再到 Changes 檢查待提交清單。</li>
+<li>依下一章填寫 Summary、Commit，首次按 Publish branch 或依狀態按 Push origin，最後到自己的 GitHub 儲存庫確認。</li>
+</ol>
+<p>這個方式已有遠端連結，Clone 也已建立本機 Git 儲存庫，不需要再次初始化。建議把專案內容放在儲存庫根目錄，讓 <code>.uproject</code> 與 Content、Config 位於同一層；如果刻意保留專案子資料夾，則需相應調整根目錄的忽略規則。</p>
+<h3>方式二 將自己建立的本機 UE 專案初始化</h3>
+<p>若你已經用 Unreal Engine 建立專案，而且這個專案資料夾尚未使用 Git，可直接在原位置建立本機儲存庫。這個方式可由 Desktop 發佈新的遠端儲存庫，無須先在 GitHub 網頁另建同名儲存庫。</p>
+<ol class="steps">
+<li>先確認 UE 專案能正常開啟，再關閉編輯器。找到包含 <code>.uproject</code>、Content 和 Config 的專案根目錄。</li>
+<li>在 GitHub Desktop 選 File → Add local repository，選取這個專案根目錄。如果它尚未是 Git 儲存庫，Desktop 會提示並提供在此建立儲存庫的入口，點選 create a repository here。</li>
+<li>在建立表單中核對 Name 與 Local path，確保最終儲存庫位置就是現有 UE 專案根目錄，避免額外建立另一個同名子資料夾。Git ignore 選 UnrealEngine；如果專案已有規則，先檢查並保留需要的設定。</li>
+<li>按 Create repository 完成本機初始化。Desktop 會建立 <code>.git</code> 與初始提交；在 History 檢查首次提交的內容，並確認快取與編譯產物沒有誤納入。後續新增或修改檔案，再由 Changes 選取並 Commit。</li>
+<li>按 Publish repository，確認儲存庫名稱、自己的帳號與可見性。Keep this code private 勾選時為 Private，取消勾選時為 Public；依課程要求設定，再按 Publish repository。</li>
+<li>選 View on GitHub，確認遠端儲存庫與專案檔案已出現。之後都沿用 Changes → Commit → Push origin 的流程。</li>
+</ol>
+<p class="note">初始化只建立本機的版本管理資料；Publish repository 才會建立並發佈到 GitHub。若本機已有 <code>.git</code>，直接 Add local repository 即可，不必重新初始化。若你已另建遠端空儲存庫，請核對並設定 Remote URL，再推送到它；不要再發佈另一個同名儲存庫。</p>
+<h3>兩種方式都要檢查必要檔案</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">項目</th><th scope="col">處理方式</th></tr></thead><tbody>
+<tr><td>TndaFighter<code>.uproject</code></td><td>保留專案描述檔；實際檔名以你的專案為準。</td></tr>
+<tr><td>Content</td><td>保留藍圖、關卡、材質等專案資產。</td></tr>
+<tr><td>Config</td><td>保留共用的專案設定；個人設定需另外判斷。</td></tr>
+<tr><td>Source</td><td>C++ 專案需保留；純藍圖專案可能沒有此目錄。</td></tr>
+<tr><td>Plugins</td><td>保留專案所需外掛；是否需要預編譯檔依外掛而定。</td></tr>
+<tr><td><code>.gitignore</code> 與 <code>.gitattributes</code></td><td>保留並理解其規則，尤其是專案既有的 Git LFS 設定。</td></tr>
+<tr><td>Binaries、Intermediate、Saved、DerivedDataCache</td><td>通常是產物、暫存或本機資料，依課程提供的忽略規則處理。</td></tr>
+</tbody></table></div>
+<h3>資料夾層級要正確</h3>
+<div class="code-wrap"><pre><code>TNDA-GitPractice/
+  .git/
+  .gitignore
+  .gitattributes
+  TndaFighter.uproject
+  Config/
+  Content/
+  Source/          # 有 C++ 程式碼時
+  Plugins/         # 專案使用外掛時</code></pre></div>
+<p>重點是讓 <code>.uproject</code> 與 Content、Config 等專案資料夾位於同一層。若把整個專案再多包一層，先確認自己開啟、修改與提交的是同一份專案。</p>
+<h3>補充說明</h3>
+<ul><li>從老師的既有 Git 儲存庫複製內容時，保留自己儲存庫的 .git，不要把來源的 .git 覆蓋過來。若要保留老師的歷史，應改採老師指定的 clone 或 fork 流程。</li><li>Windows 可開啟顯示隱藏項目與副檔名，避免把 <code>.gitignore</code> 存成 <code>.gitignore.txt</code>。</li><li>工具的個人設定不是每位學生都必須繳交的 UE 專案檔；提交前逐一檢查。</li></ul>
+<aside class="command-supplement" aria-label="指令補充 Clone 與 Init 的起點">
+<h3>指令補充 Clone 與 Init 的起點</h3>
+<p class="supplement-intro">選讀補充。上方的 Desktop 操作即可完成設定；以下說明兩種起點對應的 Git 指令。</p>
+<h4>Clone 已有的遠端空儲存庫</h4>
+<p>在預計存放專案的父資料夾開啟 Git Bash，把網址換成自己的儲存庫：</p>
+<div class="code-wrap"><pre><code>git clone https://github.com/OWNER/REPO.git
+cd REPO
+git status</code></pre></div>
+<p>接著把 UE 專案內容放入這個資料夾，設定忽略規則，再回到 Desktop 檢查、Commit 與 Push。Clone 已包含初始化與遠端連結設定。</p>
+<h4>Init 尚未使用 Git 的本機專案</h4>
+<p>在包含 <code>.uproject</code> 的現有專案根目錄開啟 Git Bash。先準備 <code>.gitignore</code>，再執行：</p>
+<div class="code-wrap"><pre><code>git init -b main
+git status</code></pre></div>
+<p><code>git init -b main</code> 建立本機儲存庫，並設定初始分支名稱為 main；它不會自動提交檔案或建立 GitHub 儲存庫。需要 LFS 時，在初始化後、首次提交前完成追蹤規則設定。之後在 Desktop 選 File → Add local repository 加入這個資料夾，從 Changes 建立首次提交，再 Publish repository。</p>
+</aside>
+</section>
+<section class="lesson" id="commit" aria-labelledby="heading-commit"><h2 id="heading-commit" tabindex="-1">三 提交並推送到 GitHub</h2>
+<p>Commit 和 Push 是兩個步驟；只完成 Commit，老師仍看不到你剛做的修改。</p>
+<ol class="steps"><li>確認 <code>Current repository</code> 與 <code>Current branch</code> 正確。</li><li>到 Changes 檢查檔案清單與差異，只勾選這次要提交的內容。第一次上傳前先確認 <code>.gitignore</code> 已生效。</li><li>在 Summary 寫下修改內容，例如「加入第一週 UE 專案」；需要時在 Description 補充原因。</li><li>按 Commit to main 或 Commit to master。</li><li>首次推送分支可能顯示 <code>Publish branch</code>；之後通常顯示 <code>Push origin</code>。按下並等待完成。</li><li>選 <code>View on GitHub</code>，重新整理網頁，確認最新提交、檔案與分支皆正確。</li></ol>
+<figure><a href="assets/git/frame-0600.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸教學截圖"><img src="assets/git/frame-0600.jpg" width="644" height="551" alt="圖 2　已沒有未提交修改，但仍顯示 Publish branch，尚需推送。" loading="lazy" decoding="async"></a><figcaption>圖 2　已沒有未提交修改，但仍顯示 Publish branch，尚需推送。 點圖可放大。</figcaption></figure>
+<h3>如何確認這次真的完成</h3>
+<p>History 看得到新提交，GitHub 網頁也看得到相同的提交訊息與檔案內容。若 Desktop 顯示待推送數量，就還有本機提交尚未上傳。</p>
+<h3>從 History 回看修改</h3>
+<p>Changes 是尚未提交的修改；History 是已提交的版本。點選某次提交，可以查看當次修改的檔案與差異。Summary 會成為 History 內辨識版本的重要線索。</p>
+<p>上傳完成後，複製自己的儲存庫網頁網址，貼到課程指定的交件位置。不要提交本機磁碟路徑，也不必每次重新建立儲存庫。</p>
+
+<aside class="command-supplement" aria-label="指令補充 Commit 與 Push"><h3>指令補充 Commit 與 Push</h3><p class="supplement-intro">選讀補充。使用 GitHub Desktop 完成上方步驟即可；以下指令是相同操作的另一種方式。</p>
+<p>對應上方的檢查修改、選取檔案、Commit 與 Push，命令列使用 status、add、commit 與 push。下面改用 <code>README.md</code> 當作練習檔案；請先修改並儲存它，再在儲存庫資料夾中逐行執行。</p>
+<div class="code-wrap"><pre><code>git status
+git add README.md
+git status
+git commit -m &quot;docs: update README&quot;
+git status
+git push</code></pre></div>
+
+<p>GitHub Desktop 在勾選檔案並提交時，替你處理了暫存步驟；命令列則需要自行 git add。若檔案還沒加入暫存區，直接 commit 可能顯示沒有可提交的修改。</p>
+<p><code>git add .</code>：它會把目前目錄範圍內符合條件的新增、修改與刪除一起暫存。初學時先逐檔加入並檢查，避免夾帶不相關內容。檔名含空白時，用雙引號包住完整檔名。</p>
+<p class="note">補充：<code>git status</code> 的預設彩色輸出中，綠色通常是已暫存，紅色可能是未暫存修改或未追蹤檔案；不能只靠顏色判斷檔案是否受追蹤。請閱讀 Changes to be committed、Changes not staged for commit 與 Untracked files 的分類。</p>
+<figure class="figure-narrow"><a href="assets/git/frame-1940.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸教學截圖"><img src="assets/git/frame-1940.jpg" width="391" height="247" alt="圖 5　已完成 Commit，終端機顯示領先遠端 1 個提交，接著執行 git push。" loading="lazy" decoding="async"></a><figcaption>圖 5　已完成 Commit，終端機顯示領先遠端 1 個提交，接著執行 git push。 點圖可放大。</figcaption></figure>
+</aside>
+</section>
+<section class="lesson" id="readme" aria-labelledby="heading-readme"><h2 id="heading-readme" tabindex="-1">四 撰寫 README 並同步兩端</h2>
+<p><code>README.md</code> 是儲存庫首頁的說明文件，可用來寫作業內容、操作方式與已知問題。</p>
+<p>建議寫 README，方便說明作業；是否必填以各週繳交公告為準。</p>
+<h3>從 GitHub 網頁新增 README</h3>
+<ol class="steps"><li>在儲存庫首頁按 Add a README，或開啟 <code>README.md</code> 後按編輯。</li><li>填入內容，使用 Preview 檢查 Markdown 顯示。</li><li>按 <code>Commit changes</code>，確認提交到課程使用的分支。</li><li>回到 GitHub Desktop 按 <code>Fetch origin</code>。若有遠端新提交，再按 <code>Pull origin</code>。</li><li>用 <code>Show in Explorer</code> 打開本機 <code>README.md</code>，確認剛才在網頁輸入的內容已出現。</li></ol>
+<figure><a href="assets/git/frame-1080.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸教學截圖"><img src="assets/git/frame-1080.jpg" width="644" height="555" alt="圖 3　網頁已有 README；本機仍需 Fetch 並依狀態 Pull。" loading="lazy" decoding="async"></a><figcaption>圖 3　網頁已有 README；本機仍需 Fetch 並依狀態 Pull。 點圖可放大。</figcaption></figure>
+<h3>從本機編輯 README</h3>
+<p>以文字編輯器修改並儲存 <code>README.md</code>，回到 Desktop 檢查 Changes，接著 Commit、Push，再到 GitHub 檢查首頁。</p>
+<p class="note">補充：修改前先同步，可以降低兩端同時編輯相同行而發生衝突的機會。若已有未提交修改，先保留與處理它們；遇到衝突時請核對內容或向助教求助。</p>
+<h3>認識最常用的 Markdown</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">寫法</th><th scope="col">顯示用途</th></tr></thead><tbody>
+<tr><td># 作業名稱</td><td>第一層標題；井字號後面留一個空白。</td></tr>
+<tr><td>## 操作方式</td><td>第二層標題。</td></tr>
+<tr><td>- 完成角色移動</td><td>項目清單。</td></tr>
+<tr><td>1. 開啟專案</td><td>有順序的操作步驟。</td></tr>
+<tr><td>[文字](網址)</td><td>可點選的連結。</td></tr>
+</tbody></table></div>
+<p>README 使用 Markdown 格式。正文和程式碼都使用一般文字編輯器即可；檔名要是 <code>README.md</code>，不要另外加上 .txt。</p>
+
+<aside class="command-supplement" aria-label="指令補充 Fetch 與 Pull"><h3>指令補充 Fetch 與 Pull</h3><p class="supplement-intro">選讀補充。使用 GitHub Desktop 完成上方步驟即可；以下指令是相同操作的另一種方式。</p><p>在儲存庫資料夾內執行：</p><div class="code-wrap"><pre><code>git fetch origin
+git pull</code></pre></div><p><code>git fetch origin</code> 對應 Fetch origin；<code>git pull</code> 取得並整合目前追蹤分支的更新。執行前先處理本機尚未提交的修改。</p></aside>
+</section>
+<section class="lesson" id="clone" aria-labelledby="heading-clone"><h2 id="heading-clone" tabindex="-1">五 把遠端專案帶回本機</h2>
+<p>Clone 會建立另一份本機儲存庫，包含歷史與遠端連結。換電腦或取得老師指定專案時會用到。</p>
+<h3>使用 GitHub Desktop</h3>
+<ol class="steps"><li>打開目標儲存庫，按 Code，複製 HTTPS 網址，或選 Open with GitHub Desktop。</li><li>在 Desktop 的 <code>Clone repository</code> 選擇儲存庫與本機目的地。目的地應使用新資料夾，避免混入已有作業。</li><li>Clone 完成後按 <code>Show in Explorer</code>，確認 README、<code>.uproject</code> 與必要資料夾存在。</li></ol>
+<figure class="figure-narrow"><a href="assets/git/frame-1620.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸教學截圖"><img src="assets/git/frame-1620.jpg" width="295" height="265" alt="圖 4　 Code 選單提供 HTTPS 網址與 Desktop 開啟入口。" loading="lazy" decoding="async"></a><figcaption>圖 4　 Code 選單提供 HTTPS 網址與 Desktop 開啟入口。 點圖可放大。</figcaption></figure>
+<p class="note">補充：<code>Download ZIP</code> 取得的是檔案快照，通常不含 .git 歷史與遠端連結。需要持續 Commit、Push、Pull 時，請使用 clone。</p><h3>Clone 老師的專案後推到自己的帳號</h3>
+<p>直接 clone 老師的儲存庫，再把推送目的地改成自己的空儲存庫。這與前面「下載壓縮檔，再放入自己的儲存庫」是兩種不同的起點，選一種使用即可。</p>
+<ol class="steps"><li>先依前述方式 clone 老師提供的儲存庫；若課程指定分支、標籤或週次版本，先切換到該版本，確認專案檔案正確。</li><li>在自己的 GitHub 帳號建立一個 Public 空儲存庫，不加入 README、<code>.gitignore</code> 或授權檔，避免建立另一段不相干的初始歷史。</li><li>在 Desktop 選取剛 clone 的本機專案，開啟 Repository → Repository settings → Remote。</li><li>把 Primary remote repository 的 URL 改成自己新建儲存庫的 HTTPS 網址，按 Save。</li><li>確認推送目的地是自己的帳號，再按 <code>Publish branch</code> 或依畫面狀態按 <code>Push origin</code>。</li><li>開啟自己的 GitHub 儲存庫，確認專案內容與歷史已出現。</li></ol>
+<p>能 clone 別人的專案不代表有權限 push 回去。Remote URL 是這份本機儲存庫的同步目的地；更改後要重新核對帳號與儲存庫名稱。上述流程保留原有歷史，不需要刪除 .git。</p>
+
+
+<aside class="command-supplement" aria-label="指令補充 Clone 與路徑"><h3>指令補充 Clone 與路徑</h3><p class="supplement-intro">選讀補充。使用 GitHub Desktop 完成上方步驟即可；以下指令是相同操作的另一種方式。</p><h4>Clone 對應指令</h4>
+<p>以下是示範指令。先把 OWNER 換成儲存庫擁有者，把 REPO 換成儲存庫名稱；本機路徑也要換成自己實際使用的位置。</p>
+<div class="code-wrap"><pre><code>cd /f/GitPractice
+git clone https://github.com/OWNER/REPO.git
+cd REPO
+git status</code></pre></div>
+<p><code>git clone</code> 會在目前位置建立 REPO 子資料夾，所以執行 <code>git status</code> 前要先 cd REPO。若在父資料夾執行，就可能出現 <code>not a git repository</code> 的情況。</p>
+
+<h4>指令工具準備</h4>
+<p>先安裝 Git for Windows，再在要放置專案的資料夾按右鍵，選 Open Git Bash here；若功能收在更多選項中，先展開該選單。它提供可執行 Git 指令的命令列環境。</p>
+
+<p class="note">補充：若第一次用命令列推送到新遠端，git push 提示沒有 upstream，先用 git branch --show-current 查明分支，再依實際名稱執行 git push -u origin main 或 git push -u origin master。</p></aside>
+</section>
+<section class="lesson" id="ignore" aria-labelledby="heading-ignore"><h2 id="heading-ignore" tabindex="-1">六 檢查忽略規則與專案完整性</h2>
+<p>老師提供的專案通常已附相關設定；從空白專案開始時，務必在第一次 Commit 前準備 <code>.gitignore</code>。</p>
+<p>UE 的忽略規則範本可從 <a href="https://github.com/github/gitignore/blob/main/UnrealEngine.gitignore" target="_blank" rel="noopener noreferrer">GitHub 的 UnrealEngine.gitignore</a> 取得，或在GitHub Repository剛創建時Add <code>.gitignore</code>選擇「UnrealEngine」。複製其中的規則，存成專案儲存庫根目錄下的 <code>.gitignore</code>，檔名不要加上 <code>.txt</code>。若專案已有這個檔案，先核對並補上需要的規則，避免直接覆蓋原有設定。</p>
+<h3>忽略規則控制哪些檔案不納入追蹤</h3>
+<p><code>.gitignore</code> 應放在適當的儲存庫位置，通常是根目錄。優先沿用課程提供的 UE 規則，再依專案需求調整；不要因為檔案很大就把 Content 整個忽略。</p>
+<p>以下只是常見目錄的示意，不能直接取代專案原有的完整規則。Plugins 的產物與預編譯外掛尤其需要分別處理。</p>
+<div class="code-wrap"><pre><code>/Binaries/
+/Intermediate/
+/Saved/
+/DerivedDataCache/
+/.vs/</code></pre></div>
+<h3>用 Desktop 檢查規則有沒有生效</h3>
+<ol class="steps"><li>儲存 <code>.gitignore</code>，回到 Changes 查看待提交清單。</li><li>檢查是否仍有大量快取、編譯產物或個人暫存。</li><li>確認 <code>.uproject</code>、Content 與 Config 等必要內容沒有被誤排除。</li><li>把 <code>.gitignore</code> 自己也納入提交，讓其他人使用同一套規則。</li></ol>
+<h3>以下是操作補充</h3>
+<ul><li>已被 Git 追蹤的檔案，不會因為新增 <code>.gitignore</code> 規則就自動停止追蹤。遇到這種情況，請先確認資料與備份，再請助教協助清理追蹤狀態。</li><li>若 <code>.gitattributes</code> 使用 Git LFS 管理資產，需確認 clone 後取得真正的資產內容，而不只是指標檔。遇到資產開不起來時，要把 LFS 設定列入檢查。</li><li>用另一個新資料夾 clone 後測試，才能發現只存在原電腦、沒有提交的必要檔案。C++ 專案可能還需要指定的編譯工具、重新產生專案檔與建置。</li><li>第一次開啟 UE 專案可能重建快取或編譯著色器。應使用課程指定的引擎版本，遇到版本轉換提示先確認作業要求。</li></ul>
+<h3>看懂幾個忽略規則</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">規則</th><th scope="col">意思</th></tr></thead><tbody>
+<tr><td>*.sln</td><td>* 可比對一段字元；此例忽略副檔名為 .sln 的檔案。</td></tr>
+<tr><td>Saved/</td><td>尾端的 / 表示目錄；這類規則可匹配該範圍下的同名目錄。</td></tr>
+<tr><td>/Saved/</td><td>前端的 / 將位置限定在此 <code>.gitignore</code> 所在層級。</td></tr>
+</tbody></table></div>
+<p class="note">補充：<code>.gitattributes</code> 用來設定檔案屬性，例如換行、差異比較方式與 Git LFS 處理規則，不只是一般文字說明。先沿用課程專案的設定，調整前應理解其用途。</p>
+</section>
+<section class="lesson" id="branch" aria-labelledby="heading-branch">
+<h2 id="heading-branch" tabindex="-1">補充：分支Branch</h2>
+<p>Branch 是「分支」，讓同一個儲存庫保有不同的開發路線。例如保留 main 上目前可用的版本，另外建立一個分支試做新攻擊功能；新提交會記錄在你目前所在的分支，完成後再決定是否合併回主分支。</p>
+<p class="note">本課通常不會用到建立、切換與合併分支，沿用教材指定的分支或自己的 main／master 完成作業即可。本節作為補充概念；除非老師另有要求，不必為每次作業另開分支。</p>
+<h3>圖解 同一個起點可以走出不同版本</h3>
+<p>假設專案目前在 B。從 B 建立 <code>experiment-camera</code> 後，主分支繼續修正角色轉向，實驗分支則調整攝影機。兩條線的提交各自往前，直到決定合併。</p>
+<figure class="branch-diagram">
+<div class="branch-diagram-scroll">
+<svg viewBox="0 0 960 400" role="img" aria-labelledby="branch-diagram-title branch-diagram-desc">
+<title id="branch-diagram-title">main 與 experiment-camera 的提交分支圖</title>
+<desc id="branch-diagram-desc">A 到 B 是共同歷史。B 分出兩條路，main 產生 C，experiment-camera 產生 D 和 E。main 將 E 的工作合併後產生 M，M 有 C 和 E 兩個父提交。main 指向 M，實驗分支仍指向 E。</desc>
+<text x="36" y="44" class="commit-label" font-weight="700">main 開發線</text>
+<text x="36" y="218" class="commit-label" font-weight="700">experiment-camera 開發線</text>
+<path d="M110 100 H450 H850" class="branch-line branch-main"/>
+<path d="M270 100 C330 100 360 260 450 260 H650 C740 260 770 100 850 100" class="branch-line branch-feature"/>
+<g><circle cx="110" cy="100" r="22" fill="#1d4ed8"/><text x="110" y="106" text-anchor="middle" class="commit-id">A</text><text x="110" y="145" text-anchor="middle" class="commit-label">建立 UE 專案</text></g>
+<g><circle cx="270" cy="100" r="22" fill="#1d4ed8"/><text x="270" y="106" text-anchor="middle" class="commit-id">B</text><text x="270" y="145" text-anchor="middle" class="commit-label">可用的基礎版本</text><text x="270" y="168" text-anchor="middle" class="branch-caption">兩條分支的共同起點</text></g>
+<g><circle cx="450" cy="100" r="22" fill="#1d4ed8"/><text x="450" y="106" text-anchor="middle" class="commit-id">C</text><text x="450" y="145" text-anchor="middle" class="commit-label">修正角色轉向</text></g>
+<g><circle cx="450" cy="260" r="22" fill="#b65a16"/><text x="450" y="266" text-anchor="middle" class="commit-id">D</text><text x="450" y="305" text-anchor="middle" class="commit-label">調整攝影機距離</text></g>
+<g><circle cx="650" cy="260" r="22" fill="#b65a16"/><text x="650" y="266" text-anchor="middle" class="commit-id">E</text><text x="650" y="305" text-anchor="middle" class="commit-label">加入鏡頭邊界留白</text></g>
+<g><circle cx="850" cy="100" r="25" fill="#126b64"/><text x="850" y="106" text-anchor="middle" class="commit-id">M</text><text x="850" y="145" text-anchor="middle" class="commit-label">合併後的版本</text><text x="850" y="168" text-anchor="middle" class="branch-caption">保留 C 與 E 兩條歷史</text></g>
+<rect x="787" y="24" width="126" height="31" rx="7" fill="#eff6ff"/><text x="850" y="45" text-anchor="middle" class="commit-label">main → M</text>
+<rect x="545" y="330" width="210" height="31" rx="7" fill="#fff3e9"/><text x="650" y="351" text-anchor="middle" class="commit-label">experiment-camera → E</text>
+<text x="36" y="386" class="branch-caption">由左往右閱讀提交順序；每個圓點代表一次 Commit，線表示提交的歷史關係。</text>
+</svg>
+</div>
+<figcaption>分支示意　藍線是主分支的開發，橘線是攝影機實驗。此圖示範產生合併提交 M 的情況；手機上可左右滑動查看。</figcaption>
+</figure>
+<div class="table-wrap"><table><thead><tr><th scope="col">查看哪個版本</th><th scope="col">此時的專案內容</th></tr></thead><tbody>
+<tr><td>合併前的 main，位於 C</td><td>包含 A、B 和角色轉向修正；尚未包含 D、E 的攝影機調整。</td></tr>
+<tr><td>實驗分支，位於 E</td><td>包含 A、B 和 D、E 的攝影機調整；尚未包含 C 的角色轉向修正。</td></tr>
+<tr><td>合併後的 main，位於 M</td><td>整合角色轉向修正與攝影機調整；若有衝突，必須先決定如何處理才能完成合併。</td></tr>
+</tbody></table></div>
+<p>切換到哪個分支，工作資料夾就呈現該分支的版本。合併完成後，main 指向 M，而實驗分支仍指向 E；合併不會自動刪除實驗分支，也不會讓它同步移到 M。</p>
+<h3>圖解 不合併回主分支也可以</h3>
+<p>若攝影機實驗尚未完成，或測試後決定暫不採用，可以保留在實驗分支。main 繼續自己的修改，兩條線不必合併，也不會因為 Push 就自動整合。</p>
+<figure class="branch-diagram">
+<div class="branch-diagram-scroll">
+<svg viewBox="0 0 960 400" role="img" aria-labelledby="branch-separate-title branch-separate-desc">
+<title id="branch-separate-title">未合併的 main 與 experiment-camera 分支</title>
+<desc id="branch-separate-desc">A 和 B 是共同歷史。main 從 B 產生 C，再產生 F；experiment-camera 從 B 產生 D 和 E。兩條路沒有重新連接，main 指向 F，實驗分支指向 E，沒有合併提交。</desc>
+<text x="36" y="44" class="commit-label" font-weight="700">main 開發線</text>
+<text x="36" y="218" class="commit-label" font-weight="700">experiment-camera 開發線</text>
+<path d="M110 100 H850" class="branch-line branch-main"/>
+<path d="M270 100 C330 100 360 260 450 260 H650" class="branch-line branch-feature"/>
+<g><circle cx="110" cy="100" r="22" fill="#1d4ed8"/><text x="110" y="106" text-anchor="middle" class="commit-id">A</text><text x="110" y="145" text-anchor="middle" class="commit-label">建立 UE 專案</text></g>
+<g><circle cx="270" cy="100" r="22" fill="#1d4ed8"/><text x="270" y="106" text-anchor="middle" class="commit-id">B</text><text x="270" y="145" text-anchor="middle" class="commit-label">可用的基礎版本</text><text x="270" y="168" text-anchor="middle" class="branch-caption">兩條分支的共同起點</text></g>
+<g><circle cx="450" cy="100" r="22" fill="#1d4ed8"/><text x="450" y="106" text-anchor="middle" class="commit-id">C</text><text x="450" y="145" text-anchor="middle" class="commit-label">修正角色轉向</text></g>
+<g><circle cx="850" cy="100" r="22" fill="#1d4ed8"/><text x="850" y="106" text-anchor="middle" class="commit-id">F</text><text x="850" y="145" text-anchor="middle" class="commit-label">更新角色移動設定</text><text x="850" y="168" text-anchor="middle" class="branch-caption">仍使用原本的攝影機</text></g>
+<g><circle cx="450" cy="260" r="22" fill="#b65a16"/><text x="450" y="266" text-anchor="middle" class="commit-id">D</text><text x="450" y="305" text-anchor="middle" class="commit-label">調整攝影機距離</text></g>
+<g><circle cx="650" cy="260" r="22" fill="#b65a16"/><text x="650" y="266" text-anchor="middle" class="commit-id">E</text><text x="650" y="305" text-anchor="middle" class="commit-label">加入鏡頭邊界留白</text></g>
+<rect x="787" y="24" width="126" height="31" rx="7" fill="#eff6ff"/><text x="850" y="45" text-anchor="middle" class="commit-label">main → F</text>
+<rect x="545" y="330" width="210" height="31" rx="7" fill="#fff3e9"/><text x="650" y="351" text-anchor="middle" class="commit-label">experiment-camera → E</text>
+<text x="36" y="386" class="branch-caption">兩條開發線保持分開；沒有合併提交 M，分支上的修改不會自動傳到另一條線。</text>
+</svg>
+</div>
+<figcaption>不合併的情況　main 保留角色轉向與移動設定的修改，攝影機實驗仍留在 experiment-camera。手機上可左右滑動查看。</figcaption>
+</figure>
+<ul>
+<li>切換到 main：看到 A、B、C、F 的版本，沒有 D、E 的攝影機實驗。</li>
+<li>切換到 experiment-camera：看到 A、B、D、E 的版本，沒有 C、F 的主分支修改。</li>
+<li>可以繼續在實驗分支提交，也可以暫時保留它；日後需要時再決定是否整合。</li>
+<li>Push 是把分支提交傳到遠端；Merge 才是整合開發歷史。上傳實驗分支不會自動改變 main。</li>
+</ul>
+<h3>先理解分支與提交的關係</h3>
+<ul>
+<li>Commit 是某次修改的版本紀錄；Branch 是指向某個提交的名稱，新的提交會讓目前分支往前移動。</li>
+<li>建立分支時，起點通常與原分支相同；分支不是重新複製一整個專案資料夾。</li>
+<li>切換分支時，工作資料夾會呈現所選分支的版本。Commit 前要確認 Desktop 上方的 Current branch。</li>
+<li>Merge 是把另一條開發路線的修改整合進目前分支；如果兩邊的修改無法自動整合，可能需要解決衝突。</li>
+</ul>
+<h3>什麼時候可能用到</h3>
+<p>想保留穩定版本，同時試驗新功能；多人各自開發不同功能；或需要先測試修正、再整合到共用版本時，都可以使用分支。以 UE 專案來說，可在另一分支試做攝影機調整，確認效果後才整合；藍圖與關卡等二進位資產的衝突仍需另外處理。</p>
+<h3>GitHub Desktop 的基本操作</h3>
+<ol class="steps">
+<li>先儲存 UE 修改並完成目前分支的 Commit；切換前關閉 UE 編輯器，避免仍開著舊版本資產。</li>
+<li>按 Current branch，選擇要作為起點的分支，例如 main；再按 New branch。</li>
+<li>輸入清楚的名稱，例如 <code>experiment-camera</code>，確認建立起點後按 Create branch。</li>
+<li>在新分支修改、Commit；要上傳此分支時按 Publish branch，後續則使用 Push origin。</li>
+<li>要回到主分支，再從 Current branch 選 main。若畫面詢問如何處理未提交修改，先確認修改要留在哪個分支，避免帶到錯誤的分支。</li>
+</ol>
+<p>建立或推送分支不會自動合併回 main。需要整合時，再依團隊流程進行 Merge 或 Pull Request；本課不要求操作這部分。</p>
+<aside class="command-supplement" aria-label="指令補充：分支Branch">
+<h3>指令補充：分支Branch</h3>
+<p class="supplement-intro">選讀補充。下列指令在同一份本機儲存庫執行，對應查看、建立並切換分支。main 請替換成專案實際使用的主分支名稱。</p>
+<div class="code-wrap"><pre><code>git branch
+git switch main
+git switch -c experiment-camera
+git switch main</code></pre></div>
+<p><code>git branch</code> 列出本機分支，星號標示目前分支；<code>git switch -c</code> 從目前位置建立並切換到新分支。切換前先處理未提交的修改。</p>
+</aside>
+</section>
+<section class="lesson" id="git-lfs" aria-labelledby="heading-git-lfs">
+<h2 id="heading-git-lfs" tabindex="-1">補充：大檔案管理LFS</h2>
+<h3>Git LFS 是什麼</h3>
+<p><a href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer">Git LFS</a> 是 Git Large File Storage，用來管理大型檔案。一般 Git 歷史保存檔案內容；使用 LFS 時，Git 保存小型的「指標檔」，真正的內容另外存放在 LFS 儲存空間。提交、推送與取回版本時，LFS 會配合傳送對應的檔案內容。</p>
+<p>UE 的 <code>.uasset</code>、<code>.umap</code> 等二進位資產可能很大，而且無法像程式文字一樣直接比較每行差異。LFS 可讓這類資產的版本內容與一般 Git 儲存分開處理，但不會自動解決同一個藍圖或關卡的多人編輯衝突。</p>
+<h3>什麼時機使用</h3>
+<ul>
+<li>課程或團隊的專案已設定 LFS：沿用既有規則，讓所有人用一致的方式取得資產。</li>
+<li>要保存大型材質、模型、音訊或 UE 資產，且這些檔案需要版本管理。</li>
+<li>單一檔案超過 GitHub 一般 Git 上傳的 100 MiB 限制：應先評估 LFS，並確認帳號方案的 LFS 檔案大小、儲存與流量限制。</li>
+</ul>
+<p>程式碼、README 與一般小型文字檔通常使用普通 Git 即可。Binaries、Intermediate、Saved 等可重建產物仍應依 <code>.gitignore</code> 排除，不必為了能上傳而改放 LFS。LFS 管理的是需要保留的資產，不是清理暫存檔的工具。</p>
+<h3>用 GitHub Desktop 管理 LFS 資產</h3>
+<p>GitHub Desktop 已包含 Git LFS。對已設定好的儲存庫，日常仍使用 Changes、Commit、Push 和 Pull；新專案第一次設定追蹤規則需要命令列，操作放在本區塊最下方。若老師提供的專案已有 LFS 規則，先檢查，不要重複覆蓋。</p>
+<ol class="steps">
+<li>在 Desktop 選取正確的 Current repository，按 Show in Explorer，檢查根目錄的 <code>.gitattributes</code> 是否已有 <code>filter=lfs</code> 規則。</li>
+<li>若尚未設定，先在新增資產第一次 Commit 前，完成下方的初始化與追蹤規則設定；不熟悉時請助教協助。</li>
+<li>回到 Changes，確認 <code>.gitattributes</code> 與要提交的資產都在本次選取範圍，填寫 Summary 並 Commit。</li>
+<li>按 Push origin，等待提交與 LFS 檔案上傳完成。若出現 LFS 錯誤，先處理錯誤，再確認遠端內容。</li>
+<li>在另一個新資料夾用 Desktop Clone；如果出現初始化 Git LFS 的提示，依畫面完成，再確認資產能正常開啟。</li>
+</ol>
+<h3>容易混淆的地方</h3>
+<ul>
+<li><code>.gitignore</code> 決定哪些檔案不追蹤；<code>.gitattributes</code> 中的 LFS 規則決定哪些已納入版本管理的檔案交給 LFS 處理。啟用 UnrealEngine 的 ignore 範本不等於已設定 LFS。</li>
+<li>只加追蹤規則，不會自動把已存在於 Git 歷史的大檔案搬到 LFS。若已提交或因大檔案被拒絕推送，先請助教檢查；不要直接刪除專案或重寫歷史。</li>
+<li>Clone 後若資產內容只是一小段含 <code>version https://git-lfs.github.com/spec/v1</code> 的文字，拿到的可能是指標，還需要下載真正的資產。先核對登入權限、網路與 LFS 下載結果。</li>
+<li>GitHub 的 Download ZIP 是否包含真正的 LFS 內容取決於儲存庫設定；取得 UE 專案時，優先使用 Desktop Clone 並實際開啟檢查。</li>
+</ul>
+<aside class="command-supplement" aria-label="指令補充：大檔案管理LFS 初次設定">
+<h3>指令補充：大檔案管理LFS 初次設定</h3>
+<p class="supplement-intro">只在第一次設定或排查時使用。一般 Commit、Push、Pull 繼續使用上方的 Desktop 流程。</p>
+<p>使用 <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git for Windows 與 Git Bash</a> 開啟這份儲存庫的資料夾。若命令列找不到 Git LFS，可從 <a href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer">Git LFS 網站</a> 安裝。以下是新加入 UE 資產的追蹤範例；是否採用這兩種副檔名應以課程或團隊規則為準。</p>
+<div class="code-wrap"><pre><code>git lfs install
+git lfs track "*.uasset"
+git lfs track "*.umap"
+git lfs track</code></pre></div>
+<p><code>git lfs install</code> 初始化目前環境；<code>git lfs track</code> 設定追蹤規則並更新 <code>.gitattributes</code>。最後一行列出規則，完成後回到 Desktop 提交設定與新增資產。</p>
+<p>確認哪些檔案已納入 LFS，可執行：</p>
+<div class="code-wrap"><pre><code>git lfs ls-files</code></pre></div>
+<p>已 Clone 的儲存庫若缺少真正的資產，核對權限與網路後，可在該儲存庫資料夾補下載目前版本的 LFS 內容：</p>
+<div class="code-wrap"><pre><code>git lfs pull</code></pre></div>
+</aside>
+</section>
+<section class="lesson" id="commit-message" aria-labelledby="heading-commit-message">
+<h2 id="heading-commit-message" tabindex="-1">補充：Git commit message</h2>
+<p>Commit message 是這次提交的說明。寫清楚改了什麼，日後看 History 才能快速找到需要的版本；修改原因不容易從差異看懂時，再補上原因與做法。</p>
+<p>以下是建議養成的習慣；本課是否強制使用特定格式，以老師的作業規範為準。</p>
+<h3>先學會寫一行清楚的摘要</h3>
+<div class="code-wrap"><pre><code>type(scope): 簡短摘要</code></pre></div>
+<ul>
+<li><code>type</code>：修改類型，例如新增功能用 <code>feat</code>，修正錯誤用 <code>fix</code>。</li>
+<li><code>scope</code>：選填的影響範圍，例如 <code>input</code>、<code>camera</code> 或 <code>combat</code>；省略時寫成 <code>type: 摘要</code>。</li>
+<li>摘要：寫出具體變動，冒號後留一個空白。可以使用中文，團隊保持一致即可。</li>
+</ul>
+<h3>用 UE 作業理解常見類型</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">類型與用途</th><th scope="col">本課範例</th></tr></thead><tbody>
+<tr><td><code>feat</code>　新增功能</td><td><code>feat(input): 新增 U 鍵攻擊映射</code></td></tr>
+<tr><td><code>fix</code>　修正錯誤</td><td><code>fix(camera): 修正角色距離拉開時鏡頭裁切</code></td></tr>
+<tr><td><code>docs</code>　更新文件</td><td><code>docs: 補上 README 操作方式</code></td></tr>
+<tr><td><code>style</code>　程式格式</td><td><code>style: 統一 C++ 縮排</code>，不改程式行為</td></tr>
+<tr><td><code>refactor</code>　重整實作</td><td><code>refactor(combat): 抽出共用傷害計算</code>，維持既有行為</td></tr>
+<tr><td><code>perf</code>　改善效能</td><td><code>perf(ui): 避免每幀重建血條內容</code></td></tr>
+<tr><td><code>test</code>　新增或調整測試</td><td><code>test(combat): 加入傷害計算測試</code></td></tr>
+<tr><td><code>chore</code>　專案維護</td><td><code>chore: 補上 UE 暫存目錄的忽略規則</code></td></tr>
+<tr><td><code>revert</code>　回復先前變動</td><td><code>revert: 回復上次移動速度調整</code></td></tr>
+</tbody></table></div>
+<p class="note">分類提醒：<code>style</code> 通常指不影響行為的程式排版，不是所有美術或 UI 外觀修改。新增 HUD 功能可用 <code>feat(ui)</code>，修正 UI 跑版可用 <code>fix(ui)</code>；其餘類型的細分依團隊約定。</p>
+<h3>在 GitHub Desktop 填在哪裡</h3>
+<ol class="steps">
+<li>先檢查 Changes，只勾選這次要提交的修改。</li>
+<li>把第一行放進 <strong>Summary</strong>，例如 <code>feat(input): 新增 U 鍵攻擊映射</code>。</li>
+<li>需要補充時，在 <strong>Description</strong> 說明原因，例如「保留滑鼠左鍵操作，讓鍵盤也能觸發同一個 IA_ComboAttack；修改範圍只有 IMC_Combat」。</li>
+<li>完成 Commit 後仍要 Push，再從 History 與 GitHub 網頁確認結果。</li>
+</ol>
+<h3>較複雜的修改再加正文與頁腳</h3>
+<p>完整訊息可包含標題、正文和頁腳，中間用空行分隔。正文補充背景與修改理由；頁腳可記錄相關 Issue 或相容性變更。以下 Issue 編號只是格式示例。</p>
+<div class="code-wrap"><pre><code>fix(camera): 修正雙角色拉開距離時的鏡頭裁切
+
+原本只根據兩個角色的中心點調整鏡頭，距離較遠時角色會超出畫面
+加入邊界留白，讓鏡頭縮放時也能容納角色外緣
+
+Refs: #12</code></pre></div>
+<p>若修改使既有使用方式不再相容，Conventional Commits 可用 <code>!</code> 或 <code>BREAKING CHANGE:</code> 標示，並說明如何遷移。單純新增功能或修 bug，不必加這個標記。</p>
+<div class="code-wrap"><pre><code>refactor(combat)!: 以新的傷害資料結構取代舊欄位
+
+BREAKING CHANGE: 既有攻擊資料表需轉換成新的欄位格式</code></pre></div>
+<h3>送出前檢查訊息是否對得上修改</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">過於模糊的寫法</th><th scope="col">更容易回看的寫法</th></tr></thead><tbody>
+<tr><td><code>update</code></td><td><code>docs: 補上第二週作業操作說明</code></td></tr>
+<tr><td><code>修好了</code></td><td><code>fix(input): 修正 U 鍵無法觸發攻擊</code></td></tr>
+<tr><td><code>HW3</code></td><td><code>feat(combat): 新增角色自動面向對手</code></td></tr>
+</tbody></table></div>
+<ul>
+<li>一次提交盡量處理一個主題；若同時新增功能和整理文件，可以拆成容易理解的提交。</li>
+<li>摘要維持簡短，省略句尾句號。標題約 50 字元、正文每行約 72 字元是常見慣例，不是 Git 或 Conventional Commits 的硬性長度限制。</li>
+<li>不要宣稱尚未完成或尚未測試的成果。若 AI 協助產生訊息，先核對實際差異，並補上自己才知道的原因。</li>
+</ul>
+<p><strong>小練習：</strong>若這次只修改 IMC_Combat，讓 U 鍵也能攻擊，試著寫一行 Summary。參考寫法是 <code>feat(input): 新增 U 鍵攻擊映射</code>；如果這是在修復原本應該可用、卻失效的映射，則改用 <code>fix(input)</code>。</p>
+
+<aside class="command-supplement" aria-label="指令補充 提交訊息"><h3>指令補充 提交訊息</h3><p class="supplement-intro">選讀補充。使用 GitHub Desktop 完成上方步驟即可；以下指令是相同操作的另一種方式。</p><p>命令列的簡短寫法如下。執行前要已儲存修改，並用 <code>git add</code> 將要提交的檔案加入暫存區。</p>
+<div class="code-wrap"><pre><code>git commit -m "feat(input): 新增 U 鍵攻擊映射"</code></pre></div>
+</aside>
+</section>
+<section class="lesson" id="pages" aria-labelledby="heading-pages"><h2 id="heading-pages" tabindex="-1">補充：GitHub Pages</h2>
+<p>除了保存程式碼，也能把 HTML、CSS、JavaScript 等前端檔案發佈成可瀏覽的網站。本節屬延伸內容，完成 Git 作業上傳不需要先架設網站。</p>
+<ol class="steps"><li>在準備用來放網站的儲存庫加入 index.html 與相依資產，完成 Commit 與 Push。</li><li>到儲存庫的 Settings → Pages。</li><li>在 Build and deployment 下，把 Source 設為 Deploy from a branch。</li><li>選擇包含網站內容的分支，以及 /(root) 或 /docs 目錄，按 Save。</li><li>等待部署完成，再使用 Pages 顯示的網站網址，確認頁面與圖片能正常開啟。</li></ol>
+<p class="note">補充：GitHub 儲存庫網址用來查看程式碼與版本；Pages 網址用來瀏覽發佈後的網頁。兩者用途不同，課程若要求繳交專案儲存庫，仍應提供儲存庫連結。</p>
+<p>Pages 託管的是靜態網站，本身不執行 PHP、Python 等後端服務。網站是否有互動與是否有後端是不同問題；前端 JavaScript 仍可提供互動。</p>
+</section>
+<section class="lesson" id="references" aria-labelledby="heading-references"><h2 id="heading-references" tabindex="-1">參考資料</h2>
+<p>主要教學來源為課程影片「Git基本操作」。本文依操作順序整理，並另行標示必要的操作補充與延伸練習。</p>
+<p class="reference"><a href="https://www.youtube.com/watch?v=c27uyrAQJEc" target="_blank" rel="noopener noreferrer">課程影片</a></p>
+<h3>官方補充資料</h3>
+<p class="reference"><a href="https://docs.github.com/en/desktop/overview/creating-your-first-repository-using-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 建立儲存庫與提交推送</a></p>
+<p class="reference"><a href="https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/syncing-your-branch-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 同步分支</a></p>
+<p class="reference"><a href="https://docs.github.com/en/get-started/git-basics/ignoring-files" target="_blank" rel="noopener noreferrer">GitHub 忽略檔案說明</a></p>
+<p class="reference"><a href="https://github.com/github/gitignore/blob/main/UnrealEngine.gitignore" target="_blank" rel="noopener noreferrer">GitHub 提供的 Unreal Engine 忽略規則範本</a></p>
+<p>介面名稱以英文按鈕對照，實際版面可能因軟體版本不同而變動。教材整理日期為 2026 年 10 月 13 日。</p>
+<p class="reference"><a href="https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/changing-the-remote-url-for-a-repository-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 修改 Remote URL</a></p>
+<p class="reference"><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener noreferrer">GitHub Pages 設定發佈來源</a></p>
+<p class="reference"><a href="https://docs.github.com/en/desktop/making-changes-in-a-branch/managing-branches-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 管理分支</a></p>
+<h3>Git LFS 補充資料</h3>
+<p class="reference"><a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage" target="_blank" rel="noopener noreferrer">GitHub Git LFS 用途與限制</a></p>
+<p class="reference"><a href="https://docs.github.com/en/desktop/configuring-and-customizing-github-desktop/about-git-large-file-storage-and-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 與 Git LFS</a></p>
+<p class="reference"><a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage" target="_blank" rel="noopener noreferrer">設定 Git LFS 追蹤規則</a></p>
+<h3>Commit message 補充資料</h3>
+<p class="reference"><a href="https://hackmd.io/@Heidi-Liu/git-commit-message" target="_blank" rel="noopener noreferrer">Heidi Liu 如何撰寫好的 Git Commit Message</a></p>
+<p class="reference"><a href="https://www.conventionalcommits.org/zh-hant/v1.0.0/" target="_blank" rel="noopener noreferrer">Conventional Commits 1.0.0</a></p>
+</section>
+<footer class="foot"><span>TNDA · Git 基本操作 · 2026.10.13</span><a href="#top">回到頁首 ↑</a></footer></main></div><div id="status" class="sr-only" role="status" aria-live="polite"></div><script>
+(() => {
+  const jump = document.querySelector('#chapter-jump');
+  if (jump) jump.addEventListener('change', () => {
+    const target = document.getElementById(jump.value);
+    if (!target) return;
+    history.pushState(null, '', `#${jump.value}`);
+    target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    target.querySelector('h2')?.focus({ preventScroll: true });
+  });
+  document.querySelectorAll('.code-wrap').forEach((wrap) => {
+    const button = document.createElement('button');
+    button.className = 'copy'; button.type = 'button'; button.textContent = '複製';
+    button.setAttribute('aria-label', '複製下方範例內容');
+    button.addEventListener('click', async () => {
+      const value = wrap.querySelector('code').textContent;
+      try {
+        await navigator.clipboard.writeText(value);
+        button.textContent = '已複製';
+        document.querySelector('#status').textContent = '範例內容已複製。';
+      } catch {
+        const range = document.createRange(); range.selectNodeContents(wrap.querySelector('code'));
+        const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range);
+        button.textContent = '已選取';
+        document.querySelector('#status').textContent = '請按 Ctrl+C 或 Command+C 複製已選取的內容。';
+      }
+      window.setTimeout(() => { button.textContent = '複製'; }, 2500);
+    });
+    wrap.appendChild(button);
+  });
+  const checks = [...document.querySelectorAll('.checklist input')];
+  function refreshChecks() {
+    const progress = document.querySelector('#check-progress');
+    if (progress) progress.textContent = `已確認 ${checks.filter(c => c.checked).length} / ${checks.length} 項`;
+  }
+  checks.forEach(c => c.addEventListener('change', refreshChecks)); refreshChecks();
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        document.querySelectorAll('.toc a').forEach(a => {
+          if (a.hash === `#${entry.target.id}`) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+        if (jump) jump.value = entry.target.id;
+      }
+    }, { rootMargin: '-5% 0px -65% 0px' });
+    document.querySelectorAll('section.lesson').forEach(s => observer.observe(s));
+  }
+  let previousOpen = [];
+  window.addEventListener('beforeprint', () => {
+    previousOpen = [...document.querySelectorAll('.quiz details')].filter(d => !d.open);
+    previousOpen.forEach(d => { d.open = true; });
+  });
+  window.addEventListener('afterprint', () => { previousOpen.forEach(d => { d.open = false; }); });
+})();
+
+</script>
+</body></html>
