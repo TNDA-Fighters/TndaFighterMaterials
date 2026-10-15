@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 07 教案</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+.diagram-source { margin: 1rem 0 1.5rem; }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 07 · 助教教案</p>
+      <h1>TNDA Week 07 教案</h1>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+        <p class="quick-nav-title">本頁導覽</p>
+        <a class="nav-level-2" href="#teacher-07-1">課前實作練習</a>
+<a class="nav-level-3" href="#teacher-07-2">課前實作練習 1｜讓第二攻擊只命中頭部，並調整命中傷害</a>
+<a class="nav-level-3" href="#teacher-07-3">課前實作練習 2｜用除錯指令看懂命中與防禦</a>
+<a class="nav-level-2" href="#teacher-07-4">課堂示範</a>
+<a class="nav-level-3" href="#teacher-07-5">課堂示範 1｜兩張 DataTable 如何把招式、部位與傷害串起來？</a>
+<a class="nav-level-3" href="#teacher-07-6">課堂示範 2｜Active 時間、連續軌跡與一次揮擊一次傷害</a>
+<a class="nav-level-2" href="#teacher-07-7">課堂實作</a>
+<a class="nav-level-3" href="#teacher-07-8">課堂實作 1｜把 1P 的最大生命值提高到 150</a>
+<a class="nav-level-3" href="#teacher-07-9">課堂實作 2｜把玩家右手的命中球縮小</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="teacher-07-1">課前實作練習</h2>
+<h3 id="teacher-07-2">課前實作練習 1｜讓第二攻擊只命中頭部，並調整命中傷害</h3>
+<h4>細步驟解答</h4>
+<ol>
+<li>停止 PIE，確認交付基準：<code>_DataTable/CommandTable.csv</code> 的 ID 3 是 Y、<code>Hitbox=hand_l</code>、<code>Damage=3</code>、<code>Hurtboxes="head,pelvis,calf_l,calf_r"</code>；<code>_DataTable/DamageTable.csv</code> 的 ID 3 <code>Damage=20</code>。在 Content Browser 開 <code>/Game/DataTable/DT_Command</code> 與 <code>/Game/DataTable/DT_Damage</code>，核對列 3；CSV 與表值不一致時，對對應 DataTable 右鍵選 Reimport，修正 Row／Field 錯誤後才繼續。</li>
+<li>開 <code>/Game/Fighting/stage1</code>、按 Play，點入遊戲視窗，按反引號鍵（<code>~</code> 所在鍵）開啟 Console，輸入 <code>tnda.Debug.ShowCombatDebug on</code> 與 <code>tnda.Debug.CpuAlwaysDef off</code>。每條指令按 Enter 執行，再關閉 Console。靠近 CPU，放開方向鍵，按 I 出 Y；找出能看到身體部位命中標記的距離。命中部位會短暫標紅並標名，CPU 在 HP 足夠時減 20；需要輔助時在 Window → Developer Tools → Output Log 查看 <code>Hit</code> 的 <code>hurtbox</code>、<code>damage</code> 與 <code>deducted</code>。</li>
+<li>停止 PIE，只把 Command CSV 的 ID 3 <code>Hurtboxes</code> 改為 <code>"head"</code>，保留其餘欄位與 CSV 引號，儲存；對 <code>DT_Command</code> 右鍵 Reimport，開表確認列 3。重開 PIE、開啟 Combat Debug 並關閉 CPU 強制防禦。</li>
+<li>以相同招式比較：原先的身體接觸不能再結算；調整位置與距離，讓左手軌跡接觸頭部，確認出現 <code>head</code> 標記且 HP 減 20。清單外的接觸不消耗本次揮擊的命中機會，稍後碰到頭部仍可結算一次。若整次揮擊沒有碰到頭部，就不扣血；不能把這種結果說成資料自動把拳頭移到頭上。教師備課須先找出可重現的比較位置，不以動畫看似碰到作為命中證據。</li>
+<li>停止 PIE，只把 Damage CSV 的 ID 3 <code>Damage</code> 從 20 改成 33，儲存；對 <code>DT_Damage</code> 右鍵 Reimport，開表確認列 3。重開 PIE，以同一個可命中頭部的位置按 I；第一次成功命中預期 CPU 從 100 變成 67，標記仍為 <code>head</code>。比較前一階段的 20 點與本階段的 33 點；每次確認剩餘 HP 足夠，避免夾值讓實際扣除量小於表值。</li>
+<li>請學生指著兩張資料表與畫面，用自己的話說明：Hurtboxes 限定對手哪些部位接觸可結算，Damage 表決定扣血數字；Command 的 <code>Damage=3</code> 是索引。只允許 head 不保證每次命中，Hitbox、動畫與 Notify 時間也沒有改。驗收採現場操作與口頭說明，不要求另交 Log 或截圖。</li>
+<li>在 PIE Console 輸入 <code>tnda.Debug.CpuAlwaysDef off</code>、<code>tnda.Debug.ShowCombatDebug off</code>，再停止 PIE。將 Command ID 3 <code>Hurtboxes</code> 還原為 <code>"head,pelvis,calf_l,calf_r"</code>、Damage ID 3 傷害還原為 20，儲存並分別 Reimport 兩張 DataTable，核對列 3；其他欄位與資產保持原值。</li>
+</ol>
+<h3 id="teacher-07-3">課前實作練習 2｜用除錯指令看懂命中與防禦</h3>
+<h4>細步驟解答</h4>
+<ol>
+<li>確認練習 1 已還原，<code>DT_Damage</code> 的 ID 1 傷害是 10、雙方 MaxHealth 為 100。開 <code>stage1</code> 新 PIE、點入遊戲視窗，以反引號鍵開 Console，輸入 <code>tnda.Debug.ShowCombatDebug on</code> 與 <code>tnda.Debug.CpuAlwaysDef off</code>，關閉 Console。畫面應顯示 Hurtbox 與雙方 HP。</li>
+<li>移到 X 可命中的距離，放開方向鍵，只按 U 出 X。觀察短暫 Active Hitbox、命中部位標記、CPU 受擊反應與 HP 減 10；需要輔助時查看 Output Log 的 <code>Hit</code> 紀錄。不要以「動畫播放了」判定已命中。</li>
+<li>保持角色位置，等招式與反應結束後，在 Console 執行 <code>tnda.Debug.CpuAlwaysDef on</code>。再按 U 出 X，確認有效接觸後 CPU 播放防禦反應，HP 不再減少；Log 對應 <code>Guard</code>。若根本沒有命中，先確認距離與 Active 判定，不能只以 HP 不變宣稱防禦成功。</li>
+<li>再執行 <code>tnda.Debug.CpuAlwaysDef off</code>，等待反應結束後按 U，確認後續命中恢復受擊與扣血。若只有上述三次有效命中，CPU HP 預期為 100→90→90→80。開關不會追溯補扣或回復先前的血量。</li>
+<li>請學生自己切換兩個開關，再以畫面說明各自的作用。可先關閉 <code>ShowCombatDebug</code> 出招，觀察除錯疊圖消失但攻擊仍可結算，再開啟以讀取 HP；CPU 強制防禦則改變有效命中後的結果。請學生用 Active／接觸、反應與 HP 解釋一般命中、防禦和未命中，避免把除錯顯示當成命中判定開關。</li>
+<li>在 PIE Console 關閉 <code>tnda.Debug.CpuAlwaysDef</code> 與 <code>tnda.Debug.ShowCombatDebug</code>，再停止 PIE。核對 CSV、DataTable、Blueprint 與 Notify 沒有因本題被修改；新 PIE 的 HP 回到 MaxHealth，除錯顯示則重新採用 Blueprint 的既有預設。</li>
+</ol>
+<p>本次備課查證：程式來源沿用本對話已查證的 <code>week-07</code>／<code>92e8adcbdd7ad5a5602e6ec1d4049f42f84d448a</code>，CodeGraph 已核對部位過濾、查表、去重與 Guard 分支。2026-10-13 重新建置與啟動成功（manifest <code>2026-10-13T13:17:19.7309118Z</code>，Editor PID 17196），MCP 確認專案身分、dirty packages 為 0，並回讀兩張 DataTable。本機 Command CSV 與 <code>DT_Command</code> 的 ID 3 已有 <code>Hurtboxes=head</code> 的使用者變更，予以保留；本教案的交付基準以 tag CSV 為準。本次未實測上述 PIE 比較情境，命中位置、畫面與反應須在上課前排練。</p>
+<h2 id="teacher-07-4">課堂示範</h2>
+<h3 id="teacher-07-5">課堂示範 1｜兩張 DataTable 如何把招式、部位與傷害串起來？</h3>
+<h4>示範重點</h4>
+<p>以三列 Command 和 Damage 表建立跨表關係：ID 是 Row Name，Command.Damage 是索引，Damage.Damage 纔是扣血值。把整理後的招式副本與結算當下查表分開；用一次 Reimport 和錯誤引用說明資料驗證。Health 上限、招式資料與執行期剩餘血量各有不同責任。</p>
+<h3 id="teacher-07-6">課堂示範 2｜Active 時間、連續軌跡與一次揮擊一次傷害</h3>
+<h4>示範重點</h4>
+<p>以 Damage Notify State 建立 Active 時間概念，再區分除錯元件開關與正式軌跡候選。候選經對手、部位、去重與傷害查表才結算；同一揮擊一次結算是命中集合的規則。只帶讀短路徑，不展開連續幾何數學、長幀補查、防禦反應或 KO。</p>
+<h2 id="teacher-07-7">課堂實作</h2>
+<h3 id="teacher-07-8">課堂實作 1｜把 1P 的最大生命值提高到 150</h3>
+<h4>題目</h4>
+<p>只改玩家 Blueprint 既有 Health 元件的 MaxHealth，做出每次新 PIE 中 1P 為 150/150、CPU 仍為 100/100 的版本。遠端展示設定與雙方 HP，說明重新開局為什麼採用新的滿血值；保留其他資料，驗收後還原。</p>
+<h4>參考答案</h4>
+<ol>
+<li>停止 PIE，開 <code>/Game/Fighting/Blueprints/BP_FightingPlayerCharacter</code>，在 Components 選 <code>Health</code>，Details 搜尋 <code>Max Health</code>，由 100 改 150，Compile、Save。</li>
+<li>開 <code>stage1</code> 新 PIE，開 Combat Debug，查看雙方 HP；玩家預期 150/150，CPU 100/100。</li>
+<li>讓玩家有剩餘 HP 變化時再停止／重開 PIE，從 <code>FightingHealthComponent.cpp::BeginPlay()</code> 解釋 Reset；沒有受傷條件時直接以新局滿血與程式核對，不新增 CPU 功能。</li>
+<li>停止 PIE，還原玩家 MaxHealth=100，Compile、Save，再開新局確認；CPU 與 Damage 表保持原值，關閉 Debug。</li>
+</ol>
+<h3 id="teacher-07-9">課堂實作 2｜把玩家右手的命中球縮小</h3>
+<h4>題目</h4>
+<p>只把玩家既有 <code>Hitbox_hand_r</code> 的 Sphere Radius 從 20 改為 10 cm。遠端展示元件值與 X 招 Active 時較小的球，確認 CPU 對應設定仍為 20；說明改變的是空間還是時間。保留骨骼附掛、動畫與資料表，驗收後還原。</p>
+<h4>參考答案</h4>
+<ol>
+<li>停止 PIE，開玩家 BP，在 Components 選 <code>Hitbox_hand_r</code>，Details 的 Shape／Sphere Radius 由 20 改 10，Compile、Save；不要改 Transform 或 Attach Socket。</li>
+<li>開 CPU BP 核對同名元件仍為 20，不儲存任何改動。</li>
+<li>開 <code>stage1</code> PIE、開 Combat Debug，按 U 看 Active 球。以半徑設定與球的縮小驗收，不要求量測或證明特定邊界命中。</li>
+<li>指向 <code>PrepareContinuousHitDetection()</code> 的球半徑快照：新招式讀取形狀；Damage Notify 的時間沒有改。</li>
+<li>停止 PIE，玩家半徑還原 20，Compile、Save，關閉 Debug。</li>
+</ol>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

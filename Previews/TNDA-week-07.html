@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TNDA Week 07 課前預習｜Hitbox、Hurtbox 與資料驅動傷害</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+  
+  
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+
+.project-link { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; margin-top: 0.85rem; padding: 0.5rem 1rem; border: 1px solid #99f6e4; border-radius: 999px; background: #f0fdfa; color: #115e59; font-weight: 700; text-decoration: none; }
+.project-link:hover { background: #ccfbf1; color: #134e4a; border-color: #5eead4; }
+.project-link:focus-visible { outline: 3px solid #facc15; outline-offset: 4px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">TNDA · WEEK 07 · 學生版課前預習</p>
+      <h1>TNDA Week 07 課前預習｜Hitbox、Hurtbox 與資料驅動傷害</h1>
+      <a class="project-link" href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-07" target="_blank" rel="noopener noreferrer" aria-label="week-07 示範專案">示範專案</a>
+    </div>
+  </header>
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="quick-nav" aria-label="本頁導覽">
+        <p class="quick-nav-title">本頁導覽</p>
+        <a class="nav-level-2" href="#student-07-1">本週目標</a>
+<a class="nav-level-2" href="#student-07-2">課前準備</a>
+<a class="nav-level-2" href="#student-07-3">課前預習</a>
+<a class="nav-level-3" href="#student-07-4">課前預習 1｜招式資料怎麼決定哪個判定部位在何時可用？</a>
+<a class="nav-level-3" href="#student-07-5">課前預習 2｜一次命中後，傷害如何查表並扣到對手生命值？</a>
+<a class="nav-level-2" href="#student-07-6">課前實作練習</a>
+<a class="nav-level-3" href="#student-07-7">課前實作練習 1｜讓第二攻擊只命中頭部，並調整命中傷害</a>
+<a class="nav-level-3" href="#student-07-8">課前實作練習 2｜用除錯指令看懂命中與防禦</a>
+<a class="nav-level-2" href="#student-07-9">官方參考資料</a>
+<a class="nav-level-2" href="#student-07-10">上課前確認</a>
+      </nav>
+    </aside>
+    <main id="main-content">
+      <article class="paper">
+<h2 id="student-07-1">本週目標</h2>
+<ul>
+<li>把招式的動畫、攻擊部位、允許受擊部位與傷害 ID 分開說明。</li>
+<li>沿著命中候選、規則檢查與 Health 元件，讀懂一次揮擊只扣一次血。</li>
+<li>調整既有 CSV 並 Reimport DataTable，展示命中部位與傷害的差異；操作除錯指令，說明一般命中與防禦的不同。</li>
+</ul>
+<h2 id="student-07-2">課前準備</h2>
+<p><a href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-07" target="_blank" rel="noopener noreferrer">使用 <code>week-07</code> 教材專案</a>，確認能開啟 <code>/Game/Fighting/stage1</code>。本週的 X、Y 是攻擊語意；交付鍵位 U 對應 X、I 對應 Y。數字 6 表示水平方向朝向對手，4 表示遠離對手，並非鍵盤數字鍵。UE 距離單位採 cm。先確認兩個角色可正常出現，再閱讀下面兩條流程。</p>
+<h2 id="student-07-3">課前預習</h2>
+<h3 id="student-07-4">課前預習 1｜招式資料怎麼決定哪個判定部位在何時可用？</h3>
+<p><strong>先分清三個責任。</strong> Hitbox 是攻擊者附在骨骼上的球形判定；Hurtbox 是對手附在骨骼上的膠囊判定。Active 是動畫中可以產生命中候選的時間區間。拳頭看起來碰到對手，仍須符合時間、空間與招式規則。</p>
+<p><strong>資料路徑。</strong> 從 <code>_DataTable/CommandTable.csv</code> 的 ID 2 開始：<code>Keys=6,X</code>、<code>Hitbox=foot_r</code>、<code>Hurtboxes=head</code>。在 <code>Source/TndaFighter/DataTable/TndaCommandData.h</code> 找 <code>FTndaCommandRow</code> 與 <code>FTndaCommand</code>；再讀 <code>DataTable/TndaCommandReader.cpp::Prepare()</code>，看 <code>ParseHitbox()</code>／<code>ParseHurtboxes()</code> 如何整理 token。角色選招後保存 <code>CurrentAttack</code> 副本。最後到 <code>Fighting/FightingCharacter.cpp::BeginActiveHitbox()</code>，它以 <code>CurrentAttack.Hitbox</code> 找出既有元件；部位不是從動畫名稱猜出來的。</p>
+<p><strong>時間路徑。</strong> 開啟 <code>/Game/Fighting/Anims/AM_Attack_03</code> 的 <code>Damage</code> Notify State。引擎播放跨入／離開區間時呼叫 <code>Source/TndaFighter/Fighting/FightingDamageNotifyState.cpp::NotifyBegin()</code>／<code>NotifyEnd()</code>，再呼叫角色的 <code>BeginActiveHitbox()</code>／<code>EndActiveHitbox()</code>。引擎對 Notify 的呼叫是框架事件，CSV 整理與角色開關則是專案程式。Notify 不保存扣血值或骨骼名。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 820 140" role="img" aria-label="Command 的部位欄；Prepare 整理；CurrentAttack 副本；以骨骼名找球" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M189.5 70 L220.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M394.5 70 L425.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<path d="M599.5 70 L630.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-1)"/>
+<rect x="15.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="102.5" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">Command 的部位</text>
+<text x="102.5" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">欄</text>
+<rect x="220.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="307.5" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">Prepare 整理</text>
+<rect x="425.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="512.5" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">CurrentAttack</text>
+<text x="512.5" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">副本</text>
+<rect x="630.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="717.5" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">以骨骼名找球</text>
+</svg></figure>
+
+<figure class="flow-diagram"><svg viewBox="0 0 820 140" role="img" aria-label="Montage 的 Damage 區間；引擎 Notify 回呼；角色開／關球" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M226.66666666666666 70 L320.0 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<path d="M500.0 70 L593.3333333333333 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-2)"/>
+<rect x="46.66666666666666" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="136.66666666666666" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">Montage 的</text>
+<text x="136.66666666666666" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">Damage 區間</text>
+<rect x="320.0" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="410.0" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">引擎 Notify 回</text>
+<text x="410.0" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">呼</text>
+<rect x="593.3333333333333" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="683.3333333333333" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">角色開／關球</text>
+</svg></figure>
+
+<p>元件在 Active 時切到 <code>QueryOnly</code>，供狀態與除錯觀察；正式扣血由動畫姿勢軌跡產生候選，再走下一條流程。不要把此版本教成 <code>OnComponentBeginOverlap</code> 直接扣血。</p>
+<p><strong>練習使用的 Y 招式。</strong> Command ID 3 是 Y（按 I），使用 <code>AM_Attack_02</code>、左手 Hitbox <code>hand_l</code>，並指向 Damage ID 3。交付基準的 <code>Hurtboxes</code> 是 <code>"head,pelvis,calf_l,calf_r"</code>，代表頭部、骨盆與左右小腿都是允許結算的受擊部位；它不是攻擊者的骨骼清單。只留下 <code>"head"</code> 時，身體接觸會被規則排除，但動畫與左手軌跡不變，仍須真的碰到頭部才會命中。</p>
+<h3 id="student-07-5">課前預習 2｜一次命中後，傷害如何查表並扣到對手生命值？</h3>
+<p><strong>先分清 ID 與數值。</strong> Command 的 <code>Damage=1</code> 表示查 Damage 表 ID 1，不代表扣 1 點。<code>_DataTable/DamageTable.csv</code> 的 ID 1 才保存 <code>Damage=10</code>。HP 是執行期剩餘生命值；<code>MaxHealth</code> 是新一輪開始時的上限。</p>
+<p><strong>沿著候選走到扣血。</strong> 在 <code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 依序讀 <code>HandleWorldPostActorTick()</code>、<code>ProcessFrameAttack()</code>、<code>TryApplyHit()</code>、<code>EvaluateHitRule()</code>。正式候選先受 Montage 的 Damage 區間與連續軌跡限制；<code>TryApplyHit()</code> 再檢查是否仍在攻擊、是否為唯一對手、接觸的 Hurtbox 是否在允許清單、是否已在 <code>HitCharacters</code>。通過後才呼叫 <code>Source/TndaFighter/DataTable/TndaDamageReader.cpp::TryGetDamage()</code>，以 <code>CurrentAttack.DamageId</code> 在結算當下取得傷害。</p>
+<p>終點是 <code>Source/TndaFighter/Fighting/FightingHealthComponent.cpp::ApplyDamage()</code>。實際扣除量是 <code>Clamp(Damage, 0, CurrentHealth)</code>，所以 20 HP 遇到 33 傷害只扣 20，剩餘 HP 為 0；0 傷害合法，但不減血。<code>BeginPlay()</code> 會呼叫 <code>ResetToMaxHealth()</code>，新開 PIE 會回滿血。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 820 140" role="img" aria-label="Damage 區間與軌跡；命中候選；對手／部位／去重檢查" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M226.66666666666666 70 L320.0 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-3)"/>
+<path d="M500.0 70 L593.3333333333333 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-3)"/>
+<rect x="46.66666666666666" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="136.66666666666666" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">Damage 區間與軌</text>
+<text x="136.66666666666666" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">跡</text>
+<rect x="320.0" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="410.0" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">命中候選</text>
+<rect x="593.3333333333333" y="35" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="683.3333333333333" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">對手／部位／去重</text>
+<text x="683.3333333333333" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">檢查</text>
+</svg></figure>
+
+<figure class="flow-diagram"><svg viewBox="0 0 820 140" role="img" aria-label="合法候選；以 Damage ID 查表；ApplyDamage；剩餘 HP" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M189.5 70 L220.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-4)"/>
+<path d="M394.5 70 L425.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-4)"/>
+<path d="M599.5 70 L630.5 70" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-4)"/>
+<rect x="15.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="102.5" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">合法候選</text>
+<rect x="220.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="307.5" y="57.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">以 Damage ID</text>
+<text x="307.5" y="82.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">查表</text>
+<rect x="425.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="512.5" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">ApplyDamage</text>
+<rect x="630.5" y="35" width="174" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="717.5" y="70.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">剩餘 HP</text>
+</svg></figure>
+
+<p><code>HitCharacters</code> 保存本次揮擊已命中的角色；碰到對手多個 Hurtbox 也不會重複結算。<code>FinishAttack()</code> 在結束或中斷時清空集合。Command 保存 Damage ID，扣血數字在命中當下查；Reimport 不會追溯改寫已扣掉的 HP。</p>
+<p><strong>看懂除錯顯示與防禦。</strong> 在 PIE 控制檯使用 <code>tnda.Debug.ShowCombatDebug on|off</code>，可切換 Hurtbox、Active Hitbox、命中部位標記與雙方 HP 顯示；命中部位會短暫標紅並標名。這個指令改變的是除錯顯示。<code>tnda.Debug.CpuAlwaysDef on|off</code> 則改變目前配對 CPU 面對 1P 有效命中時的結算：開啟後播放防禦反應，不扣 HP；關閉後，後續有效命中恢復一般傷害結算。兩個指令也接受 <code>1|0</code>，作用於本次執行期，不會改寫 Blueprint 或 CSV。沒有扣血可能是沒有命中、被防禦，或傷害為 0，必須連同畫面與資料判讀。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 820 260" role="img" aria-label="有效命中與傷害查表；CPU 強制防禦？；防禦反應／HP 不減；依傷害值扣 HP" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#237b73"/></marker></defs>
+<path d="M200.0 130 L270.0 130" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-5)"/>
+<path d="M450.0 130 L575.0 60" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-5)"/>
+<text x="512.5" y="81.0" text-anchor="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif">開啟</text>
+<path d="M450.0 130 L575.0 200" stroke="#237b73" stroke-width="2.5" fill="none" marker-end="url(#arrow-5)"/>
+<text x="512.5" y="151.0" text-anchor="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif">關閉</text>
+<rect x="20.0" y="95" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="110" y="117.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">有效命中與傷害查</text>
+<text x="110" y="142.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">表</text>
+<rect x="270.0" y="95" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="360" y="130.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">CPU 強制防禦？</text>
+<rect x="575.0" y="25" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="665" y="47.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">防禦反應／HP 不</text>
+<text x="665" y="72.5" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">減</text>
+<rect x="575.0" y="165" width="180" height="70" rx="12" fill="#e3f1ed" stroke="#237b73" stroke-width="2"/>
+<text x="665" y="200.0" text-anchor="middle" dominant-baseline="middle" font-size="20" font-family="Microsoft JhengHei, sans-serif" fill="#17252d">依傷害值扣 HP</text>
+</svg></figure>
+
+<h2 id="student-07-6">課前實作練習</h2>
+<h3 id="student-07-7">課前實作練習 1｜讓第二攻擊只命中頭部，並調整命中傷害</h3>
+<p>使用 <code>tnda.Debug.ShowCombatDebug</code> 顯示命中部位與 HP，先以基準 Y 招式（按 I）展示命中身體的結果。只把 <code>_DataTable/CommandTable.csv</code> 的 ID 3 <code>Hurtboxes</code> 從 <code>"head,pelvis,calf_l,calf_r"</code> 改為 <code>"head"</code>，儲存並 Reimport <code>DT_Command</code>，做出身體接觸不再結算、接觸頭部才標示 <code>head</code> 並扣血的版本。只允許頭部不會改變招式軌跡，請找到能命中頭部的位置與距離。</p>
+<p>再只把 <code>_DataTable/DamageTable.csv</code> 的 ID 3 <code>Damage</code> 從 20 改為 33，儲存並 Reimport <code>DT_Damage</code>。在 CPU 剩餘 HP 足夠的情況下，展示頭部命中由扣 20 改為扣 33。保留 Command 的 Damage ID、Hitbox、指令、動畫、Notify、其他資料列與 Blueprint 設定，並保持 CPU 強制防禦關閉。</p>
+<p>上課時遠端展示兩張資料表、改動前後的命中部位與 HP，用自己的話說明：Hurtboxes 與 Damage 各決定什麼？為什麼只允許 head 後，碰到身體不再扣血？這是否代表每次出招都一定命中頭部？驗收後還原兩張表的基準資料與除錯狀態。</p>
+<h3 id="student-07-8">課前實作練習 2｜用除錯指令看懂命中與防禦</h3>
+<p>在 PIE 使用 <code>tnda.Debug.ShowCombatDebug</code> 開啟判定與 HP 顯示，並用 <code>tnda.Debug.CpuAlwaysDef</code> 切換 CPU 強制防禦。在同一個可命中的距離，用 X（按 U）分別展示一般命中與強制防禦的結果，觀察 Active Hitbox、Hurtbox、CPU 反應與 HP；再關閉強制防禦，展示後續命中恢復扣血。保留 CSV、DataTable、Blueprint 與 Notify 設定。</p>
+<p>上課時遠端分享桌面，自己操作並用自己的話說明：兩個指令各改變了什麼？看到判定接觸，是否就代表一定扣血？你從哪些畫面或 HP 變化判斷這次是命中扣血、被防禦或沒有命中？驗收後還原除錯狀態。</p>
+<h2 id="student-07-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview">Collision Overview</a>：先讀 Object Type、Block／Overlap／Ignore 與 Generate Overlap Events，分清碰撞回應和事件通知。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">Collision Response Reference</a>：對照元件的 Collision Presets、Object Type 與 Collision Enabled；重點閱讀 <code>Query Only</code>，理解空間查詢與物理模擬的差別。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/traces-in-unreal-engine---overview">Traces Overview</a>：延伸閱讀線段與形狀軌跡查詢，建立沿路徑找接觸對象的概念。本週教材的正式命中採動畫姿勢軌跡與專案規則結算，不能直接把官方 Trace 範例或 Overlap 事件當成專案的扣血流程。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/data-driven-gameplay-elements-in-unreal-engine">Data Driven Gameplay Elements</a>：DataTable 與列結構概念。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-notifies-in-unreal-engine">Animation Notifies</a>：Notify State 的開始與結束事件。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-in-unreal-engine">Animation Montage</a>：Montage 與動畫播放設定。</li>
+</ul>
+<h2 id="student-07-10">上課前確認</h2>
+<ul>
+<li><input type="checkbox" disabled> 教材是 week-07，能開 stage1 與兩張既有 DataTable。</li>
+<li><input type="checkbox" disabled> 能指出資料部位與 Notify 時間兩條路徑的交會點。</li>
+<li><input type="checkbox" disabled> 能說明 Damage ID、Damage 數值、MaxHealth 與 CurrentHealth。</li>
+<li><input type="checkbox" disabled> 可展示 Y 招式改為只命中頭部，以及傷害由 20 改為 33 的差異。</li>
+<li><input type="checkbox" disabled> 可切換 CPU 強制防禦，展示防禦與一般命中的反應、HP 差異，並說明自己的理解。</li>
+<li><input type="checkbox" disabled> 各題從基準資料獨立操作，CSV／DataTable 與除錯狀態已還原；不提交截圖或另製紀錄。</li>
+</ul>
+        <a class="back-link" href="#top">回到頁首</a>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
