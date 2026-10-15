@@ -19,13 +19,30 @@ section.lesson{padding-top:2.75rem;margin-top:2.75rem;border-top:1px solid var(-
 </style></head>
 <body id="top"><a class="skip-link" href="#main">跳到講義內容</a>
 <header class="topbar"><a class="brand" href="../../index.html">TNDA / UE 程式設計</a><a href="../../index.html#supplement-git">← 返回課程教材</a></header>
-<div class="mobile-nav"><label for="chapter-jump">本頁章節</label><select id="chapter-jump"><option value="overview">學習目標與基本觀念</option><option value="create">建立自己的儲存庫</option><option value="project">放入 UE 專案</option><option value="commit">Commit 與 Push</option><option value="readme">README 與同步</option><option value="clone">Clone 與遠端設定</option><option value="ignore">忽略規則與檔案完整性</option><option value="branch">補充：分支Branch</option><option value="git-lfs">補充：大檔案管理LFS</option><option value="commit-message">補充：Git commit message</option><option value="pages">補充：GitHub Pages</option><option value="references">參考資料</option></select></div>
-<div class="shell"><aside class="sidebar"><nav aria-label="講義章節"><h2>本頁章節</h2><ol class="toc"><li><a href="#overview">學習目標與基本觀念</a></li><li><a href="#create">建立自己的儲存庫</a></li><li><a href="#project">放入 UE 專案</a></li><li><a href="#commit">Commit 與 Push</a></li><li><a href="#readme">README 與同步</a></li><li><a href="#clone">Clone 與遠端設定</a></li><li><a href="#ignore">忽略規則與檔案完整性</a></li><li><a href="#branch">補充：分支Branch</a></li><li><a href="#git-lfs">補充：大檔案管理LFS</a></li><li><a href="#commit-message">補充：Git commit message</a></li><li><a href="#pages">補充：GitHub Pages</a></li><li><a href="#references">參考資料</a></li></ol></nav><a class="source-link" href="../../index.html">← 回首頁</a></aside>
+<div class="mobile-nav"><label for="chapter-jump">本頁章節</label><select id="chapter-jump"><option value="git-intro">Git 與版本控制</option><option value="overview">學習目標與基本觀念</option><option value="create">建立自己的儲存庫</option><option value="project">放入 UE 專案</option><option value="commit">Commit 與 Push</option><option value="readme">README 與同步</option><option value="clone">Clone 與遠端設定</option><option value="ignore">忽略規則與檔案完整性</option><option value="branch">補充：分支Branch</option><option value="git-lfs">補充：大檔案管理LFS</option><option value="commit-message">補充：Git commit message</option><option value="pages">補充：GitHub Pages</option><option value="references">參考資料</option></select></div>
+<div class="shell"><aside class="sidebar"><nav aria-label="講義章節"><h2>本頁章節</h2><ol class="toc"><li><a href="#git-intro">Git 與版本控制</a></li><li><a href="#overview">學習目標與基本觀念</a></li><li><a href="#create">建立自己的儲存庫</a></li><li><a href="#project">放入 UE 專案</a></li><li><a href="#commit">Commit 與 Push</a></li><li><a href="#readme">README 與同步</a></li><li><a href="#clone">Clone 與遠端設定</a></li><li><a href="#ignore">忽略規則與檔案完整性</a></li><li><a href="#branch">補充：分支Branch</a></li><li><a href="#git-lfs">補充：大檔案管理LFS</a></li><li><a href="#commit-message">補充：Git commit message</a></li><li><a href="#pages">補充：GitHub Pages</a></li><li><a href="#references">參考資料</a></li></ol></nav><a class="source-link" href="../../index.html">← 回首頁</a></aside>
 <main id="main"><div class="eyebrow">補充課程 · 學生操作講義</div><h1>Git 基本操作<span>把 UE 專案上傳、同步，並完成作業繳交</span></h1><p class="intro">從第一個儲存庫開始，學會把修改記錄成版本，再把最新成果交到 GitHub。以 GitHub Desktop 操作為主，附實際操作畫面與指令補充。</p><div class="meta"><span>Windows</span><span>GitHub Desktop</span><span>UE 專案版本管理</span></div><div class="hero-actions"><a class="button primary" href="#create">開始操作</a></div><ol class="workflow" aria-label="日常操作流程"><li><div class="workflow-step"><span>取得更新</span><small>Fetch/Pull</small></div></li><li><div class="workflow-step"><span>修改與儲存</span><small>Modify/Save</small></div></li><li><div class="workflow-step"><span>Commit</span><small>Commit</small></div></li><li><div class="workflow-step"><span>推送更新</span><small>Push</small></div></li><li><div class="workflow-step"><span>網頁確認</span><small>Check</small></div></li></ol>
+<section class="lesson" id="git-intro" aria-labelledby="heading-git-intro">
+<h2 id="heading-git-intro" tabindex="-1">Git 是什麼？為什麼需要版本控制？</h2>
+<h3>Git 幫你記錄專案怎麼改變</h3>
+<p>Git 是一套分散式版本控制工具。它能把你選定的檔案狀態記錄成一次次 Commit，保留提交訊息、作者與歷史關係，方便日後查閱、比較或取回先前版本。一般的本機 Git 儲存庫也保存版本歷史，因此沒有網路時仍能檢查歷史、繼續修改與提交；需要與遠端同步時才必須連線。</p>
+<p>GitHub 是放置遠端儲存庫的服務；GitHub Desktop 則是本課用來操作 Git 的圖形工具。你在 Desktop 按 Commit，是在本機記錄版本；按 Push，才會把提交傳到 GitHub。</p>
+<h3>為什麼不只一直按儲存</h3>
+<p>假設你先完成角色移動，再加入攻擊，接著調整鏡頭後卻發現角色不見了。如果只保留目前檔案，就很難知道哪次修改造成問題；若每個階段都留下清楚的提交，就能比較前後變動，找出問題，並視需要取回先前已記錄的內容。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">開發時的需要</th><th scope="col">版本控制如何協助</th></tr></thead><tbody>
+<tr><td>知道這一版改了什麼</td><td>從 History 與提交訊息找到修改目的，再檢查該次變動。</td></tr>
+<tr><td>找出改壞的地方</td><td>比較可用版本與目前版本；程式碼可查看文字差異，UE 資產可能需要在編輯器中另外核對。</td></tr>
+<tr><td>保留可繼續開發的進度</td><td>每完成一個有意義的修改就提交，避免只靠「最終版」「最終版2」等資料夾名稱辨識。</td></tr>
+<tr><td>換電腦或讓別人檢查</td><td>將提交推送到遠端，再由另一台電腦或獲授權的人取得專案。</td></tr>
+</tbody></table></div>
+<h3>把儲存與記錄版本分開理解</h3>
+<p><strong>Save</strong> 把修改寫入目前檔案；<strong>Commit</strong> 把選取的修改留下版本紀錄；<strong>Push</strong> 把本機提交傳到遠端。Git 不會自動替每次按鍵或每次儲存建立提交，也無法保證找回從未保存或提交的工作。</p>
+<p>本課先掌握一個習慣：完成一項能說清楚的修改，確認結果後，回到 Desktop 檢查 Changes、填寫 Summary、Commit，再 Push。版本控制可以協助保存開發歷史；未追蹤、被忽略的檔案，以及尚未上傳的 LFS 資產，仍需另外確認是否保存完整。</p>
+</section>
 <section class="lesson" id="overview" aria-labelledby="heading-overview"><h2 id="heading-overview" tabindex="-1">學習目標與基本觀念</h2>
 <p>本講義帶你把 UE 專案放進自己的 GitHub 儲存庫，記錄每次修改，並在另一個資料夾取回專案。完成後，你應能提供可供老師檢查的儲存庫網址，並說明最新版本做了哪些修改。</p>
 <h3>開始前先準備</h3>
-<ul><li>登入自己的 GitHub 帳號，安裝並登入 <a href="https://github.com/apps/desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop</a>。</li><li>準備課程指定的 UE 專案，以及可正常開啟該專案的引擎版本。</li><li>使用一般本機資料夾練習，例如 F:\GitPractice。本講義的操作以 GitHub Desktop 為主；只有閱讀並執行指令補充時，才另外準備 <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git for Windows 與 Git Bash</a>。</li></ul>
+<ul><li>登入自己的 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a> 帳號（若沒有請先註冊），安裝並登入 <a href="https://github.com/apps/desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop</a>。</li><li>準備課程指定的 UE 專案，以及可正常開啟該專案的引擎版本。</li><li>本講義的操作以 GitHub Desktop 為主；只有閱讀並執行指令補充時，才另外準備 <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git for Windows 與 Git Bash</a>。</li></ul>
 <h3>先分清楚三個工具</h3>
 <div class="table-wrap"><table><thead><tr><th scope="col">名稱</th><th scope="col">用途</th></tr></thead><tbody>
 <tr><td>Git</td><td>記錄專案版本與修改歷史的工具。</td></tr>
@@ -41,17 +58,17 @@ section.lesson{padding-top:2.75rem;margin-top:2.75rem;border-top:1px solid var(-
 <tr><td>Fetch 抓取</td><td>取得遠端更新資訊與物件，不直接整合進目前分支。</td></tr>
 <tr><td>Pull 拉取</td><td>取得並整合遠端更新到目前本機分支。</td></tr>
 </tbody></table></div>
-<p>範例畫面的分支名稱是 master；你的畫面可能是 main。操作時以 <code>Current branch</code> 顯示的名稱為準，不必為了跟範例一樣而改名。</p>
+<p>範例畫面的分支名稱是 master；你的畫面可能是 main。兩者其實都可以，操作時以 <code>Current branch</code> 顯示的名稱為準，不必為了跟範例一樣而改名。</p>
 </section>
 <section class="lesson" id="create" aria-labelledby="heading-create"><h2 id="heading-create" tabindex="-1">一 建立自己的儲存庫</h2>
-<p>先在 GitHub 建立遠端儲存庫，再把它 clone 到本機。以下使用自己的帳號與練習名稱，不要把老師的網址當成自己的作業繳交位置。</p>
+<p>本章示範先在 GitHub 建立遠端儲存庫，再把它 Clone 到本機。以下使用自己的帳號與練習名稱；若要從已有的本機 UE 專案開始，也可選用下一章的初始化流程，直接由 Desktop 發佈儲存庫。</p>
 <ol class="steps"><li>在 GitHub 選擇 <code>New repository</code>，確認 Owner 是自己的帳號。</li><li>輸入容易辨識的 Repository name，例如 TNDA-GitPractice。</li><li>依本課的作業規範選擇 Public/Private，Public是網路上任何人都可以看到該Repository，Private是只有設定指定權限的人才看得到（如果沒設就是只有自己看得到）</li><li>從空儲存庫開始時，先不加入 README、<code>.gitignore</code> 或授權檔，按 Create repository。</li><li>複製該儲存庫的 HTTPS 網址，在 GitHub Desktop 選 File → <code>Clone repository</code> → URL，貼上網址並設定本機路徑。</li><li>完成後確認 <code>Current repository</code> 是剛建立的儲存庫，再按 <code>Show in Explorer</code> 檢查實際資料夾。</li></ol>
 <figure><a href="assets/git/new-repository-entry.png" target="_blank" rel="noopener" aria-label="開啟 New repository 入口截圖"><img src="assets/git/new-repository-entry.png" width="1079" height="455" alt="儲存庫列表右上角的 New repository 按鈕，以橘色箭頭標示。" loading="lazy" decoding="async"></a><figcaption>建立入口　點選右上角的 New repository。 點圖可放大。</figcaption></figure>
-<figure><a href="assets/git/new-repository-settings.png" target="_blank" rel="noopener" aria-label="開啟建立儲存庫設定截圖"><img src="assets/git/new-repository-settings.png" width="831" height="819" alt="建立儲存庫表單，包含 Owner、Repository name、可見性、README、gitignore 與授權設定。" loading="lazy" decoding="async"></a><figcaption>建立設定　圖片示範 Owner 欄位的位置；本課請選自己的帳號並將可見性設為 Public。依上方的空儲存庫流程，README 與 gitignore 先不加入，之後再放入課程專案的設定。 點圖可放大。</figcaption></figure>
+<figure><a href="assets/git/new-repository-settings.png" target="_blank" rel="noopener" aria-label="開啟建立儲存庫設定截圖"><img src="assets/git/new-repository-settings.png" width="831" height="819" alt="建立儲存庫表單，包含 Owner、Repository name、可見性、README、gitignore 與授權設定。" loading="lazy" decoding="async"></a><figcaption>建立設定　圖片示範 Owner 欄位的位置；請選自己的帳號，並依課程要求選擇 Public 或 Private。依上方的空儲存庫流程，README 與 gitignore 先不加入，之後再放入課程專案的設定。 點圖可放大。</figcaption></figure>
 <h3>操作完成後確認</h3>
 <ul><li>GitHub 網頁上的擁有者與儲存庫名稱正確。</li><li>本機資料夾中有隱藏的 .git 資料夾。它保存版本歷史與遠端設定，平常不需要修改。</li><li>空儲存庫還沒有提交與專案內容，這是正常狀態。</li></ul>
 <h3>要更改專案能見度（Public/Private）怎麼辦？</h3>
-<p>進入該儲存庫的 Settings → General，往下找到 Danger Zone，使用 Change repository visibility 改成 Public，並依畫面完成確認。變更可見性會公開儲存庫內容；先確認這是要繳交的課程專案。</p>
+<p>進入該儲存庫的 Settings → General，往下找到 Danger Zone，使用 Change repository visibility 選擇 Public 或 Private，並依畫面完成確認。改成 Public 後，網路上的其他人就能查看內容；使用 Private 時，需確認老師與助教有檢查作業的存取權限。</p>
 </section>
 <section class="lesson" id="project" aria-labelledby="heading-project"><h2 id="heading-project" tabindex="-1">二 放入 UE 專案並檢查檔案</h2>
 <p>專案可以來自老師提供的壓縮檔，也可以是你在 Unreal Engine 中自行建立的專案。版本管理的起點取決於你是否已有本機專案，以及是否已建立 GitHub 儲存庫；選擇下列一種方式開始即可。複製或搬移內容前，先關閉正在寫入專案檔案的 UE 編輯器。</p>
@@ -71,7 +88,7 @@ section.lesson{padding-top:2.75rem;margin-top:2.75rem;border-top:1px solid var(-
 <li>先確認 UE 專案能正常開啟，再關閉編輯器。找到包含 <code>.uproject</code>、Content 和 Config 的專案根目錄。</li>
 <li>在 GitHub Desktop 選 File → Add local repository，選取這個專案根目錄。如果它尚未是 Git 儲存庫，Desktop 會提示並提供在此建立儲存庫的入口，點選 create a repository here。</li>
 <li>在建立表單中核對 Name 與 Local path，確保最終儲存庫位置就是現有 UE 專案根目錄，避免額外建立另一個同名子資料夾。Git ignore 選 UnrealEngine；如果專案已有規則，先檢查並保留需要的設定。</li>
-<li>按 Create repository 完成本機初始化。Desktop 會建立 <code>.git</code> 與初始提交；在 History 檢查首次提交的內容，並確認快取與編譯產物沒有誤納入。後續新增或修改檔案，再由 Changes 選取並 Commit。</li>
+<li>按 Create repository 完成本機初始化。Desktop 會建立 <code>.git</code> 與初始提交；到 History 檢查已提交內容，再到 Changes 檢查尚未提交的專案檔案。確認忽略規則生效，需要 LFS 時也先完成設定，再選取必要檔案並 Commit。</li>
 <li>按 Publish repository，確認儲存庫名稱、自己的帳號與可見性。Keep this code private 勾選時為 Private，取消勾選時為 Public；依課程要求設定，再按 Publish repository。</li>
 <li>選 View on GitHub，確認遠端儲存庫與專案檔案已出現。之後都沿用 Changes → Commit → Push origin 的流程。</li>
 </ol>
@@ -169,7 +186,7 @@ git pull</code></pre></div><p><code>git fetch origin</code> 對應 Fetch origin�
 <figure class="figure-narrow"><a href="assets/git/frame-1620.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸教學截圖"><img src="assets/git/frame-1620.jpg" width="295" height="265" alt="圖 4　 Code 選單提供 HTTPS 網址與 Desktop 開啟入口。" loading="lazy" decoding="async"></a><figcaption>圖 4　 Code 選單提供 HTTPS 網址與 Desktop 開啟入口。 點圖可放大。</figcaption></figure>
 <p class="note">補充：<code>Download ZIP</code> 取得的是檔案快照，通常不含 .git 歷史與遠端連結。需要持續 Commit、Push、Pull 時，請使用 clone。</p><h3>Clone 老師的專案後推到自己的帳號</h3>
 <p>直接 clone 老師的儲存庫，再把推送目的地改成自己的空儲存庫。這與前面「下載壓縮檔，再放入自己的儲存庫」是兩種不同的起點，選一種使用即可。</p>
-<ol class="steps"><li>先依前述方式 clone 老師提供的儲存庫；若課程指定分支、標籤或週次版本，先切換到該版本，確認專案檔案正確。</li><li>在自己的 GitHub 帳號建立一個 Public 空儲存庫，不加入 README、<code>.gitignore</code> 或授權檔，避免建立另一段不相干的初始歷史。</li><li>在 Desktop 選取剛 clone 的本機專案，開啟 Repository → Repository settings → Remote。</li><li>把 Primary remote repository 的 URL 改成自己新建儲存庫的 HTTPS 網址，按 Save。</li><li>確認推送目的地是自己的帳號，再按 <code>Publish branch</code> 或依畫面狀態按 <code>Push origin</code>。</li><li>開啟自己的 GitHub 儲存庫，確認專案內容與歷史已出現。</li></ol>
+<ol class="steps"><li>先依前述方式 clone 老師提供的儲存庫；若課程指定分支、標籤或週次版本，先切換到該版本，確認專案檔案正確。</li><li>在自己的 GitHub 帳號建立一個空儲存庫，依課程要求選擇 Public 或 Private，不加入 README、<code>.gitignore</code> 或授權檔，避免建立另一段不相干的初始歷史。</li><li>在 Desktop 選取剛 clone 的本機專案，開啟 Repository → Repository settings → Remote。</li><li>把 Primary remote repository 的 URL 改成自己新建儲存庫的 HTTPS 網址，按 Save。</li><li>確認推送目的地是自己的帳號，再按 <code>Publish branch</code> 或依畫面狀態按 <code>Push origin</code>。</li><li>開啟自己的 GitHub 儲存庫，確認專案內容與歷史已出現。</li></ol>
 <p>能 clone 別人的專案不代表有權限 push 回去。Remote URL 是這份本機儲存庫的同步目的地；更改後要重新核對帳號與儲存庫名稱。上述流程保留原有歷史，不需要刪除 .git。</p>
 
 
@@ -414,11 +431,13 @@ BREAKING CHANGE: 既有攻擊資料表需轉換成新的欄位格式</code></pre
 <p>主要教學來源為課程影片「Git基本操作」。本文依操作順序整理，並另行標示必要的操作補充與延伸練習。</p>
 <p class="reference"><a href="https://www.youtube.com/watch?v=c27uyrAQJEc" target="_blank" rel="noopener noreferrer">課程影片</a></p>
 <h3>官方補充資料</h3>
+<p class="reference"><a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control" target="_blank" rel="noopener noreferrer">Pro Git 版本控制的用途</a></p>
+<p class="reference"><a href="https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F" target="_blank" rel="noopener noreferrer">Pro Git Git 的運作概念</a></p>
 <p class="reference"><a href="https://docs.github.com/en/desktop/overview/creating-your-first-repository-using-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 建立儲存庫與提交推送</a></p>
 <p class="reference"><a href="https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/syncing-your-branch-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 同步分支</a></p>
 <p class="reference"><a href="https://docs.github.com/en/get-started/git-basics/ignoring-files" target="_blank" rel="noopener noreferrer">GitHub 忽略檔案說明</a></p>
 <p class="reference"><a href="https://github.com/github/gitignore/blob/main/UnrealEngine.gitignore" target="_blank" rel="noopener noreferrer">GitHub 提供的 Unreal Engine 忽略規則範本</a></p>
-<p>介面名稱以英文按鈕對照，實際版面可能因軟體版本不同而變動。教材整理日期為 2026 年 10 月 13 日。</p>
+<p>介面名稱以英文按鈕對照，實際版面可能因軟體版本不同而變動。教材更新日期為 2026 年 10 月 15 日。</p>
 <p class="reference"><a href="https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/changing-the-remote-url-for-a-repository-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 修改 Remote URL</a></p>
 <p class="reference"><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener noreferrer">GitHub Pages 設定發佈來源</a></p>
 <p class="reference"><a href="https://docs.github.com/en/desktop/making-changes-in-a-branch/managing-branches-in-github-desktop" target="_blank" rel="noopener noreferrer">GitHub Desktop 管理分支</a></p>
@@ -430,7 +449,7 @@ BREAKING CHANGE: 既有攻擊資料表需轉換成新的欄位格式</code></pre
 <p class="reference"><a href="https://hackmd.io/@Heidi-Liu/git-commit-message" target="_blank" rel="noopener noreferrer">Heidi Liu 如何撰寫好的 Git Commit Message</a></p>
 <p class="reference"><a href="https://www.conventionalcommits.org/zh-hant/v1.0.0/" target="_blank" rel="noopener noreferrer">Conventional Commits 1.0.0</a></p>
 </section>
-<footer class="foot"><span>TNDA · Git 基本操作 · 2026.10.13</span><a href="#top">回到頁首 ↑</a></footer></main></div><div id="status" class="sr-only" role="status" aria-live="polite"></div><script>
+<footer class="foot"><span>TNDA · Git 基本操作 · 2026.10.15</span><a href="#top">回到頁首 ↑</a></footer></main></div><div id="status" class="sr-only" role="status" aria-live="polite"></div><script>
 (() => {
   const jump = document.querySelector('#chapter-jump');
   if (jump) jump.addEventListener('change', () => {
