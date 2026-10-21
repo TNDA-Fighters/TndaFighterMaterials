@@ -1,0 +1,707 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNDA Week 08 課前預習｜Frame Data 與 Command Link 執行模型</title><style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+
+
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+.diagram-source { margin: 1rem 0 1.5rem; }
+
+
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap:normal; word-break:normal; }
+
+#week08-2-flow-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week08-2-flow-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week08-2-flow-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week08-2-flow-1 .error-icon{fill:#552222;}#week08-2-flow-1 .error-text{fill:#552222;stroke:#552222;}#week08-2-flow-1 .edge-thickness-normal{stroke-width:1px;}#week08-2-flow-1 .edge-thickness-thick{stroke-width:3.5px;}#week08-2-flow-1 .edge-pattern-solid{stroke-dasharray:0;}#week08-2-flow-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#week08-2-flow-1 .edge-pattern-dashed{stroke-dasharray:3;}#week08-2-flow-1 .edge-pattern-dotted{stroke-dasharray:2;}#week08-2-flow-1 .marker{fill:#333333;stroke:#333333;}#week08-2-flow-1 .marker.cross{stroke:#333333;}#week08-2-flow-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#week08-2-flow-1 p{margin:0;}#week08-2-flow-1 .label{font-family:Microsoft JhengHei;color:#333;}#week08-2-flow-1 .cluster-label text{fill:#333;}#week08-2-flow-1 .cluster-label span{color:#333;}#week08-2-flow-1 .cluster-label span p{background-color:transparent;}#week08-2-flow-1 .label text,#week08-2-flow-1 span{fill:#333;color:#333;}#week08-2-flow-1 .node rect,#week08-2-flow-1 .node circle,#week08-2-flow-1 .node ellipse,#week08-2-flow-1 .node polygon,#week08-2-flow-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week08-2-flow-1 .rough-node .label text,#week08-2-flow-1 .node .label text,#week08-2-flow-1 .image-shape .label,#week08-2-flow-1 .icon-shape .label{text-anchor:middle;}#week08-2-flow-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week08-2-flow-1 .rough-node .label,#week08-2-flow-1 .node .label,#week08-2-flow-1 .image-shape .label,#week08-2-flow-1 .icon-shape .label{text-align:center;}#week08-2-flow-1 .node.clickable{cursor:pointer;}#week08-2-flow-1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week08-2-flow-1 .arrowheadPath{fill:#333333;}#week08-2-flow-1 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week08-2-flow-1 .flowchart-link{stroke:#333333;fill:none;}#week08-2-flow-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week08-2-flow-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week08-2-flow-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week08-2-flow-1 .cluster text{fill:#333;}#week08-2-flow-1 .cluster span{color:#333;}#week08-2-flow-1 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week08-2-flow-1 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week08-2-flow-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week08-2-flow-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week08-2-flow-1 rect.text{fill:none;stroke-width:0;}#week08-2-flow-1 .icon-shape,#week08-2-flow-1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-1 .icon-shape p,#week08-2-flow-1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week08-2-flow-1 .icon-shape .label rect,#week08-2-flow-1 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week08-2-flow-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week08-2-flow-1 .node .neo-node{stroke:#9370DB;}#week08-2-flow-1 [data-look="neo"].node rect,#week08-2-flow-1 [data-look="neo"].cluster rect,#week08-2-flow-1 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#week08-2-flow-1 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week08-2-flow-1 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-1 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week08-2-flow-1 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-1 [data-look="neo"].node circle .state-start{fill:#000000;}#week08-2-flow-1 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-1 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week08-2-flow-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week08-2-flow-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week08-2-flow-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week08-2-flow-2 .error-icon{fill:#552222;}#week08-2-flow-2 .error-text{fill:#552222;stroke:#552222;}#week08-2-flow-2 .edge-thickness-normal{stroke-width:1px;}#week08-2-flow-2 .edge-thickness-thick{stroke-width:3.5px;}#week08-2-flow-2 .edge-pattern-solid{stroke-dasharray:0;}#week08-2-flow-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#week08-2-flow-2 .edge-pattern-dashed{stroke-dasharray:3;}#week08-2-flow-2 .edge-pattern-dotted{stroke-dasharray:2;}#week08-2-flow-2 .marker{fill:#333333;stroke:#333333;}#week08-2-flow-2 .marker.cross{stroke:#333333;}#week08-2-flow-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#week08-2-flow-2 p{margin:0;}#week08-2-flow-2 .label{font-family:Microsoft JhengHei;color:#333;}#week08-2-flow-2 .cluster-label text{fill:#333;}#week08-2-flow-2 .cluster-label span{color:#333;}#week08-2-flow-2 .cluster-label span p{background-color:transparent;}#week08-2-flow-2 .label text,#week08-2-flow-2 span{fill:#333;color:#333;}#week08-2-flow-2 .node rect,#week08-2-flow-2 .node circle,#week08-2-flow-2 .node ellipse,#week08-2-flow-2 .node polygon,#week08-2-flow-2 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week08-2-flow-2 .rough-node .label text,#week08-2-flow-2 .node .label text,#week08-2-flow-2 .image-shape .label,#week08-2-flow-2 .icon-shape .label{text-anchor:middle;}#week08-2-flow-2 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week08-2-flow-2 .rough-node .label,#week08-2-flow-2 .node .label,#week08-2-flow-2 .image-shape .label,#week08-2-flow-2 .icon-shape .label{text-align:center;}#week08-2-flow-2 .node.clickable{cursor:pointer;}#week08-2-flow-2 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week08-2-flow-2 .arrowheadPath{fill:#333333;}#week08-2-flow-2 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week08-2-flow-2 .flowchart-link{stroke:#333333;fill:none;}#week08-2-flow-2 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-2 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week08-2-flow-2 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-2 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week08-2-flow-2 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week08-2-flow-2 .cluster text{fill:#333;}#week08-2-flow-2 .cluster span{color:#333;}#week08-2-flow-2 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week08-2-flow-2 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week08-2-flow-2 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week08-2-flow-2 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week08-2-flow-2 rect.text{fill:none;stroke-width:0;}#week08-2-flow-2 .icon-shape,#week08-2-flow-2 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-2 .icon-shape p,#week08-2-flow-2 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week08-2-flow-2 .icon-shape .label rect,#week08-2-flow-2 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-2 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week08-2-flow-2 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week08-2-flow-2 .node .neo-node{stroke:#9370DB;}#week08-2-flow-2 [data-look="neo"].node rect,#week08-2-flow-2 [data-look="neo"].cluster rect,#week08-2-flow-2 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#week08-2-flow-2 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week08-2-flow-2 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-2 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week08-2-flow-2 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-2 [data-look="neo"].node circle .state-start{fill:#000000;}#week08-2-flow-2 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-2 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-2 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week08-2-flow-3{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week08-2-flow-3 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week08-2-flow-3 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week08-2-flow-3 .error-icon{fill:#552222;}#week08-2-flow-3 .error-text{fill:#552222;stroke:#552222;}#week08-2-flow-3 .edge-thickness-normal{stroke-width:1px;}#week08-2-flow-3 .edge-thickness-thick{stroke-width:3.5px;}#week08-2-flow-3 .edge-pattern-solid{stroke-dasharray:0;}#week08-2-flow-3 .edge-thickness-invisible{stroke-width:0;fill:none;}#week08-2-flow-3 .edge-pattern-dashed{stroke-dasharray:3;}#week08-2-flow-3 .edge-pattern-dotted{stroke-dasharray:2;}#week08-2-flow-3 .marker{fill:#333333;stroke:#333333;}#week08-2-flow-3 .marker.cross{stroke:#333333;}#week08-2-flow-3 svg{font-family:Microsoft JhengHei;font-size:30px;}#week08-2-flow-3 p{margin:0;}#week08-2-flow-3 .label{font-family:Microsoft JhengHei;color:#333;}#week08-2-flow-3 .cluster-label text{fill:#333;}#week08-2-flow-3 .cluster-label span{color:#333;}#week08-2-flow-3 .cluster-label span p{background-color:transparent;}#week08-2-flow-3 .label text,#week08-2-flow-3 span{fill:#333;color:#333;}#week08-2-flow-3 .node rect,#week08-2-flow-3 .node circle,#week08-2-flow-3 .node ellipse,#week08-2-flow-3 .node polygon,#week08-2-flow-3 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week08-2-flow-3 .rough-node .label text,#week08-2-flow-3 .node .label text,#week08-2-flow-3 .image-shape .label,#week08-2-flow-3 .icon-shape .label{text-anchor:middle;}#week08-2-flow-3 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week08-2-flow-3 .rough-node .label,#week08-2-flow-3 .node .label,#week08-2-flow-3 .image-shape .label,#week08-2-flow-3 .icon-shape .label{text-align:center;}#week08-2-flow-3 .node.clickable{cursor:pointer;}#week08-2-flow-3 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week08-2-flow-3 .arrowheadPath{fill:#333333;}#week08-2-flow-3 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week08-2-flow-3 .flowchart-link{stroke:#333333;fill:none;}#week08-2-flow-3 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-3 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week08-2-flow-3 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-3 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week08-2-flow-3 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week08-2-flow-3 .cluster text{fill:#333;}#week08-2-flow-3 .cluster span{color:#333;}#week08-2-flow-3 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week08-2-flow-3 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week08-2-flow-3 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week08-2-flow-3 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week08-2-flow-3 rect.text{fill:none;stroke-width:0;}#week08-2-flow-3 .icon-shape,#week08-2-flow-3 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-3 .icon-shape p,#week08-2-flow-3 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week08-2-flow-3 .icon-shape .label rect,#week08-2-flow-3 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-3 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week08-2-flow-3 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week08-2-flow-3 .node .neo-node{stroke:#9370DB;}#week08-2-flow-3 [data-look="neo"].node rect,#week08-2-flow-3 [data-look="neo"].cluster rect,#week08-2-flow-3 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-3 [data-look="neo"].swimlane.cluster rect{filter:none;}#week08-2-flow-3 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week08-2-flow-3 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-3 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week08-2-flow-3 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-3 [data-look="neo"].node circle .state-start{fill:#000000;}#week08-2-flow-3 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-3 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-3 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week08-2-flow-4{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week08-2-flow-4 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week08-2-flow-4 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week08-2-flow-4 .error-icon{fill:#552222;}#week08-2-flow-4 .error-text{fill:#552222;stroke:#552222;}#week08-2-flow-4 .edge-thickness-normal{stroke-width:1px;}#week08-2-flow-4 .edge-thickness-thick{stroke-width:3.5px;}#week08-2-flow-4 .edge-pattern-solid{stroke-dasharray:0;}#week08-2-flow-4 .edge-thickness-invisible{stroke-width:0;fill:none;}#week08-2-flow-4 .edge-pattern-dashed{stroke-dasharray:3;}#week08-2-flow-4 .edge-pattern-dotted{stroke-dasharray:2;}#week08-2-flow-4 .marker{fill:#333333;stroke:#333333;}#week08-2-flow-4 .marker.cross{stroke:#333333;}#week08-2-flow-4 svg{font-family:Microsoft JhengHei;font-size:30px;}#week08-2-flow-4 p{margin:0;}#week08-2-flow-4 .label{font-family:Microsoft JhengHei;color:#333;}#week08-2-flow-4 .cluster-label text{fill:#333;}#week08-2-flow-4 .cluster-label span{color:#333;}#week08-2-flow-4 .cluster-label span p{background-color:transparent;}#week08-2-flow-4 .label text,#week08-2-flow-4 span{fill:#333;color:#333;}#week08-2-flow-4 .node rect,#week08-2-flow-4 .node circle,#week08-2-flow-4 .node ellipse,#week08-2-flow-4 .node polygon,#week08-2-flow-4 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week08-2-flow-4 .rough-node .label text,#week08-2-flow-4 .node .label text,#week08-2-flow-4 .image-shape .label,#week08-2-flow-4 .icon-shape .label{text-anchor:middle;}#week08-2-flow-4 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week08-2-flow-4 .rough-node .label,#week08-2-flow-4 .node .label,#week08-2-flow-4 .image-shape .label,#week08-2-flow-4 .icon-shape .label{text-align:center;}#week08-2-flow-4 .node.clickable{cursor:pointer;}#week08-2-flow-4 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week08-2-flow-4 .arrowheadPath{fill:#333333;}#week08-2-flow-4 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week08-2-flow-4 .flowchart-link{stroke:#333333;fill:none;}#week08-2-flow-4 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-4 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week08-2-flow-4 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-4 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week08-2-flow-4 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week08-2-flow-4 .cluster text{fill:#333;}#week08-2-flow-4 .cluster span{color:#333;}#week08-2-flow-4 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week08-2-flow-4 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week08-2-flow-4 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week08-2-flow-4 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week08-2-flow-4 rect.text{fill:none;stroke-width:0;}#week08-2-flow-4 .icon-shape,#week08-2-flow-4 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week08-2-flow-4 .icon-shape p,#week08-2-flow-4 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week08-2-flow-4 .icon-shape .label rect,#week08-2-flow-4 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week08-2-flow-4 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week08-2-flow-4 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week08-2-flow-4 .node .neo-node{stroke:#9370DB;}#week08-2-flow-4 [data-look="neo"].node rect,#week08-2-flow-4 [data-look="neo"].cluster rect,#week08-2-flow-4 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-4 [data-look="neo"].swimlane.cluster rect{filter:none;}#week08-2-flow-4 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week08-2-flow-4 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-4 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week08-2-flow-4 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-4 [data-look="neo"].node circle .state-start{fill:#000000;}#week08-2-flow-4 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-4 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week08-2-flow-4 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}table{width:100%;table-layout:fixed}td,th{overflow-wrap:anywhere}.flow-diagram svg{width:100%;max-height:420px}.paper code{font-size:16px}.paper li{font-size:16px}
+img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}table{width:100%;table-layout:fixed}td,th{overflow-wrap:anywhere}.flow-diagram svg{width:100%;max-height:420px}.paper code{font-size:16px}.paper li{font-size:16px}
+img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}table{width:100%;table-layout:fixed}td,th{overflow-wrap:anywhere}.flow-diagram svg{width:100%;max-height:420px}.paper code{font-size:16px}.paper li{font-size:16px}
+.project-link { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; margin-top: 0.85rem; padding: 0.5rem 1rem; border: 1px solid #99f6e4; border-radius: 999px; background: #f0fdfa; color: #115e59; font-weight: 700; text-decoration: none; }
+.project-link:hover { background: #ccfbf1; color: #134e4a; border-color: #5eead4; }
+.project-link:focus-visible { outline: 3px solid #facc15; outline-offset: 4px; }
+</style></head><body><a class="skip-link" href="#main-content">跳到主要內容</a><header class="hero" id="top"><div class="hero-inner"><p class="eyebrow">TNDA · WEEK 08 · 課前預習</p><h1>TNDA Week 08 課前預習｜Frame Data 與 Command Link 執行模型</h1>
+<a class="project-link" href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-08" target="_blank" rel="noopener noreferrer" aria-label="week-08 示範專案">示範專案</a></div></header><div class="page-layout"><aside class="sidebar"><nav class="quick-nav" aria-label="本頁導覽"><p class="quick-nav-title">本頁導覽</p><a class="nav-level-2" href="#w08-2-1">本週目標</a>
+<a class="nav-level-2" href="#w08-2-2">課前準備</a>
+<a class="nav-level-2" href="#w08-2-3">課前預習</a>
+<a class="nav-level-3" href="#w08-2-4">課前預習 1｜Frame Data 的四段時間從哪裡來？</a>
+<a class="nav-level-3" href="#w08-2-5">課前預習 2｜輸入怎麼從預約變成下一招？</a>
+<a class="nav-level-2" href="#w08-2-6">課前實作練習</a>
+<a class="nav-level-3" href="#w08-2-7">課前實作練習 1｜把第一招放慢，會更容易接出下一招嗎？</a>
+<a class="nav-level-3" href="#w08-2-8">課前實作練習 2｜編輯並打出「右直拳 → 左鉤拳 → 轉身後踢」三連招</a>
+<a class="nav-level-2" href="#w08-2-9">官方參考資料</a>
+<a class="nav-level-2" href="#w08-2-10">上課前確認</a></nav></aside><main id="main-content"><article class="paper"><h2 id="w08-2-1">本週目標</h2>
+<ul>
+<li>從 Montage Notify 說明 Startup、Active、Link、Recovery 的來源。</li>
+<li>區分設計幀、播放速度與實際 FPS，以及預約輸入與立即接招。</li>
+<li>調整 PlayRate，比較接招操作的差異；編輯 CommandTable.csv，完成並展示三招連段。</li>
+</ul>
+<h2 id="w08-2-2">課前準備</h2>
+<p><a href="https://github.com/TNDA-Fighters/TndaFighterProject/tree/week-08" target="_blank" rel="noopener noreferrer">使用 <code>week-08</code> 教材</a>與 <code>/Game/Fighting/stage1</code>。U 是 X、I 是 Y；6 是朝向對手的水平方向，需依雙方位置判斷 A 或 D。每項實作都從角色 Idle 和交付基準開始。既有 Combat Debug 可顯示階段、素材 Frame、預約與窗口。</p>
+<p>本份預習使用教材基準 <code>Lifetime=0.5</code>。課堂實作 2 會另外把 PlayRate 設為 0.1，讓學生計算並修改 Lifetime，展示後恢復基準。文中的素材秒數算例均為教學假設；實作時請讀取當次 Editor 的 Notify 素材位置。</p>
+<h2 id="w08-2-3">課前預習</h2>
+<h3 id="w08-2-4">課前預習 1｜Frame Data 的四段時間從哪裡來？</h3>
+<p><strong>時間詞彙。</strong> Startup 是開始後尚未生效，Active 是可產生命中候選的區間，Link 是 Active 結束後到接招截止的階段，Recovery 是窗口關閉後到原招結束。Preorder 另表示「開始接受下一招預約」；Enable 表示「可立即交接」。Preorder 可以早於 Active，並不是四階段中的第五階段。</p>
+<p><strong>素材路徑。</strong> 開 <code>/Game/Fighting/Anims/AM_Attack_01</code>，找 Damage State 和 CommandLink Preorder／Enable／Disable。從 <code>Source/TndaFighter/Fighting/FightingCommandLink.cpp::FFightingAttackTiming::ReadMontage()</code> 追到 <code>IsValid()</code>、<code>PhaseAt()</code>：每種 Notify 必須恰有一個，且 <code>0 ≤ Preorder &lt; DamageBegin &lt; DamageEnd &lt; Enable &lt; Disable &lt; Length</code>。<code>PhaseAt()</code> 以 DamageBegin、DamageEnd、Disable 分界；Link 階段開始不代表 Enable 已開。</p>
+<p><strong>可預約與可交接：現在能先記住輸入，還是能接出下一招？</strong> <code>CanPreorder()</code> 判斷目前素材位置是否允許接受預約；<code>CanLink()</code> 判斷目前素材位置是否允許交接到下一招。兩者都只回傳時間條件是否成立，函式本身不會保存輸入或播放動畫；實際受理與交接由角色的 <code>SubmitCommand()</code>／<code>ConsumeCommandBuffer()</code> 處理。</p>
+<table>
+<thead>
+<tr>
+<th>目前的素材位置</th>
+<th><code>CanPreorder()</code></th>
+<th><code>CanLink()</code></th>
+<th>合法輸入通過角色狀態檢查後的處理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Preorder 之前</td>
+<td>false</td>
+<td>false</td>
+<td>拒絕預約，不會替玩家保存到窗口開啟</td>
+</tr>
+<tr>
+<td>Preorder 起，到 Enable 之前</td>
+<td>true</td>
+<td>false</td>
+<td>先存入 Buffer，回傳 <code>Buffered</code>；目前這招繼續播放</td>
+</tr>
+<tr>
+<td>Enable 起，到 Disable 之前</td>
+<td>true</td>
+<td>true</td>
+<td>可立即嘗試消耗 Buffer，下一招播放成功才回傳 <code>Started</code></td>
+</tr>
+<tr>
+<td>Disable 起</td>
+<td>false</td>
+<td>false</td>
+<td>預約與接招窗口都已關閉；清除舊預約，也不接受新預約</td>
+</tr>
+</tbody></table>
+<p>這張表以有效的攻擊時間資料為前提。<code>CanPreorder()</code> 的區間是 <code>[Preorder, Disable)</code>，<code>CanLink()</code> 是 <code>[Enable, Disable)</code>；方括號表示包含起點，右括號表示不含終點。<strong>可接招區間包含在可預約區間內，所以到了 Enable，<code>CanPreorder()</code> 仍然是 true。</strong> 角色的 <code>FightingCharacter.cpp::RefreshAttackTiming()</code> 以實際 Montage 位置更新狀態，不累加 Tick 幀數。</p>
+<p><strong>具體例子：同樣按下一招，按下的位置決定先等還是立即接。</strong> 假設 Preorder 在素材 0.1 秒、Enable 在 0.5 秒、Disable 在 0.8 秒；這些是說明用數字，不是專案資產的實際設定。以下各案例獨立從第一招開始，先採 <code>PlayRate＝1</code>，假設輸入符合合法後續、角色狀態正常、沒有中斷，且下一招可成功播放。</p>
+<ul>
+<li><strong>素材 0.05 秒按下：太早。</strong> 尚未到 Preorder，輸入被拒絕。即使稍後到了 Enable，也不會記得這次按鍵。</li>
+<li><strong>素材 0.2 秒按下：先保存，再接招。</strong> 此時可預約但尚不可接招，因此先存入 Buffer，回傳 <code>Buffered</code>，畫面仍播放第一招。再經過 0.3 遊戲秒抵達 Enable 時，這筆輸入尚未超過 0.5 秒期限；角色會嘗試消耗它並開始下一招，玩家不必再按一次。原本那次呼叫的回傳值仍是 <code>Buffered</code>，後續接招是另一個時點的處理。</li>
+<li><strong>素材 0.6 秒按下：立即嘗試接招。</strong> 此時兩個條件都為 true；<code>SubmitCommand()</code> 先寫入 Buffer，隨即呼叫 <code>ConsumeCommandBuffer()</code>。播放成功就回傳 <code>Started</code>，不用先等滿 0.5 秒，也不用等第一招完整播完。</li>
+<li><strong>素材恰好 0.8 秒按下：已經太晚。</strong> Disable 不包含在窗口內，不能再預約或接招，也不會保留到回到 Idle 後自動出招。</li>
+</ul>
+<p>若把第二個案例改成 <code>PlayRate＝0.5</code>，仍在素材 0.2 秒按下，走到素材 0.5 秒的 Enable 就要花 <code>(0.5 − 0.2) ÷ 0.5＝0.6</code> 遊戲秒。Buffer 只保留 0.5 遊戲秒，因此抵達 Enable 時，雖然 <code>CanLink()</code> 已為 true，舊輸入卻已逾期，接不出下一招。若玩家之後在 Enable 到 Disable 之間重新輸入合法指令，仍可立即嘗試接招。</p>
+<p><strong>接出下一招需要同時滿足「允許交接、有尚未逾期的合法輸入、下一招可成功播放」。</strong> 單看 <code>CanLink()</code> 為 true 不代表一定會接招；另外，Debug 顯示的 Link 階段從 DamageEnd 就開始，也不等於已抵達 Enable。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 1000 270" role="img" aria-label="Montage 標記 → ReadMontage 驗證 → PhaseAt 四階段" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="5" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="44" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">Montage 標記</text><path d="M500 66v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="95" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="134" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">ReadMontage 驗證</text><path d="M500 156v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="185" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="224" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">PhaseAt 四階段</text></svg></figure>
+<figure class="flow-diagram"><svg viewBox="0 0 1000 270" role="img" aria-label="素材位置 → 可預約區間 → 可交接區間" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="5" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="44" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">素材位置</text><path d="M500 66v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="95" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="134" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">可預約區間</text><path d="M500 156v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="185" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="224" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">可交接區間</text></svg></figure>
+<p><strong>設計幀：動畫播到哪裡？</strong> 設計幀是動畫時間軸上的位置刻度。本週用「素材每 1 秒分成 60 格」來表示位置，所以 <code>Debug Frame＝素材位置秒數 × 60</code>。例如，素材的 0.2 秒位置就是設計幀 12（<code>0.2 × 60＝12</code>）。以下的素材位置與間距都是說明用的假設數字，不代表專案中 Notify 的實際設定。</p>
+<p>假設傷害 Notify 放在素材的 0.2 秒位置，「傷害從設計幀 12 開始」就是指動畫播到這個位置時，開始產生傷害。Debug 若讀到素材位置 0.205 秒，就會顯示設計幀 12.3；因此這個數字可以有小數。</p>
+<p>FPS 則表示電腦每秒顯示多少張畫面。設計幀的 60 是位置換算的基準，不代表目前 FPS，也不要求動畫原始素材一定以 60 FPS 製作。看到 <code>Frame＝12</code>，要讀成「目前播到素材的第 12 格位置」，不要讀成「目前只有 12 FPS」或「起招後已顯示 12 張畫面」。</p>
+<p><strong>播放速度：走到同一個位置要花多久？</strong> <code>PlayRate＝1</code> 是正常速度，<code>PlayRate＝0.5</code> 是半速。假設從動畫開頭持續播放，傷害 Notify 仍放在素材的 0.2 秒位置：</p>
+<table>
+<thead>
+<tr>
+<th>播放速度</th>
+<th>傷害 Notify 的位置</th>
+<th>從動畫開頭播到該位置所需的遊戲時間</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PlayRate＝1</code>（正常速度）</td>
+<td>素材 0.2 秒／設計幀 12</td>
+<td><code>0.2 ÷ 1＝0.2 秒</code></td>
+</tr>
+<tr>
+<td><code>PlayRate＝0.5</code>（半速）</td>
+<td>素材 0.2 秒／設計幀 12</td>
+<td><code>0.2 ÷ 0.5＝0.4 秒</code></td>
+</tr>
+</tbody></table>
+<p>半速播放時，角色要花兩倍時間才揮到同一個姿勢。Notify 仍在原本的位置，只是比較晚才播到它。</p>
+<p><strong>Buffer 期限：這次輸入最多能等多久？</strong> 攻擊途中，玩家在 <code>CanPreorder()</code> 為真的區間內按下下一招，還要通過角色狀態與合法後續招式檢查，這筆輸入才會被接受並存入 Buffer。Buffer 保存的是攻擊語意與按下時的方向，從「這筆輸入被接受的當下」開始計時，最多保留 <strong>0.5 遊戲秒</strong>；不是從 Preorder 窗口開啟時開始算，也不是所有按鍵都會被保存。</p>
+<p><code>CanPreorder()</code> 回答「現在的動畫位置允不允許預約」，Buffer 期限回答「已接受的這筆輸入還能等多久」。兩者使用不同的時間基準：前者看素材位置，後者看經過的遊戲時間。動畫改成半速，Buffer 的期限仍是 0.5 遊戲秒，不會自動延長成 1 秒。</p>
+<p><strong>對照程式定義。</strong> 以下節錄位於 <code>Source/TndaFighter/Fighting/</code>，可依檔名與函式名稱找到原始碼：</p>
+<pre><code class="language-cpp">// FightingCommandLink.cpp：FFightingAttackTiming::CanPreorder()
+bool FFightingAttackTiming::CanPreorder(float Position) const
+{
+    return IsValid() &amp;&amp; Position &gt;= Preorder &amp;&amp; Position &lt; Disable;
+}
+
+// FightingCommandLink.cpp：FFightingAttackTiming::CanLink()
+bool FFightingAttackTiming::CanLink(float Position) const
+{
+    return IsValid() &amp;&amp; Position &gt;= Enable &amp;&amp; Position &lt; Disable;
+}
+
+// FightingCommandLink.h：FFightingCommandBuffer 的期限常數
+static constexpr double Lifetime = 0.5;
+
+// FightingCharacter.cpp：SubmitCommand() 通過窗口與合法候選檢查後
+CommandBuffer.Submit(Command, Directions, GetWorld()-&gt;GetTimeSeconds(), true);
+
+// FightingCommandLink.cpp：FFightingCommandBuffer::Submit() 保存受理時間
+SubmittedAt = Now;
+
+// FightingCommandLink.cpp：FFightingCommandBuffer::IsPending()
+bool FFightingCommandBuffer::IsPending(double Now) const
+{
+    return !Attack.IsNone() &amp;&amp; FMath::IsFinite(Now) &amp;&amp; Now &gt;= SubmittedAt &amp;&amp; Now &lt; SubmittedAt + Lifetime;
+}
+</code></pre>
+<p><code>Position</code> 是目前的素材位置；<code>Now</code> 是傳入的世界遊戲時間；<code>SubmittedAt</code> 是這筆輸入的受理時間。<code>IsPending()</code> 除了檢查有沒有輸入及時間是否合法，還要求 <code>Now &lt; SubmittedAt + Lifetime</code>：例如在遊戲時間 10.0 秒受理，到了 10.5 秒就已逾期。</p>
+<p>0.5 秒是保留上限，不保證每筆輸入都等滿這段時間：Enable 已開時可立即嘗試接招；取用輸入時就會清除預約，再重新選招並嘗試播放。到達 Disable、攻擊中斷或結束，也會清除剩餘預約。新的合法輸入會覆寫舊預約，並從新輸入受理時重新計算 0.5 秒；無效輸入不會延長期限。</p>
+<p><strong>比較等待時間、接招窗口與輸入期限。</strong> 假設玩家在素材 0.2 秒的位置輸入下一招並存入 Buffer，Enable 位於素材 0.5 秒，Disable 位於素材 0.8 秒。這組數字是教學算例；Buffer 的期限由 <code>FFightingCommandBuffer::Lifetime = 0.5</code> 定義。</p>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>正常速度 <code>PlayRate=1</code></th>
+<th>半速 <code>PlayRate=0.5</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>輸入後等到 Enable</td>
+<td><code>(0.5 − 0.2) ÷ 1＝0.3</code> 遊戲秒</td>
+<td><code>(0.5 − 0.2) ÷ 0.5＝0.6</code> 遊戲秒</td>
+</tr>
+<tr>
+<td>Buffer 期限</td>
+<td>0.5 遊戲秒</td>
+<td>0.5 遊戲秒</td>
+</tr>
+<tr>
+<td>這筆提前輸入的結果</td>
+<td>抵達 Enable 時仍有效，可嘗試接招</td>
+<td>抵達 Enable 前已逾期</td>
+</tr>
+<tr>
+<td>Enable 到 Disable 的窗口長度</td>
+<td><code>(0.8 − 0.5) ÷ 1＝0.3</code> 遊戲秒</td>
+<td><code>(0.8 − 0.5) ÷ 0.5＝0.6</code> 遊戲秒</td>
+</tr>
+</tbody></table>
+<p>以上算例假設播放速度固定、動畫持續播放，沒有暫停或時間倍率變化，也沒有新輸入覆寫或其他清除 Buffer 的事件。在這些條件下，用「素材位置的間距 ÷ PlayRate」就能估算要經過多少遊戲時間。</p>
+<p>半速把這段接招窗口從 0.3 遊戲秒拉長到 0.6 遊戲秒，在窗口內輸入時有較多時間完成操作；合法輸入被接受後便立即嘗試接招。若在 Enable 前提早輸入，則要先等到窗口開啟，這段等待也會因半速而變長，可能超過 Buffer 的 0.5 秒期限。</p>
+<p><strong>放慢後是否比較好接，取決於輸入時機：接近 Enable 或在窗口內輸入可能較容易掌握；太早預約則可能在開窗前逾期。</strong> 比較兩種速度時，要同時看「輸入後等多久」與「窗口持續多久」。</p>
+<h3 id="w08-2-5">課前預習 2｜輸入怎麼從預約變成下一招？</h3>
+<p><strong>資料與預約。</strong> <code>_DataTable/CommandTable.csv</code> 的 <code>Link</code> 欄位設定目前招式可以銜接的後續招式。例如，ID 1 的 <code>Link</code> 填入 <code>3</code>，表示使用第 1 號招式時，可以透過符合條件的輸入接出第 3 號招式。本週教材的初始設定只有這一組接招關係。</p>
+<p>玩家在可預約區間內提前輸入下一招，通過角色狀態與合法後續招式檢查後，系統會將這次輸入存進 Buffer。例如，玩家按下 <code>I</code> 提出 <code>Y</code> 攻擊時，Buffer 會保存以下內容：</p>
+<table>
+<thead>
+<tr>
+<th>保存內容</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>攻擊語意 <code>Y</code></td>
+<td>記錄玩家這次提出的攻擊輸入</td>
+</tr>
+<tr>
+<td>按下攻擊時的方向</td>
+<td>保存當時相對於對手的方向，供接招時查找符合條件的招式</td>
+</tr>
+<tr>
+<td>受理時間</td>
+<td>從這個時點開始計算 0.5 遊戲秒的有效期限</td>
+</tr>
+</tbody></table>
+<p>「方向快照」就是把按下攻擊當時的方向記下來。例如，某筆被接受的輸入包含朝向對手的方向 <code>6</code>，之後即使玩家放開方向鍵，這筆預約仍保留當時的 <code>6</code>。接招窗口開啟時，系統會用保存的攻擊與方向，在目前招式允許的後續招式中重新查找，並嘗試播放下一招。</p>
+<p>每個角色各自有一個 Buffer，最多保存一筆輸入。新的合法輸入會取代原本那筆，並從新輸入的受理時間重新計算 0.5 秒。以下用假設的遊戲時間說明；假設期間預約窗口持續開啟，且預約尚未被消耗或清除：</p>
+<table>
+<thead>
+<tr>
+<th>時間與情況</th>
+<th>Buffer 的內容與期限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.0 秒接受一筆合法輸入</td>
+<td>保存這筆輸入，到 10.5 秒時逾期</td>
+</tr>
+<tr>
+<td>10.2 秒又接受一筆合法輸入</td>
+<td>改存新輸入，到 10.7 秒時逾期</td>
+</tr>
+<tr>
+<td>若 10.2 秒收到的是無效輸入</td>
+<td>保留原本那筆輸入，仍在 10.5 秒時逾期</td>
+</tr>
+</tbody></table>
+<p>表格最後兩列是兩種不同情況。實際接招時，Buffer 內的輸入還必須在有效期限內；接招、到達 Disable 或攻擊中斷等事件也會提前清除預約。</p>
+<p><strong>輸入路徑：按下 I，先把 Y 存成預約。</strong> 延續前面的例子：角色正在播放第 1 號招式，<code>Link</code> 設為 <code>3</code>。玩家在 Preorder 已開、Enable 尚未開啟時按下 <code>I</code>，提出 <code>Y</code> 攻擊。這次輸入會依序經過以下處理；原始碼路徑均以 <code>Source/TndaFighter/</code> 為起點。</p>
+<ol>
+<li><strong>角色收到輸入。</strong> <code>Fighting/FightingCharacter.cpp</code> 的 <code>SubmitCommand()</code> 收到攻擊語意 <code>Y</code> 與按下當時的方向，更新目前攻擊狀態，再用 <code>IsCommandPreorderOpen()</code> 確認角色現在可以接受預約。</li>
+<li><strong>查找符合輸入的後續招式。</strong> <code>DataTable/TndaCommandReader.cpp</code> 的 <code>TrySelectLinkedCommand()</code> 將攻擊、方向與目前的 <code>Link</code> 交給 <code>SelectCommand()</code>。本例的 <code>Link</code> 只有 <code>3</code>，因此會檢查第 3 號招式是否符合這次輸入；有多個合法候選時，依資料表整理好的排序選出第一個符合者。</li>
+<li><strong>保存這次輸入。</strong> 通過檢查後，呼叫 <code>Fighting/FightingCommandLink.cpp</code> 的 <code>FFightingCommandBuffer::Submit()</code>，保存 <code>Y</code>、方向與受理時間，並開始計算 0.5 遊戲秒期限。</li>
+<li><strong>回報已預約。</strong> 此時 Enable 尚未開啟，<code>SubmitCommand()</code> 回傳 <code>Buffered</code>。畫面繼續播放第 1 號招式，Buffer 留著這筆 Y 輸入，等待接招時機。</li>
+</ol>
+<p>若預約窗口已關閉，或找不到符合輸入的合法後續招式，<code>SubmitCommand()</code> 會回傳 <code>Rejected</code>。若玩家按下 I 時已在 Enable 到 Disable 的接招區間，保存輸入後就會立即呼叫 <code>ConsumeCommandBuffer()</code> 嘗試接招；下一招播放成功回傳 <code>Started</code>，失敗則回傳 <code>Rejected</code>。</p>
+<p><strong>交接路徑：播到 Enable，把預約的 Y 接出來。</strong> 接著看剛才回傳 <code>Buffered</code> 的情況。假設輸入被接受後，過了 0.3 遊戲秒，第一招播放到 Enable；這筆預約仍在 0.5 秒期限內，角色狀態也允許接招。</p>
+<ol>
+<li><strong>動畫通知角色檢查接招。</strong> Enable Notify 觸發後，<code>Fighting/FightingCommandLinkNotify.cpp</code> 的 <code>UFightingCommandLinkEnableNotify::Notify()</code> 經由 <code>DispatchLinkNotify()</code> 呼叫角色的 <code>HandleCommandLinkNotify()</code>。角色確認通知來自目前這次攻擊，並更新攻擊狀態與素材位置。</li>
+<li><strong>確認窗口與預約都有效。</strong> 角色透過 <code>IsCommandLinkOpen()</code> 檢查接招窗口，並在有預約時呼叫 <code>ConsumeCommandBuffer()</code>。這個函式再次確認 Buffer 尚未逾期，而且此刻仍允許接招。</li>
+<li><strong>取出輸入，重新選招。</strong> <code>ConsumeCommandBuffer()</code> 取出保存的 <code>Y</code> 與方向，清除這筆已取用的預約，再呼叫 <code>TrySelectLinkedCommand()</code>。本例會重新確認第 3 號招式符合條件，並取得它目前的招式資料。</li>
+<li><strong>開始下一招並完成交接。</strong> 選招成功後，呼叫 <code>Fighting/FightingCharacter.cpp</code> 的 <code>StartAttack(..., true)</code>；其中 <code>true</code> 表示這次是從目前攻擊銜接下一招。函式檢查下一招資料並嘗試播放 Montage，播放成功後讓第一招依自身 Blend Out 設定淡出，清除舊的命中紀錄，並把目前攻擊更新為第 3 號招式。</li>
+</ol>
+<p>玩家看到的過程是「按下 I → 第一招繼續播放 → 到達接招窗口 → 第 3 號招式開始」。若等待期間預約已逾期、角色狀態改變，或下一招選取／播放失敗，這次預約就無法完成接招。角色的 <code>UpdateAttack()</code> 也會持續檢查窗口與預約，讓符合條件的交接能在更新時處理。</p>
+<figure class="flow-diagram"><svg viewBox="0 0 1000 270" role="img" aria-label="目前 Link 集合 → 輸入條件與時點 → 保存一筆 Buffer" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="5" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="44" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">目前 Link 集合</text><path d="M500 66v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="95" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="134" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">輸入條件與時點</text><path d="M500 156v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="185" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="224" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">保存一筆 Buffer</text></svg></figure>
+<figure class="flow-diagram"><svg viewBox="0 0 1000 360" role="img" aria-label="窗口與預約有效 → 取出輸入並清除預約 → 重新查下一招 → StartAttack 嘗試播放與交接" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="5" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="44" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">窗口與預約有效</text><path d="M500 66v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="95" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="134" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">取出輸入並清除預約</text><path d="M500 156v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="185" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="224" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">重新查下一招</text><path d="M500 246v18m-7-7 7 7 7-7" fill="none" stroke="#237b73" stroke-width="3"/><rect x="60" y="275" width="880" height="60" rx="10" fill="#e3f1ed" stroke="#237b73"/><text x="500" y="314" text-anchor="middle" style="font:26px 'Microsoft JhengHei',sans-serif;fill:#173f50">StartAttack 嘗試播放與交接</text></svg></figure>
+<p><strong>招式資料在什麼時候讀取？</strong> 以第 1 號招式接第 3 號招式為例，角色會在起招與接招時分別取得需要的資料：</p>
+<ol>
+<li><strong>第 1 招開始時，保存這次攻擊的資料。</strong> <code>StartAttack()</code> 將選出的第 1 號招式資料存入角色的 <code>CurrentAttack</code>，其中包含 <code>Link = 3</code>。這就是「起招時的副本」：角色保存了一份這次攻擊要使用的資料，後續透過 <code>CurrentAttack.Link</code> 判斷允許銜接哪些招式。</li>
+<li><strong>玩家提前按下 I 時，先確認能否預約。</strong> <code>SubmitCommand()</code> 使用保存的 <code>CurrentAttack.Link</code> 查找合法後續。符合條件後，Buffer 記住這次 Y 輸入、方向與受理時間。</li>
+<li><strong>接招窗口開啟時，再取得第 3 招的資料。</strong> <code>ConsumeCommandBuffer()</code> 取出預約的 Y 與方向，將它們連同 <code>CurrentAttack.Link</code> 交給 <code>TrySelectLinkedCommand()</code>。查詢成功後，取得第 3 號招式的資料，例如要播放的 Montage 與 PlayRate，再交給 <code>StartAttack(..., true)</code> 開始播放。</li>
+</ol>
+<p>因此，「起招時保存副本」指的是第 1 招開始時，角色記住這次攻擊允許接出的招式 ID；「消耗時重新查」指的是使用預約輸入接招時，再查詢符合條件的第 3 招資料。下一招成功開始後，<code>CurrentAttack</code> 會更新為第 3 招的資料，後續接招也改用第 3 招自己的 <code>Link</code>。</p>
+<p><strong>預約何時清除？</strong> 嘗試接招時，先取出輸入並清除 Buffer，再重新選招與播放；即使後續選招或播放失敗，這筆輸入也已取用。到達 Disable、輸入逾期、攻擊中斷或完整結束時，也會清除剩餘預約。Recovery 期間收到的攻擊輸入會被拒絕；回到 Idle 後，玩家可重新輸入出招。教材的 X→Y 接招條件允許第一招揮空，只要輸入、窗口與播放條件都成立，就能接出 Y。</p>
+<h2 id="w08-2-6">課前實作練習</h2>
+<h3 id="w08-2-7">課前實作練習 1｜把第一招放慢，會更容易接出下一招嗎？</h3>
+<p>調整 <code>_DataTable/CommandTable.csv</code> 中第 1 號招式的 <code>PlayRate</code>，比較 <code>1.0</code> 與 <code>0.5</code> 兩種速度下，從右直拳接出左鉤拳的操作感受。將設定匯入教材專案，分別試著在可預約區間較早輸入，以及接近接招窗口時輸入下一招。</p>
+<p>上課時分享桌面，展示兩種速度的接招操作與 CSV 設定，分別說明較早輸入與接近 Enable 輸入的結果。搭配 Combat Debug 的窗口與 Buffer 顯示，回答：「第一招放慢後，輸入到 Enable 的等待時間與 Enable 到 Disable 的窗口長度各有什麼變化？提前輸入的預約能否保留到開窗？」請依輸入時機說明接招是否更容易，並解釋窗口變長與 Buffer 逾期可能同時出現的原因。</p>
+<p>本題只調整第 1 號招式的 <code>PlayRate</code>，其餘招式資料、Montage Notify 與全域時間倍率維持教材設定。展示後還原，讓下一題從教材基準開始。</p>
+<h3 id="w08-2-8">課前實作練習 2｜編輯並打出「右直拳 → 左鉤拳 → 轉身後踢」三連招</h3>
+<p>編輯 <code>_DataTable/CommandTable.csv</code>，讓角色能依序接出「右直拳 → 左鉤拳 → 轉身後踢」，使用的動畫依序為 <code>AM_Attack_01 → AM_Attack_02 → AM_Attack_03</code>。沿用這三招既有的輸入設定，調整合法後續招式的連接關係，匯入後練習完整打出三連招。</p>
+<p>上課時分享遊戲畫面，操作角色從第一招一路銜接到第三招。接著開啟 <code>CommandTable.csv</code>，指出三個動畫各自對應的資料列，分享修改了哪些欄位，以及這些設定如何讓第一招接到第二招、第二招再接到第三招。口頭說明每次接招的輸入方式與時機。</p>
+<p>本題保留三招既有的動畫、輸入條件、播放速度、傷害與 Notify 設定，以 <code>Link</code> 欄位完成連接。展示後還原教材設定。</p>
+<h2 id="w08-2-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-notifies-in-unreal-engine">Animation Notifies</a>：Notify與Notify State概念。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-in-unreal-engine">Animation Montage</a>：Montage的時間軸與混合設定。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/data-driven-gameplay-elements-in-unreal-engine">Data Driven Gameplay Elements</a>：資料表列與CSV匯入。</li>
+</ul>
+<h2 id="w08-2-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 能開week-08 stage1，Debug能顯示階段與預約。</li>
+<li><input disabled="" type="checkbox"> 能指出四階段與兩個窗口，分清Frame、PlayRate、FPS。</li>
+<li><input disabled="" type="checkbox"> 能沿合法後續、Buffer、消耗與StartAttack走一次。</li>
+<li><input disabled="" type="checkbox"> 可展示正常速度與半速的接招操作，說明輸入時機、窗口與 Buffer 期限的影響。</li>
+<li><input disabled="" type="checkbox"> 可完整打出右直拳、左鉤拳、轉身後踢三連招，並分享 CommandTable.csv 的編輯方式。</li>
+<li><input disabled="" type="checkbox"> PlayRate、Link已還原，沒有新增或刪除Notify。</li>
+</ul>
+</article></main></div></body></html>
