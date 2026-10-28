@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 08 助教參考：命中推拉與鏡頭震動</title>
+<style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #f3f5f7; color: #202b36;
+      font-family: "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+      font-size: 17px; line-height: 1.8;
+    }
+    main {
+      max-width: 960px; margin: 40px auto; padding: 40px 48px;
+      background: #fff; border: 1px solid #e1e6eb; border-radius: 12px;
+    }
+    h1, h2, h3 { line-height: 1.4; color: #172d46; }
+    h1 { margin-top: 0; font-size: 2rem; }
+    h2 { margin-top: 2rem; padding-bottom: .35rem; border-bottom: 1px solid #e1e6eb; font-size: 1.4rem; }
+    h3 { margin-top: 1.5rem; font-size: 1.15rem; }
+    p { margin: .8rem 0; }
+    ul, ol { padding-left: 1.7rem; }
+    li { margin: .6rem 0; }
+    table { width: 100%; margin: 1rem 0; border-collapse: collapse; }
+    th, td { padding: .65rem .9rem; border: 1px solid #dbe2e8; text-align: left; }
+    th { background: #edf3f8; }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    code { font-family: Consolas, "Cascadia Code", monospace; font-size: .9em; overflow-wrap: anywhere; }
+    :not(pre) > code { padding: .15em .35em; background: #eef2f6; border-radius: 4px; }
+    pre {
+      padding: 20px; background: #f6f8fa; border: 1px solid #dbe2e8;
+      border-radius: 8px; overflow-x: auto; line-height: 1.6;
+    }
+    pre code { overflow-wrap: normal; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      main { margin: 0; padding: 24px 18px; border: 0; border-radius: 0; }
+      h1 { font-size: 1.65rem; }
+      th, td { padding: .5rem; }
+    }
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      main { max-width: none; margin: 0; padding: 0; border: 0; }
+      h1, h2, h3 { break-after: avoid; }
+      tr { break-inside: avoid; }
+      pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      pre code { overflow-wrap: anywhere; }
+    }
+
+    body { overflow-wrap: anywhere; }
+    code { font-size: 16px; }
+    h4, h5 { font-size: 17px; line-height: 1.5; color: #172d46; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    pre code { overflow-wrap: anywhere; }
+    th, td { vertical-align: top; overflow-wrap: anywhere; }
+    .prompt-example { margin: 20px 0; padding: 14px 18px; border: 1px solid #cbdced; border-radius: 8px; background: #f8fbff; }
+    .prompt-example summary { cursor: pointer; color: #17456c; font-weight: 700; font-size: 17px; }
+    .prompt-example summary:focus-visible { outline: 3px solid #326daa; outline-offset: 4px; }
+    nav { padding: 12px 16px; background: #edf3f8; border-radius: 8px; }
+    nav ul { margin: 0; }
+    .page-nav {
+      position: fixed; top: 24px; bottom: 24px; left: 20px; width: 280px;
+      overflow-y: auto; overscroll-behavior: contain; background: #fff;
+      border: 1px solid #dbe2e8; padding: 18px 12px; border-radius: 12px;
+    }
+    .page-nav strong { display: block; padding: 0 10px 10px; color: #172d46; }
+    .page-nav a {
+      display: block; padding: 7px 10px; margin: 2px 0; border-radius: 6px;
+      color: #294761; text-decoration: none; font-size: 16px; line-height: 1.5;
+    }
+    .page-nav a.sub { padding-left: 24px; }
+    .page-nav a.step { padding-left: 36px; border-left: 2px solid #dbe2e8; margin-left: 10px; }
+    .page-nav a:hover { background: #edf3f8; }
+    .page-nav a[aria-current="location"] { background: #dceafa; color: #123d6a; font-weight: 700; }
+    .page-nav a:focus-visible { outline: 3px solid #326daa; outline-offset: 1px; }
+    main { margin: 24px 24px 40px 324px; max-width: 1060px; }
+    main h1, main h2, main h3, main h4 { scroll-margin-top: 24px; }
+    @media (max-width: 1000px) {
+      .page-nav { position: static; width: auto; max-height: 260px; margin: 16px; }
+      main { margin: 16px; padding: 28px; }
+    }
+    @media print {
+      .page-nav { display: none; }
+      main { margin: 0; padding: 0; max-width: none; }
+    }
+</style>
+</head>
+<body><nav class="page-nav" aria-label="章節導覽"><strong>Week 08 · 章節導覽</strong><a class="section" href="#week-08" data-section="week-08">回到頁首</a>
+<a class="section" href="#init-tick-end" data-section="init-tick-end">手動實作教學：Init → Tick → End</a>
+<a class="sub" href="#_1" data-section="_1">開始前：確認專案與工具</a>
+<a class="sub" href="#hitpushx" data-section="hitpushx">前置實作：完整接通 HitPushX 資料</a>
+<a class="step" href="#1" data-section="1">1. 修改兩份資料結構</a>
+<a class="step" href="#2-reader" data-section="2-reader">2. 在 Reader 加入完整數字檢查</a>
+<a class="step" href="#3-prepare" data-section="3-prepare">3. 擴充 Prepare 的來源驗證與副本</a>
+<a class="step" href="#4-csv" data-section="4-csv">4. 修改 CSV、建置並手動匯入</a>
+<a class="sub" href="#_2" data-section="_2">系統一：受擊推拉</a>
+<a class="step" href="#1_1" data-section="1_1">1. 定義資料與介面</a>
+<a class="step" href="#2init" data-section="2init">2. Init</a>
+<a class="step" href="#3tick" data-section="3tick">3. Tick</a>
+<a class="step" href="#4end" data-section="4end">4. End</a>
+<a class="step" href="#5" data-section="5">5. 接入與測試</a>
+<a class="sub" href="#director" data-section="director">系統二：Director 鏡頭震動</a>
+<a class="step" href="#1_2" data-section="1_2">1. 定義資料與介面</a>
+<a class="step" href="#2init_1" data-section="2init_1">2. Init</a>
+<a class="step" href="#3tick_1" data-section="3tick_1">3. Tick</a>
+<a class="step" href="#4end_1" data-section="4end_1">4. End</a>
+<a class="step" href="#5director" data-section="5director">5. 接入與測試</a>
+<a class="sub" href="#_4" data-section="_4">原有程式的互動</a>
+<a class="section" href="#_5" data-section="_5">手動建置與匯入</a>
+<a class="sub" href="#a-c" data-section="a-c">A. 建置 C++</a>
+<a class="sub" href="#b-csv" data-section="b-csv">B. 重新匯入 CSV</a>
+<a class="sub" href="#c" data-section="c">C. 手動測試順序與預期結果</a></nav><main>
+<h1 id="week-08">Week 08 助教參考：命中推拉與鏡頭震動</h1>
+<p>本文件提供「命中推拉與鏡頭震動」的手動實作、建置匯入與測試步驟。程式片段尚未放入專案編譯或執行 PIE 驗證，請依步驟逐段確認。</p>
+<h2 id="init-tick-end">手動實作教學：Init → Tick → End</h2>
+<p>這一節開始是教師可依序操作的全手動流程，不需要請 AI 改碼或透過 MCP 匯入。使用 IDE／文字編輯器修改 C++ 與 CSV，再手動建置、在 Editor 匯入並測試。</p>
+<p><code>Init</code> 表示開始一次效果，<code>Tick</code> 表示逐幀更新，<code>End</code> 表示停止並清除狀態。下列步驟按已查讀的 week-08 原始碼安排，請依函式名與附近程式定位，不依固定行號。程式片段尚未放入專案編譯與 PIE 驗證，明天試作時請逐階段確認。</p>
+<p>閱讀程式片段時，請先確認操作類型：<strong>新增成員</strong>貼在 header 的類別大括號內；<strong>新增函式定義</strong>貼在 cpp 的檔案層級，不要貼進其他函式；<strong>插入呼叫</strong>才貼進指定的既有函式。每段只加一次。每套效果各自完成步驟 1～5 後就建置與測試，通過後再做下一套，避免只有宣告卻還沒寫完定義時出現連結錯誤。</p>
+<h3 id="_1">開始前：確認專案與工具</h3>
+<ol>
+<li>在老師提供的 week-08 示範專案目錄執行 <code>git status --short</code>，保存已有改動。不要為了對齊教材直接還原工作樹。</li>
+<li>準備可編輯 C++ 的 IDE、文字編輯器與 Unreal Editor。以下 C++ 路徑皆以 <code>Source/TndaFighter/</code> 為起點，CSV 位於專案根目錄 <code>_DataTable/</code>。</li>
+<li>先開啟 stage1，Play 確認原有 <code>U → I</code> 能出招，再 Stop。保存目前需要的資產，正常關閉 Editor，避免修改 USTRUCT／enum 時只靠 Live Coding 更新。</li>
+<li>執行順序為：資料欄位 → 建置與匯入 → 推拉 → 建置與測試 → Shake → 建置與測試。每完成一段保存一次 Git 進度，失敗時先修好再繼續。</li>
+</ol>
+<p><strong>完成後怎麼確認</strong></p>
+<p>確認使用老師提供的 week-08 示範專案，已保存原有改動；示範專案能進入 stage1 並用 U → I 出招。開始改 C++ 前，Editor 已正常關閉。若示範專案就無法建置或出招，先排除環境問題。</p>
+<h3 id="hitpushx">前置實作：完整接通 HitPushX 資料</h3>
+<p>這一段對應學生版推拉「步驟 1：定義資料與介面」中的資料欄位與 Reader，為方便手動檢查，先獨立完成並建置，再宣告角色的推拉狀態。</p>
+<h4 id="1">1. 修改兩份資料結構</h4>
+<p>開啟 <code>DataTable/TndaDamageData.h</code>，在 <code>FTndaDamageRow</code> 的 Damage 成員後加入：</p>
+<pre><code class="language-cpp">// 公分；負值推遠、正值拉近。
+UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=&quot;Damage&quot;)
+float HitPushX = 0.0f;
+</code></pre>
+<p>再在同檔案 <code>FTndaDamage</code> 的 Damage 成員後加入：</p>
+<pre><code class="language-cpp">// 遊戲取得的值副本也要保存推拉距離，避免查表後遺失新欄位。
+UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=&quot;Damage&quot;)
+float HitPushX = 0.0f;
+</code></pre>
+<p>Row 是匯入後的資料，另一份是遊戲取得的副本，兩處都要加。順便將檔案開頭「兩個資料欄」的註解改為「三個資料欄」。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先做靜態檢查：FTndaDamageRow 與 FTndaDamage 各有一個 HitPushX，型別都是 float、預設值都是 0；Row 使用 EditAnywhere，副本使用 VisibleAnywhere。此時 Editor 尚未重新載入，不需要期待畫面已出現新欄位。</p>
+<h4 id="2-reader">2. 在 Reader 加入完整數字檢查</h4>
+<p>開啟 <code>DataTable/TndaDamageReader.cpp</code>，在 include 區塊之後、<code>UTndaDamageReader::Prepare()</code> 之前加入以下函式。放在 WITH_EDITOR 內，因為它檢查的是 Editor 的來源 CSV 原文：</p>
+<pre><code class="language-cpp">#if WITH_EDITOR
+namespace
+{
+    bool ParseHitPushX(const FString&amp; Text, float&amp; OutValue)
+    {
+        OutValue = 0.0f;
+        if (Text.IsEmpty()) { return false; }
+
+        // 只接受正負號、數字及一個小數點，避免把 &quot;30cm&quot; 當成 30。
+        int32 Index = (Text[0] == TCHAR('+') || Text[0] == TCHAR('-')) ? 1 : 0;
+        bool bHasDigit = false;
+        bool bHasDot = false;
+        for (; Index &lt; Text.Len(); ++Index)
+        {
+            const TCHAR C = Text[Index];
+            if (C &gt;= TCHAR('0') &amp;&amp; C &lt;= TCHAR('9'))
+            {
+                bHasDigit = true;
+            }
+            else if (C == TCHAR('.') &amp;&amp; !bHasDot)
+            {
+                bHasDot = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (!bHasDigit) { return false; }
+
+        // 先以 double 轉換，再限制為 float 可保存的有限範圍。
+        const double Value = FCString::Atod(*Text);
+        if (!FMath::IsFinite(Value) ||
+            Value &gt; MAX_flt || Value &lt; -MAX_flt)
+        {
+            return false;
+        }
+        OutValue = static_cast&lt;float&gt;(Value);
+        return true;
+    }
+}
+#endif
+</code></pre>
+<p>此範例接受 <code>-60</code>、<code>+30</code>、<code>0</code>、<code>12.5</code>，拒絕空白、單獨正負號、NaN、Infinity、尾隨文字與超出 float 範圍的值；不接受科學記號。這是本題採用的簡單十進位格式。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先確認 ParseHitPushX 位於 Prepare 之外、WITH_EDITOR 範圍內，沒有重複定義。逐項核對程式：-60、+30、0、12.5 應可解析；空字串、30cm、NaN 與只有正負號應返回 false。這是讀碼檢查，實際驗證留到本階段建置與匯入完成後。</p>
+<h4 id="3-prepare">3. 擴充 Prepare 的來源驗證與副本</h4>
+<p>在同檔案 <code>Prepare()</code> 找到 <code>ValidateCsvSource</code>，將表頭清單改為：</p>
+<pre><code class="language-cpp">{ TEXT(&quot;ID&quot;), TEXT(&quot;Title&quot;), TEXT(&quot;Damage&quot;), TEXT(&quot;HitPushX&quot;) }
+</code></pre>
+<p>保留原本 Damage 檢查，在同一個 lambda 內、Damage 檢查之後加入：</p>
+<pre><code class="language-cpp">// Cells[3] 是新增的第四欄；先驗證原文，避免匯入器默默修正錯字。
+float HitPushX = 0.0f;
+if (!ParseHitPushX(Cells[3], HitPushX))
+{
+    Error(TEXT(&quot;HitPushX&quot;), TEXT(&quot;必須是有限的正負十進位數字。&quot;));
+}
+</code></pre>
+<p>往下找到 <code>Damage.Damage = Row.Damage;</code>，在後面加入副本複製：</p>
+<pre><code class="language-cpp">// Row 是匯入資料，Damage 是命中流程取得的副本。
+Damage.HitPushX = Row.HitPushX;
+</code></pre>
+<p>找到 <code>const bool bDamageValid = Row.Damage &gt;= 0;</code>，改成以下三行，並移除原本舊的 <code>bAllPrepared &amp;= ...</code>，避免保留兩份判斷：</p>
+<pre><code class="language-cpp">const bool bDamageValid = Row.Damage &gt;= 0;
+// 打包版也要檢查有限值，不能只依賴 Editor 的 CSV 檢查。
+const bool bPushValid = FMath::IsFinite(Row.HitPushX);
+bAllPrepared &amp;= bIdValid &amp;&amp; bDamageValid &amp;&amp; bPushValid;
+</code></pre>
+<p>在 <code>#if !WITH_EDITOR</code> 區塊，將原本記錄非法列的 if 與其中 UE_LOG 整段換成以下內容，保留外圍的前置處理指令：</p>
+<pre><code class="language-cpp">// 打包版沒有 Editor 錯誤清單，用 Log 保留三項檢查結果。
+if (!(bIdValid &amp;&amp; bDamageValid &amp;&amp; bPushValid))
+{
+    UE_LOG(LogTndaFighter, Warning,
+        TEXT(&quot;DataTables TableId=Damage Row=%s invalid: id=%d damage=%d push=%d&quot;),
+        *Pair.Key.ToString(), bIdValid, bDamageValid, bPushValid);
+}
+</code></pre>
+<p>在 <code>#if WITH_EDITOR</code> 區塊的 <code>if (!bDamageValid)</code> 之後加入：</p>
+<pre><code class="language-cpp">if (!bPushValid) { Error(TEXT(&quot;HitPushX&quot;), TEXT(&quot;必須是有限數值。&quot;)); }
+</code></pre>
+<p>保留 Prepare 最後的 <code>return bAllPrepared &amp;&amp; OutErrors.IsEmpty();</code>，不要將驗證失敗改為忽略。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>核對四個接點：表頭有第四欄、lambda 檢查 Cells[3]、Damage.HitPushX 複製 Row.HitPushX、bAllPrepared 包含 bPushValid。Editor 錯誤訊息與非 Editor 的 Warning 也都包含 HitPushX 的失敗處理；不能只加表頭。</p>
+<h4 id="4-csv">4. 修改 CSV、建置並手動匯入</h4>
+<ol>
+<li>用文字編輯器開啟 <code>_DataTable/DamageTable.csv</code>，表頭改成 <code>ID,Title,Damage,HitPushX</code>。原有各列最後加上 <code>,0</code>，保留原 ID、Title 與 Damage。使用 UTF-8 儲存。</li>
+<li>依本節末尾「手動建置與匯入」完成一次建置，再開 Editor。</li>
+<li>在 Content Browser 搜尋 <code>DT_Damage</code>，開啟確認 Row Structure 為 <code>TndaDamageRow</code>，依「手動建置與匯入」重新匯入剛才的 CSV。</li>
+<li>確認每列出現 HitPushX=0，傷害仍為 10／15／20，儲存資產。Play 測試原攻擊仍正常扣血。這時尚未加推拉，所以不應看到推拉效果。</li>
+<li>專案內既有測試的三欄 Damage CSV 也需要同步。使用 IDE「在檔案中尋找」搜尋 <code>ID,Title,Damage</code>，限於 <code>Source/TndaFighter/DataTable/Tests/</code>：有效資料補第四欄及值，非法 Damage／ID 測例仍保留原本的非法值，缺欄位測例仍保留其測試目的。不要只改表頭卻漏掉資料列。</li>
+</ol>
+<p><strong>完成後怎麼確認</strong></p>
+<p>本次建置應為 Result: Succeeded 且 exit code=0；重新開啟 DT_Damage 後，原有各列都出現 HitPushX=0，Damage 仍為 10／15／20，PIE 中原攻擊仍能扣血。此時尚未實作推拉，不移動才是預期結果。若欄位沒出現，先確認建置版本、Editor 重開與 Reimport 是否完成。</p>
+<h3 id="_2">系統一：受擊推拉</h3>
+<p>依「定義資料與介面 → Init → Tick → End → 接入與測試」實作。先宣告所有方法，再依序寫函式定義；Init 呼叫的 End 會在步驟 4 補齊。</p>
+<h4 id="1_1">步驟 1：定義資料與介面</h4>
+<p>開啟 <code>Fighting/FightingCharacter.h</code>，在 <code>AFightingCharacter</code> 類別的 private 區加入以下成員。若需新增 private 區，放在該類別最後的 <code>};</code> 前，不要加到其他 struct。狀態屬於受擊角色，每個角色各存一份。同一類別的成員函式可以呼叫另一個 AFightingCharacter 實例的 private 方法：</p>
+<pre><code class="language-cpp">bool bHitPushActive = false; // 是否還有尚未完成的推拉。
+float HitPushElapsed = 0.0f; // 本次效果已經過的秒數。
+FVector HitPushTotalOffset = FVector::ZeroVector; // 命中當下決定的方向與總距離。
+static constexpr float HitPushDuration = 0.15f; // 固定完成時間，單位為秒。
+
+// Distance 使用 CSV 的正負公分值；由受擊角色保存自己的效果。
+void InitHitPush(float Distance, const FVector&amp; AttackerLocation);
+void TickHitPush(float DeltaSeconds);
+void EndHitPush();
+</code></pre>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先檢查 AFightingCharacter 的 private 區：三個狀態成員、0.15 秒常數與三個方法宣告各有一份。宣告應位於類別內；尚未接入遊戲，不會看到推拉。先完成步驟 2～5，再建置整套功能。</p>
+<h4 id="2init">步驟 2：Init — 準備這次推拉</h4>
+<p>開啟 <code>Fighting/FightingCharacter.cpp</code>，在檔案末尾、所有既有函式的大括號之外新增以下完整函式。步驟 3、4 的完整函式可依序接在它後面。Init 一開始先 End，所以新值為 0 時也會停止舊效果；此處只記錄狀態，不立即移動角色。</p>
+<pre><code class="language-cpp">void AFightingCharacter::InitHitPush(
+    float Distance, const FVector&amp; AttackerLocation)
+{
+    EndHitPush(); // 先取消舊進度，新值為 0 也會讓舊推拉停止。
+    if (!FMath::IsFinite(Distance) || FMath::IsNearlyZero(Distance))
+    {
+        return;
+    }
+
+    // 從受擊者指向攻擊者；正值拉近，乘負值則反向推遠。
+    FVector Direction = AttackerLocation - GetActorLocation();
+    Direction.Z = 0.0f; // 保留角色高度，只處理水平位移。
+    if (!Direction.Normalize())
+    {
+        return;
+    }
+
+    // 正規化後只保留方向，再乘距離得到整次效果的位移。
+    HitPushTotalOffset = Direction * Distance;
+    bHitPushActive = true;
+}
+</code></pre>
+<p><strong>完成後怎麼確認</strong></p>
+<p>現在先核對 InitHitPush 的函式定義位於 cpp 外層，開頭先 EndHitPush，且只記錄位移、不呼叫 AddActorWorldOffset。完成整套接線後可在斷點確認：非零距離使 bHitPushActive=true、HitPushElapsed=0，總位移的 Z=0；Distance=0 或方向近零時保持停用。</p>
+<h4 id="3tick">步驟 3：Tick — 分幀移動受擊者</h4>
+<p>在 <code>Fighting/FightingCharacter.cpp</code> 的 InitHitPush 函式結束後，新增以下完整函式：</p>
+<pre><code class="language-cpp">void AFightingCharacter::TickHitPush(float DeltaSeconds)
+{
+    if (!bHitPushActive || DeltaSeconds &lt;= 0.0f)
+    {
+        return;
+    }
+
+    // 最後一幀只計算剩餘時間，避免超過要求距離。
+    const float NewElapsed = FMath::Min(
+        HitPushElapsed + DeltaSeconds, HitPushDuration);
+    // 本幀佔總時間的比例，就是本幀應完成的位移比例。
+    const FVector FrameOffset = HitPushTotalOffset
+        * ((NewElapsed - HitPushElapsed) / HitPushDuration);
+    HitPushElapsed = NewElapsed;
+
+    FHitResult Hit;
+    AddActorWorldOffset(FrameOffset, true, &amp;Hit); // true 啟用 Sweep，移動時檢查阻擋。
+    if (Hit.bBlockingHit || HitPushElapsed &gt;= HitPushDuration)
+    {
+        EndHitPush(); // 受阻或到期都結束，不繼續累積剩餘位移。
+    }
+}
+</code></pre>
+<p>例如要求推遠 60 公分，某一幀經過 0.015 秒，該幀要求移動 <code>60 × 0.015 / 0.15 = 6</code> 公分。最後一幀只補剩餘時間，不能每幀固定移動 6 公分，否則速度會受 FPS 影響。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先確認只使用本幀時間差計算 FrameOffset，而且 Sweep 參數為 true。整套建置後，無阻擋時以 60 公分、0.15 秒推拉觀察：若某幀 DeltaSeconds=0.015，該幀要求距離為 6 公分；不是每幀固定移動 6 公分。遇阻擋會呼叫 EndHitPush，不要求碰撞後仍走滿距離。</p>
+<h4 id="4end">步驟 4：End — 停止並清除狀態</h4>
+<p>在 <code>Fighting/FightingCharacter.cpp</code> 的 TickHitPush 函式結束後，新增以下完整函式。End 只停止剩餘位移，不把角色送回起點；到期、碰撞、被新推拉取代或 EndPlay 都呼叫它。</p>
+<pre><code class="language-cpp">void AFightingCharacter::EndHitPush()
+{
+    // 清除效果資料，但保留角色目前的位置。
+    bHitPushActive = false;
+    HitPushElapsed = 0.0f;
+    HitPushTotalOffset = FVector::ZeroVector;
+}
+</code></pre>
+<p><strong>完成後怎麼確認</strong></p>
+<p>核對 EndHitPush 只清三個狀態，沒有 SetActorLocation 或回到起點的程式。整套完成後，在效果結束的斷點應看到 bHitPushActive=false、時間為 0、總位移為零向量，角色留在移動後的位置。</p>
+<h4 id="5">步驟 5：接入遊戲並測試</h4>
+<p>仍在 <code>Fighting/FightingCharacter.cpp</code>，於 <code>AFightingCharacter::TryApplyHit()</code> 找到 <code>const int32 Deducted = ...</code>，緊接其後加入以下程式。現有受擊角色變數名為 <code>Target</code>，查表結果為 <code>Damage</code>；原本的受擊反應判斷保留：</p>
+<pre><code class="language-cpp">if (Deducted &gt; 0)
+{
+    // this 是攻擊者，Target 才是要移動的受擊角色。
+    Target-&gt;InitHitPush(Damage.HitPushX, GetActorLocation());
+}
+</code></pre>
+<p>不要加上「HitPushX 不為 0 才呼叫」的條件，否則新的零推距傷害無法取消舊效果。防禦或沒有扣血時不呼叫 Init。</p>
+<ol>
+<li>在 <code>AFightingCharacter::Tick(float DeltaSeconds)</code> 的 <code>UpdateReaction();</code> 之後、<code>RefreshOpponentDirection();</code> 之前加入一次 <code>TickHitPush(DeltaSeconds);</code>。不要放在「必須正在攻擊」的條件內，受擊角色在受擊動畫期間也要持續更新。</li>
+<li>在既有 <code>EndPlay</code> 的 <code>FinishReaction(true);</code> 之後、<code>Super::EndPlay(EndPlayReason);</code> 之前加入 <code>EndHitPush();</code>，保留其餘清理。</li>
+<li>不要在攻擊者接招結束或受擊角色的 <code>StartReaction()</code> 裡呼叫 EndHitPush；受擊反應停止速度不等於取消本題推拉。</li>
+<li>保留命中候選先算完、再結算的流程。命中只 Init，後續角色 Tick 才移動。</li>
+<li>在場地中央依序用 <code>-60</code>、<code>30</code>、<code>0</code> 測試，確認負推正拉、跨幀移動與正常停止；再靠近牆壁測碰撞停止。除錯時可觀察 Active、Elapsed 與實際位置，不需新增 UI。</li>
+</ol>
+<p><strong>完成後怎麼確認</strong></p>
+<p>完成本系統後先依「手動建置與匯入」建置、重開 Editor 並匯入測試值。-60 應平滑推遠、30 應平滑拉近、0 應不啟動推拉；防禦不產生新推拉，撞牆停止。若扣血正常卻完全不動，依序確認副本 HitPushX、Target 的 InitHitPush、角色 TickHitPush 是否真的被呼叫。通過後再做震動系統。</p>
+<h3 id="director">系統二：Director 鏡頭震動</h3>
+<p>同樣先定義資料與介面，再寫 Init／Tick／End，最後接到命中事件與 Director。Shake 的生命週期方法是供 Director 使用的 public 介面；狀態與效果常數是 private，不能把所有方法都設成 private。</p>
+<h4 id="1_2">步驟 1：定義資料與介面</h4>
+<p>建立 <code>Source/TndaFighter/Fighting/Camera/FightingCameraShake.h</code>。這是純 C++ 類別，不需 UCLASS 或 generated header。公開介面只提供生命週期與本地偏移，狀態放在 private：</p>
+<pre><code class="language-cpp">#pragma once
+
+#include &quot;CoreMinimal.h&quot;
+
+class TNDAFIGHTER_API FFightingCameraShake
+{
+public:
+    // Director 呼叫的生命週期；效果本身不查角色或操作相機。
+    void Init();
+    void Tick(float DeltaSeconds);
+    void End();
+    // 只讀取目前偏移；不會因多讀一次就加速計時。
+    FVector GetLocalOffset() const;
+
+private:
+    bool bActive = false; // 是否正在震動。
+    float Elapsed = 0.0f; // 本次震動已經過的秒數。
+    static constexpr float Duration = 0.15f; // 總時長，秒。
+    static constexpr float Amplitude = 2.0f; // 起始振幅，公分。
+    static constexpr float Frequency = 20.0f; // 每秒擺動次數。
+};
+</code></pre>
+<p>建立同目錄的 <code>FightingCameraShake.cpp</code>，檔案開頭加入 <code>#include "Fighting/Camera/FightingCameraShake.h"</code>。接下來 Init、Tick、End 與 GetLocalOffset 的實作都放在這個新 cpp，Director 不複製這些狀態與公式。</p>
+<p>開啟 <code>Fighting/Camera/CombatCameraShot.h</code>，在 <code>ECombatCameraShot</code> 的 UpperBodyCloseUp 之後、enum 的 <code>};</code> 之前加入：</p>
+<pre><code class="language-cpp">// 已有值會寫入資產，保留 None=0 與 UpperBodyCloseUp=1。
+Shake = 2 UMETA(DisplayName = &quot;Shake&quot;),
+</code></pre>
+<p>開啟 <code>Fighting/FightingCharacter.h</code>。在 AFightingCharacter 既有 private 區加入序號，在既有 public 區加入 getter。下列兩段要分開放置，不要為了貼片段而改變其他成員的存取權限：</p>
+<pre><code class="language-cpp">// private 區：每出現一次需要震動的有效命中，就增加一次。
+uint32 ShakeEventSerial = 0;
+</code></pre>
+<pre><code class="language-cpp">// public 區：CameraActor 可讀取，但不直接修改序號。
+uint32 GetShakeEventSerial() const { return ShakeEventSerial; }
+</code></pre>
+<p>命中序號只表示「又有一次符合條件的命中」。換招或停止震動時都不重設角色序號；Director 記住已讀到哪一筆，就不會每幀重複觸發。</p>
+<p>開啟 <code>Fighting/Camera/FightingCameraTypes.h</code>，在 <code>FFightingCameraFrameInput</code> 的 CpuShot 成員後、結構的 <code>};</code> 前加入：</p>
+<pre><code class="language-cpp">// 每幀傳遞目前序號；Director 比對是否出現新事件。
+uint32 PlayerShakeSerial = 0;
+uint32 CpuShakeSerial = 0;
+</code></pre>
+<p>開啟 <code>Fighting/Camera/FightingCameraDirector.cpp</code>，在 include 區加入 <code>#include "Fighting/Camera/FightingCameraShake.h"</code>。找到該 cpp 內的 <code>class FFightingCameraDirector::FImpl</code>，在 private 成員區、既有 <code>ShotAdapters</code> 附近加入以下內容；不要放到外層 FFightingCameraDirector.h：</p>
+<pre><code class="language-cpp">// Director 擁有效果，但不複製效果內部的計時與算法。
+FFightingCameraShake Shake;
+// 已處理過的事件序號，用來辨認下一次新命中。
+uint32 LastPlayerShakeSerial = 0;
+uint32 LastCpuShakeSerial = 0;
+</code></pre>
+<p><strong>完成後怎麼確認</strong></p>
+<p>確認新 .h/.cpp 位於 Fighting/Camera；header 有四個 public 方法與五個 private 狀態／常數，cpp 已 include 自己的 header。Shake enum、角色序號與 getter、FrameInput 欄位、Director 的 include 與持有成員也各有一份。Director 尚未接線，因此此時沒有震動是正常的。先補齊步驟 2～5，再建置。</p>
+<h4 id="2init_1">步驟 2：Init — 啟動一次震動</h4>
+<p>在 <code>Fighting/Camera/FightingCameraShake.cpp</code> 的 include 之後，新增以下完整函式。後續 Tick、GetLocalOffset、End 都接在此檔案的函式外層，不要貼進 Init。End 已在 header 宣告，可先呼叫，於步驟 4 補上定義：</p>
+<pre><code class="language-cpp">void FFightingCameraShake::Init()
+{
+    End(); // 先取消上一次震動與時間進度。
+    bActive = true; // Elapsed 已歸零，重新開始這一次效果。
+}
+</code></pre>
+<p>先清掉舊進度，再啟用效果，讓連續命中重新開始 0.15 秒。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先檢查定義名稱包含 FFightingCameraShake::，開頭呼叫 End，接著才將 bActive 設為 true。完成接線後，在 Init 結束處應看到 bActive=true、Elapsed=0；此刻正弦公式的偏移為 0 是正常的，後續 Tick 才會開始擺動。</p>
+<h4 id="3tick_1">步驟 3：Tick — 推進時間與提供偏移</h4>
+<p>在 <code>Fighting/Camera/FightingCameraShake.cpp</code> 的 Init 定義之後，新增以下完整函式：</p>
+<pre><code class="language-cpp">void FFightingCameraShake::Tick(float DeltaSeconds)
+{
+    if (!bActive)
+    {
+        return;
+    }
+    // 時間不倒退，也不超過總時長；暫停時傳入 0 就保持進度。
+    Elapsed = FMath::Min(
+        Elapsed + FMath::Max(DeltaSeconds, 0.0f), Duration);
+    if (Elapsed &gt;= Duration)
+    {
+        End(); // 到期後 GetLocalOffset 會回傳零向量。
+    }
+}
+</code></pre>
+<p>Tick 只更新效果內部時間；沒有啟用就直接返回，時間到由效果自己呼叫 End。暫停時 DeltaSeconds=0，進度保持不變。</p>
+<h5 id="getlocaloffset">GetLocalOffset：讀取當幀偏移，不再推進時間</h5>
+<p>在同一個 <code>Fighting/Camera/FightingCameraShake.cpp</code>，接在 Tick 定義之後新增：</p>
+<pre><code class="language-cpp">FVector FFightingCameraShake::GetLocalOffset() const
+{
+    if (!bActive)
+    {
+        return FVector::ZeroVector; // 沒有啟用時，不改變原構圖。
+    }
+
+    const float T = FMath::Clamp(Elapsed, 0.0f, Duration); // 限制有效時間。
+    const float Fade = 1.0f - T / Duration; // 從 1 逐漸減至 0，讓震動收斂。
+    // 正弦負責左右擺動，振幅乘 Fade 後逐漸減弱。
+    const float Offset = Amplitude * Fade
+        * FMath::Sin(2.0f * PI * Frequency * T);
+    return FVector(0.0f, Offset, 0.0f); // 相機本地 Y 軸是右方向。
+}
+</code></pre>
+<p>GetLocalOffset 不推進時間，也不需要知道雙方角色、事件序號或鏡頭 Pose。同一幀讀取多次會得到相同結果。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先確認 Tick 是唯一增加 Elapsed 的方法，GetLocalOffset 不改時間。整套完成後，Elapsed 隨遊戲時間增加；未啟用或到期時偏移為零。以 T=0.0125 秒檢查公式時，Fade 約為 0.9167、本地 Y 偏移約為 +1.833 公分，X/Z 為 0；時間到 0.15 秒則由 End 清為停用。實際每幀不一定剛好取樣到這個時間。</p>
+<h4 id="4end_1">步驟 4：End — 清除震動效果</h4>
+<p>在 <code>Fighting/Camera/FightingCameraShake.cpp</code> 的 GetLocalOffset 定義之後，新增以下完整函式：</p>
+<pre><code class="language-cpp">void FFightingCameraShake::End()
+{
+    // 停用後即使 Elapsed 歸零，GetLocalOffset 仍會直接回傳零。
+    bActive = false;
+    Elapsed = 0.0f;
+}
+</code></pre>
+<p>GetLocalOffset 隨後回傳零向量，Director 合成時就回到原構圖。End 不修改命中序號，也不操作 CameraActor。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>核對 End 只將 bActive=false、Elapsed=0，不改角色序號，也不搬動 CameraActor。整套完成後，End 之後呼叫 GetLocalOffset 必須得到零向量；即使 Elapsed 歸零，也不會再次開始震動。</p>
+<h4 id="5director">步驟 5：接入命中、Director 並測試</h4>
+<h5 id="frameinput">接入命中事件與 FrameInput</h5>
+<p>沿用步驟 1 的 enum、角色序號與 FrameInput 宣告，這裡只加入呼叫與資料傳遞，不重複宣告。</p>
+<p>開啟 <code>Fighting/FightingCharacter.cpp</code>，在 <code>TryApplyHit()</code> 的 <code>HitCharacters.Add(Target);</code> 緊接後面加入：</p>
+<pre><code class="language-cpp">if (CurrentAttack.CameraShot == ECombatCameraShot::Shake)
+{
+    // 已通過命中與去重；放在防禦返回前，才能讓防禦命中也震動。
+    ++ShakeEventSerial;
+}
+</code></pre>
+<p>同一 cpp 中，將 <code>GetActiveCameraShotRequest()</code> 整個函式替換為以下內容，避免只改半個 if 或重複保留舊函式：</p>
+<pre><code class="language-cpp">FFightingCameraShotRequest AFightingCharacter::GetActiveCameraShotRequest() const
+{
+    // Shake 只走命中事件，不參與整招持續的主構圖請求。
+    if (!bIsAttacking ||
+        CurrentAttack.CameraShot == ECombatCameraShot::None ||
+        CurrentAttack.CameraShot == ECombatCameraShot::Shake)
+    {
+        return FFightingCameraShotRequest();
+    }
+    // 原本的 UpperBodyCloseUp 請求維持不變。
+    return { CurrentAttack.CameraShot, CurrentAttack.Id, CameraShotActivationSerial };
+}
+</code></pre>
+<p>開啟 <code>Fighting/FightingCameraActor.cpp</code>，在 <code>FightingCameraActor::BuildFrameInput()</code> 的 <code>return Frame;</code> 之前加入：</p>
+<pre><code class="language-cpp">// Actor 只收集資料，震動狀態與公式由 Shake 物件處理。
+Frame.PlayerShakeSerial = PlayerCharacter-&gt;GetShakeEventSerial();
+Frame.CpuShakeSerial = CpuCharacter-&gt;GetShakeEventSerial();
+</code></pre>
+<p><strong>完成後怎麼確認</strong></p>
+<p>先核對 Shake=2、角色私有序號及公開 getter、FrameInput 雙方欄位、BuildFrameInput 賦值都存在。整套建置後，揮空不增加序號；有效命中包含防禦時增加一次，同一招重複接觸不再增加。CameraActor 收集到的值應等於角色當前序號。</p>
+<h5 id="director-shake">讓 Director 持有與管理 Shake</h5>
+<p>開啟 <code>Fighting/Camera/FightingCameraDirector.cpp</code>，沿用步驟 1 已加入的 include 與 FImpl 成員。於 FImpl 的 <code>Initialize()</code> 的 <code>BaseConfig = InBaseConfig;</code> 之前插入：</p>
+<pre><code class="language-cpp">// 重新初始化不重播之前的命中；先清效果，再記住當前序號。
+Shake.End();
+LastPlayerShakeSerial = InitialFrame.PlayerShakeSerial;
+LastCpuShakeSerial = InitialFrame.CpuShakeSerial;
+</code></pre>
+<p>Director 初始化先記住現有序號，避免重播之前的事件。每次命中只呼叫 Shake.Init，不重新初始化整個 Director。</p>
+<p>在同一 FImpl 的 <code>Update()</code>，找到 <code>const float SafeDeltaSeconds = FMath::Max(0.0f, DeltaSeconds);</code>，緊接其後插入以下內容。不要修改檔案底部僅轉呼叫 Impl 的外層 Update；原有 ChooseWinner、轉場與 EvaluatePose 都保留：</p>
+<pre><code class="language-cpp">// 任一方序號改變就有新事件；不依數字大小判斷。
+const bool bNewShake =
+    Frame.PlayerShakeSerial != LastPlayerShakeSerial ||
+    Frame.CpuShakeSerial != LastCpuShakeSerial;
+// 先記住已讀取的序號，避免下一幀重複啟動同一事件。
+LastPlayerShakeSerial = Frame.PlayerShakeSerial;
+LastCpuShakeSerial = Frame.CpuShakeSerial;
+
+if (bNewShake)
+{
+    Shake.Init(); // 新命中從 t=0 開始，同幀雙方觸發也只啟動一次。
+}
+else
+{
+    Shake.Tick(SafeDeltaSeconds); // 沒有新事件時，繼續原效果的進度。
+}
+</code></pre>
+<p>新事件的這一幀從 t=0 開始，下一幀再推進時間，避免把命中前的整段 DeltaSeconds 算入新效果。t=0 的正弦偏移為 0 是正常的。雙方同幀出現新事件也只 Init 一次；事件在相機更新後才產生時，下一次 Update 會讀到。</p>
+<p>同一 FImpl 的 <code>EvaluatePose()</code> 最後已有 <code>SanitizePose(Result, NormalPose);</code> 與 <code>return Result;</code>。只在它們前面新增偏移合成，末尾應如下，不要重複貼兩次 SanitizePose 或 return：</p>
+<pre><code class="language-cpp">// 將相機本地偏移轉為世界方向，加入「本幀重新計算」的構圖。
+Result.FocusLocation +=
+    Result.BoomRotation.RotateVector(Shake.GetLocalOffset());
+SanitizePose(Result, NormalPose);
+return Result;
+</code></pre>
+<p>Director 只取偏移並轉換到世界方向，不計算正弦或管理效果內部時間。Result 是本幀重新算出的構圖，因此偏移不會累加。BoomRotation 不變，避免震動影響移動朝向。整合過程不需要更改 IFightingCameraShot。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>確認修改的是 cpp 內的 FImpl：初始化呼叫 Shake.End，新事件呼叫 Shake.Init，無新事件呼叫 Shake.Tick，EvaluatePose 合成 GetLocalOffset。整套建置後可在斷點確認同一事件只 Init 一次；連續幀是 Tick，不會一直歸零。原有 ChooseWinner、轉場與 SanitizePose 仍在。</p>
+<h5 id="_3">確認生命週期與手動測試</h5>
+<ol>
+<li>到期由 Shake.Tick 呼叫自己的 End；重新初始化 Director 時也呼叫 Shake.End。Director 釋放時，持有的 Shake 物件一起銷毀，不需另外建立 Timer 或清除全域狀態。</li>
+<li>新一次 Shake.Init 取代舊震動，但不清空 Director 的已觀察序號。不要因出招結束、換招或防禦就提前 Shake.End。</li>
+<li>建置完成並重新載入 Editor 後，匯入含 Shake 的 Command CSV 並回讀。測試揮空、正常命中、防禦命中，確認只有有效命中增加序號。</li>
+<li>用除錯器觀察 Shake 物件內的 bActive 與 Elapsed：命中啟用、逐幀增加、到期停止；連續新命中重設時間，結束後不漂移。再測 UpperBodyCloseUp 是否保持原本功能。</li>
+<li>2 公分、20 Hz 只是起始值；實際播放後調整到看得出來即可。若完全看不出震動，先確認序號有傳入、GetLocalOffset 有回傳偏移且 Director 已合成，再調整振幅。</li>
+</ol>
+<p>兩套系統的收尾差別要講清楚：<strong>推拉 End 後保留角色已移動的位置；震動 End 後回到原構圖。</strong> 推拉 Tick 修改世界中的角色位置，震動只在當幀 Pose 附加偏移。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>完成整套震動後建置、重開 Editor 並匯入 Command CSV。CameraShot=Shake 的招式應揮空不震動、正常或防禦命中都震動，結束後沒有漂移，UpperBodyCloseUp 仍正常。若事件序號增加但畫面不震動，依序查看 FrameInput、Director 是否 Init、GetLocalOffset 與 Pose 合成；不要先盲目加大振幅。</p>
+<h3 id="_4">原有程式的互動</h3>
+<ul>
+<li><code>FightingPlayerCharacter::ResolveGroundPushInteraction()</code> 是主動走路的推擠，不應直接拿來當受擊推拉；其中帶碰撞位移的方式可參考。</li>
+<li><code>FightingCameraActor::ConstrainPlayerToMaxDistance()</code> 會校正過遠的玩家。驗收使用場地中央及小到中等推距；不把超過既有最大距離造成的校正，變成學生必須重寫的邊界系統。</li>
+<li>保留既有 Damage State、Preorder／Enable／Disable、Lifetime=0.5 與 PlayRate=1。沒有必要修改 NotifyState 或接招合法性。</li>
+<li>原有去重應讓一次出招只對同一對手結算一次；Shake 跟隨有效命中，推拉才跟隨實際扣血。防禦、零傷害與 HP 已為 0 的合法命中仍震動；查表失敗、部位不符與重複接觸不震動。</li>
+</ul>
+<h2 id="_5">手動建置與匯入</h2>
+<p>建置檢查點有三個：HitPushX 資料前置實作完成、推拉步驟 1～5 完成、Shake 步驟 1～5 完成。各檢查點依以下順序操作；只有方法宣告、尚未補齊定義時先做讀碼檢查。不要在編譯失敗時繼續用舊 Editor 測試。</p>
+<h3 id="a-c">A. 建置 C++</h3>
+<ol>
+<li>Stop PIE，保存需要的資產，正常關閉 TndaFighter Editor 與其 Live Coding。不要關閉他人正在使用的其他專案。</li>
+<li>如果新增的 <code>FightingCameraShake.h/.cpp</code> 沒出現在 IDE，對 <code>.uproject</code> 重新產生 Visual Studio 專案檔後重開 solution。檔案必須實際放在 <code>Source/TndaFighter/Fighting/Camera/</code>。</li>
+<li>在 PowerShell 執行以下命令。這是本機路徑；其他電腦請換成自己的引擎與專案位置：</li>
+</ol>
+<pre><code class="language-powershell">&amp; 'C:\Program Files\Epic Games\UE_5.8\Engine\Build\BatchFiles\Build.bat' `
+  TndaFighterEditor Win64 Development `
+  'D:\Case\TNDA_Workspace\Projects\TndaFighter\TndaFighter.uproject' -waitmutex
+</code></pre>
+<ol>
+<li>等待指令完整結束，確認本次輸出有 <code>Result: Succeeded</code>，並執行 <code>$LASTEXITCODE</code> 確認是 0。若失敗，先處理第一個編譯錯誤再重建。常見原因是 header 漏宣告、函式定義漏類別名稱、同一函式貼了兩份。</li>
+<li>成功後自行開啟 <code>TndaFighter.uproject</code>，等 Editor 載入完成，再開 stage1。此手動流程不需要 AI 啟動腳本或 MCP。</li>
+</ol>
+<p><strong>完成後怎麼確認</strong></p>
+<p>本次命令完整結束，輸出 Result: Succeeded，$LASTEXITCODE 為 0。再開 Editor 應能載入專案，不出現新類別或模組載入失敗。若失敗，保留第一個錯誤訊息，先修正再進入匯入步驟；舊 Editor 能執行不代表新程式已通過。</p>
+<h3 id="b-csv">B. 重新匯入 CSV</h3>
+<ol>
+<li>Stop PIE。先在文字編輯器保存來源 CSV；不要只在 DataTable 視窗改數值。</li>
+<li>在 Content Browser 搜尋並開啟既有 <code>DT_Damage</code>。確認來源檔指向本專案 <code>_DataTable/DamageTable.csv</code>，再執行 Reimport。</li>
+<li>如果來源路徑失效，使用該資產的 Reimport With New File／指定新來源檔操作，選擇本專案 CSV。不同 Editor 版面可能將它放在資產右鍵選單或 DataTable 工具列。重新匯入既有資產，不要建立另一份同名表格。</li>
+<li>確認列數與 ID 未改變、HitPushX 欄位存在、數值符合 CSV，按 Save。匯入若報欄位或型別錯誤，先確認新 C++ 已建置且 Editor 已重新開啟。</li>
+<li>修改 CameraShot 時，以相同方式重新匯入既有 <code>DT_Command</code>。先讓 Command ID 1 使用 <code>Shake</code>，ID 3 保留 <code>UpperBodyCloseUp</code>，其餘欄位不動。</li>
+<li>打開 Output Log 查看匯入與資料驗證錯誤。重新進入 PIE 測試；不要把上一輪 PIE 看到的舊結果當作本次結果。</li>
+</ol>
+<p><strong>完成後怎麼確認</strong></p>
+<p>開啟既有 DT_Damage／DT_Command，數值應與本次保存的 CSV 一致，原有 ID 與列數不變。HitPushX 有新值、指定 Command 的 CameraShot 為 Shake，Output Log 沒有本次匯入或驗證錯誤。Save 後重新開啟資產，數值仍存在。</p>
+<h3 id="c">C. 手動測試順序與預期結果</h3>
+<p>每次測試數值都先 Stop、改 CSV、Reimport、Save，再重新 Play。重新開 PIE 可恢復初始 HP，避免誤把「對手已無 HP」當成推拉失敗。</p>
+<ol>
+<li><strong>基準資料</strong>：Damage 三列保持 10／15／20，HitPushX 先全為 0。開啟 <code>tnda.Debug.ShowCombatDebug on</code>，按 U 確認原傷害正常。</li>
+<li><strong>推遠</strong>：Damage ID 1 的 HitPushX 改為 -60，在場地中央靠近 CPU，按 U。預期扣血且平滑推遠；不是命中當下瞬移。</li>
+<li><strong>拉近</strong>：同一列改為 30，再測一次。預期往攻擊者靠近；若兩個膠囊已貼住，碰撞會使實際距離很短，可略微拉開後再打。不可要求穿過攻擊者。</li>
+<li><strong>零值與牆邊</strong>：改為 0，確認只扣血；再用 -60 靠牆測試，確認受阻停止、不穿牆。每次測試都先等前一次效果結束。</li>
+<li><strong>命中震動</strong>：Command ID 1 設為 Shake。離遠按 U 應不震動，靠近打中則短暫震動；結束後不留下偏移。</li>
+<li><strong>防禦命中</strong>：PIE 中輸入 <code>tnda.Debug.CpuAlwaysDef on</code>，靠近按 U。預期有震動、沒有扣血，也不啟動推拉。測完輸入 <code>tnda.Debug.CpuAlwaysDef off</code>。</li>
+<li><strong>零傷害命中</strong>：暫將 Damage ID 1 改為 0，重新匯入與 Play，確認命中仍震動、不推拉。完成後恢復 Damage=10。</li>
+<li><strong>接招與特寫</strong>：以 ID 1→3 的 U→I 接出兩招，確認第二招仍播放、ID 3 的原有特寫仍運作。第二招是否打中受距離影響，不要求兩種推拉設定都命中。</li>
+<li><strong>收尾</strong>：停止強制防禦，傷害恢復 10／15／20，保留一招非零 HitPushX 與一招 Shake。Save 後重開 Editor，確認資料仍存在。最後保存 C++、兩份 CSV 與修改過的 DataTable 資產。</li>
+</ol>
+<p>這份清單供教師分段除錯，學生正式展示仍只有三項。計算是否精確可在 IDE 的 Init／Tick／End 設斷點觀察狀態；連續播放時移除斷點，以免停格干擾視覺判讀。</p>
+<p><strong>完成後怎麼確認</strong></p>
+<p>依上面九項逐一記錄實際觀察，未測項目不要視為通過。最後必須能重現正負推拉、揮空不震動、正常與防禦命中震動、結束後回復，以及原有接招與特寫。保存並重開 Editor 後再測一次，確認不是只在上一輪 PIE 暫時成立。</p>
+</main>
+<script>
+(() => {
+  const nav = document.querySelector('.page-nav');
+  const links = [...nav.querySelectorAll('a[data-section]')];
+  const sections = links.map(link => document.getElementById(link.dataset.section));
+  let scheduled = false;
+  function update() {
+    scheduled = false;
+    let current = 0;
+    sections.forEach((section, index) => {
+      if (section.getBoundingClientRect().top <= 100) current = index;
+    });
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      current = sections.length - 1;
+    }
+    links.forEach((link, index) => {
+      if (index === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('scroll', () => {
+    if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('hashchange', update);
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 08 實作題：命中推拉與鏡頭震動</title>
+<style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #f3f5f7; color: #202b36;
+      font-family: "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+      font-size: 17px; line-height: 1.8;
+    }
+    main {
+      max-width: 960px; margin: 40px auto; padding: 40px 48px;
+      background: #fff; border: 1px solid #e1e6eb; border-radius: 12px;
+    }
+    h1, h2, h3 { line-height: 1.4; color: #172d46; }
+    h1 { margin-top: 0; font-size: 2rem; }
+    h2 { margin-top: 2rem; padding-bottom: .35rem; border-bottom: 1px solid #e1e6eb; font-size: 1.4rem; }
+    h3 { margin-top: 1.5rem; font-size: 1.15rem; }
+    p { margin: .8rem 0; }
+    ul, ol { padding-left: 1.7rem; }
+    li { margin: .6rem 0; }
+    table { width: 100%; margin: 1rem 0; border-collapse: collapse; }
+    th, td { padding: .65rem .9rem; border: 1px solid #dbe2e8; text-align: left; }
+    th { background: #edf3f8; }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    code { font-family: Consolas, "Cascadia Code", monospace; font-size: .9em; overflow-wrap: anywhere; }
+    :not(pre) > code { padding: .15em .35em; background: #eef2f6; border-radius: 4px; }
+    pre {
+      padding: 20px; background: #f6f8fa; border: 1px solid #dbe2e8;
+      border-radius: 8px; overflow-x: auto; line-height: 1.6;
+    }
+    pre code { overflow-wrap: normal; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      main { margin: 0; padding: 24px 18px; border: 0; border-radius: 0; }
+      h1 { font-size: 1.65rem; }
+      th, td { padding: .5rem; }
+    }
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      main { max-width: none; margin: 0; padding: 0; border: 0; }
+      h1, h2, h3 { break-after: avoid; }
+      tr { break-inside: avoid; }
+      pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      pre code { overflow-wrap: anywhere; }
+    }
+
+    body { overflow-wrap: anywhere; }
+    code { font-size: 16px; }
+    h4, h5 { font-size: 17px; line-height: 1.5; color: #172d46; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    pre code { overflow-wrap: anywhere; }
+    th, td { vertical-align: top; overflow-wrap: anywhere; }
+    .prompt-example { margin: 20px 0; padding: 14px 18px; border: 1px solid #cbdced; border-radius: 8px; background: #f8fbff; }
+    .prompt-example summary { cursor: pointer; color: #17456c; font-weight: 700; font-size: 17px; }
+    .prompt-example summary:focus-visible { outline: 3px solid #326daa; outline-offset: 4px; }
+    nav { padding: 12px 16px; background: #edf3f8; border-radius: 8px; }
+    nav ul { margin: 0; }
+    .page-nav {
+      position: fixed; top: 24px; bottom: 24px; left: 20px; width: 280px;
+      overflow-y: auto; overscroll-behavior: contain; background: #fff;
+      border: 1px solid #dbe2e8; padding: 18px 12px; border-radius: 12px;
+    }
+    .page-nav strong { display: block; padding: 0 10px 10px; color: #172d46; }
+    .page-nav a {
+      display: block; padding: 7px 10px; margin: 2px 0; border-radius: 6px;
+      color: #294761; text-decoration: none; font-size: 16px; line-height: 1.5;
+    }
+    .page-nav a.sub { padding-left: 24px; }
+    .page-nav a.step { padding-left: 36px; border-left: 2px solid #dbe2e8; margin-left: 10px; }
+    .page-nav a:hover { background: #edf3f8; }
+    .page-nav a[aria-current="location"] { background: #dceafa; color: #123d6a; font-weight: 700; }
+    .page-nav a:focus-visible { outline: 3px solid #326daa; outline-offset: 1px; }
+    main { margin: 24px 24px 40px 324px; max-width: 1060px; }
+    main h1, main h2, main h3, main h4 { scroll-margin-top: 24px; }
+    @media (max-width: 1000px) {
+      .page-nav { position: static; width: auto; max-height: 260px; margin: 16px; }
+      main { margin: 16px; padding: 28px; }
+    }
+    @media print {
+      .page-nav { display: none; }
+      main { margin: 0; padding: 0; max-width: none; }
+    }
+
+    .prompt-guide { margin: 20px 0; padding: 14px 18px; border: 1px solid #cbdced; border-radius: 8px; background: #f8fbff; }
+    .prompt-guide summary { cursor: pointer; color: #17456c; font-weight: 700; font-size: 17px; }
+    .prompt-guide summary:focus-visible { outline: 3px solid #326daa; outline-offset: 4px; }
+    .prompt-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .copy-prompt { font: inherit; font-size: 16px; cursor: pointer; color: #17456c; background: #edf3f8; border: 1px solid #9db4ca; border-radius: 6px; padding: 6px 12px; }
+    .copy-prompt:hover { background: #dceafa; }
+    .copy-prompt:focus-visible { outline: 3px solid #326daa; outline-offset: 3px; }
+    .copy-status { font-size: 16px; color: #294761; }
+    @media print { .prompt-tools { display: none; } }
+</style>
+</head>
+<body><nav class="page-nav" aria-label="章節導覽"><strong>Week 08 · 章節導覽</strong><a class="section" href="#week-08" data-section="week-08">回到頁首</a>
+<a class="section" href="#_1" data-section="_1">實作要求</a>
+<a class="sub" href="#damagetablecsv-hitpushx" data-section="damagetablecsv-hitpushx">一、DamageTable.csv 新增 HitPushX 欄位</a>
+<a class="sub" href="#commandtablecsv-camerashot-shake" data-section="commandtablecsv-camerashot-shake">二、CommandTable.csv 的 CameraShot 新增 Shake 類型</a>
+<a class="section" href="#_2" data-section="_2">實作提示</a>
+<a class="sub" href="#hitpushx" data-section="hitpushx">一、HitPushX：讓命中產生推拉</a>
+<a class="step" href="#1" data-section="1">1. 定義資料與介面</a>
+<a class="step" href="#2init" data-section="2init">2. Init</a>
+<a class="step" href="#3tick" data-section="3tick">3. Tick</a>
+<a class="step" href="#4end" data-section="4end">4. End</a>
+<a class="step" href="#5" data-section="5">5. 接入與測試</a>
+<a class="sub" href="#shake" data-section="shake">二、Shake：讓命中觸發鏡頭震動</a>
+<a class="step" href="#1_1" data-section="1_1">1. 定義資料與介面</a>
+<a class="step" href="#2init_1" data-section="2init_1">2. Init</a>
+<a class="step" href="#3tick_1" data-section="3tick_1">3. Tick</a>
+<a class="step" href="#4end_1" data-section="4end_1">4. End</a>
+<a class="step" href="#5director" data-section="5director">5. 接入與測試</a>
+<a class="section" href="#ai" data-section="ai">示範使用 AI</a>
+<a class="sub" href="#_3" data-section="_3">開始前：確認環境</a>
+<a class="sub" href="#1hitpushx" data-section="1hitpushx">階段 1：HitPushX 資料欄位</a>
+<a class="sub" href="#2" data-section="2">階段 2：受擊推拉</a>
+<a class="sub" href="#3" data-section="3">階段 3：鏡頭震動</a>
+<a class="sub" href="#4" data-section="4">階段 4：兩招整合與繳交前檢查</a>
+<a class="section" href="#_4" data-section="_4">展示驗收</a>
+<a class="section" href="#_5" data-section="_5">繳交內容</a></nav><main>
+<h1 id="week-08">Week 08 實作題：命中推拉與鏡頭震動</h1>
+<p>從老師提供的 TndaFighter <strong>week-08 示範專案</strong>開始，用 C++ 擴充傷害資料與命中效果，運用 AI 協助實作，並透過 Unreal MCP 查核專案與資產。完成後，角色命中對手可以把對手推遠或拉近，指定招式擊中對手時會讓鏡頭短暫震動，即使沒有扣血也一樣。</p>
+<p>作業安排為四天。沿用既有角色、動畫、場地與兩招接招功能，不需製作新 UI、美術或動畫。</p>
+<h2 id="_1">實作要求</h2>
+<h3 id="damagetablecsv-hitpushx">一、DamageTable.csv 新增 HitPushX 欄位</h3>
+<p>招式打中對手並造成扣血時，依 <code>HitPushX</code> 的數值，將對手平滑推遠或拉近。</p>
+<table>
+<thead>
+<tr>
+<th>設定</th>
+<th>遊戲行為</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>負值，例如 <code>-60</code></td>
+<td>對手遠離攻擊者，要求移動 60 公分。</td>
+</tr>
+<tr>
+<td>正值，例如 <code>30</code></td>
+<td>對手靠近攻擊者，要求移動 30 公分。</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>正常結算傷害，不產生推拉。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="commandtablecsv-camerashot-shake">二、CommandTable.csv 的 CameraShot 新增 Shake 類型</h3>
+<p>招式設為 <code>CameraShot=Shake</code> 時，只要打中對手就觸發鏡頭震動，<strong>即使被防禦或沒有扣血也要震動</strong>。揮空不震動。</p>
+<h2 id="_2">實作提示</h2>
+<p><strong>新增系統時，先定義資料與介面，再規劃 <code>Init → Tick → End</code>，最後接入遊戲流程。</strong> 不要一開始就把所有邏輯塞進 Tick。</p>
+<ul>
+<li><strong>定義資料與介面</strong>：先列出需要保存的狀態、初始值、對外方法與私有方法，決定誰擁有這些資料。</li>
+<li><strong>Init（啟動）</strong>：準備本次效果的資料，清除舊進度，開始效果。</li>
+<li><strong>Tick（更新）</strong>：依 DeltaSeconds 推進時間，計算本幀變化。</li>
+<li><strong>End（結束）</strong>：停止效果並清除狀態，讓下一次 Init 能重新開始。</li>
+<li><strong>接入與測試</strong>：決定由誰、在什麼時機呼叫以上方法，再確認遊戲結果。</li>
+</ul>
+<p>以下兩套功能都依這個順序實作。先在 header 宣告方法，再到 cpp 寫實作；Init 可以呼叫稍後才實作的 End。C++ 路徑皆相對於 <code>Source/TndaFighter/</code>，CSV 路徑相對於專案根目錄。資料欄位與 Reader 可先獨立建置、匯入確認；開始撰寫效果方法後，先完成該系統步驟 1～5，再完整建置與測試。</p>
+<h3 id="hitpushx">一、HitPushX：讓命中產生推拉</h3>
+<h4 id="1">步驟 1：定義資料與介面</h4>
+<ol>
+<li>在 <code>DataTable/TndaDamageData.h</code> 的 <code>FTndaDamageRow</code> 與 <code>FTndaDamage</code> 都新增 <code>float HitPushX = 0</code>。Row 用於匯入，另一份是遊戲使用的副本。</li>
+<li>在 <code>DataTable/TndaDamageReader.cpp</code> 將 CSV 表頭擴充為 <code>ID,Title,Damage,HitPushX</code>，補上正負十進位數字的完整解析、有限值檢查與 Row → 副本的複製；拒絕空白、NaN、Infinity、科學記號及尾隨文字。在 <code>_DataTable/DamageTable.csv</code> 每列補上新值，先設 0，並同步 <code>DataTable/Tests/</code> 的 CSV 測試資料，保留各測例原本的驗證目的。</li>
+<li>在 <code>Fighting/FightingCharacter.h</code> 的 private 區宣告推拉總位移、經過時間、啟用狀態，以及固定時長 0.15 秒。每個受擊角色各自保存狀態。</li>
+<li>在同一 private 區宣告 <code>InitHitPush(Distance, AttackerLocation)</code>、<code>TickHitPush(DeltaSeconds)</code>、<code>EndHitPush()</code>。這些是角色內部方法；角色類別可呼叫另一個同類別實例的 private 方法，不必全部公開。</li>
+</ol>
+<h4 id="2init">步驟 2：Init — 準備這次推拉</h4>
+<p>在 <code>FightingCharacter.cpp</code> 實作 <code>InitHitPush()</code>：先呼叫 EndHitPush 清除舊效果，再把「攻擊者位置減受擊者位置」的 Z 設為 0，正規化後乘上 HitPushX，保存為總位移。時間從 0 開始，啟用推拉。</p>
+<p>方向長度近零或 HitPushX=0 時，保持停止。這裡只記下要求，不立即移動角色；新推拉會取代舊推拉。</p>
+<h4 id="3tick">步驟 3：Tick — 分幀移動受擊者</h4>
+<p>在 <code>FightingCharacter.cpp</code> 實作 <code>TickHitPush()</code>。未啟用就返回；啟用時依本幀經過的時間，計算這一幀要移動的部分。以下為計算示意，需轉成 C++：</p>
+<pre><code class="language-text">// 這次推拉要在 0.15 秒內完成
+Duration = 0.15
+
+// TotalOffset：命中時算好的「方向 × HitPushX」，包含方向與總距離
+// OldElapsed：目前已經推了幾秒，開始時設為 0
+// DeltaSeconds：這一幀經過的秒數，由 Tick 傳入
+
+// 時間只往前走；Max 表示取兩者較大值，避免使用負時間
+FrameSeconds = Max(DeltaSeconds, 0)
+
+// 累加這一幀的時間；Min 表示取較小值，最多算到 0.15 秒
+NewElapsed = Min(OldElapsed + FrameSeconds, Duration)
+
+// 最後一幀可能只剩一點時間，因此只計算尚未完成的部分
+UsedSeconds = NewElapsed - OldElapsed
+
+// 本幀佔總時間多少比例，就移動總位移的多少比例
+FrameOffset = TotalOffset × (UsedSeconds ÷ Duration)
+
+// 保存進度，下一幀從這裡繼續
+OldElapsed = NewElapsed
+</code></pre>
+<p>例如要在 0.15 秒內推遠 60 公分，這一幀經過 0.015 秒，就要求移動 <code>60 × (0.015 ÷ 0.15) = 6</code> 公分。若已經過 0.145 秒，即使下一幀又經過 0.015 秒，也只補剩下的 0.005 秒，也就是 2 公分，避免推過頭。以上距離是假設途中沒有碰到阻擋。</p>
+<p>以帶 Sweep 的 <code>AddActorWorldOffset</code> 套用 FrameOffset，移動受擊角色的根膠囊。碰到阻擋或時間到達 Duration 就呼叫 EndHitPush；受阻時實際距離可較短。受擊動畫會清除速度，因此這裡使用獨立推拉進度。</p>
+<h4 id="4end">步驟 4：End — 停止並清除狀態</h4>
+<p>在 <code>FightingCharacter.cpp</code> 實作 <code>EndHitPush()</code>：停用推拉、將經過時間與總位移歸零。<strong>保留角色已移動的位置，不送回起點。</strong> 到期、碰撞、被新推拉取代與角色 EndPlay 都使用同一個清理方法。</p>
+<h4 id="5">步驟 5：接入遊戲並測試</h4>
+<ol>
+<li>在 <code>TryApplyHit()</code> 取得 <code>ApplyDamage()</code> 的實際扣血量後，只有 <code>Deducted &gt; 0</code> 才呼叫受擊角色的 InitHitPush，傳入本次 HitPushX 與攻擊者位置。值為 0 也要呼叫，才能停止舊推拉。</li>
+<li>在角色既有 Tick 的 <code>UpdateReaction()</code> 之後、<code>RefreshOpponentDirection()</code> 之前呼叫 TickHitPush；EndPlay 在交給父類之前呼叫 EndHitPush。保留原本去重與受擊反應流程。</li>
+<li>建置、重新載入 Editor、匯入 CSV 後，以 <code>-60</code>、<code>30</code>、<code>0</code> 各測一次。確認負推正拉、0 不推拉、防禦不產生新推拉；再換邊與靠牆測試方向及碰撞。</li>
+</ol>
+<h3 id="shake">二、Shake：讓命中觸發鏡頭震動</h3>
+<p>本題必須新增獨立的 <code>FFightingCameraShake</code>，由 <code>FFightingCameraDirector</code> 持有與管理。</p>
+<h4 id="1_1">步驟 1：定義資料與介面</h4>
+<ol>
+<li>在 <code>Fighting/Camera/CombatCameraShot.h</code> 新增 <code>Shake=2</code>，保留既有 enum 數值。Command CSV 的招式設定留到步驟 5 建置後匯入。</li>
+<li>新增 <code>Fighting/Camera/FightingCameraShake.h/.cpp</code>。在 Shake 類別的 private 區定義啟用狀態、經過時間、時長 0.15 秒、振幅與頻率；public 區宣告 <code>Init()</code>、<code>Tick(DeltaSeconds)</code>、<code>End()</code>、<code>GetLocalOffset() const</code>，供 Director 呼叫。</li>
+<li>在角色保存私有震動事件序號，初值為 0，提供公開唯讀 getter。在 <code>Fighting/Camera/FightingCameraTypes.h</code> 的 <code>FFightingCameraFrameInput</code> 加入玩家與 CPU 的序號欄位。</li>
+<li>在 <code>Fighting/Camera/FightingCameraDirector.cpp</code> include Shake 的 header，並於 <code>FFightingCameraDirector::FImpl</code> 保存一個 Shake 物件與雙方已觀察序號。計時與公式留在 Shake，不在 Director 再存一份。</li>
+</ol>
+<h4 id="2init_1">步驟 2：Init — 啟動一次震動</h4>
+<p>在 <code>FightingCameraShake.cpp</code> 實作 <code>Init()</code>：先呼叫 End 清除舊效果，再設為啟用，時間從 0 開始。新的命中會重新開始一次 0.15 秒震動。</p>
+<h4 id="3tick_1">步驟 3：Tick — 推進時間與提供偏移</h4>
+<p>在 <code>FightingCameraShake.cpp</code> 實作 <code>Tick()</code>：未啟用就返回；否則累加非負的 DeltaSeconds，最多累加到 0.15 秒，時間到呼叫 End。暫停時不推進。</p>
+<p>同檔案實作 <code>GetLocalOffset()</code>，依目前時間算出本地偏移；未啟用時回傳零向量。<strong>這個方法只讀取結果，不再次推進時間。</strong> 算法與 Director 的合成位置如下：</p>
+<pre><code class="language-text">T = 0.15                    // 總時間，秒
+t = Clamp(Elapsed, 0, T)     // 這次震動已經過的遊戲時間
+A = 2.0                     // 初始振幅，公分
+f = 20.0                    // 每秒擺動次數，Hz
+Fade = 1 - t / T
+Offset = A × Fade × Sin(2 × PI × f × t)
+LocalShakeOffset = (0, Offset, 0)
+</code></pre>
+<p><code>Sin</code> 讓偏移左右來回，<code>Fade</code> 讓幅度逐漸減小。最後的向量以相機本地座標表示，沿相機右方向移動；2 公分與 20 Hz 是調校起點，可調整到明顯但不影響觀察戰鬥。</p>
+<p>以下先說明偏移如何使用，Director 的接入程式留到步驟 5 再加入：在 <code>FFightingCameraDirector::FImpl::EvaluatePose()</code> 完成原有構圖混合後，將本地偏移轉為世界方向，再加入本幀結果。採位置震動，保留 BoomRotation 不變：</p>
+<pre><code class="language-text">// Result 是本幀原有構圖混合完成的結果
+WorldShakeOffset = Result.BoomRotation.RotateVector(Shake.GetLocalOffset())
+Result.FocusLocation += WorldShakeOffset
+// 保留原有 SanitizePose 檢查，然後回傳 Result
+</code></pre>
+<p>只有震動啟用時才加上偏移。<code>FightingCameraActor</code> 繼續透過原有 <code>ApplyPose()</code> 套用結果，不另外保存震動計時或重算公式。<strong>不要把偏移反覆加到上一幀結果。</strong> 每幀的 FocusLocation 都從角色位置與原有構圖重新算起，時間到就回到原本構圖。</p>
+<p>震動只影響最終觀看位置，不改角色座標；避免把震動後的姿態回送為下一幀構圖或角色移動方向的基準。暫停時 DeltaSeconds=0，震動時間也應停止。上述數值是設計範例，仍須實際播放調校。</p>
+<h4 id="4end_1">步驟 4：End — 清除震動效果</h4>
+<p>在 <code>FightingCameraShake.cpp</code> 實作 <code>End()</code>：停用效果、將經過時間歸零，讓 GetLocalOffset 回傳零向量。Director 下次合成就回到原構圖，不必保存舊相機位置再搬回去，也不要重設角色的事件序號。</p>
+<h4 id="5director">步驟 5：接入命中、Director 並測試</h4>
+<ol>
+<li>在 <code>TryApplyHit()</code> 通過命中檢查、加入命中集合後，且防禦分支返回前，只有本招選了 Shake 才增加事件序號。此處不等待扣血，所以防禦命中也會觸發。</li>
+<li>在 <code>FightingCameraActor::BuildFrameInput()</code> 收集雙方序號，傳給 Director。Director.Initialize 記住初始序號並呼叫 Shake.End；Update 發現新序號就 Shake.Init，沒有新事件則 Shake.Tick。同幀兩人都觸發時只重啟一次。</li>
+<li>在 Director 的 EvaluatePose 完成原構圖混合後，依步驟 3 的方式合成 Shake.GetLocalOffset。CameraActor 仍只透過 ApplyPose 套用結果。</li>
+<li>調整 <code>GetActiveCameraShotRequest()</code>，讓 Shake 不走整招持續的主構圖請求，保留 UpperBodyCloseUp 原流程，避免揮空也震動。</li>
+<li>Command CSV 選一招設為 <code>CameraShot=Shake</code>，另保留一招 UpperBodyCloseUp。建置、重新載入 Editor 並匯入 Command CSV，測試揮空、正常命中、防禦與零傷害命中。確認 0.15 秒後回復，原有特寫仍正常，再完成下方三項展示。</li>
+</ol>
+<h2 id="ai">示範使用 AI</h2>
+<p><strong>下方提示詞可直接複製貼給 AI，不需要填空。全程分四個階段，每個階段 AI 做完後由你親自驗收，通過才進下一階段。</strong></p>
+<p>使用前先把本題目（文字或檔案）附在對話中，並在同一段對話依序貼上。若換新對話，先重貼「開始前」提示詞，再告訴 AI 已通過到第幾階段。</p>
+<table>
+<thead>
+<tr>
+<th>階段</th>
+<th>內容</th>
+<th>你要驗收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>HitPushX 資料欄位</td>
+<td>DT_Damage 出現 HitPushX</td>
+</tr>
+<tr>
+<td>2</td>
+<td>受擊推拉</td>
+<td>PIE：推遠、拉近、0 不動、防禦、換邊、靠牆</td>
+</tr>
+<tr>
+<td>3</td>
+<td>鏡頭震動</td>
+<td>PIE：揮空、命中、防禦或零傷害、原有特寫</td>
+</tr>
+<tr>
+<td>4</td>
+<td>兩招整合與繳交前檢查</td>
+<td>U → I 結果、CSV 恢復基準</td>
+</tr>
+</tbody>
+</table>
+<p>每個階段的節奏都一樣：<strong>貼上提示詞 → AI 列出計畫後停下 → 你看過後回覆「計畫確認，開始實作」→ AI 實作並說明驗收方式 → 你親自驗收。</strong></p>
+<details class="prompt-example">
+<summary>AI 回覆後，可以這樣回</summary>
+<p>計畫沒問題：</p>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-1" aria-controls="ai-prompt-1">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-1"><code class="language-text">計畫確認，開始實作。
+</code></pre>
+<p>計畫做了下一階段的事：</p>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-2" aria-controls="ai-prompt-2">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-2"><code class="language-text">這次只做目前階段的範圍，請把超出的部分移除，重新列出計畫後停下。
+</code></pre>
+<p>看不懂 AI 寫的程式：</p>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-3" aria-controls="ai-prompt-3">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-3"><code class="language-text">請依 Init → Tick → End 的順序，解釋你剛才寫的程式各自負責什麼。
+解釋完問我一個理解問題，先不要附答案。
+</code></pre>
+<p>驗收時結果不對（把看到的現象寫在最後一行）：</p>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-4" aria-controls="ai-prompt-4">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-4"><code class="language-text">我在驗收時結果和預期不同，請先說明可能原因與最小修正，等我確認後再改。
+我看到的現象：
+</code></pre>
+<p>AI 改了範圍外的檔案：</p>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-5" aria-controls="ai-prompt-5">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-5"><code class="language-text">請列出你這次改動的所有檔案與差異，先不要還原，等我決定保留哪些。
+</code></pre>
+</details>
+<h3 id="_3">開始前：確認環境</h3>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-6" aria-controls="ai-prompt-6">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-6"><code class="language-text">請先閱讀這段對話中的 Week 08 實作題；若目前看不到題目，請先向我索取。
+接著從目前工作區找到 TndaFighter.uproject，以它所在目錄作為專案根目錄；
+找不到或找到多個時，先列出結果讓我指定。
+
+本次只確認環境，不修改檔案或資產，不啟停 Editor：
+1. 回報專案根目錄與工作樹狀態，保留已有改動。
+2. 確認你能讀取專案的 C++ 原始碼。
+3. 透過 Unreal MCP 確認連線的 Editor 是這個專案，查詢 DT_Damage、DT_Command，列出實際資料列。
+4. 分開列出「已成功執行」「尚未測試」「無法使用」的能力；能查表不代表能匯入或操作 PIE。
+
+之後重建 DataTable 時（MCP 或手動）記得三步：正確 Row Struct、Import Key Field = ID、Asset Import Data 指向正式 CSV 再 Reimport／fill。
+
+連線失敗時，說明失敗在哪一步，以及我可以怎麼處理。
+</code></pre>
+<p><strong>確認：</strong> AI 回報的是老師提供的 week-08 示範專案，並列出兩張表的實際資料列，不是只回答「可以連線」；沒有改任何檔案。連線失敗先排除再繼續。</p>
+<h3 id="1hitpushx">階段 1：HitPushX 資料欄位</h3>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-7" aria-controls="ai-prompt-7">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-7"><code class="language-text">開始階段 1：HitPushX 資料欄位。範圍是題目「一、HitPushX」步驟 1 的第 1、2 項：
+FTndaDamageRow 與 FTndaDamage 新增 HitPushX、Reader 擴充表頭與解析、
+DamageTable.csv 每列補 0、同步 DataTable/Tests 的測試 CSV。
+角色的推拉狀態與方法留到階段 2，這次不要做。
+
+請先讀相關程式，列出要改的檔案、方法與原因，然後停下等我確認。
+我確認後再實作：保留已有改動，只改計畫內的檔案，關鍵處補中文註解。
+實作後請建置；需要關閉 Editor 時先告訴我。建置成功後用 MCP 匯入 DamageTable.csv 到 DT_Damage 並回讀。
+最後說明我可以怎麼自己確認，並分開列出「已實際執行」與「尚未驗證」的項目。
+</code></pre>
+<p><strong>人工驗收：</strong></p>
+<ul>
+<li>看修改差異：只動到 <code>TndaDamageData.h</code>、<code>TndaDamageReader.cpp</code>、<code>DamageTable.csv</code> 與測試 CSV。</li>
+<li>在 Editor 開啟 DT_Damage，每一列都有 <code>HitPushX</code>，值為 0。</li>
+<li>請 AI 說明 Reader 測試怎麼執行，你親自看到測試通過。</li>
+</ul>
+<h3 id="2">階段 2：受擊推拉</h3>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-8" aria-controls="ai-prompt-8">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-8"><code class="language-text">階段 1 已驗收通過。開始階段 2：受擊推拉。範圍是題目「一、HitPushX」步驟 1 第 3、4 項到步驟 5。
+請依題目順序實作：定義資料與介面 → InitHitPush → TickHitPush → EndHitPush →
+接入 TryApplyHit、角色 Tick 與 EndPlay。
+推拉只在實際扣血（Deducted &gt; 0）時啟動；鏡頭震動留到階段 3，這次不要做。
+
+請先讀相關程式，依上面五步列出每步要改的檔案、方法、插入位置與原因，然後停下等我確認。
+我確認後再實作：保留已有改動，只改計畫內的檔案；時間比例、Sweep 與停止條件補中文註解。
+實作後請建置；需要關閉 Editor 時先告訴我。
+最後列出我在 PIE 要做的測試與應看到的結果，並分開列出「已實際執行」與「尚未驗證」的項目。
+</code></pre>
+<p><strong>人工驗收：</strong></p>
+<ul>
+<li>自己讀 <code>TickHitPush</code>，能說出本幀位移怎麼算、何時停止。</li>
+<li>把一招的 HitPushX 依序改成 <code>-60</code>、<code>30</code>、<code>0</code> 並匯入（可請 AI 用 MCP 匯入），PIE 各命中一次：負值平滑推遠、正值拉近、0 不動，約 0.15 秒內完成並停止。</li>
+<li>輸入 <code>tnda.Debug.CpuAlwaysDef on</code>，確認防禦時不產生推拉；測完改回 <code>off</code>。</li>
+<li>換邊、靠牆各測一次：方向正確，靠牆會停住、不穿牆。</li>
+</ul>
+<h3 id="3">階段 3：鏡頭震動</h3>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-9" aria-controls="ai-prompt-9">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-9"><code class="language-text">階段 2 已驗收通過。開始階段 3：鏡頭震動。範圍是題目「二、Shake」步驟 1～5。
+請依題目順序實作：定義資料與介面 → Init → Tick（含 GetLocalOffset）→ End →
+接入命中、Director 與 CameraShot 請求。
+Shake 必須封裝在獨立的 FFightingCameraShake，由 FFightingCameraDirector 持有與管理。
+有效命中就震動（防禦、零扣血也要），揮空與重複接觸不震動；不要改變階段 2 的推拉行為。
+
+請先讀相關程式，依上面五步列出每步要改的檔案、方法、插入位置與原因，然後停下等我確認。
+我確認後再實作：保留已有改動，只改計畫內的檔案；震動公式與合成位置補中文註解。
+實作後請建置；需要關閉 Editor 時先告訴我。建置成功後，Command CSV 選一招設為 CameraShot=Shake、
+保留一招 UpperBodyCloseUp，用 MCP 匯入 DT_Command 並回讀。
+最後列出我在 PIE 要做的測試與應看到的結果，並分開列出「已實際執行」與「尚未驗證」的項目。
+</code></pre>
+<p><strong>人工驗收：</strong></p>
+<ul>
+<li>自己讀 <code>FightingCameraShake.cpp</code>，確認時間只在 <code>Tick</code> 推進，<code>GetLocalOffset</code> 只讀取結果。</li>
+<li>PIE 使用 Shake 招式：揮空不震動；正常命中會震動，約 0.15 秒後回到原本構圖。</li>
+<li>對手防禦或 Damage=0 時命中：仍會震動，但不產生推拉。</li>
+<li>UpperBodyCloseUp 招式的特寫仍正常。</li>
+</ul>
+<h3 id="4">階段 4：兩招整合與繳交前檢查</h3>
+<div class="prompt-tools"><button type="button" class="copy-prompt" data-copy-target="ai-prompt-10" aria-controls="ai-prompt-10">複製提示詞</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="ai-prompt-10"><code class="language-text">階段 3 已驗收通過。開始階段 4：兩招整合與繳交前檢查。這次先不要修改任何檔案。
+1. 依目前 CSV 設定，說明 U → I 兩招在第一招推拉後，第二招預期能否接出、是否扣血，並指出決定結果的程式位置。
+2. 依題目「繳交內容」檢查：至少一招非零 HitPushX、一招 CameraShot=Shake；
+   傷害為 10／15／20，PlayRate=1.0、Lifetime=0.5。列出不符合的項目，等我確認後再修改。
+3. 列出 HitPushX 與 Shake 的主要 C++ 修改位置，方便我準備展示。
+分開列出「從程式與資料可確認」與「需要我在 PIE 實測」的項目。
+</code></pre>
+<p><strong>人工驗收：</strong></p>
+<ul>
+<li>PIE 實際打出 <code>U → I</code>，記下是否接出、是否扣血，並和 AI 的預期比對。</li>
+<li>依「展示驗收」三項自己完整跑一遍，確認強制防禦已改回 <code>off</code>。</li>
+<li><code>ASSESSMENT.md</code> 由你自己撰寫，逐項填入實際觀察。</li>
+</ul>
+<h2 id="_4">展示驗收</h2>
+<p>準備好可操作的專案，展示以下三項。可使用 <code>tnda.Debug.ShowCombatDebug on</code> 觀察狀態；防禦對照使用 <code>tnda.Debug.CpuAlwaysDef on</code>，完成後切回 <code>off</code>。</p>
+<ol>
+<li><strong>推遠與拉近：</strong> 用負值、正值各命中一次，展示對手在 0.15 秒內平滑遠離、靠近，完成後停止。說明方向如何隨雙方位置決定，以及遇到碰撞如何處理。</li>
+<li><strong>命中震動：</strong> 用 Shake 招式展示揮空不震動、正常命中會震動，再選「對手防禦」或「Damage=0」其中一種，展示沒有扣血仍會震動、但不產生推拉。震動結束後鏡頭回復。</li>
+<li><strong>兩招整合：</strong> 完成 <code>U → I</code>，展示第一招推拉後第二招的結果，說明是否成功接出及是否扣血。分享對應 CSV 設定與主要 C++ 修改位置。</li>
+</ol>
+<h2 id="_5">繳交內容</h2>
+<ol>
+<li><strong>Git commit 歷程與可建置專案：</strong> 分段保存 C++、CSV、DataTable 及必要資產／文件，勿只提交來源 CSV。</li>
+<li><strong>專案根目錄 <code>ASSESSMENT.md</code>：</strong> 說明自己如何完成作業，三項展示逐項填寫「通過／未通過／未測試」。</li>
+</ol>
+<p>繳交前保留至少一招非零推拉及一招 <code>CameraShot=Shake</code>；傷害恢復教材基準 10／15／20，<code>PlayRate=1.0</code>、<code>Lifetime=0.5</code>，停止測試用強制防禦。繳交管道與截止時間由教師公布。</p>
+<pre><code class="language-markdown"># Week 08 命中推拉與鏡頭震動：實作自評
+
+## 基本資料
+- 作者：
+
+## 實作過程
+請依實際完成順序，說明：
+- 如何擴充 CSV 並把 HitPushX 傳入遊戲。
+- 如何完成平滑推拉與命中震動。
+- 命中事件如何傳到 FFightingCameraDirector，以及它如何管理 FFightingCameraShake 的 Init／Tick／End 並合成偏移。
+- 使用 AI 協助哪些步驟，如何確認 Unreal MCP 連線與修改結果。
+- 遇到什麼問題、如何修正，以及如何確認成果。
+
+## 展示驗收
+| 項目 | 結果 | 操作條件與實際觀察 |
+| --- | --- | --- |
+| 1. 推遠與拉近 | | |
+| 2. 命中震動 | | |
+| 3. 兩招整合 | | |
+</code></pre>
+</main>
+<script>
+(() => {
+  const nav = document.querySelector('.page-nav');
+  const links = [...nav.querySelectorAll('a[data-section]')];
+  const sections = links.map(link => document.getElementById(link.dataset.section));
+  let scheduled = false;
+  function update() {
+    scheduled = false;
+    let current = 0;
+    sections.forEach((section, index) => {
+      if (section.getBoundingClientRect().top <= 100) current = index;
+    });
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      current = sections.length - 1;
+    }
+    links.forEach((link, index) => {
+      if (index === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('scroll', () => {
+    if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('hashchange', update);
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+
+<script>
+(() => {
+  function fallbackCopy(text) {
+    const previous = document.activeElement;
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.style.cssText = 'position:fixed;left:-9999px;top:0;';
+    document.body.append(field);
+    field.select();
+    try {
+      if (!document.execCommand('copy')) throw new Error('Copy failed');
+    } finally {
+      field.remove();
+      previous?.focus({ preventScroll: true });
+    }
+  }
+  document.querySelectorAll('.copy-prompt').forEach(button => {
+    button.addEventListener('click', async () => {
+      const code = document.getElementById(button.dataset.copyTarget).querySelector('code');
+      const status = button.nextElementSibling;
+      status.textContent = '';
+      try {
+        // 僅讀取提示詞框，避免把按鈕、標題與後續操作說明一起複製。
+        const text = code.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          // 本機檔案或剪貼簿 API 不可用時，改用瀏覽器的複製指令。
+          fallbackCopy(text);
+        }
+        status.textContent = '已複製';
+      } catch {
+        status.textContent = '複製失敗，請選取下方提示詞手動複製。';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
