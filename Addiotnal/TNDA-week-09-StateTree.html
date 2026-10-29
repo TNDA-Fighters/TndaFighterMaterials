@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StateTree 快速入門導讀</title>
+<style>
+:root{
+  --bg:#eef2f5;--paper:#fff;--ink:#19364e;--muted:#526b7b;--line:#d5e0e6;
+  --accent:#087f8c;--accent-soft:#e0f0ed;--warn:#b25d00;--warn-soft:#fff3d8;
+  --code-bg:#f5f8fa;--chip:#e7f1f4;
+  font-family:'Microsoft JhengHei','Segoe UI',sans-serif;color:var(--ink);color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1a22;--paper:#16242e;--ink:#dce7ee;--muted:#9bb0bd;--line:#2a3d4a;
+  --accent:#3fc1cc;--accent-soft:#163a3d;--warn:#f0a64a;--warn-soft:#3a2c14;
+  --code-bg:#0f1c25;--chip:#1d3340;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0f1a22;--paper:#16242e;--ink:#dce7ee;--muted:#9bb0bd;--line:#2a3d4a;
+  --accent:#3fc1cc;--accent-soft:#163a3d;--warn:#f0a64a;--warn-soft:#3a2c14;
+  --code-bg:#0f1c25;--chip:#1d3340;color-scheme:dark;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);line-height:1.75;font-size:16px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid #ca880c;outline-offset:2px}
+.layout{max-width:1180px;margin:0 auto;padding:24px 16px 64px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px}
+nav.toc{position:sticky;top:16px;align-self:start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;max-height:calc(100vh - 32px);overflow:auto}
+nav.toc b{display:block;color:var(--accent);margin-bottom:6px}
+nav.toc ol{margin:0;padding-left:20px}
+nav.toc li{margin:3px 0}
+nav.toc a{text-decoration:none;color:var(--ink)}
+nav.toc a:hover{color:var(--accent)}
+main{min-width:0}
+header.hero{background:var(--paper);border-top:5px solid var(--accent);border-radius:10px;padding:24px 28px;margin-bottom:22px}
+header.hero h1{margin:0 0 6px;font-size:30px;line-height:1.35}
+.meta{color:var(--muted);font-size:14px}
+.meta span{display:inline-block;margin-right:14px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 28px;margin-bottom:22px}
+h2{margin:0 0 12px;font-size:23px;border-left:5px solid var(--accent);padding-left:12px}
+h3{font-size:18px;margin:20px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:700}
+.tbl{overflow-x:auto}
+a.ts{display:inline-block;font-family:Consolas,monospace;font-size:13px;background:var(--chip);border-radius:5px;padding:1px 7px;text-decoration:none;white-space:nowrap}
+a.ts:hover{background:var(--accent);color:#fff}
+.callout{background:var(--accent-soft);border-left:5px solid var(--accent);border-radius:6px;padding:12px 16px;margin:12px 0}
+.warn{background:var(--warn-soft);border-left:5px solid var(--warn);border-radius:6px;padding:12px 16px;margin:12px 0}
+.warn b:first-child{color:var(--warn)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:12px 14px}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p{margin:0;font-size:15px}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font:14px/1.55 Consolas,'Microsoft JhengHei',monospace}
+code{font-family:Consolas,monospace;font-size:.92em;background:var(--chip);border-radius:4px;padding:0 4px}
+pre code{background:none;padding:0}
+.tree{font:14.5px/1.7 Consolas,'Microsoft JhengHei',monospace;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;white-space:pre}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.flow span{background:var(--chip);border-radius:6px;padding:4px 10px;font-size:14px}
+.flow i{font-style:normal;color:var(--muted)}
+.path li{margin:4px 0}
+.tag{display:inline-block;font-size:12px;border-radius:4px;padding:0 6px;margin-left:4px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn)}
+footer{color:var(--muted);font-size:13px;text-align:center}
+.theme-btn{float:right;font:inherit;font-size:13px;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:3px 10px;cursor:pointer}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  nav.toc{position:static;max-height:none}
+  section,header.hero{padding:18px 16px}
+  header.hero h1{font-size:24px}
+}
+
+/* reading-navigation:start */
+body{padding-top:52px}
+.reading-bar{position:fixed;inset:0 0 auto;z-index:50;height:52px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--paper);border-bottom:1px solid var(--line);box-sizing:border-box}
+.reading-label{font-size:16px;font-weight:700;color:var(--navy);white-space:nowrap}
+.reading-percent{min-width:4ch;text-align:right;font-variant-numeric:tabular-nums;font-size:16px;color:var(--navy)}
+.reading-bar progress{appearance:none;flex:1;min-width:0;height:8px;border:0;border-radius:8px;overflow:hidden;background:var(--line)}
+.reading-bar progress::-webkit-progress-bar{background:var(--line);border-radius:8px}
+.reading-bar progress::-webkit-progress-value{background:var(--teal);border-radius:8px}
+.reading-bar progress::-moz-progress-bar{background:var(--teal)}
+.sidebar{top:68px;max-height:calc(100vh - 84px)}
+.quick-nav{display:block;padding:16px 10px}
+.nav-tree,.nav-tree ul{list-style:none;margin:0;padding:0}
+.nav-tree ul{margin-left:12px;padding-left:9px;border-left:1px solid var(--line)}
+.nav-tree [hidden]{display:none}
+.nav-tree li{margin:3px 0}
+.nav-row{display:flex;align-items:flex-start;gap:2px}
+.nav-toggle{flex:none;width:24px;min-height:36px;padding:5px 0;border:0;background:transparent;color:var(--navy);font-size:16px;cursor:pointer}
+.nav-spacer{flex:none;width:24px}
+.quick-nav .nav-row a{flex:1;min-width:0;min-height:0;padding:7px 6px;border:0;border-radius:5px;background:transparent;font-size:16px;line-height:1.5;font-weight:400;overflow-wrap:anywhere}
+.nav-tree>li>.nav-row a{font-weight:750}
+.quick-nav .nav-row a:hover,.quick-nav .nav-row a:focus-visible{background:var(--teal-soft)}
+.quick-nav .nav-row a[aria-current="location"]{background:var(--teal-soft);color:var(--navy);font-weight:750;box-shadow:inset 3px 0 var(--teal)}
+.nav-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.paper [id]{scroll-margin-top:76px}
+html:has(nav.toc){--navy:var(--ink);--teal:var(--accent);--teal-soft:var(--accent-soft)}
+html:has(nav.toc) .layout{max-width:1496px;grid-template-columns:288px minmax(0,1fr);gap:24px}
+nav.toc.sidebar{top:68px;max-height:calc(100vh - 84px);font-size:16px}
+nav.toc.sidebar .nav-tree{padding-left:0}
+html:has(nav.toc) main [id]{scroll-margin-top:76px}
+html:has(nav.toc) :is(.meta,table,a.ts,.card p,pre,code,.tree,.flow span,.tag,footer,.theme-btn){font-size:16px}
+html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
+@media print{body{padding-top:0}.reading-bar{display:none}}
+/* reading-navigation:end */
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="目錄">
+  <b>目錄</b>
+  <ol>
+    <li><a href="#tldr">一分鐘結論</a></li>
+    <li><a href="#path">快速觀看路線</a></li>
+    <li><a href="#chapters">章節與時間點</a></li>
+    <li><a href="#concepts">核心概念速查</a></li>
+    <li><a href="#runtime">執行流程</a></li>
+    <li><a href="#sample">範例樹拆解</a></li>
+    <li><a href="#gotchas">陷阱與排錯</a></li>
+    <li><a href="#cpp">C++ 製作速查</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <button class="theme-btn" type="button" id="themeBtn">切換深淺色</button>
+  <h1>StateTree 快速入門：影片導讀筆記</h1>
+  <div class="meta">
+    <span>影片：<a href="https://www.youtube.com/watch?v=0iRcG55c2Tw" target="_blank" rel="noopener">Complete Guide to Unreal Engine State Trees | C++ AI, Evaluators &amp; Tasks</a></span>
+    <span>來源：<a href="https://dev.epicgames.com/community/learning/tutorials/xKZn/complete-guide-to-unreal-engine-state-trees-c-ai-evaluators-tasks" target="_blank" rel="noopener">Epic Developer Community 教學頁</a></span>
+    <span>頻道：Unreal Builder Studio（Solo Dev）</span>
+    <span>長度：51:30</span>
+    <span>引擎：UE 5.6</span>
+    <span>整理日期：2026-10-28</span>
+  </div>
+  <p class="meta">每個時間標籤（如 <a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=957s" target="_blank" rel="noopener">15:57</a>）點下去都會從該秒數開始播放。</p>
+</header>
+
+<section id="tldr">
+  <h2>1. 一分鐘結論</h2>
+  <ul>
+    <li><b>StateTree = 行為樹的階層選擇 + 狀態機的轉移。</b>從 Root 往下依 Enter Condition 選到葉節點；整條作用中分支上的 Task 會同時執行，直到某個 Transition 觸發。</li>
+    <li><b>分工：</b>Evaluator 收集資料（不做事）、Condition 把關、Task 做事、Transition 決定下一步。作者用「編輯部」比喻：Task 是記者、Transition 是編輯、Evaluator 是幕後研究員。</li>
+    <li><b>資料怎麼流：</b>Schema 定義 Context（Actor、AIController）；Evaluator／Task 的屬性用 Category <code>Context</code>／<code>Input</code>／<code>Output</code> 決定綁定方式；Parameters 是全樹共用變數。</li>
+    <li><b>最容易踩的兩個坑：</b>State 的 Task 完成條件預設是 <b>Any</b>（多半要改 <b>All</b>）；Enter Condition 不靈時，改把條件放在<b>前一個 State 的 Transition</b>上。</li>
+    <li><b>一定要有保底狀態：</b>作者把 Idle 放第一個子狀態，所有條件都不成立時樹才不會停掉。</li>
+  </ul>
+</section>
+
+<section id="path">
+  <h2>2. 快速觀看路線</h2>
+  <p>不想看完 51 分鐘，依目的挑段落：</p>
+  <h3>路線 A：概念入門（約 12 分鐘）</h3>
+  <ol class="path">
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=218s" target="_blank" rel="noopener">3:38</a>–5:13　StateTree 是什麼、怎麼執行</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=313s" target="_blank" rel="noopener">5:13</a>–7:12　編輯器：Schema、Context、Parameters、Global Task</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=558s" target="_blank" rel="noopener">9:18</a>–10:42　Evaluator 的角色</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=832s" target="_blank" rel="noopener">13:52</a>–15:57　State／Tick Rate／Condition／Task／Transition</li>
+  </ol>
+  <h3>路線 B：在編輯器裡搭樹（約 23 分鐘）</h3>
+  <ol class="path">
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=957s" target="_blank" rel="noopener">15:57</a>–23:00　Idle 保底、Patrol、Any／All 陷阱</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1375s" target="_blank" rel="noopener">22:55</a>–38:39　Combat 攻防迴圈、EQS、Transition 陷阱</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2319s" target="_blank" rel="noopener">38:39</a>–39:26　實際執行畫面</li>
+  </ol>
+  <h3>路線 C：C++ 擴充（約 15 分鐘）</h3>
+  <ol class="path">
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=721s" target="_blank" rel="noopener">12:01</a>–13:52　C++ Evaluator 與 Category 規則</li>
+    <li><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2366s" target="_blank" rel="noopener">39:26</a>–50:50　C++ Condition、兩種 Task 寫法</li>
+  </ol>
+</section>
+
+<section id="chapters">
+  <h2>3. 章節與時間點</h2>
+  <p class="meta">粗體列為作者在影片描述中列出的官方章節；其餘為依旁白補充的細分時間點。</p>
+  <div class="tbl">
+  <table>
+    <thead><tr><th style="width:80px">時間</th><th style="width:220px">主題</th><th>重點</th></tr></thead>
+    <tbody>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=0s" target="_blank" rel="noopener">0:00</a></td><td><b>Intro</b></td><td>範例專案目標：只用 Fab 免費素材，以 C++ 為主，探索 GAS、StateTree、World Partition 等功能。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=89s" target="_blank" rel="noopener">1:29</a></td><td><b>Source Code</b></td><td>標頭檔放 Public、實作放 Private；再按功能分資料夾（AI、Controllers、StateTree、Characters）。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=156s" target="_blank" rel="noopener">2:36</a></td><td><b>State Tree Plugin</b></td><td>啟用 StateTree 與 GameplayStateTree，重開編輯器；內容瀏覽器 → Artificial Intelligence → State Tree 建資產。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=218s" target="_blank" rel="noopener">3:38</a></td><td><b>What is a State Tree</b></td><td>行為樹 + 狀態機的混合；不需要 Decorator、Blackboard。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=313s" target="_blank" rel="noopener">5:13</a></td><td><b>State Tree Editor</b></td><td>Schema（AI Component vs Component）、自訂 Schema、Context、Parameters、Evaluators、Global Tasks、Theme Colors。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=435s" target="_blank" rel="noopener">7:15</a></td><td><b>Custom AI Controller</b></td><td>視覺／聽覺／受傷感知；以 multicast delegate 廣播事件，避免輪詢。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=500s" target="_blank" rel="noopener">8:20</a></td><td>目標存兩份的理由</td><td>Evaluator 的目標給樹內用；Controller 的目標給樹外系統用。作者認為比把目標傳進 Linked StateTree 可靠。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=558s" target="_blank" rel="noopener">9:18</a></td><td><b>What is an Evaluator</b></td><td>只觀察、只寫資料，不執行動作，所以成本低。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=642s" target="_blank" rel="noopener">10:42</a></td><td><b>Evaluators</b></td><td>範例的三個 Evaluator：敵人血量、感知刺激追蹤、玩家監控（距離、攻擊中、死亡）。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=721s" target="_blank" rel="noopener">12:01</a></td><td><b>Build C++ Evaluator</b></td><td><code>TreeStart</code> 初始化／綁定，<code>TreeStop</code> 清理；選用 <code>GetDescription</code>。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=778s" target="_blank" rel="noopener">12:58</a></td><td>Category 規則</td><td><code>Context</code> 自動帶入、<code>Input</code> 必須綁定、<code>Output</code> 輸出給其他節點。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=832s" target="_blank" rel="noopener">13:52</a></td><td><b>Anatomy of State Tree</b></td><td>State、Custom Tick Rate、Enter／Transition Condition、Task、Transition（由葉往根檢查）。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=957s" target="_blank" rel="noopener">15:57</a></td><td><b>Build State Tree</b></td><td>Root 底下分 Idle／Patrol／Combat 三大狀態。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=970s" target="_blank" rel="noopener">16:10</a></td><td>Idle 當保底</td><td>其他狀態失敗會回 Root 重選，需要一個一定進得去的狀態。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1036s" target="_blank" rel="noopener">17:16</a></td><td>事件驅動轉移</td><td>Idle 每 0.25 秒檢查 Transition，收到 Gameplay Tag 事件才進 Combat／Patrol。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1081s" target="_blank" rel="noopener">18:01</a></td><td>Patrol 與 Required Event</td><td>內建 Enter Condition 一覽；Consume Event on Select。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1179s" target="_blank" rel="noopener">19:39</a></td><td><b>陷阱：Any vs All</b></td><td>預設 Any：第一個 Task 完成就嘗試轉移。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1242s" target="_blank" rel="noopener">20:42</a></td><td>Task 之間傳值</td><td>隨機取點 Task 輸出位置，Move To 的 Destination 綁定該輸出。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1350s" target="_blank" rel="noopener">22:30</a></td><td>Look Around</td><td>Delay 5 秒 ±1.5 秒，完成後回到移動狀態形成巡邏迴圈。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1375s" target="_blank" rel="noopener">22:55</a></td><td>Combat：拔武器</td><td>自訂 Condition「是否持有武器」+ Invert；自訂 Play Montage Task。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1503s" target="_blank" rel="noopener">25:03</a></td><td>攻防容器狀態</td><td>先檢查玩家是否死亡；成立則讓樹 Succeeded 結束。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1559s" target="_blank" rel="noopener">25:59</a></td><td>Flee 與 EQS</td><td>Enter Condition 直接比較 Evaluator 的血量 ≤ 20；Run EQS Query 結果寫入 Parameter 再給 Move To。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1738s" target="_blank" rel="noopener">28:58</a></td><td>Defense／Block</td><td>玩家攻擊中 → 執行 GAS 格擋技能。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1798s" target="_blank" rel="noopener">29:58</a></td><td>目標是否有效</td><td>用 Object Valid 檢查 Controller 上的目標；失效則清除 Focus、送 Patrol 事件。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1951s" target="_blank" rel="noopener">32:31</a></td><td><b>陷阱：Enter Condition 不靈</b></td><td>改在前一個 State 的 Transition 上加條件。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1994s" target="_blank" rel="noopener">33:14</a></td><td>依距離分流</td><td>距離 &gt; 250 → 接近（Move To 目標 Actor，接受半徑 125）；否則 → 繞行。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2113s" target="_blank" rel="noopener">35:13</a></td><td>甜甜圈 EQS 繞行</td><td>EQS 參數（內外半徑、每圈點數）可在 StateTree 上逐樹設定。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2201s" target="_blank" rel="noopener">36:41</a></td><td>Perform Attack</td><td>多個 GAS 技能 Tag + 權重，可選隨機或依序（讓低階敵人可被預測）。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2319s" target="_blank" rel="noopener">38:39</a></td><td>實機示範</td><td>感知範圍、拔武器、接近、繞行、攻擊。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2366s" target="_blank" rel="noopener">39:26</a></td><td><b>Build C++ Conditions &amp; Tasks</b></td><td>Condition 覆寫 <code>TestCondition</code>；<code>GetDescription</code> 讓樹一眼看懂。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2531s" target="_blank" rel="noopener">42:11</a></td><td>Play Montage Task（class 版）</td><td>建構子開 Tick；Category 不寫 Input 時可直接填值也可綁定。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2706s" target="_blank" rel="noopener">45:06</a></td><td>EnterState／Tick／ExitState</td><td>Enter 回 Running、Tick 等旗標、Exit 解除綁定並停止 Montage。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2867s" target="_blank" rel="noopener">47:47</a></td><td>Perform Attack Task（struct 版）</td><td><code>FStateTreeTaskCommonBase</code> + Instance Data struct；<code>GetInstanceDataType</code>。</td></tr>
+      <tr><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=3050s" target="_blank" rel="noopener">50:50</a></td><td><b>Outro</b></td><td>原始碼在 GitHub。</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="concepts">
+  <h2>4. 核心概念速查</h2>
+  <div class="grid">
+    <div class="card"><h3>State</h3><p>一段自成單位的行為。被選中時，從 Root 到葉的整條分支同時作用中，各自帶著 Task 與 Transition。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=832s" target="_blank" rel="noopener">13:52</a></p></div>
+    <div class="card"><h3>Custom Tick Rate</h3><p>不必每幀更新。0.25 代表每秒更新 4 次，邏輯不需要即時時可省效能。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=860s" target="_blank" rel="noopener">14:20</a></p></div>
+    <div class="card"><h3>Condition</h3><p>Enter Condition 決定能不能進入；Transition Condition 決定何時離開。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=886s" target="_blank" rel="noopener">14:46</a></p></div>
+    <div class="card"><h3>Task</h3><p>真正做事的節點，可輸出資料給後面的 Task 使用（例如位置、目標）。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=909s" target="_blank" rel="noopener">15:09</a></p></div>
+    <div class="card"><h3>Transition</h3><p>依 Task 成功／失敗、事件或條件觸發；<b>從葉往根檢查</b>，第一個成立的勝出。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=933s" target="_blank" rel="noopener">15:33</a></p></div>
+    <div class="card"><h3>Evaluator</h3><p>持續更新的「狀況感知」：距離、血量、是否看到目標。條件判斷時答案已經準備好。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=558s" target="_blank" rel="noopener">9:18</a></p></div>
+    <div class="card"><h3>Schema &amp; Context</h3><p>AI Component Schema 才拿得到 AIController；自訂 Schema 可把 Context 指定成自己的角色與 Controller 類別。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=313s" target="_blank" rel="noopener">5:13</a></p></div>
+    <div class="card"><h3>Parameters</h3><p>全樹共用變數。範例把 EQS 結果存成 Parameter，方便其他狀態取用。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1667s" target="_blank" rel="noopener">27:47</a></p></div>
+    <div class="card"><h3>Global Task</h3><p>整棵樹存活期間都在跑。作者建議非必要不用，因為它持續執行。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=410s" target="_blank" rel="noopener">6:50</a></p></div>
+  </div>
+  <h3>屬性 Category 對照</h3>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>Category</th><th>行為</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>Context</code></td><td>自動帶入 Schema 的 Context 值</td><td>Actor、AIController</td></tr>
+      <tr><td><code>Input</code></td><td>設計者必須在編輯器綁定</td><td>來自 Evaluator 或 Parameter 的值</td></tr>
+      <tr><td><code>Output</code></td><td>由節點寫入，供其他節點綁定</td><td>距離、目標、隨機位置</td></tr>
+      <tr><td>其他名稱（如 <code>Task</code>、<code>Parameter</code>）</td><td>可直接填值，也可以選擇綁定</td><td>Montage、播放速率、技能 Tag 清單</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="runtime">
+  <h2>5. 執行流程</h2>
+  <div class="flow"><span>啟動：隱式進入 Root</span><i>→</i><span>檢查 Enter Condition</span><i>→</i><span>成立就往子狀態走</span><i>→</i><span>直到葉狀態</span></div>
+  <div class="flow"><span>整條分支的 Task 同時執行</span><i>→</i><span>每次 Tick 由葉往根檢查 Transition</span><i>→</i><span>第一個成立的 Transition 決定下一次選擇</span></div>
+  <div class="flow"><span>狀態失敗</span><i>→</i><span>回到 Root 重新往下選</span><i>→</i><span>全部不成立時樹會停止（所以要有保底狀態）</span></div>
+  <div class="callout"><b>事件驅動的寫法：</b>Patrol、Combat 都設 Required Event to Enter。沒有事件時，樹會在 Root 與 Idle 之間來回；Controller 的感知 delegate 送出 Gameplay Tag 事件後，Idle 的 Transition 才把樹帶進對應分支。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1036s" target="_blank" rel="noopener">17:16</a></div>
+</section>
+
+<section id="sample">
+  <h2>6. 範例樹拆解</h2>
+  <p class="meta">依旁白重建的結構，節點名稱為示意，實際命名以範例專案為準。</p>
+<div class="tree">Root
+├─ Idle（保底；Tick 0.25；設走速 200）
+│    Transition：收到 Combat 事件 → Combat；收到 Patrol 事件 → Patrol
+├─ Patrol（Required Event：Patrol）
+│   ├─ MoveToRandomLocation（Tick ≈ 0.3；Tasks = All）
+│   │    設走速 200 → 取半徑內隨機點（Output）→ Move To 該點
+│   │    完成 → 下一個狀態
+│   └─ LookAround：Delay 5 ±1.5 秒 → 回 MoveToRandomLocation
+└─ Combat（Required Event：Combat）
+    ├─ DrawWeapon（Enter：Is Character Armed + Invert）
+    │    Play Montage（拔武器）→ 下一個狀態
+    └─ AttackDefense（容器，每輪重新評估）
+        ├─ IsPlayerDead → 讓樹 Succeeded
+        ├─ Flee（Enter：Evaluator 血量 ≤ 20）
+        │    Run EQS（遠離玩家）→ 結果存 Parameter → 跑速 400 → Move To
+        ├─ Defense（Enter：玩家攻擊中）→ Block（GAS 格擋）
+        ├─ TargetLost（目標無效）→ 清除 Focus → 送 Patrol 事件
+        ├─ SetFocus（目標有效）
+        │    Transition：距離 &gt; 250 → CloseDistance；否則 → Strafe
+        ├─ CloseDistance：跑速 → Move To 目標 Actor（接受半徑 125）
+        ├─ Strafe：甜甜圈 EQS → Move To → 短暫停頓
+        └─ PerformAttack：從技能 Tag 清單隨機／依序挑一招 → 回 AttackDefense</div>
+  <p>這棵樹示範了三種常用模式：<b>保底狀態</b>、<b>事件驅動進入大分支</b>、<b>容器狀態裡的迴圈</b>（每個子狀態完成後回到容器，重新評估優先順序）。</p>
+</section>
+
+<section id="gotchas">
+  <h2>7. 陷阱與排錯</h2>
+  <div class="warn"><b>陷阱 1：Task 完成條件預設 Any</b><br>新建 State 時，Tasks 完成條件是 Any：任何一個 Task 完成就嘗試轉移，後面的 Task 可能還沒跑完。依序執行的 Task 多半要改成 <b>All</b>。加了 Debug Text 這類瞬間完成的 Task 時最容易出事。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1179s" target="_blank" rel="noopener">19:39</a></div>
+  <div class="warn"><b>陷阱 2：Enter Condition 行為不如預期</b><br>作者的做法：把判斷移到前一個 State 的 Transition Condition 上，明確指定要去哪個狀態。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1951s" target="_blank" rel="noopener">32:31</a></div>
+  <div class="warn"><b>陷阱 3：沒有保底狀態</b><br>所有狀態都選不進去時，樹會報錯停止，AI 原地不動。把一定進得去的 Idle 放在 Root 第一個子狀態。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=970s" target="_blank" rel="noopener">16:10</a></div>
+  <div class="warn"><b>陷阱 4：C++ Task 的 Tick 不會跑</b><br>class 版 Task 要在建構子設 <code>bShouldCallTick = true</code>。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2531s" target="_blank" rel="noopener">42:11</a></div>
+  <div class="warn"><b>陷阱 5：需要等待的 Task 太早結束</b><br>播放 Montage 這類動作，EnterState 要回傳 <code>Running</code>，Tick 確認完成才回 <code>Succeeded</code>。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2706s" target="_blank" rel="noopener">45:06</a></div>
+  <h3>作者的設計建議</h3>
+  <ul>
+    <li>樹外系統需要的資料（例如鎖定目標）放在 AIController，不要只存在 Evaluator。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=500s" target="_blank" rel="noopener">8:20</a></li>
+    <li>每個自訂節點都寫 <code>GetDescription</code>，樹上就看得懂每個節點在做什麼，隔幾週回來或交接都省事。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2651s" target="_blank" rel="noopener">44:11</a></li>
+    <li>只該執行一次的狀態（例如拔武器）不要放在 Tick 驅動的迴圈裡。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=1375s" target="_blank" rel="noopener">22:55</a></li>
+    <li>Task 參數寫成可設定（例如技能清單、EQS 半徑），不同敵人就能共用同一個 Task。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2113s" target="_blank" rel="noopener">35:13</a></li>
+  </ul>
+</section>
+
+<section id="cpp">
+  <h2>8. C++ 製作速查</h2>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>節點</th><th>基底類別</th><th>要覆寫的函式</th><th>時間</th></tr></thead>
+    <tbody>
+      <tr><td>Evaluator</td><td><code>UStateTreeEvaluatorBlueprintBase</code></td><td><code>TreeStart</code>、<code>TreeStop</code>（選用 <code>Tick</code>、<code>GetDescription</code>）</td><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=721s" target="_blank" rel="noopener">12:01</a></td></tr>
+      <tr><td>Condition</td><td><code>UStateTreeConditionBlueprintBase</code></td><td><code>TestCondition</code></td><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2366s" target="_blank" rel="noopener">39:26</a></td></tr>
+      <tr><td>Task（class 版）</td><td><code>UStateTreeTaskBlueprintBase</code></td><td><code>EnterState</code>、<code>Tick</code>、<code>ExitState</code></td><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2531s" target="_blank" rel="noopener">42:11</a></td></tr>
+      <tr><td>Task（struct 版）</td><td><code>FStateTreeTaskCommonBase</code></td><td>同上 + <code>GetInstanceDataType</code></td><td><a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2867s" target="_blank" rel="noopener">47:47</a></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout"><b>class 版還是 struct 版？</b>作者多數 Task 用 struct 版；只有需要綁定委派（例如 Montage 結束事件）時才用 class 版，因為 USTRUCT 不能綁定這類事件。<a class="ts" href="https://www.youtube.com/watch?v=0iRcG55c2Tw&amp;t=2906s" target="_blank" rel="noopener">48:26</a></div>
+
+  <h3>骨架：Condition</h3>
+  <p class="meta">以下骨架是本筆記依影片說明整理的示意，不是範例專案原始碼。函式簽章請以所用引擎版本的標頭檔為準。<span class="tag">示意</span></p>
+<pre><code>UCLASS(meta = (DisplayName = "Is Character Armed"))
+class UIsCharacterArmedCondition : public UStateTreeConditionBlueprintBase
+{
+    GENERATED_BODY()
+
+protected:
+    virtual bool TestCondition(FStateTreeExecutionContext&amp; Context) const override;
+
+    // Context：由 Schema 自動帶入
+    UPROPERTY(EditAnywhere, Category = "Context")
+    TObjectPtr&lt;AActor&gt; Actor;
+
+    UPROPERTY(EditAnywhere, Category = "Parameter")
+    bool bInvert = false;
+};</code></pre>
+
+  <h3>骨架：class 版 Task（需要等待事件）</h3>
+<pre><code>UCLASS()
+class UPlayMontageTask : public UStateTreeTaskBlueprintBase
+{
+    GENERATED_BODY()
+
+public:
+    UPlayMontageTask() { bShouldCallTick = true; } // 沒開就不會 Tick
+
+protected:
+    virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext&amp; Context,
+        const FStateTreeTransitionResult&amp; Transition) override;   // 播放、綁定事件，回 Running
+    virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext&amp; Context,
+        const float DeltaTime) override;                          // 旗標成立才回 Succeeded
+    virtual void ExitState(FStateTreeExecutionContext&amp; Context,
+        const FStateTreeTransitionResult&amp; Transition) override;   // 解除綁定、停止 Montage
+
+    UPROPERTY(EditAnywhere, Category = "Task")
+    TObjectPtr&lt;UAnimMontage&gt; Montage;
+
+    bool bMontageFinished = false;
+};</code></pre>
+
+  <h3>骨架：struct 版 Task（Instance Data）</h3>
+<pre><code>USTRUCT()
+struct FPerformAttackTaskInstanceData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, Category = "Context")
+    TObjectPtr&lt;AActor&gt; Actor = nullptr;
+
+    UPROPERTY(EditAnywhere, Category = "Parameter")
+    TArray&lt;FGameplayTag&gt; AbilityTags;
+};
+
+USTRUCT(meta = (DisplayName = "Perform Attack"))
+struct FPerformAttackTask : public FStateTreeTaskCommonBase
+{
+    GENERATED_BODY()
+
+    using FInstanceDataType = FPerformAttackTaskInstanceData;
+    // 編輯器靠這個函式找到要顯示的欄位
+    virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+
+    virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext&amp; Context,
+        const FStateTreeTransitionResult&amp; Transition) const override;
+    virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext&amp; Context,
+        const float DeltaTime) const override;
+};
+
+// 實作內取值：FInstanceDataType&amp; Data = Context.GetInstanceData(*this);</code></pre>
+</section>
+
+<footer>TNDA 備課 wiki · StateTree 影片導讀</footer>
+</main>
+</div>
+<script>
+// 深淺色偏好只存在本機瀏覽器；儲存失敗時照常顯示
+(function(){
+  var root=document.documentElement,key='tnda-wiki-theme';
+  try{var saved=localStorage.getItem(key);if(saved)root.setAttribute('data-theme',saved);}catch(e){}
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem(key,next);}catch(e){}
+  });
+})();
+</script>
+<script id="reading-navigation">
+(() => {
+  const article=document.querySelector('article.paper,main');
+  const nav=document.querySelector('.quick-nav,nav.toc');
+  if(!article||!nav)return;
+  if(nav.matches('nav.toc'))nav.classList.add('quick-nav','sidebar');
+  const bar=document.createElement('div');bar.className='reading-bar';
+  bar.innerHTML='<span class="reading-label">整體閱讀進度</span><progress max="100" value="0" aria-label="整體閱讀進度"></progress><span class="reading-percent">0%</span>';
+  document.body.prepend(bar);
+  const progress=bar.querySelector('progress'),percent=bar.querySelector('.reading-percent');
+  const list=document.createElement('ul');list.className='nav-tree';
+  const nodes=[],headingPath=[];let headingLevel=2;
+  function makeAnchor(key){
+    let hash=2166136261;
+    for(const char of key)hash=Math.imul(hash^char.charCodeAt(0),16777619)>>>0;
+    const base='reading-'+hash.toString(16);let id=base,suffix=1;
+    while(document.getElementById(id))id=base+'-'+(++suffix);
+    return id;
+  }
+  for(const el of article.querySelectorAll('h2,h3,h4,h5,p,summary')){
+    if(el.closest('figure,pre,blockquote'))continue;
+    const tag=el.tagName.toLowerCase();let level;
+    if(/^h[2-5]$/.test(tag)){level=+tag[1];headingLevel=level;headingPath.length=level;headingPath[level]=el.textContent.trim();}
+    else if(tag==='summary')level=Math.min(headingLevel+2,6);
+    else{
+      // Standalone bold paragraphs serve as subheadings in these Markdown sources.
+      if(el.children.length!==1||el.firstElementChild.tagName!=='STRONG'||el.textContent.trim()!==el.firstElementChild.textContent.trim()||el.textContent.trim().length>85)continue;
+      if(el.closest('details'))continue;
+      level=Math.min(headingLevel+1,6);
+    }
+    // Chapter context distinguishes repeated subheadings without shifting later anchors.
+    if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+el.textContent.trim());
+    nodes.push({el,level,text:el.textContent.trim(),parents:[]});
+  }
+  const stack=[];
+  for(const node of nodes){
+    while(stack.length&&stack.at(-1).level>=node.level)stack.pop();
+    const parent=stack.at(-1);let container=list;
+    if(parent){
+      if(!parent.children){parent.children=document.createElement('ul');parent.children.id='reading-children-'+nodes.indexOf(parent);parent.li.append(parent.children);}
+      container=parent.children;node.parents=[...parent.parents,parent];
+    }
+    const li=document.createElement('li'),row=document.createElement('div'),link=document.createElement('a');
+    row.className='nav-row';link.href='#'+node.el.id;link.textContent=node.text;row.append(link);li.append(row);container.append(li);
+    Object.assign(node,{li,row,link});stack.push(node);
+  }
+  function expand(node,open){if(!node.children)return;node.children.hidden=!open;node.button.setAttribute('aria-expanded',String(open));node.button.textContent=open?'▾':'▸';}
+  for(const node of nodes){
+    if(node.children){
+      const button=document.createElement('button');button.type='button';button.className='nav-toggle';button.setAttribute('aria-label','展開或收合：'+node.text);button.setAttribute('aria-controls',node.children.id);node.button=button;node.row.prepend(button);
+      expand(node,node.level===2);button.addEventListener('click',()=>expand(node,node.children.hidden));
+    }else{const spacer=document.createElement('span');spacer.className='nav-spacer';spacer.setAttribute('aria-hidden','true');node.row.prepend(spacer);}
+  }
+  nav.replaceChildren();const title=document.createElement('p');title.className='quick-nav-title';title.textContent='本頁導覽';nav.append(title,list);
+  function reveal(target){
+    for(let p=target.parentElement;p&&p!==article;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
+    if(target.tagName==='SUMMARY')target.parentElement.open=true;
+  }
+  for(const node of nodes)node.link.addEventListener('click',event=>{
+    event.preventDefault();reveal(node.el);node.parents.forEach(p=>expand(p,true));
+    history.pushState(null,'','#'+node.el.id);node.el.scrollIntoView({block:'start'});update();
+  });
+  let active=null,pending=false;
+  function update(){
+    pending=false;
+    const rect=article.getBoundingClientRect(),start=rect.top+scrollY,end=rect.bottom+scrollY-innerHeight;
+    const value=end<=start?100:Math.round(Math.max(0,Math.min(1,(scrollY-start)/(end-start)))*100);
+    progress.value=value;percent.textContent=value+'%';
+    let current=nodes[0];
+    for(const node of nodes){if(node.el.getClientRects().length&&node.el.getBoundingClientRect().top<=110)current=node;}
+    if(current&&current!==active){
+      if(active)active.link.removeAttribute('aria-current');active=current;current.link.setAttribute('aria-current','location');current.parents.forEach(p=>expand(p,true));
+      const sidebar=nav.closest('.sidebar'),r=current.link.getBoundingClientRect(),s=sidebar.getBoundingClientRect();
+      if(r.top<s.top||r.bottom>s.bottom)sidebar.scrollTop+=r.top-s.top-sidebar.clientHeight/3;
+    }
+  }
+  function schedule(){if(!pending){pending=true;requestAnimationFrame(update);}}
+  function followHash(){const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(target&&article.contains(target)){reveal(target);requestAnimationFrame(()=>{target.scrollIntoView({block:'start'});update();});}}
+  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);addEventListener('hashchange',followHash);article.addEventListener('toggle',schedule,true);
+  new ResizeObserver(schedule).observe(article);update();if(location.hash)followHash();
+})();
+</script></body>
+</html>
