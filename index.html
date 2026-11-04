@@ -118,8 +118,14 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
 .supplement-nav summary:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 .supplement-nav ol { margin-top: 0.5rem; }
 .supplement-card { margin: 1rem 0; padding: 1.25rem; border: 1px solid var(--line); border-radius: 0.8rem; background: #f8fafc; scroll-margin-top: 1.5rem; }
-.supplement-card h3 { margin: 0 0 1rem; }
+.supplement-card h3 { margin: 0 0 0.35rem; }
+.supplement-meta { margin: 0 0 0.85rem; color: var(--muted); font-size: 0.95rem; }
 .supplement-card:target { border-color: var(--accent); }
+.tutoring-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; margin-top: 0.75rem; }
+.tutoring-slot { display: flex; flex-direction: column; justify-content: space-between; gap: 0.6rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 0.65rem; background: #fff; }
+.tutoring-slot h4 { margin: 0; color: #0f172a; font-size: 1.05rem; }
+.tutoring-slot .supplement-meta { margin: 0.2rem 0 0; }
+@media (max-width: 720px) { .tutoring-grid { grid-template-columns: 1fr; } }
 @media (max-width: 820px) { .supplement-card { scroll-margin-top: 7rem; } }
   .week-quiz{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin:1rem 0 1.5rem;padding:1.25rem 1.5rem;border:1px solid #fdba74;border-left:5px solid #c2410c;border-radius:.8rem;background:#fff7ed}.week-quiz strong{color:#9a3412;font-size:1.15rem}.week-quiz p{margin:.2rem 0 0}.week-quiz a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.65rem 1.4rem;background:#9a3412;color:white;border-radius:.65rem;font-weight:750;text-decoration:none}.week-quiz a:hover{background:#7c2d12}.week-quiz a:focus-visible{outline:3px solid #2563eb;outline-offset:4px}@media(max-width:600px){.week-quiz a{width:100%}}
 .week-supplement { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb; border-radius: 0.75rem; background: #f8fbff; }
@@ -133,12 +139,19 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
     <aside class="week-sidebar" aria-label="週次快速導覽">
       <nav class="week-nav" aria-labelledby="week-nav-title">
         <p class="week-nav__title" id="week-nav-title">週次導覽</p>
-        <details class="supplement-nav">
+        <details class="supplement-nav" id="supplement-details">
           <summary>補充課程</summary>
           <ol>
             <li><a href="#supplement-git">Git 基本操作</a></li>
             <li><a href="#supplement-unreal">Unreal 補強（一）｜基礎補充</a></li>
             <li><a href="#supplement-cpp">Unreal 補強（二）｜Blueprint to C++</a></li>
+          </ol>
+        </details>
+        <details class="supplement-nav" id="tutoring-details">
+          <summary>週間輔導</summary>
+          <ol>
+            <li><a href="#tutoring-week-07">Week 07 週間輔導</a></li>
+            <li><a href="#tutoring-week-08">Week 08 週間輔導</a></li>
           </ol>
         </details>
         <ol>
@@ -187,6 +200,10 @@ hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--line); }
           <option value="#supplement-git">Git 基本操作</option>
           <option value="#supplement-unreal">Unreal 補強（一）｜基礎補充</option>
           <option value="#supplement-cpp">Unreal 補強（二）｜Blueprint to C++</option>
+        </optgroup>
+        <optgroup label="週間輔導">
+          <option value="#tutoring-week-07">Week 07 週間輔導</option>
+          <option value="#tutoring-week-08">Week 08 週間輔導</option>
         </optgroup>
       </select>
     </aside>
@@ -480,15 +497,74 @@ tnda.Debug.RoundScenario cpu_timeover_win
   <p>依需要選讀，複習 Git 操作與 Unreal 開發基礎。</p>
   <article class="supplement-card" id="supplement-git" tabindex="-1">
     <h3>Git 基本操作</h3>
+    <p class="supplement-meta">授課：Kalin 助教｜日期：9/10</p>
     <div class="week-resources"><a href="Addiotnal/Git/basics.html" aria-label="Git 基本操作 講義">講義</a> <a class="week-resource--video" href="https://youtu.be/c27uyrAQJEc?list=PLT6Lb9xb4Crw" target="_blank" rel="noopener noreferrer" aria-label="Git 基本操作 課程錄影">課程錄影</a></div>
   </article>
   <article class="supplement-card" id="supplement-unreal" tabindex="-1">
     <h3>Unreal 補強課程（一）─ Unreal 基礎補充課程</h3>
+    <p class="supplement-meta">授課：小月助教｜日期：9/17</p>
     <div class="week-resources"><a class="week-resource--slides" href="https://canva.link/bbfzydz6vracxxh" target="_blank" rel="noopener noreferrer" aria-label="Unreal 基礎補充課程 講義">講義</a> <a class="week-resource--video" href="https://youtu.be/6ZOq7nEIqso?list=PLT6Lb9xb4Crw" target="_blank" rel="noopener noreferrer" aria-label="Unreal 基礎補充課程 課程錄影">課程錄影</a></div>
   </article>
   <article class="supplement-card" id="supplement-cpp" tabindex="-1">
     <h3>Unreal 補強課程（二）─ Blueprint to C++</h3>
+    <p class="supplement-meta">授課：小月助教｜日期：9/18</p>
     <div class="week-resources"><a class="week-resource--slides" href="https://canva.link/jrhalf01ipc2kol" target="_blank" rel="noopener noreferrer" aria-label="Blueprint to C++ 講義">講義</a> <a class="week-resource--video" href="https://youtu.be/iYWKXa6gZ_M?list=PLT6Lb9xb4Crw" target="_blank" rel="noopener noreferrer" aria-label="Blueprint to C++ 課程錄影">課程錄影</a></div>
+  </article>
+</section>
+<section aria-labelledby="tutoring-title">
+  <h2 id="tutoring-title">週間輔導</h2>
+  <p>從10月底起，每週三、四、五由不同助教帶領，協助解答同學問題及聊聊一些主題。</p>
+  <article class="supplement-card" id="tutoring-week-07" tabindex="-1">
+    <h3>Week 07 週間輔導</h3>
+    <div class="tutoring-grid">
+      <div class="tutoring-slot">
+        <div>
+          <h4>小月助教</h4>
+          <p class="supplement-meta">日期：10/21（三）</p>
+        </div>
+        <div class="week-resources"><a class="week-resource--video" href="https://www.youtube.com/watch?v=VdfQ9U_-unY&list=PLT6Lb9xb4Crw&index=4" target="_blank" rel="noopener noreferrer" aria-label="Week 07 週間輔導 小月助教 課程錄影">課程錄影</a></div>
+      </div>
+      <div class="tutoring-slot">
+        <div>
+          <h4>Kalin 助教</h4>
+          <p class="supplement-meta">無</p>
+        </div>
+        <div class="week-resources"><span class="week-resources__pending">未開課</span></div>
+      </div>
+      <div class="tutoring-slot">
+        <div>
+          <h4>James 助教</h4>
+          <p class="supplement-meta">日期：10/23（五）</p>
+        </div>
+        <div class="week-resources"><span class="week-resources__pending">沒有錄影</span></div>
+      </div>
+    </div>
+  </article>
+  <article class="supplement-card" id="tutoring-week-08" tabindex="-1">
+    <h3>Week 08 週間輔導</h3>
+    <div class="tutoring-grid">
+      <div class="tutoring-slot">
+        <div>
+          <h4>小月助教</h4>
+          <p class="supplement-meta">日期：10/28（三）</p>
+        </div>
+        <div class="week-resources"><a class="week-resource--video" href="https://www.youtube.com/watch?v=p3kA37qINAM&list=PLT6Lb9xb4Crw&index=5" target="_blank" rel="noopener noreferrer" aria-label="Week 08 週間輔導 小月助教 課程錄影">課程錄影</a></div>
+      </div>
+      <div class="tutoring-slot">
+        <div>
+          <h4>Kalin 助教</h4>
+          <p class="supplement-meta">無</p>
+        </div>
+        <div class="week-resources"><span class="week-resources__pending">未開課</span></div>
+      </div>
+      <div class="tutoring-slot">
+        <div>
+          <h4>James 助教</h4>
+          <p class="supplement-meta">日期：10/30（五）</p>
+        </div>
+        <div class="week-resources"><span class="week-resources__pending">沒有錄影</span></div>
+      </div>
+    </div>
   </article>
 </section>
   </main>
@@ -509,7 +585,8 @@ tnda.Debug.RoundScenario cpu_timeover_win
 
   const setActiveWeek = (id) => {
     const hash = `#${id}`;
-    if (id.startsWith("supplement-")) document.querySelector(".supplement-nav").open = true;
+    if (id.startsWith("supplement-")) document.querySelector("#supplement-details").open = true;
+    if (id.startsWith("tutoring-")) document.querySelector("#tutoring-details").open = true;
     links.forEach((link) => {
       if (link.hash === hash) {
         link.setAttribute("aria-current", "location");
