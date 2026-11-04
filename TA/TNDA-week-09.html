@@ -599,6 +599,60 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
 <li><strong>受擊時仍可被推</strong>：受擊反應中的角色也參與推擠協調。受擊仍鎖住操作，但已成立的被動推擠不會因命中結果中止。</li>
 <li><strong>保留不變</strong>：出招期間鎖定主動移動與面向、合法選招與預約、命中結算順序。一般行走的雙方互推仍由 1P 既有的 PrePhysics 規則處理，<strong>只有攻擊參與時才走本次的新協調</strong>。</li>
 </ul>
+<h4>StateTree 生命週期總覽</h4>
+<p>一棵樹從啟動到停止，只有三種事：<strong>啟動 1 次、每次更新重複、停止 1 次</strong>。每次更新的順序固定：<strong>先更新資料與全樹任務，再執行目前狀態的 Task，最後才判斷要不要換狀態</strong>。換狀態只更換需要離開與進入的 Task，不會重啟整棵樹。下圖以 ST_FightingCpu 的 Approach → Attack → Wait 為例；本樹沒有配置 Global Task，標示為「若有」的步驟本案不執行。</p>
+<pre><code class="language-text">【樹啟動 StartLogic】Controller 取得控制權後呼叫一次
+ │
+ ├─► [1] Evaluator::TreeStart() ── 初始化；instance data 跨 Tick 保留
+ │                                 （本案清近戰記憶，並自己再 Tick(0)）
+ ├─► [2] Global Task::EnterState() ─ 若有配置才執行（本案略過）
+ ├─► [3] Evaluator::Tick(0) ─────── 引擎在選初始 State 前先更新一次
+ │
+ │   選出初始 State（Root 依序試入場條件，例如選中 Approach）
+ │   ┌─► [4] Move Task::EnterState() ─ 進場只一次：開始接近
+ │   │
+ │   │   【每次更新 Tick 迴圈（Approach 期間反覆）】
+ │   │   ┌──────────────────────────────────────────────────
+ │   │   │ Step 1 Evaluator::Tick()    最先：更新距離與資格
+ │   │   │ Step 2 Global Task::Tick()  若有（本案略過）
+ │   │   │ Step 3 Move Task::Tick()    執行目前 Task 並回報
+ │   │   │          ↳ Running：維持；Succeeded：本狀態完成
+ │   │   │ Step 4 轉移判定             Task 結果＋轉移條件
+ │   │   │          ↳ 不換狀態：回 Step 1，等下一次更新
+ │   │   └──────────────────────────────────────────────────
+ │   │
+ │   │   Move Task 回傳 Succeeded → OnStateCompleted 回 Root → 選 Attack
+ │   │
+ │   └─► [5] Move Task::ExitState() ── 換狀態：先退出舊 Task
+ │       ┌─► [6] Attack Task::EnterState() ─ 再進入新 Task（同一次更新）
+ │       │
+ │       │   【每次更新 Tick 迴圈（Attack 期間反覆）】
+ │       │   ┌──────────────────────────────────────────
+ │       │   │ Step 1 Evaluator::Tick()    依然最先
+ │       │   │ Step 2 Global Task::Tick()  若有
+ │       │   │ Step 3 Attack Task::Tick()  追蹤同組攻擊
+ │       │   │ Step 4 轉移判定             未完成就維持
+ │       │   └──────────────────────────────────────────
+ │       │
+ │       └─► Attack 完成 → Wait → 回 Root … 反覆
+ │           （Evaluator 每次更新都跑，不因換狀態中斷）
+ │
+【樹停止 StopLogic】Start／Tick 期間呼叫會延後到該階段結束
+ │
+ ├─► [7] 活躍 State Task::ExitState() ─ 先清狀態任務
+ │                                      （Move 撤回輸入、Wait 清倒數）
+ ├─► [8] Global Task::ExitState() ───── 若有配置才執行（本案略過）
+ ├─► [9] Evaluator::TreeStop() ──────── 最後結束（本案沒覆寫，空實作）
+ ▼
+ StopLogic 返回後，Controller 另清移動、組認領、輸入預約與防禦
+</code></pre>
+<p><strong>讀圖順序</strong>：先看 [1]～[4] 的啟動，再看 Step 1～4 的更新迴圈，最後看 [7]～[9] 的停止。要記住的是「<strong>Evaluator 與 Global Task 跨狀態存活，每次更新都先跑；State Task 才隨狀態進出</strong>」。</p>
+<p><strong>常見誤解</strong>：</p>
+<ul>
+<li>轉移判定在 <strong>Task Tick 之後</strong>，不是之前。本次更新換了狀態，新 Task 的第一次 <code>Tick</code> 要等下一次更新。</li>
+<li>Evaluator 不是「沒有狀態」：它的 instance data 會保存跨 Tick 記憶，例如近戰遲滯。</li>
+<li>引擎在啟動時會先替 Evaluator 做一次 <code>Tick(0)</code>；一般換狀態時不會額外再更新 Evaluator。</li>
+</ul>
 <h4>程式碼增刪異動處</h4>
 <p><strong>本段要看懂的改動</strong>：讓攻擊動畫帶動角色，碰到對手時再協調雙方位置，最後處理收招時的殘留位移。依序閱讀：① 允許攻擊位移，但只留水平平移 → ② 在移動後檢查身體接觸 → ③ 只推動尚未走完的距離 → ④ 收招時停止舊招位移。主要檔案為 <code>FightingCharacter.cpp/.h</code> 與 <code>FightingCameraActor.cpp</code>。</p>
 <p>例：1P 在 CPU 面前使出左鉤拳 <code>AM_Attack_02</code>，Montage 這一幀要往前踏 3 cm（示意值），CPU 站著不動。</p>
