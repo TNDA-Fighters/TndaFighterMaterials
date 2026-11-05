@@ -1,0 +1,1005 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNDA Week 10 課前預習｜出招攻略與對戰除錯熱鍵</title><style>
+:root {
+  color-scheme: light;
+  --page: #f2f0e9;
+  --paper: #fffdf8;
+  --ink: #17252d;
+  --muted: #52616a;
+  --navy: #173f50;
+  --teal: #237b73;
+  --teal-soft: #e3f1ed;
+  --gold: #c28732;
+  --gold-soft: #fff3d8;
+  --coral: #b65443;
+  --line: #ccd8d5;
+  --shadow: 0 18px 45px rgba(23, 63, 80, 0.11);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(35, 123, 115, 0.045) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--page);
+  color: var(--ink);
+  font: 16px/1.72 "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: #086a70;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.09em;
+}
+
+a:hover, a:focus-visible { color: var(--coral); }
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: white;
+  transform: translateY(-180%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: white;
+  border-bottom: 0.45rem solid var(--gold);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -7rem;
+  bottom: -10rem;
+  border: 2.6rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding: 2.4rem 0 2.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #cae7df;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: white;
+  font-size: clamp(2rem, 6vw, 3.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.hero-note {
+  max-width: 48rem;
+  margin: 0.85rem 0 0;
+  color: #e5efed;
+  font-size: 1.05rem;
+}
+
+.page-layout {
+  width: min(100% - 2rem, 93.5rem);
+  margin: 1.6rem auto 3rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 72rem);
+  align-items: start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-nav {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.quick-nav a {
+  display: block;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #c6d7d2;
+  border-left: 0.25rem solid transparent;
+  border-radius: 0.55rem;
+  background: #f6faf8;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.quick-nav a:hover, .quick-nav a:focus-visible {
+  border-left-color: var(--gold);
+  background: var(--teal-soft);
+  color: var(--navy);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+}
+
+.paper {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.document-part + .document-part {
+  margin-top: 3.2rem;
+  padding-top: 2.7rem;
+  border-top: 0.24rem solid var(--gold);
+}
+
+.part-title {
+  margin-top: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.42rem solid var(--gold);
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--navy);
+  line-height: 1.32;
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.2rem solid var(--teal);
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(1.32rem, 3.5vw, 1.65rem);
+}
+
+h4 {
+  margin: 1.55rem 0 0.6rem;
+  color: #28596a;
+  font-size: 1.16rem;
+}
+
+p { margin: 0.75rem 0; }
+
+ul, ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li { margin: 0.32rem 0; }
+
+li::marker { color: var(--teal); font-weight: 800; }
+
+blockquote {
+  margin: 1.15rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.35rem solid var(--teal);
+  background: var(--teal-soft);
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+
+code {
+  padding: 0.08em 0.32em;
+  border-radius: 0.28em;
+  background: #f7e8d8;
+  color: #6b371f;
+  font: 1em/1.55 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre {
+  max-width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #bfd1cc;
+  border-radius: 0.7rem;
+  background: #edf4f1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+  color: #20363f;
+}
+
+table {
+  width: 100%;
+  margin: 1.15rem 0 1.45rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th, td {
+  padding: 0.72rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+th {
+  background: #dcece7;
+  color: var(--navy);
+}
+
+tbody tr:nth-child(even) { background: #f4f8f6; }
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 0.38rem 0 -1.35rem;
+  accent-color: var(--teal);
+  vertical-align: -0.15rem;
+}
+
+.diagram {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #b8cec7;
+  border-radius: 0.85rem;
+  background: #f3faf7;
+}
+
+.diagram figcaption {
+  margin-bottom: 0.9rem;
+  color: var(--navy);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.relation-list { display: grid; gap: 0.65rem; }
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.relation-node {
+  padding: 0.65rem 0.72rem;
+  border: 1px solid #86aea3;
+  border-radius: 0.55rem;
+  background: white;
+  color: #173f50;
+  font-weight: 700;
+  text-align: center;
+}
+
+.relation-edge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #8a4d22;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-source { margin-top: 1rem; }
+.diagram-source summary { cursor: pointer; color: #086a70; font-size: 16px; font-weight: 750; }
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+}
+
+footer {
+  width: min(100% - 2rem, 72rem);
+  margin: -1.5rem auto 2rem;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+@media (min-width: 901px) {
+  .hero-inner {
+    width: min(100% - 2rem, 93.5rem);
+    padding-left: 19.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    width: min(100% - 2rem, 72rem);
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+
+  .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body { background: var(--paper); }
+  .hero-inner { width: min(100% - 1.25rem, 72rem); padding: 1.7rem 0 1.55rem; }
+  .hero h1 { font-size: 2rem; }
+  .page-layout { width: 100%; margin-top: 0; }
+  .sidebar { margin: 0; padding: 0.8rem 0.8rem 0; }
+  .quick-nav { grid-template-columns: 1fr; border-radius: 0.75rem; box-shadow: none; }
+  .paper { padding: 1rem 0.8rem 2rem; border: 0; border-radius: 0; box-shadow: none; }
+  .relation-row { grid-template-columns: 1fr; }
+  .relation-edge { flex-direction: column; gap: 0; }
+  .relation-edge span:last-child { transform: rotate(90deg); }
+  th, td { padding: 0.6rem 0.5rem; }
+  footer { width: calc(100% - 1rem); margin-top: 1rem; }
+}
+
+@media print {
+  body { background: white; }
+  .hero { border-bottom-width: 0.2rem; print-color-adjust: exact; }
+  .hero-inner { width: 100%; padding-left: 0; }
+  .sidebar, .skip-link, .back-link { display: none; }
+  .page-layout { display: block; width: 100%; margin: 0; }
+  main { width: 100%; margin: 0; }
+  .paper { border: 0; box-shadow: none; }
+  a { color: inherit; }
+}
+
+.quick-nav .nav-level-3 {
+  padding-left: 1rem;
+  background: var(--paper);
+  font-weight: 650;
+}
+
+.paper h2,
+.paper h3,
+.paper h4 { scroll-margin-top: 1rem; }
+
+
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap: normal; word-break: normal; }
+.hero h1 { max-width: 72rem; font-size: clamp(2rem, 5vw, 3rem); }
+.flow-diagram { margin: 1.5rem 0; overflow-x: auto; }
+.flow-diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+.diagram-source { margin: 1rem 0 1.5rem; }
+
+
+.flow-diagram foreignObject, .flow-diagram foreignObject * { overflow-wrap:normal; word-break:normal; }
+
+#week09-2-flow-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week09-2-flow-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week09-2-flow-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week09-2-flow-1 .error-icon{fill:#552222;}#week09-2-flow-1 .error-text{fill:#552222;stroke:#552222;}#week09-2-flow-1 .edge-thickness-normal{stroke-width:1px;}#week09-2-flow-1 .edge-thickness-thick{stroke-width:3.5px;}#week09-2-flow-1 .edge-pattern-solid{stroke-dasharray:0;}#week09-2-flow-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#week09-2-flow-1 .edge-pattern-dashed{stroke-dasharray:3;}#week09-2-flow-1 .edge-pattern-dotted{stroke-dasharray:2;}#week09-2-flow-1 .marker{fill:#333333;stroke:#333333;}#week09-2-flow-1 .marker.cross{stroke:#333333;}#week09-2-flow-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#week09-2-flow-1 p{margin:0;}#week09-2-flow-1 .label{font-family:Microsoft JhengHei;color:#333;}#week09-2-flow-1 .cluster-label text{fill:#333;}#week09-2-flow-1 .cluster-label span{color:#333;}#week09-2-flow-1 .cluster-label span p{background-color:transparent;}#week09-2-flow-1 .label text,#week09-2-flow-1 span{fill:#333;color:#333;}#week09-2-flow-1 .node rect,#week09-2-flow-1 .node circle,#week09-2-flow-1 .node ellipse,#week09-2-flow-1 .node polygon,#week09-2-flow-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week09-2-flow-1 .rough-node .label text,#week09-2-flow-1 .node .label text,#week09-2-flow-1 .image-shape .label,#week09-2-flow-1 .icon-shape .label{text-anchor:middle;}#week09-2-flow-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week09-2-flow-1 .rough-node .label,#week09-2-flow-1 .node .label,#week09-2-flow-1 .image-shape .label,#week09-2-flow-1 .icon-shape .label{text-align:center;}#week09-2-flow-1 .node.clickable{cursor:pointer;}#week09-2-flow-1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week09-2-flow-1 .arrowheadPath{fill:#333333;}#week09-2-flow-1 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week09-2-flow-1 .flowchart-link{stroke:#333333;fill:none;}#week09-2-flow-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week09-2-flow-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week09-2-flow-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week09-2-flow-1 .cluster text{fill:#333;}#week09-2-flow-1 .cluster span{color:#333;}#week09-2-flow-1 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week09-2-flow-1 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week09-2-flow-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week09-2-flow-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week09-2-flow-1 rect.text{fill:none;stroke-width:0;}#week09-2-flow-1 .icon-shape,#week09-2-flow-1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-1 .icon-shape p,#week09-2-flow-1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week09-2-flow-1 .icon-shape .label rect,#week09-2-flow-1 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week09-2-flow-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week09-2-flow-1 .node .neo-node{stroke:#9370DB;}#week09-2-flow-1 [data-look="neo"].node rect,#week09-2-flow-1 [data-look="neo"].cluster rect,#week09-2-flow-1 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#week09-2-flow-1 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week09-2-flow-1 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-1 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week09-2-flow-1 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-1 [data-look="neo"].node circle .state-start{fill:#000000;}#week09-2-flow-1 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-1 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week09-2-flow-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week09-2-flow-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week09-2-flow-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week09-2-flow-2 .error-icon{fill:#552222;}#week09-2-flow-2 .error-text{fill:#552222;stroke:#552222;}#week09-2-flow-2 .edge-thickness-normal{stroke-width:1px;}#week09-2-flow-2 .edge-thickness-thick{stroke-width:3.5px;}#week09-2-flow-2 .edge-pattern-solid{stroke-dasharray:0;}#week09-2-flow-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#week09-2-flow-2 .edge-pattern-dashed{stroke-dasharray:3;}#week09-2-flow-2 .edge-pattern-dotted{stroke-dasharray:2;}#week09-2-flow-2 .marker{fill:#333333;stroke:#333333;}#week09-2-flow-2 .marker.cross{stroke:#333333;}#week09-2-flow-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#week09-2-flow-2 p{margin:0;}#week09-2-flow-2 .label{font-family:Microsoft JhengHei;color:#333;}#week09-2-flow-2 .cluster-label text{fill:#333;}#week09-2-flow-2 .cluster-label span{color:#333;}#week09-2-flow-2 .cluster-label span p{background-color:transparent;}#week09-2-flow-2 .label text,#week09-2-flow-2 span{fill:#333;color:#333;}#week09-2-flow-2 .node rect,#week09-2-flow-2 .node circle,#week09-2-flow-2 .node ellipse,#week09-2-flow-2 .node polygon,#week09-2-flow-2 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week09-2-flow-2 .rough-node .label text,#week09-2-flow-2 .node .label text,#week09-2-flow-2 .image-shape .label,#week09-2-flow-2 .icon-shape .label{text-anchor:middle;}#week09-2-flow-2 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week09-2-flow-2 .rough-node .label,#week09-2-flow-2 .node .label,#week09-2-flow-2 .image-shape .label,#week09-2-flow-2 .icon-shape .label{text-align:center;}#week09-2-flow-2 .node.clickable{cursor:pointer;}#week09-2-flow-2 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week09-2-flow-2 .arrowheadPath{fill:#333333;}#week09-2-flow-2 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week09-2-flow-2 .flowchart-link{stroke:#333333;fill:none;}#week09-2-flow-2 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-2 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week09-2-flow-2 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-2 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week09-2-flow-2 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week09-2-flow-2 .cluster text{fill:#333;}#week09-2-flow-2 .cluster span{color:#333;}#week09-2-flow-2 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week09-2-flow-2 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week09-2-flow-2 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week09-2-flow-2 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week09-2-flow-2 rect.text{fill:none;stroke-width:0;}#week09-2-flow-2 .icon-shape,#week09-2-flow-2 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-2 .icon-shape p,#week09-2-flow-2 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week09-2-flow-2 .icon-shape .label rect,#week09-2-flow-2 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-2 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week09-2-flow-2 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week09-2-flow-2 .node .neo-node{stroke:#9370DB;}#week09-2-flow-2 [data-look="neo"].node rect,#week09-2-flow-2 [data-look="neo"].cluster rect,#week09-2-flow-2 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#week09-2-flow-2 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week09-2-flow-2 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-2 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week09-2-flow-2 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-2 [data-look="neo"].node circle .state-start{fill:#000000;}#week09-2-flow-2 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-2 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-2 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week09-2-flow-3{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week09-2-flow-3 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week09-2-flow-3 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week09-2-flow-3 .error-icon{fill:#552222;}#week09-2-flow-3 .error-text{fill:#552222;stroke:#552222;}#week09-2-flow-3 .edge-thickness-normal{stroke-width:1px;}#week09-2-flow-3 .edge-thickness-thick{stroke-width:3.5px;}#week09-2-flow-3 .edge-pattern-solid{stroke-dasharray:0;}#week09-2-flow-3 .edge-thickness-invisible{stroke-width:0;fill:none;}#week09-2-flow-3 .edge-pattern-dashed{stroke-dasharray:3;}#week09-2-flow-3 .edge-pattern-dotted{stroke-dasharray:2;}#week09-2-flow-3 .marker{fill:#333333;stroke:#333333;}#week09-2-flow-3 .marker.cross{stroke:#333333;}#week09-2-flow-3 svg{font-family:Microsoft JhengHei;font-size:30px;}#week09-2-flow-3 p{margin:0;}#week09-2-flow-3 .label{font-family:Microsoft JhengHei;color:#333;}#week09-2-flow-3 .cluster-label text{fill:#333;}#week09-2-flow-3 .cluster-label span{color:#333;}#week09-2-flow-3 .cluster-label span p{background-color:transparent;}#week09-2-flow-3 .label text,#week09-2-flow-3 span{fill:#333;color:#333;}#week09-2-flow-3 .node rect,#week09-2-flow-3 .node circle,#week09-2-flow-3 .node ellipse,#week09-2-flow-3 .node polygon,#week09-2-flow-3 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week09-2-flow-3 .rough-node .label text,#week09-2-flow-3 .node .label text,#week09-2-flow-3 .image-shape .label,#week09-2-flow-3 .icon-shape .label{text-anchor:middle;}#week09-2-flow-3 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week09-2-flow-3 .rough-node .label,#week09-2-flow-3 .node .label,#week09-2-flow-3 .image-shape .label,#week09-2-flow-3 .icon-shape .label{text-align:center;}#week09-2-flow-3 .node.clickable{cursor:pointer;}#week09-2-flow-3 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week09-2-flow-3 .arrowheadPath{fill:#333333;}#week09-2-flow-3 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week09-2-flow-3 .flowchart-link{stroke:#333333;fill:none;}#week09-2-flow-3 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-3 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week09-2-flow-3 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-3 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week09-2-flow-3 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week09-2-flow-3 .cluster text{fill:#333;}#week09-2-flow-3 .cluster span{color:#333;}#week09-2-flow-3 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week09-2-flow-3 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week09-2-flow-3 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week09-2-flow-3 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week09-2-flow-3 rect.text{fill:none;stroke-width:0;}#week09-2-flow-3 .icon-shape,#week09-2-flow-3 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-3 .icon-shape p,#week09-2-flow-3 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week09-2-flow-3 .icon-shape .label rect,#week09-2-flow-3 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-3 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week09-2-flow-3 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week09-2-flow-3 .node .neo-node{stroke:#9370DB;}#week09-2-flow-3 [data-look="neo"].node rect,#week09-2-flow-3 [data-look="neo"].cluster rect,#week09-2-flow-3 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-3 [data-look="neo"].swimlane.cluster rect{filter:none;}#week09-2-flow-3 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week09-2-flow-3 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-3 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week09-2-flow-3 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-3 [data-look="neo"].node circle .state-start{fill:#000000;}#week09-2-flow-3 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-3 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-3 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+#week09-2-flow-4{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#week09-2-flow-4 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#week09-2-flow-4 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#week09-2-flow-4 .error-icon{fill:#552222;}#week09-2-flow-4 .error-text{fill:#552222;stroke:#552222;}#week09-2-flow-4 .edge-thickness-normal{stroke-width:1px;}#week09-2-flow-4 .edge-thickness-thick{stroke-width:3.5px;}#week09-2-flow-4 .edge-pattern-solid{stroke-dasharray:0;}#week09-2-flow-4 .edge-thickness-invisible{stroke-width:0;fill:none;}#week09-2-flow-4 .edge-pattern-dashed{stroke-dasharray:3;}#week09-2-flow-4 .edge-pattern-dotted{stroke-dasharray:2;}#week09-2-flow-4 .marker{fill:#333333;stroke:#333333;}#week09-2-flow-4 .marker.cross{stroke:#333333;}#week09-2-flow-4 svg{font-family:Microsoft JhengHei;font-size:30px;}#week09-2-flow-4 p{margin:0;}#week09-2-flow-4 .label{font-family:Microsoft JhengHei;color:#333;}#week09-2-flow-4 .cluster-label text{fill:#333;}#week09-2-flow-4 .cluster-label span{color:#333;}#week09-2-flow-4 .cluster-label span p{background-color:transparent;}#week09-2-flow-4 .label text,#week09-2-flow-4 span{fill:#333;color:#333;}#week09-2-flow-4 .node rect,#week09-2-flow-4 .node circle,#week09-2-flow-4 .node ellipse,#week09-2-flow-4 .node polygon,#week09-2-flow-4 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#week09-2-flow-4 .rough-node .label text,#week09-2-flow-4 .node .label text,#week09-2-flow-4 .image-shape .label,#week09-2-flow-4 .icon-shape .label{text-anchor:middle;}#week09-2-flow-4 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#week09-2-flow-4 .rough-node .label,#week09-2-flow-4 .node .label,#week09-2-flow-4 .image-shape .label,#week09-2-flow-4 .icon-shape .label{text-align:center;}#week09-2-flow-4 .node.clickable{cursor:pointer;}#week09-2-flow-4 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#week09-2-flow-4 .arrowheadPath{fill:#333333;}#week09-2-flow-4 .edgePaths .path{stroke:#333333;stroke-width:1px;}#week09-2-flow-4 .flowchart-link{stroke:#333333;fill:none;}#week09-2-flow-4 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-4 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#week09-2-flow-4 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-4 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#week09-2-flow-4 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#week09-2-flow-4 .cluster text{fill:#333;}#week09-2-flow-4 .cluster span{color:#333;}#week09-2-flow-4 .node .collapsed-indicator{fill:#aaaa33;stroke:none;opacity:0.6;}#week09-2-flow-4 .node .collapsed-separator{stroke:#aaaa33;stroke-width:0.75px;}#week09-2-flow-4 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Microsoft JhengHei;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#week09-2-flow-4 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#week09-2-flow-4 rect.text{fill:none;stroke-width:0;}#week09-2-flow-4 .icon-shape,#week09-2-flow-4 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#week09-2-flow-4 .icon-shape p,#week09-2-flow-4 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#week09-2-flow-4 .icon-shape .label rect,#week09-2-flow-4 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#week09-2-flow-4 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#week09-2-flow-4 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#week09-2-flow-4 .node .neo-node{stroke:#9370DB;}#week09-2-flow-4 [data-look="neo"].node rect,#week09-2-flow-4 [data-look="neo"].cluster rect,#week09-2-flow-4 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-4 [data-look="neo"].swimlane.cluster rect{filter:none;}#week09-2-flow-4 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#week09-2-flow-4 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-4 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#week09-2-flow-4 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-4 [data-look="neo"].node circle .state-start{fill:#000000;}#week09-2-flow-4 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-4 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#week09-2-flow-4 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}
+.flow-diagram svg{width:100%;height:auto;max-height:560px}
+.paper img{display:block;max-width:100%;height:auto;margin:1rem 0;border:1px solid var(--line);border-radius:.5rem}
+.flow-diagram{overflow:visible;margin:1.5rem 0}.flow-diagram svg{display:block;width:100%;min-width:0;max-width:100%;height:auto;max-height:none}.flow-diagram foreignObject{overflow:visible}.flow-diagram p{margin:0}.paper img{display:block;max-width:100%;height:auto}.paper h5{font-size:1rem}
+ .paper table{table-layout:auto}.paper td>code{white-space:nowrap;overflow-wrap:normal;word-break:normal} 
+#w10-2-diagram-1{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#w10-2-diagram-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#w10-2-diagram-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#w10-2-diagram-1 .error-icon{fill:#552222;}#w10-2-diagram-1 .error-text{fill:#552222;stroke:#552222;}#w10-2-diagram-1 .edge-thickness-normal{stroke-width:1px;}#w10-2-diagram-1 .edge-thickness-thick{stroke-width:3.5px;}#w10-2-diagram-1 .edge-pattern-solid{stroke-dasharray:0;}#w10-2-diagram-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#w10-2-diagram-1 .edge-pattern-dashed{stroke-dasharray:3;}#w10-2-diagram-1 .edge-pattern-dotted{stroke-dasharray:2;}#w10-2-diagram-1 .marker{fill:#333333;stroke:#333333;}#w10-2-diagram-1 .marker.cross{stroke:#333333;}#w10-2-diagram-1 svg{font-family:Microsoft JhengHei;font-size:30px;}#w10-2-diagram-1 p{margin:0;}#w10-2-diagram-1 .mermaid-main-font{font-family:Microsoft JhengHei;}#w10-2-diagram-1 .exclude-range{fill:#eeeeee;}#w10-2-diagram-1 .section{stroke:none;opacity:0.2;}#w10-2-diagram-1 .section0{fill:rgba(102, 102, 255, 0.49);}#w10-2-diagram-1 .section2{fill:#fff400;}#w10-2-diagram-1 .section1,#w10-2-diagram-1 .section3{fill:white;opacity:0.2;}#w10-2-diagram-1 .sectionTitle0{fill:#333;}#w10-2-diagram-1 .sectionTitle1{fill:#333;}#w10-2-diagram-1 .sectionTitle2{fill:#333;}#w10-2-diagram-1 .sectionTitle3{fill:#333;}#w10-2-diagram-1 .sectionTitle{text-anchor:start;font-family:Microsoft JhengHei;}#w10-2-diagram-1 .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#w10-2-diagram-1 .grid .tick text{font-family:Microsoft JhengHei;fill:#333;}#w10-2-diagram-1 .grid path{stroke-width:0;}#w10-2-diagram-1 .today{fill:none;stroke:red;stroke-width:2px;}#w10-2-diagram-1 .task{stroke-width:2;}#w10-2-diagram-1 .taskText{text-anchor:middle;font-family:Microsoft JhengHei;}#w10-2-diagram-1 .taskTextOutsideRight{fill:black;text-anchor:start;font-family:Microsoft JhengHei;}#w10-2-diagram-1 .taskTextOutsideLeft{fill:black;text-anchor:end;}#w10-2-diagram-1 .task.clickable{cursor:pointer;}#w10-2-diagram-1 .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-1 .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-1 .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-1 .taskText0,#w10-2-diagram-1 .taskText1,#w10-2-diagram-1 .taskText2,#w10-2-diagram-1 .taskText3{fill:white;}#w10-2-diagram-1 .task0,#w10-2-diagram-1 .task1,#w10-2-diagram-1 .task2,#w10-2-diagram-1 .task3{fill:#8a90dd;stroke:#534fbc;}#w10-2-diagram-1 .taskTextOutside0,#w10-2-diagram-1 .taskTextOutside2{fill:black;}#w10-2-diagram-1 .taskTextOutside1,#w10-2-diagram-1 .taskTextOutside3{fill:black;}#w10-2-diagram-1 .active0,#w10-2-diagram-1 .active1,#w10-2-diagram-1 .active2,#w10-2-diagram-1 .active3{fill:#bfc7ff;stroke:#534fbc;}#w10-2-diagram-1 .activeText0,#w10-2-diagram-1 .activeText1,#w10-2-diagram-1 .activeText2,#w10-2-diagram-1 .activeText3{fill:black!important;}#w10-2-diagram-1 .done0,#w10-2-diagram-1 .done1,#w10-2-diagram-1 .done2,#w10-2-diagram-1 .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#w10-2-diagram-1 .doneText0,#w10-2-diagram-1 .doneText1,#w10-2-diagram-1 .doneText2,#w10-2-diagram-1 .doneText3{fill:black!important;}#w10-2-diagram-1 .doneText0.taskTextOutsideLeft,#w10-2-diagram-1 .doneText0.taskTextOutsideRight,#w10-2-diagram-1 .doneText1.taskTextOutsideLeft,#w10-2-diagram-1 .doneText1.taskTextOutsideRight,#w10-2-diagram-1 .doneText2.taskTextOutsideLeft,#w10-2-diagram-1 .doneText2.taskTextOutsideRight,#w10-2-diagram-1 .doneText3.taskTextOutsideLeft,#w10-2-diagram-1 .doneText3.taskTextOutsideRight{fill:black!important;}#w10-2-diagram-1 .crit0,#w10-2-diagram-1 .crit1,#w10-2-diagram-1 .crit2,#w10-2-diagram-1 .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#w10-2-diagram-1 .activeCrit0,#w10-2-diagram-1 .activeCrit1,#w10-2-diagram-1 .activeCrit2,#w10-2-diagram-1 .activeCrit3{stroke:#ff8888;fill:#bfc7ff;stroke-width:2;}#w10-2-diagram-1 .doneCrit0,#w10-2-diagram-1 .doneCrit1,#w10-2-diagram-1 .doneCrit2,#w10-2-diagram-1 .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#w10-2-diagram-1 .milestone{transform:rotate(45deg) scale(0.8,0.8);}#w10-2-diagram-1 .milestoneText{font-style:italic;}#w10-2-diagram-1 .doneCritText0,#w10-2-diagram-1 .doneCritText1,#w10-2-diagram-1 .doneCritText2,#w10-2-diagram-1 .doneCritText3{fill:black!important;}#w10-2-diagram-1 .doneCritText0.taskTextOutsideLeft,#w10-2-diagram-1 .doneCritText0.taskTextOutsideRight,#w10-2-diagram-1 .doneCritText1.taskTextOutsideLeft,#w10-2-diagram-1 .doneCritText1.taskTextOutsideRight,#w10-2-diagram-1 .doneCritText2.taskTextOutsideLeft,#w10-2-diagram-1 .doneCritText2.taskTextOutsideRight,#w10-2-diagram-1 .doneCritText3.taskTextOutsideLeft,#w10-2-diagram-1 .doneCritText3.taskTextOutsideRight{fill:black!important;}#w10-2-diagram-1 .vert{stroke:navy;}#w10-2-diagram-1 .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#w10-2-diagram-1 .activeCritText0,#w10-2-diagram-1 .activeCritText1,#w10-2-diagram-1 .activeCritText2,#w10-2-diagram-1 .activeCritText3{fill:black!important;}#w10-2-diagram-1 .titleText{text-anchor:middle;font-size:18px;fill:#333;font-family:Microsoft JhengHei;}#w10-2-diagram-1 .node .neo-node{stroke:#9370DB;}#w10-2-diagram-1 [data-look="neo"].node rect,#w10-2-diagram-1 [data-look="neo"].cluster rect,#w10-2-diagram-1 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#w10-2-diagram-1 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#w10-2-diagram-1 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-1 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#w10-2-diagram-1 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-1 [data-look="neo"].node circle .state-start{fill:#000000;}#w10-2-diagram-1 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-1 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-1 .tick text{font-size:18px;}#w10-2-diagram-1 :root{--mermaid-font-family:Microsoft JhengHei;}
+#w10-2-diagram-2{font-family:Microsoft JhengHei;font-size:30px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#w10-2-diagram-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#w10-2-diagram-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#w10-2-diagram-2 .error-icon{fill:#552222;}#w10-2-diagram-2 .error-text{fill:#552222;stroke:#552222;}#w10-2-diagram-2 .edge-thickness-normal{stroke-width:1px;}#w10-2-diagram-2 .edge-thickness-thick{stroke-width:3.5px;}#w10-2-diagram-2 .edge-pattern-solid{stroke-dasharray:0;}#w10-2-diagram-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#w10-2-diagram-2 .edge-pattern-dashed{stroke-dasharray:3;}#w10-2-diagram-2 .edge-pattern-dotted{stroke-dasharray:2;}#w10-2-diagram-2 .marker{fill:#333333;stroke:#333333;}#w10-2-diagram-2 .marker.cross{stroke:#333333;}#w10-2-diagram-2 svg{font-family:Microsoft JhengHei;font-size:30px;}#w10-2-diagram-2 p{margin:0;}#w10-2-diagram-2 .mermaid-main-font{font-family:Microsoft JhengHei;}#w10-2-diagram-2 .exclude-range{fill:#eeeeee;}#w10-2-diagram-2 .section{stroke:none;opacity:0.2;}#w10-2-diagram-2 .section0{fill:rgba(102, 102, 255, 0.49);}#w10-2-diagram-2 .section2{fill:#fff400;}#w10-2-diagram-2 .section1,#w10-2-diagram-2 .section3{fill:white;opacity:0.2;}#w10-2-diagram-2 .sectionTitle0{fill:#333;}#w10-2-diagram-2 .sectionTitle1{fill:#333;}#w10-2-diagram-2 .sectionTitle2{fill:#333;}#w10-2-diagram-2 .sectionTitle3{fill:#333;}#w10-2-diagram-2 .sectionTitle{text-anchor:start;font-family:Microsoft JhengHei;}#w10-2-diagram-2 .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#w10-2-diagram-2 .grid .tick text{font-family:Microsoft JhengHei;fill:#333;}#w10-2-diagram-2 .grid path{stroke-width:0;}#w10-2-diagram-2 .today{fill:none;stroke:red;stroke-width:2px;}#w10-2-diagram-2 .task{stroke-width:2;}#w10-2-diagram-2 .taskText{text-anchor:middle;font-family:Microsoft JhengHei;}#w10-2-diagram-2 .taskTextOutsideRight{fill:black;text-anchor:start;font-family:Microsoft JhengHei;}#w10-2-diagram-2 .taskTextOutsideLeft{fill:black;text-anchor:end;}#w10-2-diagram-2 .task.clickable{cursor:pointer;}#w10-2-diagram-2 .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-2 .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-2 .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#w10-2-diagram-2 .taskText0,#w10-2-diagram-2 .taskText1,#w10-2-diagram-2 .taskText2,#w10-2-diagram-2 .taskText3{fill:white;}#w10-2-diagram-2 .task0,#w10-2-diagram-2 .task1,#w10-2-diagram-2 .task2,#w10-2-diagram-2 .task3{fill:#8a90dd;stroke:#534fbc;}#w10-2-diagram-2 .taskTextOutside0,#w10-2-diagram-2 .taskTextOutside2{fill:black;}#w10-2-diagram-2 .taskTextOutside1,#w10-2-diagram-2 .taskTextOutside3{fill:black;}#w10-2-diagram-2 .active0,#w10-2-diagram-2 .active1,#w10-2-diagram-2 .active2,#w10-2-diagram-2 .active3{fill:#bfc7ff;stroke:#534fbc;}#w10-2-diagram-2 .activeText0,#w10-2-diagram-2 .activeText1,#w10-2-diagram-2 .activeText2,#w10-2-diagram-2 .activeText3{fill:black!important;}#w10-2-diagram-2 .done0,#w10-2-diagram-2 .done1,#w10-2-diagram-2 .done2,#w10-2-diagram-2 .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#w10-2-diagram-2 .doneText0,#w10-2-diagram-2 .doneText1,#w10-2-diagram-2 .doneText2,#w10-2-diagram-2 .doneText3{fill:black!important;}#w10-2-diagram-2 .doneText0.taskTextOutsideLeft,#w10-2-diagram-2 .doneText0.taskTextOutsideRight,#w10-2-diagram-2 .doneText1.taskTextOutsideLeft,#w10-2-diagram-2 .doneText1.taskTextOutsideRight,#w10-2-diagram-2 .doneText2.taskTextOutsideLeft,#w10-2-diagram-2 .doneText2.taskTextOutsideRight,#w10-2-diagram-2 .doneText3.taskTextOutsideLeft,#w10-2-diagram-2 .doneText3.taskTextOutsideRight{fill:black!important;}#w10-2-diagram-2 .crit0,#w10-2-diagram-2 .crit1,#w10-2-diagram-2 .crit2,#w10-2-diagram-2 .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#w10-2-diagram-2 .activeCrit0,#w10-2-diagram-2 .activeCrit1,#w10-2-diagram-2 .activeCrit2,#w10-2-diagram-2 .activeCrit3{stroke:#ff8888;fill:#bfc7ff;stroke-width:2;}#w10-2-diagram-2 .doneCrit0,#w10-2-diagram-2 .doneCrit1,#w10-2-diagram-2 .doneCrit2,#w10-2-diagram-2 .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#w10-2-diagram-2 .milestone{transform:rotate(45deg) scale(0.8,0.8);}#w10-2-diagram-2 .milestoneText{font-style:italic;}#w10-2-diagram-2 .doneCritText0,#w10-2-diagram-2 .doneCritText1,#w10-2-diagram-2 .doneCritText2,#w10-2-diagram-2 .doneCritText3{fill:black!important;}#w10-2-diagram-2 .doneCritText0.taskTextOutsideLeft,#w10-2-diagram-2 .doneCritText0.taskTextOutsideRight,#w10-2-diagram-2 .doneCritText1.taskTextOutsideLeft,#w10-2-diagram-2 .doneCritText1.taskTextOutsideRight,#w10-2-diagram-2 .doneCritText2.taskTextOutsideLeft,#w10-2-diagram-2 .doneCritText2.taskTextOutsideRight,#w10-2-diagram-2 .doneCritText3.taskTextOutsideLeft,#w10-2-diagram-2 .doneCritText3.taskTextOutsideRight{fill:black!important;}#w10-2-diagram-2 .vert{stroke:navy;}#w10-2-diagram-2 .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#w10-2-diagram-2 .activeCritText0,#w10-2-diagram-2 .activeCritText1,#w10-2-diagram-2 .activeCritText2,#w10-2-diagram-2 .activeCritText3{fill:black!important;}#w10-2-diagram-2 .titleText{text-anchor:middle;font-size:18px;fill:#333;font-family:Microsoft JhengHei;}#w10-2-diagram-2 .node .neo-node{stroke:#9370DB;}#w10-2-diagram-2 [data-look="neo"].node rect,#w10-2-diagram-2 [data-look="neo"].cluster rect,#w10-2-diagram-2 [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#w10-2-diagram-2 [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#w10-2-diagram-2 [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-2 [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#w10-2-diagram-2 [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-2 [data-look="neo"].node circle .state-start{fill:#000000;}#w10-2-diagram-2 [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-2 [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#w10-2-diagram-2 .tick text{font-size:18px;}#w10-2-diagram-2 :root{--mermaid-font-family:Microsoft JhengHei;}
+/* reading-navigation:start */
+body{padding-top:52px}
+.reading-bar{position:fixed;inset:0 0 auto;z-index:50;height:52px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--paper);border-bottom:1px solid var(--line);box-sizing:border-box}
+.reading-label{font-size:16px;font-weight:700;color:var(--navy);white-space:nowrap}
+.reading-percent{min-width:4ch;text-align:right;font-variant-numeric:tabular-nums;font-size:16px;color:var(--navy)}
+.reading-bar progress{appearance:none;flex:1;min-width:0;height:8px;border:0;border-radius:8px;overflow:hidden;background:var(--line)}
+.reading-bar progress::-webkit-progress-bar{background:var(--line);border-radius:8px}
+.reading-bar progress::-webkit-progress-value{background:var(--teal);border-radius:8px}
+.reading-bar progress::-moz-progress-bar{background:var(--teal)}
+.sidebar{top:68px;max-height:calc(100vh - 84px)}
+.quick-nav{display:block;padding:16px 10px}
+.nav-tree,.nav-tree ul{list-style:none;margin:0;padding:0}
+.nav-tree ul{margin-left:12px;padding-left:9px;border-left:1px solid var(--line)}
+.nav-tree [hidden]{display:none}
+.nav-tree li{margin:3px 0}
+.nav-row{display:flex;align-items:flex-start;gap:2px}
+.nav-toggle{flex:none;width:24px;min-height:36px;padding:5px 0;border:0;background:transparent;color:var(--navy);font-size:16px;cursor:pointer}
+.nav-spacer{flex:none;width:24px}
+.quick-nav .nav-row a{flex:1;min-width:0;min-height:0;padding:7px 6px;border:0;border-radius:5px;background:transparent;font-size:16px;line-height:1.5;font-weight:400;overflow-wrap:anywhere}
+.nav-tree>li>.nav-row a{font-weight:750}
+.quick-nav .nav-row a:hover,.quick-nav .nav-row a:focus-visible{background:var(--teal-soft)}
+.quick-nav .nav-row a[aria-current="location"]{background:var(--teal-soft);color:var(--navy);font-weight:750;box-shadow:inset 3px 0 var(--teal)}
+.nav-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.paper [id]{scroll-margin-top:76px}
+html:has(nav.toc){--navy:var(--ink);--teal:var(--accent);--teal-soft:var(--accent-soft)}
+html:has(nav.toc) .layout{max-width:1496px;grid-template-columns:288px minmax(0,1fr);gap:24px}
+nav.toc.sidebar{top:68px;max-height:calc(100vh - 84px);font-size:16px}
+nav.toc.sidebar .nav-tree{padding-left:0}
+html:has(nav.toc) main [id]{scroll-margin-top:76px}
+html:has(nav.toc) :is(.meta,table,a.ts,.card p,pre,code,.tree,.flow span,.tag,footer,.theme-btn){font-size:16px}
+html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
+@media print{body{padding-top:0}.reading-bar{display:none}}
+/* reading-navigation:end */
+</style></head><body><a class="skip-link" href="#main-content">跳到主要內容</a><header class="hero" id="top"><div class="hero-inner"><p class="eyebrow">TNDA · WEEK 10 · 課前預習</p><h1>TNDA Week 10 課前預習｜出招攻略與對戰除錯熱鍵</h1></div></header><div class="page-layout"><aside class="sidebar"><nav class="quick-nav" aria-label="本頁導覽"><p class="quick-nav-title">本頁導覽</p><a class="nav-level-2" href="#w10-2-1">本週目標</a>
+<a class="nav-level-2" href="#w10-2-2">課前準備</a>
+<a class="nav-level-2" href="#w10-2-3">課前預習</a>
+<a class="nav-level-3" href="#w10-2-4">課前預習 1｜目前的設計有哪些出招攻略</a>
+<a class="nav-level-3" href="#w10-2-5">課前預習 2｜試用對戰除錯熱鍵</a>
+<a class="nav-level-2" href="#w10-2-6">課前實作練習</a>
+<a class="nav-level-3" href="#w10-2-7">課前實作練習 1｜讓 U 可以把 CPU 一路連打到倒地</a>
+<a class="nav-level-3" href="#w10-2-8">課前實作練習 2｜讓右腳踢頭不論是否被防，都能再接一定命中的 U</a>
+<a class="nav-level-2" href="#w10-2-9">官方參考資料</a>
+<a class="nav-level-2" href="#w10-2-10">上課前確認</a></nav></aside><main id="main-content"><article class="paper"><h2 id="w10-2-1">本週目標</h2>
+<ul>
+<li>能用招式的 Notify 時間、<code>DamageTable</code> 的 Hitstun／Blockstun 與 <code>ST_FightingCpu</code> 的防禦參數，算出「打中後誰先能動」，並說明 CPU 什麼時候防得住、什麼時候防不住。</li>
+<li>能用暫停、變速、逐格與 Combat Debug 熱鍵，在對戰中停在想看的那一幀，讀出雙方的戰鬥狀態與硬直剩餘時間。</li>
+<li>只改硬直數值，就做出「U 連打到倒地」與「踢頭後接 U 必中」兩種打法。</li>
+</ul>
+<h2 id="w10-2-2">課前準備</h2>
+<ul>
+<li>使用 week-10（<code>58159624</code>）教材專案，開啟 <code>/Game/Fighting/stage1</code>，確認 PIE（Play In Editor，在編輯器中執行遊戲）能正常顯示玩家與 CPU。</li>
+<li>先知道三個按鍵：<code>U</code> 是輕擊，<code>I</code> 是第二攻擊，按住前進方向（數字鍵盤方向的 6）再按 <code>U</code> 是右腳踢頭。</li>
+<li>本週的資料表原始檔在專案根目錄的 <code>_DataTable/CommandTable.csv</code> 與 <code>_DataTable/DamageTable.csv</code>，分別匯入 <code>/Game/DataTable/DT_Command</code> 與 <code>/Game/DataTable/DT_Damage</code>。</li>
+</ul>
+<h2 id="w10-2-3">課前預習</h2>
+<h3 id="w10-2-4">課前預習 1｜目前的設計有哪些出招攻略</h3>
+<p><strong>先懂幾個名詞</strong></p>
+<ul>
+<li><strong>設計幀</strong>：本課固定把 1 秒切成 60 格，1 幀就是 1/60 秒。下面所有幀數都從「這一招起手」那一刻算起。</li>
+<li><strong>命中幀</strong>：攻擊判定第一次碰到對手的那一幀。</li>
+<li><strong>可再行動幀</strong>：攻擊動畫（Montage）整段播完、角色回到可以移動與出招的那一幀。攻擊動畫的淡出也算在攻擊裡。</li>
+<li><strong>硬直</strong>：被打中或防住後，暫時不能移動、出招、防禦的一段時間。被打中叫 <strong>Hitstun</strong>（挨打硬直），防住叫 <strong>Blockstun</strong>（防禦硬直）。長度寫在 <code>DamageTable</code>，單位是設計幀。</li>
+<li><strong>差值（優勢幀）</strong>：對手硬直結束的那一幀，減去自己可再行動的那一幀。正數代表你先能動，負數代表對手先能動。格鬥遊戲通常稱為幀數優勢（Frame Advantage）。</li>
+<li><strong>CommandLink 三個 Notify</strong>：Notify 是掛在動畫時間軸上的事件，類似 Unity 的 Animation Event，但觸發與資料流程不完全相同。<code>Preorder</code>（預約開始）之後可以先按下一招，<code>Enable</code>（接招開始）到 <code>Disable</code>（接招結束）之間會真的接出下一招。能接哪一招，由 <code>CommandTable</code> 的 <code>Link</code> 欄決定，而且不能接同一個動畫。</li>
+<li><strong>攻擊序列</strong>：一次新起手會換一個序列編號；用 Link 接出的招沿用同一個編號。CPU 用這個編號判斷「這是不是新的一波攻擊」。</li>
+<li><strong>戰鬥狀態</strong>：每名角色同一時間只有一個狀態：<code>Neutral</code>（待機）、<code>Attacking</code>（出招中）、<code>Defending</code>（待機且有防禦意圖）、<code>Hitstun</code>、<code>Blockstun</code>、<code>KnockedOut</code>（被擊倒）、<code>Victory</code>（勝利）。只有 <code>Neutral</code> 與 <code>Defending</code> 可以起手。</li>
+</ul>
+<p><strong>三招的資料</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">ID</th>
+<th>招式</th>
+<th>按鍵</th>
+<th>Montage</th>
+<th align="right">Damage</th>
+<th align="right">Hitstun</th>
+<th align="right">Blockstun</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>輕擊</td>
+<td><code>U</code></td>
+<td><code>AM_Attack_01</code></td>
+<td align="right">10</td>
+<td align="right">12</td>
+<td align="right">8</td>
+<td>3（第二攻擊）</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>右腳踢頭</td>
+<td>6＋<code>U</code></td>
+<td><code>AM_Attack_03</code></td>
+<td align="right">15</td>
+<td align="right">18</td>
+<td align="right">12</td>
+<td>無</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>第二攻擊</td>
+<td><code>I</code></td>
+<td><code>AM_Attack_02</code></td>
+<td align="right">20</td>
+<td align="right">16</td>
+<td align="right">10</td>
+<td>無</td>
+</tr>
+</tbody></table>
+<p><code>Damage</code>、<code>Hitstun</code>、<code>Blockstun</code> 來自 <code>DamageTable.csv</code>，<code>Link</code> 來自 <code>CommandTable.csv</code>。所以 U 可以接 I，I 與踢頭都接不了任何招。</p>
+<p><strong>三招的時間軸</strong>（單位：設計幀）</p>
+<table>
+<thead>
+<tr>
+<th>招式</th>
+<th align="right">Montage 長度</th>
+<th align="right">Preorder</th>
+<th align="right">傷害判定</th>
+<th align="right">Enable～Disable</th>
+<th align="right">可再行動</th>
+<th align="right">命中幀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U 輕擊</td>
+<td align="right">60</td>
+<td align="right">16</td>
+<td align="right">22～29</td>
+<td align="right">36～44</td>
+<td align="right">59</td>
+<td align="right">22</td>
+</tr>
+<tr>
+<td>I 第二攻擊</td>
+<td align="right">60</td>
+<td align="right">20</td>
+<td align="right">26～29</td>
+<td align="right">38～46</td>
+<td align="right">59</td>
+<td align="right">25</td>
+</tr>
+<tr>
+<td>6＋U 右腳踢頭</td>
+<td align="right">100</td>
+<td align="right">10</td>
+<td align="right">20～27</td>
+<td align="right">40～50</td>
+<td align="right">99</td>
+<td align="right">20～21</td>
+</tr>
+</tbody></table>
+<p>Preorder、傷害判定、Enable、Disable 來自三份 Montage 上的 Notify；命中幀依雙方距離可能差 1 幀。</p>
+<p><strong>自己從 Montage 讀出時間軸（以 <code>AM_Attack_01</code> 為例）</strong></p>
+<p>Montage 編輯器的時間軸用的是<strong>動畫影格</strong>，這份動畫是 30 fps，和本課的 60 幀設計幀不同。所以讀的時候一律先看<strong>秒數</strong>，再乘以 60 換成設計幀。</p>
+<p><img src="images/week-10-montage/week-10-montage-01-overview.png" alt="AM_Attack_01 的 Montage 編輯器全貌：1 Content Drawer、2 播放列、3 三條 Notify 軌道、4 影格率、8 Blend Option"></p>
+<p>上圖的編號對應下面的步驟：紅框 1～3 是要操作的位置，黃框 4、8 是要讀的資訊。</p>
+<ol>
+<li><p><strong>開啟 Montage。</strong> 按左下角 <strong>Content Drawer</strong>（圖中 1），依序進入 <code>Content</code> → <code>Fighting</code> → <code>Anims</code>，雙擊 <code>AM_Attack_01</code>，開啟 Montage 編輯器。</p>
+</li>
+<li><p><strong>先暫停預覽。</strong> 編輯器一開就會循環播放動畫。按時間軸下方播放列（圖中 2）的暫停鍵，讓播放頭（時間軸上那條白色直線，頂端有紅色把手）停住。</p>
+</li>
+<li><p><strong>認識下方的軌道。</strong> 中間偏下是時間軸，上方刻度是動畫影格（0～30）。綠色長條 <code>MM_Attack_01</code> 是這份 Montage 播放的動畫；展開 <strong>Notifies</strong> 可以看到三條軌道（圖中 3）：</p>
+<ul>
+<li>軌道 1：紫色長條 <code>Damage</code>。它是 Notify State，有開始也有結束，就是傷害判定。</li>
+<li>軌道 2：<code>CommandLink Preorder</code> 與 <code>CommandLink Enable</code>。</li>
+<li>軌道 3：<code>CommandLink Disable</code>。</li>
+<li>名稱太長時會被截斷，例如顯示成 <code>CommandLink Preord</code>。</li>
+</ul>
+</li>
+<li><p><strong>讀 Montage 長度。</strong> 先確認影格率：看中間 3D 預覽畫面（顯示角色的那一格）的左上角，有一排白色小字，從 <code>Previewing Montage AM_Attack_01</code> 開始往下數，最後一行就是 <code>Framerate: 30 fps</code>（圖中 4）。它不在整個編輯器視窗的左上角，字也很小，背景亮時不好認。</p>
+<p><img src="images/week-10-montage/week-10-montage-01b-framerate.png" alt="3D 預覽畫面左上角的資訊文字，最後一行是 Framerate: 30 fps"></p>
+<p>找不到這排字也沒關係：時間軸最右端是影格 30、秒數 1.00，同樣可以推出每秒 30 影格。接著把播放頭拖到時間軸最右端，播放頭旁的標籤會顯示「影格（秒數）（百分比）」，這裡是 <code>30 (1.00) (100%)</code>。長度 1.00 秒 × 60 ＝ <strong>60 設計幀</strong>。</p>
+<p><img src="images/week-10-montage/week-10-montage-02-length.png" alt="播放頭拖到最右端，標籤顯示 30 (1.00) (100%)"></p>
+<p>以下特寫圖中，黃框是播放頭標籤，紅框是要對齊的 Notify。</p>
+</li>
+<li><p><strong>讀 Preorder。</strong> 把播放頭拖到 <code>CommandLink Preorder</code> 左端的菱形，標籤顯示 <code>8 (0.27)</code>。0.27 秒 × 60 ≈ <strong>第 16 幀</strong>。</p>
+<p><img src="images/week-10-montage/week-10-montage-03-preorder.png" alt="播放頭對齊 CommandLink Preorder，標籤顯示 8 (0.27)"></p>
+</li>
+<li><p><strong>讀傷害判定。</strong> 把播放頭分別拖到紫色 <code>Damage</code> 長條的左端與右端，標籤是 <code>11* (0.37)</code> 與 <code>15 (0.50)</code>。影格後面的 <code>*</code> 表示播放頭落在兩個影格之間，所以要看括號裡的秒數。開始是 0.37 × 60 ≈ 第 22 幀；結束在 0.50 × 60 ＝ 第 30 幀，所以判定持續到第 29 幀，表中寫成 <strong>22～29</strong>。</p>
+<p><img src="images/week-10-montage/week-10-montage-04-damage-start.png" alt="播放頭對齊 Damage 左端，標籤顯示 11* (0.37)"></p>
+<p><img src="images/week-10-montage/week-10-montage-05-damage-end.png" alt="播放頭對齊 Damage 右端，標籤顯示 15 (0.50)"></p>
+</li>
+<li><p><strong>讀 Enable 與 Disable。</strong> 同樣把播放頭拖到 <code>CommandLink Enable</code> 與 <code>CommandLink Disable</code> 的菱形，標籤是 <code>18 (0.60)</code> 與 <code>22 (0.73)</code>。換算成 <strong>第 36 幀與第 44 幀</strong>，就是表中的 36～44。</p>
+<p><img src="images/week-10-montage/week-10-montage-06-enable.png" alt="播放頭對齊 CommandLink Enable，標籤顯示 18 (0.60)"></p>
+<p><img src="images/week-10-montage/week-10-montage-07-disable.png" alt="播放頭對齊 CommandLink Disable，標籤顯示 22 (0.73)"></p>
+</li>
+<li><p><strong>讀可再行動幀。</strong> 看左側 <strong>Asset Details</strong> 的 <strong>Blend Option</strong>（總覽圖中 8）：<code>Enable Auto Blend Out</code> 有打勾，展開 <code>Blend Out</code> 可以看到淡出 0.15 秒。淡出是在動畫最後 0.15 秒進行，不會讓動畫變長；程式等整份 Montage 播完才收招。60 幀從第 0 幀數起，最後一幀是第 59 幀，所以表中寫 <strong>59</strong>（PIE 實測也是第 59 幀可以再出招）。</p>
+</li>
+<li><p><strong>命中幀不在 Montage 上。</strong> Montage 只告訴你判定「最早」從第 22 幀開始；什麼時候真的打到，要看那時對手是否在攻擊範圍內。對手已經站在範圍內時，命中幀就是判定開始的 <strong>第 22 幀</strong>；要確認實際命中幀，用預習 2 的暫停與逐格在 PIE 裡看。</p>
+</li>
+<li><p><strong>看完不要存檔。</strong> 拖播放頭不會修改資產；如果不小心拖動了 Notify，按 <code>Ctrl</code>＋<code>Z</code> 復原，或關閉編輯器時選擇不儲存。</p>
+</li>
+</ol>
+<p>標籤的秒數只到小數第二位，乘以 60 後遇到 22.2 這類數字，取最接近的整數幀即可，表中的值都是這樣換算的。手動拖曳很難剛好停在 Notify 上，差一點時標籤會出現 <code>*</code>，秒數差 0.01～0.02 屬於正常誤差。<code>AM_Attack_02</code>、<code>AM_Attack_03</code> 用同樣的步驟讀；<code>AM_Attack_03</code> 長 1.67 秒，所以是 100 幀。</p>
+<p><strong>CPU 的防禦參數</strong>（<code>/Game/Fighting/AI/ST_FightingCpu</code> 的根參數）</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th align="right">本週值</th>
+<th>對攻略的影響</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DefenseDistance</td>
+<td align="right">120 cm</td>
+<td>距離超過 120 cm 時，CPU 不會為這一波攻擊抽防禦</td>
+</tr>
+<tr>
+<td>DefenseReactionTime</td>
+<td align="right">0.2 秒（12 幀）</td>
+<td>抽中後要準備 12 幀才真的防禦</td>
+</tr>
+<tr>
+<td>DefenseChance</td>
+<td align="right">0.5</td>
+<td>每一波新攻擊只抽一次，抽中就防</td>
+</tr>
+<tr>
+<td>WaitDuration</td>
+<td align="right">0.8 秒（48 幀）</td>
+<td>CPU 做完一組行動（含防禦）後先等待，才重新決策</td>
+</tr>
+<tr>
+<td>EnterDistance／ExitDistance</td>
+<td align="right">100／120 cm</td>
+<td>CPU 在 100 cm 內才進入近戰、開始出招</td>
+</tr>
+</tbody></table>
+<p><strong>算一次優勢幀：U 打中 CPU</strong></p>
+<p>優勢幀就是上面名詞裡的「差值」，回答一個問題：<strong>這一招結束後，誰先能動、早幾幀？</strong></p>
+<p>雙方要用同一個時鐘才能比較。這裡以<strong>攻擊方</strong>這一招的第 0 幀為起點，也就是你按下 U 後，角色變成 <code>Attacking</code> 的第一幀。CPU 的 Hitstun 長度不變，只是換算到這個時鐘上。</p>
+<table>
+<thead>
+<tr>
+<th align="right">步驟</th>
+<th>要算什麼</th>
+<th>算式</th>
+<th align="right">結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>什麼時候打中 CPU</td>
+<td>查時間軸表的命中幀</td>
+<td align="right">第 22 幀</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>CPU 什麼時候恢復</td>
+<td>命中幀＋Hitstun＝22＋12</td>
+<td align="right">第 34 幀</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>你什麼時候恢復</td>
+<td>查時間軸表的可再行動幀</td>
+<td align="right">第 59 幀</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>優勢幀</td>
+<td>CPU 恢復幀－你的恢復幀＝34－59</td>
+<td align="right"><strong>－25</strong></td>
+</tr>
+</tbody></table>
+<p><strong>CPU 被打中後確實只要 12 幀就能動。</strong> 這 12 幀從被打中那一刻才開始算；在那之前的第 0～21 幀，CPU 還沒被打到。所以第 22＋12＝34 幀不是 CPU 硬直了 34 幀，而是「被打中後的第 12 幀」在你的時鐘上的位置。</p>
+<p><strong>圖 1｜U 打中後，誰先能動？</strong>（甘特圖，單位：幀）</p>
+<figure class="flow-diagram"><svg style="width:900px;max-width:100%;margin-inline:auto" id="w10-2-diagram-1" width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 204" role="graphics-document document" aria-roledescription="gantt"><g></g><g class="grid" transform="translate(70, 154)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-114V0.5H800.5V-114"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(136.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(271.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(407.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(542.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(678.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">50</text></g></g><g class="grid" transform="translate(70, 50)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,114V0.5H800.5V114"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(136.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(271.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(407.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(542.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(678.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">50</text></g></g><g><rect x="0" y="48" width="885" height="52" class="section section0"></rect><rect x="0" y="100" width="885" height="52" class="section section1"></rect></g><g><rect id="w10-2-diagram-1-a1" rx="3" ry="3" x="70" y="50" width="298" height="44" transform-origin="219px 72px" class="task task0 "></rect><rect id="w10-2-diagram-1-b1" rx="3" ry="3" x="70" y="102" width="298" height="44" transform-origin="219px 124px" class="task task1 "></rect><rect id="w10-2-diagram-1-a2" rx="3" ry="3" x="368" y="50" width="502" height="44" transform-origin="619px 72px" class="task task0 "></rect><rect id="w10-2-diagram-1-b2" rx="3" ry="3" x="368" y="102" width="163" height="44" transform-origin="449.5px 124px" class="task crit1 "></rect><rect id="w10-2-diagram-1-b3" rx="3" ry="3" x="531" y="102" width="339" height="44" transform-origin="700.5px 124px" class="task active1 "></rect><text id="w10-2-diagram-1-a1-text" font-size="18" x="219" y="79" text-height="44" class=" taskText taskText0  width-89.76908874511719">起手 0～22 </text><text id="w10-2-diagram-1-b1-text" font-size="18" x="219" y="131" text-height="44" class=" taskText taskText1  width-143.75894165039062">還沒被打到 0～22 </text><text id="w10-2-diagram-1-a2-text" font-size="18" x="619" y="79" text-height="44" class=" taskText taskText0  width-100.19770812988281">收招 22～59 </text><text id="w10-2-diagram-1-b2-text" font-size="18" x="449.5" y="131" text-height="44" class=" taskText taskText1  critText1 width-125.7656021118164">Hitstun 22～34 </text><text id="w10-2-diagram-1-b3-text" font-size="18" x="700.5" y="131" text-height="44" class=" taskText taskText1 activeText1 width-220.028076171875">已經能動 34～59，早 25 幀 </text></g><g><text dy="0em" x="10" y="76" font-size="20" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">你</tspan></text><text dy="0em" x="10" y="128" font-size="20" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">CPU</tspan></text></g><g class="today"><line x1="1051073" x2="1051073" y1="25" y2="179" class="today"></line></g><text x="450" y="25" class="titleText"></text></svg></figure>
+<p>你在第 59 幀才收招完，CPU 的硬直在第 34 幀就結束，兩者相差 25 幀。結果是負數，代表對手先能動；正數才是你先能動。</p>
+<p>被防時只把 Hitstun 換成 Blockstun，其餘算法相同。三招的優勢幀如下：</p>
+<table>
+<thead>
+<tr>
+<th>招式</th>
+<th>情況</th>
+<th align="right">命中幀</th>
+<th align="right">對手硬直</th>
+<th align="right">對手恢復</th>
+<th align="right">你恢復</th>
+<th align="right">優勢幀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U 輕擊</td>
+<td>打中</td>
+<td align="right">22</td>
+<td align="right">12</td>
+<td align="right">34</td>
+<td align="right">59</td>
+<td align="right"><strong>－25</strong></td>
+</tr>
+<tr>
+<td>U 輕擊</td>
+<td>被防</td>
+<td align="right">22</td>
+<td align="right">8</td>
+<td align="right">30</td>
+<td align="right">59</td>
+<td align="right"><strong>－29</strong></td>
+</tr>
+<tr>
+<td>I 第二攻擊</td>
+<td>打中</td>
+<td align="right">25</td>
+<td align="right">16</td>
+<td align="right">41</td>
+<td align="right">59</td>
+<td align="right"><strong>－18</strong></td>
+</tr>
+<tr>
+<td>I 第二攻擊</td>
+<td>被防</td>
+<td align="right">25</td>
+<td align="right">10</td>
+<td align="right">35</td>
+<td align="right">59</td>
+<td align="right"><strong>－24</strong></td>
+</tr>
+<tr>
+<td>6＋U 右腳踢頭</td>
+<td>打中</td>
+<td align="right">21</td>
+<td align="right">18</td>
+<td align="right">39</td>
+<td align="right">99</td>
+<td align="right"><strong>－60</strong></td>
+</tr>
+<tr>
+<td>6＋U 右腳踢頭</td>
+<td>被防</td>
+<td align="right">21</td>
+<td align="right">12</td>
+<td align="right">33</td>
+<td align="right">99</td>
+<td align="right"><strong>－66</strong></td>
+</tr>
+</tbody></table>
+<p>U 與 I 的數字在 85 cm 實測相符；踢頭以 110 cm 實測，站到 120 cm 以上會早 1 幀命中，優勢幀變成 －61 與 －67。</p>
+<p><strong>－25 幀到底有多吃虧？</strong> 可以把優勢幀和招式的起手幀放在一起看。按下 U 的那一幀還不算新招，下一幀才是新招的第 0 幀，所以 CPU 恢復後立刻出 U，會在「恢復幀＋1＋22」前後打到你。</p>
+<p><strong>圖 2｜CPU 一恢復就出 U，打得到還在收招的你嗎？</strong>（甘特圖，單位：幀）</p>
+<figure class="flow-diagram"><svg style="width:900px;max-width:100%;margin-inline:auto" id="w10-2-diagram-2" width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 204" role="graphics-document document" aria-roledescription="gantt"><g></g><g class="grid" transform="translate(70, 154)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-114V0.5H800.5V-114"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(136.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(271.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(407.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(542.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(678.5,0)"><line stroke="currentColor" y2="-114"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">50</text></g></g><g class="grid" transform="translate(70, 50)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,114V0.5H800.5V114"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(136.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(271.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(407.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(542.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(678.5,0)"><line stroke="currentColor" y2="114"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">50</text></g></g><g><rect x="0" y="48" width="885" height="52" class="section section0"></rect><rect x="0" y="100" width="885" height="52" class="section section1"></rect></g><g><rect id="w10-2-diagram-2-a1" rx="3" ry="3" x="70" y="50" width="298" height="44" transform-origin="219px 72px" class="task task0 "></rect><rect id="w10-2-diagram-2-b1" rx="3" ry="3" x="70" y="102" width="298" height="44" transform-origin="219px 124px" class="task task1 "></rect><rect id="w10-2-diagram-2-a2" rx="3" ry="3" x="368" y="50" width="475" height="44" transform-origin="605.5px 72px" class="task task0 "></rect><rect id="w10-2-diagram-2-b2" rx="3" ry="3" x="368" y="102" width="163" height="44" transform-origin="449.5px 124px" class="task crit1 "></rect><rect id="w10-2-diagram-2-b3" rx="3" ry="3" x="531" y="102" width="312" height="44" transform-origin="687px 124px" class="task active1 "></rect><rect id="w10-2-diagram-2-a3" rx="3" ry="3" x="843" y="50" width="27" height="44" transform-origin="856.5px 72px" class="task crit0 "></rect><text id="w10-2-diagram-2-a1-text" font-size="18" x="219" y="79" text-height="44" class=" taskText taskText0  width-89.76908874511719">起手 0～22 </text><text id="w10-2-diagram-2-b1-text" font-size="18" x="219" y="131" text-height="44" class=" taskText taskText1  width-143.75894165039062">還沒被打到 0～22 </text><text id="w10-2-diagram-2-a2-text" font-size="18" x="605.5" y="79" text-height="44" class=" taskText taskText0  width-100.19770812988281">收招 22～57 </text><text id="w10-2-diagram-2-b2-text" font-size="18" x="449.5" y="131" text-height="44" class=" taskText taskText1  critText1 width-125.7656021118164">Hitstun 22～34 </text><text id="w10-2-diagram-2-b3-text" font-size="18" x="687" y="131" text-height="44" class=" taskText taskText1 activeText1 width-136.006591796875">立刻出 U 34～57 </text><text id="w10-2-diagram-2-a3-text" font-size="18" x="838" y="79" text-height="44" class=" taskTextOutsideLeft taskTextOutside0  critText0">被打 </text></g><g><text dy="0em" x="10" y="76" font-size="20" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">你</tspan></text><text dy="0em" x="10" y="128" font-size="20" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">CPU</tspan></text></g><g class="today"><line x1="1051073" x2="1051073" y1="25" y2="179" class="today"></line></g><text x="450" y="25" class="titleText"></text></svg></figure>
+<p>下表是讓 CPU 恢復後立刻出 U 的實測結果。它只用來說明優勢幀的意義，一般對戰的 CPU 不會這樣打，原因在下面的七條打法。</p>
+<table>
+<thead>
+<tr>
+<th>你的招式</th>
+<th align="right">優勢幀</th>
+<th align="right">CPU 的 U 打到你</th>
+<th align="right">你恢復</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U 打中</td>
+<td align="right">－25</td>
+<td align="right">第 57 幀</td>
+<td align="right">第 59 幀</td>
+<td>你還沒收招完就被打中</td>
+</tr>
+<tr>
+<td>U 被防</td>
+<td align="right">－29</td>
+<td align="right">第 53 幀</td>
+<td align="right">第 59 幀</td>
+<td>你還沒收招完就被打中</td>
+</tr>
+<tr>
+<td>I 被防</td>
+<td align="right">－24</td>
+<td align="right">第 59 幀</td>
+<td align="right">第 59 幀</td>
+<td>你一恢復就被打中</td>
+</tr>
+<tr>
+<td>I 打中</td>
+<td align="right">－18</td>
+<td align="right">第 65 幀</td>
+<td align="right">第 59 幀</td>
+<td>你先恢復 6 幀，但你的 U 要 22 幀才打到，比 CPU 慢</td>
+</tr>
+</tbody></table>
+<p>判斷方式：<strong>把優勢幀的絕對值，和對手最快一招的命中幀相比。</strong> 絕對值比較大，對手就能在你恢復前後打到你。</p>
+<p>三招不論打中或被防都是負的：只看數字，出招的人比較吃虧。但 CPU 的防禦與出手時機還有自己的規則，所以實際打起來並不只看優勢幀，下面會把這些規則算成攻略。</p>
+<p><strong>把規則算成攻略</strong></p>
+<p>依目前的出招、防禦與硬直規則，可以推出下面七條打法。</p>
+<ol>
+<li><strong>CPU 只在你新起手那一刻抽一次。</strong> 條件是 CPU 當下為 <code>Neutral</code>／<code>Defending</code>，而且距離 ≤ 120 cm。抽中後 12 幀就備好防禦，比最快的 20 幀命中還早，所以抽中一定防得住。反過來，你起手時 CPU 還在硬直或出招，這一整波它都防不了。</li>
+<li><strong>Link 接出的招屬於同一波。</strong> U→I 的 U 被防，I 也會被防；U 打中，I 也不會被防。</li>
+<li><strong>U→I 不是真連段。</strong> U 打中後 CPU 第 34 幀就恢復；I 要等第 36 幀的 Enable 才接出來、第 61 幀才打到，中間空了 27 幀。實戰接得上，是因為 CPU 出招被打斷後會進入 0.8 秒的 Wait，這段時間它不出手。</li>
+<li><strong>CPU 防住後不會馬上反擊。</strong> CPU 要等你整波收完、再等 0.8 秒才出手。例如 U→I 被防，CPU 第 97 幀解除防禦，第 97＋48＝145 幀才出招。</li>
+<li><strong>踢頭吃距離。</strong> 雙方站定時，距離 100 cm 以內踢頭會揮空，110～150 cm 都打得到。CPU 進入 100 cm 才開始出招，所以踢頭只在 CPU 走過來的途中好用：在約 135 cm 出腳，CPU 會自己走進踢擊範圍；這時距離超過 120 cm，CPU 也不會抽防禦。</li>
+<li><strong>同時出手，先起手的贏。</strong> CPU 在你起手後第 6 幀才出招，牠的 U 要到 6＋22＝28 幀才打到；你的 U 第 22 幀先打中，把牠的攻擊打斷。</li>
+<li><strong>防住 CPU 後立刻 U 必中。</strong> 要背靠場地邊緣的牆按住後退：在場地中間按住後退會一路退開，CPU 的攻擊打不到你，也就沒有防住可言。以 CPU 起手為第 0 幀：你防住牠的 U（第 22 幀命中、Blockstun 8 幀），第 30 幀解除。CPU 的 U 被防是 －29，站在你這邊就是 ＋29：CPU 要到第 59 幀才恢復，這 29 幀內按下 U，CPU 都沒有防禦資格，所以這一下不會被防。解除時立刻按 U，第 31 幀是你這一招的第 0 幀，第 53 幀打到；就算 CPU 用 Link 接了 I，I 要到第 61 幀才打得到，也會先被你打斷。</li>
+</ol>
+<p><strong>停一下，確認自己懂了：</strong> 第 1 條和第 7 條都會讓 CPU「防不住」，兩者的原因有什麼不同？</p>
+<details>
+<summary>取材版本與查證限制</summary>
+
+<p>取材基準為 <code>week-10</code>（<code>58159624</code>），原始碼位於 <code>Projects/TndaFighter-worktrees/dev-week-10/</code>。三份攻擊 Montage 的 Notify 時間、<code>DT_Command</code>、<code>DT_Damage</code> 與 <code>ST_FightingCpu</code> 根參數均由 Editor 回讀；<code>AM_Attack_01</code> 的 Montage 編輯器畫面（30 fps 刻度、播放頭標籤格式、三條 Notify 軌道）以 UE 5.8.4 截圖核對；各張特寫是以腳本把預覽播放頭設到 Notify 的精確秒數後截圖，學生手動拖曳的停點可能有 0.01～0.02 秒誤差；命中幀、差值與七條攻略以 PIE 開啟 CPU AI 實測確認，命中幀依距離可能相差 1 幀。三招在 U、I 打中與被防的恢復幀、CPU 恢復後立刻出 U 的結果，以及踢頭 70～150 cm 的命中幀，另以 PIE 逐幀實測（固定 60 fps、CPU AI 關閉、Damage 暫設 0，兩輪結果相同），算式的恢復幀與實測一致。</p>
+</details>
+
+<h3 id="w10-2-5">課前預習 2｜試用對戰除錯熱鍵</h3>
+<p><strong>打法要靠幀數判斷，眼睛跟不上時就把時間停下來。</strong> 開 PIE 後，先點一下遊戲畫面讓它取得焦點，再試下面四組熱鍵。</p>
+<table>
+<thead>
+<tr>
+<th>熱鍵</th>
+<th>作用</th>
+<th>暫停中可用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Space</code></td>
+<td>暫停／恢復；和 Console 的 <code>pause</code> 是同一個暫停狀態</td>
+<td>是</td>
+</tr>
+<tr>
+<td>小鍵盤 <code>+</code>／<code>-</code></td>
+<td>時間倍率在 ×0.125、×0.25、×0.5、×1、×2、×4 之間上下一檔，到底就停住</td>
+<td>是，恢復後沿用</td>
+</tr>
+<tr>
+<td>小鍵盤 <code>.</code></td>
+<td>暫停中前進一個設計幀（1/60 遊戲秒，不受倍率影響）；沒暫停時按下只會先暫停</td>
+<td>是</td>
+</tr>
+<tr>
+<td>右 <code>Ctrl</code>＋<code>F12</code></td>
+<td>開關 Combat Debug 面板，和 <code>tnda.Debug.ShowCombatDebug on/off</code> 相同；左 <code>Ctrl</code> 不會觸發</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<p><strong>每次按熱鍵，畫面會短暫顯示目前狀態。</strong> 打開 Combat Debug 後，畫面左下是 1P 面板，右下是 CPU 面板，先讀這三行：</p>
+<ul>
+<li><code>1P: State Hitstun | Stun 0.150 s | HP 90/100</code>：目前戰鬥狀態、硬直剩餘秒數與 HP。</li>
+<li><code>Attack ID 1 X | Active | Frame 23.00</code>：目前招式、攻擊階段與動畫走到第幾個設計幀。</li>
+<li><code>Time x0.5 | PAUSED | Step 3</code>：只在 1P 面板出現，代表目前倍率、正在暫停，以及這次暫停後已逐格 3 次。沒暫停時只顯示 <code>Time x0.5</code>。</li>
+</ul>
+<p><strong>也可以一次印出雙方狀態。</strong> 在 Console 輸入 <code>tnda.Debug.PrintFighters</code>，Output Log 與畫面會各印出雙方一行，格式是 <code>名稱 | State 狀態 | HP 目前/最大 | Attack 招式 ID 名稱 | Phase 攻擊階段 | Stun 硬直剩餘 s | DefIntent 防禦意圖來源</code>。</p>
+<p><strong>試著觀察三件事：</strong></p>
+<ol>
+<li>讓 CPU 被 U 打中後立刻按 <code>Space</code>。暫停期間 <code>Stun</code> 的數字不會變，因為硬直計時器用的是 World 遊戲時間，暫停時不前進。</li>
+<li>暫停中連按三次小鍵盤 <code>.</code>，<code>Stun</code> 每次剛好少 1/60 秒（約 0.017），<code>Frame</code> 每次加 1。</li>
+<li>用小鍵盤 <code>-</code> 降到 ×0.25 再出招，動作、硬直與 CPU 等待一起變慢，打法結果和 ×1 相同。</li>
+</ol>
+<p>如果 <code>F12</code> 沒有反應，先確認 PIE 畫面有焦點；從 Visual Studio 附加除錯器執行時，Windows 會把 <code>F12</code> 留給除錯器。</p>
+<h2 id="w10-2-6">課前實作練習</h2>
+<h3 id="w10-2-7">課前實作練習 1｜讓 U 可以把 CPU 一路連打到倒地</h3>
+<p>只修改 <code>_DataTable/DamageTable.csv</code> 輕擊那一列的 <code>Hitstun</code>，Reimport 到 <code>DT_Damage</code>。完成後，CPU AI 照常運作，1P 一直按 U，就能把 CPU 打到 HP 0、倒地（<code>KnockedOut</code>）。第一記被 CPU 防住時，拉開距離重來即可。</p>
+<p>上課時分享畫面，實機展示從第一記打中到 CPU 倒地。請用預習 1 的時間軸說明：<strong>你選的 Hitstun 數值，為什麼讓 CPU 下一記既防不住、也來不及先出手？</strong></p>
+<h3 id="w10-2-8">課前實作練習 2｜讓右腳踢頭不論是否被防，都能再接一定命中的 U</h3>
+<p>只修改 <code>DamageTable.csv</code> 右腳踢頭那一列的 <code>Hitstun</code> 與 <code>Blockstun</code>，Reimport 到 <code>DT_Damage</code>。完成後，6＋U 不論打中 CPU 或被 CPU 防住，1P 在踢頭收招後再按 U，都一定打中。</p>
+<p>上課時分別展示「踢頭被防」與「踢頭被打中」兩種情況。各用 <code>Space</code> 暫停、小鍵盤 <code>.</code> 逐格，配合 Combat Debug 面板，指出你的 U 起手與命中時，CPU 仍在 <code>Blockstun</code> 或 <code>Hitstun</code>。請說明：<strong>為什麼只把 <code>CommandTable</code> 中踢頭的 <code>Link</code> 改成 1，做不到「被防也命中」？</strong></p>
+<h2 id="w10-2-9">官方參考資料</h2>
+<ul>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/data-driven-gameplay-elements-in-unreal-engine">Data Driven Gameplay Elements</a>：核對 DataTable 如何從 CSV 匯入與 Reimport。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-notifies-in-unreal-engine">Animation Notifies</a>：了解 Notify 與 Notify State 如何掛在動畫時間軸上。</li>
+<li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-timers-in-unreal-engine">Gameplay Timers</a>：了解 World 計時器如何設定、重設與受遊戲時間影響。</li>
+<li><a href="https://dev.epicgames.com/community/unreal-engine/learning">Unreal Engine Learning</a>：<strong>請善用 Unreal Engine Learning 主動查找學習資源</strong>。遇到不懂的功能或名詞時，先用關鍵字搜尋相關教學，再回到教材專案對照；閱讀時留意教學使用的引擎版本與範例情境。</li>
+</ul>
+<h2 id="w10-2-10">上課前確認</h2>
+<ul>
+<li><input disabled="" type="checkbox"> week-10 專案可編譯，stage1 能進入 PIE，四組除錯熱鍵都能使用。</li>
+<li><input disabled="" type="checkbox"> 能用三招的時間軸算出打中與被防後的差值，並說出 CPU 防不住的兩種原因。</li>
+<li><input disabled="" type="checkbox"> 輕擊的 Hitstun 已調整並 Reimport，可現場展示 U 連打到 CPU 倒地。</li>
+<li><input disabled="" type="checkbox"> 右腳踢頭的 Hitstun／Blockstun 已調整並 Reimport，可現場展示被防與打中兩種情況都接得上 U。</li>
+<li><input disabled="" type="checkbox"> 展示完成後，<code>DamageTable.csv</code> 與 <code>DT_Damage</code> 已還原為輕擊 12／8、右腳踢頭 18／12。</li>
+</ul>
+</article></main></div><script id="reading-navigation">
+(() => {
+  const article=document.querySelector('article.paper,main');
+  const nav=document.querySelector('.quick-nav,nav.toc');
+  if(!article||!nav)return;
+  if(nav.matches('nav.toc'))nav.classList.add('quick-nav','sidebar');
+  const bar=document.createElement('div');bar.className='reading-bar';
+  bar.innerHTML='<span class="reading-label">整體閱讀進度</span><progress max="100" value="0" aria-label="整體閱讀進度"></progress><span class="reading-percent">0%</span>';
+  document.body.prepend(bar);
+  const progress=bar.querySelector('progress'),percent=bar.querySelector('.reading-percent');
+  const list=document.createElement('ul');list.className='nav-tree';
+  const nodes=[],headingPath=[];let headingLevel=2;
+  function makeAnchor(key){
+    let hash=2166136261;
+    for(const char of key)hash=Math.imul(hash^char.charCodeAt(0),16777619)>>>0;
+    const base='reading-'+hash.toString(16);let id=base,suffix=1;
+    while(document.getElementById(id))id=base+'-'+(++suffix);
+    return id;
+  }
+  for(const el of article.querySelectorAll('h2,h3,h4,h5,p,summary')){
+    if(el.closest('figure,pre,blockquote'))continue;
+    const tag=el.tagName.toLowerCase();let level;
+    if(/^h[2-5]$/.test(tag)){level=+tag[1];headingLevel=level;headingPath.length=level;headingPath[level]=el.textContent.trim();}
+    else if(tag==='summary')level=Math.min(headingLevel+2,6);
+    else{
+      // Standalone bold paragraphs serve as subheadings in these Markdown sources.
+      if(el.children.length!==1||el.firstElementChild.tagName!=='STRONG'||el.textContent.trim()!==el.firstElementChild.textContent.trim()||el.textContent.trim().length>85)continue;
+      if(el.closest('details'))continue;
+      level=Math.min(headingLevel+1,6);
+    }
+    // Chapter context distinguishes repeated subheadings without shifting later anchors.
+    if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+el.textContent.trim());
+    nodes.push({el,level,text:el.textContent.trim(),parents:[]});
+  }
+  const stack=[];
+  for(const node of nodes){
+    while(stack.length&&stack.at(-1).level>=node.level)stack.pop();
+    const parent=stack.at(-1);let container=list;
+    if(parent){
+      if(!parent.children){parent.children=document.createElement('ul');parent.children.id='reading-children-'+nodes.indexOf(parent);parent.li.append(parent.children);}
+      container=parent.children;node.parents=[...parent.parents,parent];
+    }
+    const li=document.createElement('li'),row=document.createElement('div'),link=document.createElement('a');
+    row.className='nav-row';link.href='#'+node.el.id;link.textContent=node.text;row.append(link);li.append(row);container.append(li);
+    Object.assign(node,{li,row,link});stack.push(node);
+  }
+  function expand(node,open){if(!node.children)return;node.children.hidden=!open;node.button.setAttribute('aria-expanded',String(open));node.button.textContent=open?'▾':'▸';}
+  for(const node of nodes){
+    if(node.children){
+      const button=document.createElement('button');button.type='button';button.className='nav-toggle';button.setAttribute('aria-label','展開或收合：'+node.text);button.setAttribute('aria-controls',node.children.id);node.button=button;node.row.prepend(button);
+      expand(node,node.level===2);button.addEventListener('click',()=>expand(node,node.children.hidden));
+    }else{const spacer=document.createElement('span');spacer.className='nav-spacer';spacer.setAttribute('aria-hidden','true');node.row.prepend(spacer);}
+  }
+  nav.replaceChildren();const title=document.createElement('p');title.className='quick-nav-title';title.textContent='本頁導覽';nav.append(title,list);
+  function reveal(target){
+    for(let p=target.parentElement;p&&p!==article;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
+    if(target.tagName==='SUMMARY')target.parentElement.open=true;
+  }
+  for(const node of nodes)node.link.addEventListener('click',event=>{
+    event.preventDefault();reveal(node.el);node.parents.forEach(p=>expand(p,true));
+    history.pushState(null,'','#'+node.el.id);node.el.scrollIntoView({block:'start'});update();
+  });
+  let active=null,pending=false;
+  function update(){
+    pending=false;
+    const rect=article.getBoundingClientRect(),start=rect.top+scrollY,end=rect.bottom+scrollY-innerHeight;
+    const value=end<=start?100:Math.round(Math.max(0,Math.min(1,(scrollY-start)/(end-start)))*100);
+    progress.value=value;percent.textContent=value+'%';
+    let current=nodes[0];
+    for(const node of nodes){if(node.el.getClientRects().length&&node.el.getBoundingClientRect().top<=110)current=node;}
+    if(current&&current!==active){
+      if(active)active.link.removeAttribute('aria-current');active=current;current.link.setAttribute('aria-current','location');current.parents.forEach(p=>expand(p,true));
+      const sidebar=nav.closest('.sidebar'),r=current.link.getBoundingClientRect(),s=sidebar.getBoundingClientRect();
+      if(r.top<s.top||r.bottom>s.bottom)sidebar.scrollTop+=r.top-s.top-sidebar.clientHeight/3;
+    }
+  }
+  function schedule(){if(!pending){pending=true;requestAnimationFrame(update);}}
+  function followHash(){const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(target&&article.contains(target)){reveal(target);requestAnimationFrame(()=>{target.scrollIntoView({block:'start'});update();});}}
+  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);addEventListener('hashchange',followHash);article.addEventListener('toggle',schedule,true);
+  new ResizeObserver(schedule).observe(article);update();if(location.hash)followHash();
+})();
+</script></body></html>
