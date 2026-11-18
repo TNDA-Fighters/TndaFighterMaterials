@@ -485,103 +485,575 @@ html:has(nav.toc) :is(.meta,table,a.ts,.card p,pre,code,.tree,.flow span,.tag,fo
 html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
 @media print{body{padding-top:0}.reading-bar{display:none}}
 /* reading-navigation:end */
+.practice-example {
+  margin: 1rem 0 1.5rem;
+  border: 1px solid #93b6bc;
+  border-radius: .5rem;
+  background: #f4fbfb;
+}
+.practice-design-need { margin: 0; padding: .65rem 1rem; }
+.practice-design-need strong { color: #13505a; }
+.practice-demo { display: grid; border-top: 1px solid #c4dadd; }
+.practice-example .practice-dialogue > summary { border: 0; border-radius: 0; background: transparent; }
+.practice-example .dialogue-message { margin-inline: 1rem; }
+.practice-demo > * { grid-area: 1 / 1; }
+.practice-demo > .practice-dialogue { margin: 0; }
+.practice-demo.has-practice-docs .practice-dialogue > summary { padding-inline-end: 12rem; }
+.practice-demo-files {
+  align-self: start;
+  justify-self: end;
+  display: flex;
+  gap: .4rem;
+  margin: .38rem .65rem 0 0;
+}
+.practice-demo-files button { padding: .2rem .5rem; }
+@media (max-width: 520px) {
+  .practice-demo { display: block; }
+  .practice-demo.has-practice-docs .practice-dialogue > summary { padding-inline-end: 1rem; }
+  .practice-demo-files { justify-content: flex-end; }
+}
+.practice-dialogue { margin: 1rem 0 1.5rem; overflow-wrap: anywhere; }
+.practice-dialogue summary { cursor: pointer; }
+.practice-dialogue > summary {
+  padding: .65rem 1rem;
+  border: 1px solid #93b6bc;
+  border-radius: .5rem;
+  background: #edf8f8;
+  color: #13505a;
+  font-weight: 700;
+}
+.practice-dialogue .dialogue-message {
+  margin: .85rem 0;
+  padding: .9rem 1rem;
+  border: 1px solid var(--dialogue-border);
+  border-inline-start: .3rem solid var(--dialogue-border);
+  border-radius: .5rem;
+  background: var(--dialogue-background);
+}
+.practice-dialogue .dialogue-user {
+  --dialogue-border: #4177a7;
+  --dialogue-background: #eef7ff;
+  --dialogue-label: #174c78;
+}
+.practice-dialogue .dialogue-assistant {
+  --dialogue-border: #8462ac;
+  --dialogue-background: #f6f0fc;
+  --dialogue-label: #533773;
+}
+.practice-dialogue .dialogue-message > h5:first-child {
+  margin: 0 0 .4rem;
+  color: var(--dialogue-label);
+  font-size: 1.125rem;
+}
+.practice-dialogue .dialogue-text {
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.practice-dialogue .dialogue-message > :last-child { margin-bottom: 0; }
+.practice-doc {
+  width: min(960px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  border: 1px solid var(--line, #c9d3dd);
+  border-radius: 10px;
+  background: var(--paper, #fff);
+  color: inherit;
+}
+.practice-doc::backdrop { background: rgba(15, 30, 45, .55); }
+.practice-doc .sp-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .65rem 1.5rem;
+  background: var(--paper, #fff);
+  border-bottom: 1px solid var(--line, #c9d3dd);
+}
+.practice-doc .sp-head h2 { margin: 0; }
+.practice-doc .sp-body { padding: .5rem 1.5rem 1.5rem; }
+.practice-doc .sp-close, .practice-demo-files .sp-close {
+  font-family: inherit;
+  border: 1px solid var(--line, #9db4ca);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+.practice-doc .sp-close { padding: .35rem .8rem; }
+.practice-demo-files .sp-close { font-size: 16px; }
+.practice-doc { font-size: 14px; line-height: 1.5; }
+.practice-doc .sp-body :is(p, ul, ol, pre, table) { margin-block: .5rem; }
+.practice-doc .sp-body li { margin-block: .2rem; }
+.practice-doc .sp-body :is(h1, h2, h3, h4, h5, h6) { margin-block: .9rem .35rem; }
+.practice-doc .sp-body { overflow-wrap: anywhere; }
+.practice-doc .sp-head h2,
+.practice-doc .sp-body h1 { font-size: 18px; }
+.practice-doc .sp-body h2 { font-size: 16px; }
+.practice-doc .sp-body :is(h3, h4, h5, h6, pre, code, th, td),
+.practice-doc .sp-close { font-size: 14px; }
+.practice-doc .sp-body pre { overflow-wrap: anywhere; }
 </style></head><body><a class="skip-link" href="#main-content">跳到主要內容</a><header class="hero" id="top"><div class="hero-inner"><p class="eyebrow">TNDA · WEEK 12 · 教案</p><h1>TNDA Week 12 教案</h1></div></header><div class="page-layout"><aside class="sidebar"><nav class="quick-nav" aria-label="本頁導覽"><p class="quick-nav-title">本頁導覽</p><a class="nav-level-2" href="#w12-3-1">課前實作練習</a>
-<a class="nav-level-3" href="#w12-3-2">課前實作練習｜調出你的越頂</a>
+<a class="nav-level-3" href="#w12-3-2">調出你的越頂</a>
 <a class="nav-level-2" href="#w12-3-3">程式追蹤</a>
-<a class="nav-level-3" href="#w12-3-4">追蹤路徑一｜按下 U 的那一刻，程式怎麼選到 ID 2 而不是 ID 5？</a>
-<a class="nav-level-3" href="#w12-3-5">追蹤路徑二｜越頂的軌跡參數從哪裡來，每一幀怎麼變成角色位置？</a>
+<a class="nav-level-3" href="#w12-3-4">按下 U 的那一刻，程式怎麼選到 ID 2 而不是 ID 5？</a>
+<a class="nav-level-3" href="#w12-3-5">越頂的軌跡參數從哪裡來，每一幀怎麼變成角色位置？</a>
 <a class="nav-level-2" href="#w12-3-6">課堂示範</a>
-<a class="nav-level-3" href="#w12-3-7">課堂示範 1｜回身劈山這招怎麼做出來</a>
-<a class="nav-level-3" href="#w12-3-8">課堂示範 2｜Ring Out</a>
+<a class="nav-level-3" href="#w12-3-7">回身劈山這招怎麼做出來</a>
+<a class="nav-level-3" href="#w12-3-8">Ring Out</a>
 <a class="nav-level-2" href="#w12-3-9">課堂實作</a>
-<a class="nav-level-3" href="#w12-3-10">課堂實作｜用 AI 與 MCP 把出界改成扣血回場</a></nav></aside><main id="main-content"><article class="paper"><h2 id="w12-3-1">課前實作練習</h2>
+<a class="nav-level-3" href="#w12-3-10">修改角色出界規格</a></nav></aside><main id="main-content"><article class="paper"><h2 id="w12-3-1">課前實作練習</h2>
 <h3 id="w12-3-2">課前實作練習｜調出你的越頂</h3>
-<h4>參考做法與判讀</h4>
-<p><strong>AI 施工提示詞</strong></p>
-<p>先依序貼上 <a href="#shared-prompt">共用 AI 提示詞</a> 的兩段開場與共用提示詞，再完整複製下段。學生決定越頂的距離、高度、節奏與輸入，檢查異動並操作驗收；AI 負責查證、整理 SPEC 及修改資產。</p>
-<pre><code class="language-markdown"># 開發目標
-請在目前 TndaFighter 教材專案把 ID 6「越頂」調成我想要的版本。
-我決定從多遠能越過對手、跳多高、用什麼節奏落地，以及用什麼輸入叫出越頂。
-本題由你查證、整理 SPEC 並修改資料與資產，我負責選擇設計、檢查異動及手動遊戲驗收。
-沿用前面共用提示詞的基準確認、SPEC、分批施工與手動驗證流程。
+<div class="practice-example">
+<p class="practice-design-need"><strong>設計需求</strong>　在維持「前＋Y」起手的前提下，將越頂調成能從更遠距離起跳、跳得更高，並以「慢升、頂點微滯空後像氣球一樣慢慢落下」的節奏越過對手頭頂。</p>
+<div class="practice-demo has-practice-docs">
+<details class="practice-dialogue" id="practice-demo-1">
+<summary>AI Spec-Driven 完整對話歷程示範</summary>
+<section class="dialogue-message dialogue-user">
+<h5>第 1 輪｜User</h5>
+<div class="dialogue-text"># 專案與工作範圍
+以目前資料夾的 TndaFighter.uproject 為根目錄；主要模組是 TndaFighter。
+這是 Unreal Engine C++ 格鬥遊戲；引擎版本讀 EngineAssociation。
+# 先讀文件，再對照程式
+先讀 Source/AGENTS.md 與 Source/TndaFighter/Fighting/AGENTS.md。
+接著讀 Source/TndaFighter/ 下 Fighting/README.md、DataTable/README.md，
+再依功能讀 Fighting/Docs 與相關原始碼。
+文件缺失或與程式不一致時，先查原始碼與設定；資產查詢等下一頁確認 unreal-mcp 後進行。
+# 操作與資料入口
+關卡：/Game/Fighting/stage1。U 是 X，I 是 Y；6 朝向對手、4 遠離對手。
+CSV：_DataTable/CommandTable.csv、_DataTable/DamageTable.csv。
+對應 /Game/DataTable/DT_Command、/Game/DataTable/DT_Damage；改 CSV 後 Reimport。
+動畫：/Game/Fighting/Anims/AM_Attack_01～03；右 Ctrl＋F12 切換 Combat Debug。
+# 本輪回覆格式
+成功只回一行：「專案導讀完成，可以提供需求。引擎版本：&lt;EngineAssociation 的值&gt;」
+受阻只回兩行：「阻礙：…」「下一步：…」。先完成查證，不改檔，不附摘要或重述規則。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 1 輪｜Assistant</h5>
+<div class="dialogue-text">專案導讀完成，可以提供需求。引擎版本：5.8</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 2 輪｜User</h5>
+<div class="dialogue-text"># 開工前確認 unreal-mcp
+使用 unreal-mcp：http://127.0.0.1:8000/mcp。
+1. 完成 MCP 連線、取得工具並執行 Editor 唯讀查詢；只有 HTTP 回應不算通過。
+2. 透過 unreal-mcp 取得 Editor 開啟的 .uproject 完整路徑，
+   與工作資料夾的 TndaFighter.uproject 比對；只核對檔名不夠。
+3. 連線失敗、專案不符或無法確認時停止實作，排除後重新驗證。
+# 資產操作規則
+.uasset 的查詢、建立、修改、Reimport 與儲存，一律透過 unreal-mcp。
+修改前查現況，修改後回讀確認。C++、CSV 與設定文字檔使用檔案工具；
+CSV 改完後，DataTable 的 Reimport 與儲存仍透過 unreal-mcp。
+缺少所需能力時先回報並討論，不改用其他方式操作資產。
+本輪不修改功能；連線與專案確認後，接著貼共用提示詞。
+# 本輪回覆格式：固定三行
+unreal-mcp：可用／不可用／未確認
+Editor 專案：完整 .uproject 路徑；與工作資料夾一致／不一致／無法確認
+開工條件：已就緒／受阻；受阻時附原因與下一步
+受阻原因與下一步寫在第三行；不附前言、結語、清單或過程。未查證就寫「未確認」。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 2 輪｜Assistant</h5>
+<div class="dialogue-text">unreal-mcp：不可用
+Editor 專案：未確認；無法確認
+開工條件：受阻；原因：連線 http://127.0.0.1:8000/mcp 遭拒絕（WinError 10061），Unreal Editor 或 unreal-mcp 伺服器未啟動，且目前工作階段未掛載 unreal-mcp 工具；下一步：請開啟 d:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\TndaFighter.uproject 的 Unreal Editor，確認 unreal-mcp 伺服器於 127.0.0.1:8000 運行後再重新驗證。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 3 輪｜User</h5>
+<div class="dialogue-text">我已經開啟UE專案 再確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 3 輪｜Assistant</h5>
+<div class="dialogue-text">unreal-mcp：不可用
+Editor 專案：未確認；無法確認
+開工條件：受阻；原因：偵測到 UnrealEditor（PID 9576）正在啟動中但尚未出現主視窗，且 127.0.0.1:8000 尚未監聽（WinError 10061 連線遭拒絕）；下一步：請等待 Unreal Editor 完全開啟進入關卡視窗，確認 Output Log 顯示 MCP 伺服器已於 127.0.0.1:8000 啟動後再讓我重新確認。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 4 輪｜User</h5>
+<div class="dialogue-text">我更新MCP啟動設定，且重開UE專案了，再確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 4 輪｜Assistant</h5>
+<div class="dialogue-text">unreal-mcp：可用
+Editor 專案：D:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/TndaFighter.uproject；與工作資料夾一致
+開工條件：已就緒</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 5 輪｜User</h5>
+<div class="dialogue-text"># 共用提示詞
+以下規則適用於後續每個功能。
+# 合作流程
+每個功能依序過四關，每關經我確認才進下一關：
+1. plan：我提出設計需求，你查證後問遊戲面的未決細節，整理 plan.md。
+2. spec：依 plan.md 問實作面的未決細節，整理 spec.md。
+3. 提交：依「存檔與提交」存檔並 commit。
+4. 施工：先確認基準，再逐張工單實作與驗證。
+# 分工
+你負責查證、提問、整理 plan 與 spec，並修改程式與資產；資產依共用開場 2 走 unreal-mcp，受阻就停下排除。
+我負責決定、確認，以及建置、PIE、重啟 Editor 與遊戲操作。
+需要我操作時，給我能照做的步驟，等我回報；沒回報的項目一律記為「未確認」。
+全程保留既有改動；沒有 Git 時，以備份代替 commit。
+換新對話時我重貼共用開場與這段規則；你先讀已提交的 plan.md、spec.md，再接續目前工單。
+# 提問方式
+先讀相關文件與程式，用 unreal-mcp 查相關資產；能自行查證的事實先查。
+只問未決問題，每題附建議；一輪只問現在能回答的題目，我回答後再問衍生問題。
+plan 關問玩家看得到的行為、規則、數值、範圍與驗收；
+資料與介面、接入位置、時間計算與工單拆分留到 spec 關。
+# plan.md 格式
+依序只用四個一級標題：「# 需求：功能名稱」「# 規格」「# 驗收目標」「# 現在開始」。
+- 需求：一句「我想…」寫玩家看到的效果；需要時再一句指出要改的檔案或資料表。
+- 規格：條列行為、規則、數值與邊界，一條一件事；寫出範圍外項目，不寫類別或函式名。
+- 驗收目標：條列能在 PIE、Combat Debug 或 Output Log 判斷的結果，
+  涵蓋正常操作、中斷、錯誤資料與受影響的舊功能。
+- 現在開始：交代下一關要查什麼、提出什麼方案讓我確認，確認後整理 spec.md，等我確認才實作。
+  新對話只貼這份 plan.md 也能接續。
+# spec.md 格式
+標題為「# SPEC｜功能名稱」，第二行寫「依據：plan.md」，以下六節依序展開。
+## 1. 目標與範圍
+寫目前問題、完成後的遊戲行為、本次包含與不包含的工作。
+## 2. 現況與已確認規則
+列程式與資產查證依據；規則用「條件 → 行為」表格。
+數值寫單位、方向基準與起算點，區分既有值與本次決定；未決事項不能當成已確認。
+## 3. 實作設計
+每套功能各開小節，完整展開以下五步：
+1. 資料與介面：型別、初始值、單位、擁有者、公開／私有方法與輸入輸出。
+   涉及表格時列 CSV、Row、執行期副本、Reader、驗證與舊資料相容方式。
+2. Init：觸發條件、資料準備、清除舊狀態、無效輸入與重複啟動的處理。
+3. Tick：更新時機、時間來源、狀態推進與停止條件；公式附符號、單位與小算例。
+4. End：正常結束、中斷、停用與生命週期清理；哪些歸零、哪些保留、如何重啟。
+5. 接入與手動確認：呼叫者、插入位置、先後順序、保留的既有行為與建置／資產更新順序。
+每一步列檔案／資產、修改位置、內容、原因，以及學生應檢查的重點。
+新名稱標示「預計新增」；不適用寫原因，事件驅動寫實際入口；必要時附偽碼。
+## 4. 手動驗證清單
+每項依序寫：編號、確認目標、準備條件、操作步驟、預期畫面或 Log、結束後如何還原。
+步驟寫清楚開哪個檔案或畫面、改動要看哪裡、遊戲內按什麼、觀察什麼。
+涵蓋建置與啟動、異動內容檢查、正常功能、中斷與受影響的舊功能；先提供最小可操作案例。
+## 5. 分階段工單
+表格欄位：編號、範圍、相依工單、修改檔案／資產、可展示成果、手動驗證項目編號。
+## 6. 未決事項
+列問題與建議；存檔版必須寫「無」，還有未決事項就不存檔。
+# 存檔與提交
+plan.md 與 spec.md 存在 Specs/&lt;功能代號&gt;/；功能代號用英文短名，整理 plan 時一併提出讓我確認。
+commit 只納入這兩個檔案，訊息如「docs: &lt;功能代號&gt; plan 與 spec」；回報 commit hash 後才開始施工。
+需求或規格要變更時，先改 plan.md 或 spec.md 給我確認並提交，再改程式。
+# 施工前先確認基準
+確認引擎、編譯工具與 TndaFighterEditor Win64 Development 建置方式。
+先讀啟動腳本，給我建置與進入 stage1 的步驟，等我回報基準結果。
+基準失敗先說明原因與下一步，不把既有問題當成本次修改造成。
+# 每張工單施工
+讀 spec.md 與目前工單，簡述本批範圍，等我確認後只實作這張工單。
+unreal-mcp 重連後先核對 .uproject 完整路徑。完成後閱讀 diff，交付兩段：
+1. 異動導覽：檔案／資產、修改位置、改前與改後的差異、原因；指出我應檢查的內容。
+2. 手動驗證：依 spec.md 列出本批項目，包含準備、逐步操作、預期畫面或 Log、還原步驟。
+# 收到我的結果後
+逐項記錄通過／失敗／未確認。
+失敗時先問實際現象與錯誤，查原因並提出修正；修正後再給我重測步驟。
+我還原 Debug，你還原測試資產；我確認後才 commit 本張工單，再做下一張。
+# 本輪回覆格式
+成功只回一句：「共用提示詞已就緒，請提供功能需求。」
+受阻只回兩行：「阻礙：…」「下一步：…」。不加摘要、解釋或提問；等待功能需求，不動工。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 5 輪｜Assistant</h5>
+<div class="dialogue-text">共用提示詞已就緒，請提供功能需求。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 6 輪｜User</h5>
+<div class="dialogue-text">課前實作練習｜調出你的越頂
 
-# 遊戲需求
-- 在我選定的起跳站距朝對手出越頂，Combat Debug 的 Attack 顯示 ID 6，
-  跳到一半 Crossed 變成 yes，落在對手另一側且仍在擂台內。
-- 同一顆攻擊鍵換一種方向輸入時，叫出的是別的招，例如 ID 3 第二攻擊。
-- 只改兩個地方：_DataTable/CommandTable.csv 的 ID 6 Keys 與 Priority，
-  以及 /Game/Fighting/Anims/AM_CrossOver 上 Airborne Arc 的水平距離、頂點高度與兩條曲線。
-- 不改 C++、其他招式、接招、傷害、輸入映射或 stage1。
+只修改兩個地方，把越頂調成你想要的版本：
 
-# 先查現況
-1. 讀專案規則，確認選招排序與離地軌跡由哪些檔案、函式負責。
-2. 用 MCP 回讀 DT_Command 的 ID 3、ID 6，以及 AM_CrossOver 的 Airborne Arc：
-   Keys、Priority、水平距離、頂點高度、兩條曲線與 Notify 時間，並核對 CSV 與 DataTable 一致。
-3. 說明同 Priority 時哪一列先被選到、方向輸入是相對對手還是固定按鍵，
-   以及軌跡沿哪個方向移動。
-4. 問我尚未決定的設計，每題附建議與會連帶影響的舊招式。
-   可提供兩個討論起點：拉長水平距離讓越頂從約 250 cm 也越得過；
-   或把 Keys 改成後退方向，讓後退鍵叫出越頂。選定值記入 SPEC。
+    _DataTable/CommandTable.csv ID 6 的 Keys 與 Priority，改完 Reimport 到 DT_Command。
+    /Game/Fighting/Anims/AM_CrossOver 上 Airborne Arc 的水平距離、頂點高度與兩條曲線。
 
-# 施工設計要求
-- 本題是資料與資產調整，不新增程式。SPEC 的實作設計寫清楚每個欄位的
-  修改前值、修改後值、單位與影響，不適用的步驟寫原因。
-- 改 Keys 或 Priority 時，說明新排序下哪些輸入仍叫得出 ID 3；若 ID 3 會被搶走，先讓我決定。
-- 改曲線時說明合法條件，避免整張招式表驗證失敗。
-- CSV 保留引號、欄位順序與 UTF-8 編碼；改完透過 MCP Reimport 到 DT_Command，
-  確認匯入來源是這份 CSV。AM_CrossOver 只改指定參數，不刪除重建 Notify。
-- 修改前記下原值，供展示後只還原本題改動。
+你要自己決定：從多遠可以越過對手、跳得多高、用什麼節奏落地，以及要用什麼輸入叫出越頂。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 6 輪｜Assistant</h5>
+<div class="dialogue-text">我已確認目前設定：`CommandTable.csv` 的 ID 6（越頂）目前為 `Keys="6,Y"`、`Priority=0`；`AM_CrossOver` 的 `Airborne Arc` 目前為 `HorizontalDistanceCm=200.0 cm`、`ApexHeightCm=110.0 cm`，並帶有快升、頂點滯空、快落與水平微減速曲線。
 
-# 手動驗收
-請給出可照做的準備、遊戲操作、預期畫面與還原步驟。
-1. 在選定站距朝對手出越頂：Attack 顯示 ID 6，Crossed 變 yes，落在對手另一側。
-2. 同一顆攻擊鍵換一種方向輸入：叫出別的招，例如 ID 3。
-3. 交換左右站位再測一次，確認方向輸入以對手為準。
-4. 展示完成後還原：CSV 與 DataTable 一致，AM_CrossOver 回到原值。
+進入 `plan` 關前，請確認以下遊戲面設計與目錄命名：
 
-# 現在開始
-先完成現況查證，提出未決設計問題，再依共用提示詞整理 SPEC。
-驗收由我在遊戲內操作，未收到回報的項目記為未確認。
-留下修改後的版本供我展示；等我說「展示完成，還原本題」再只還原本題改動。
-</code></pre>
-<table>
-<thead>
-<tr>
-<th>展示情境</th>
-<th>參考設計的預期結果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>遠距越頂：水平距離 200 改 300 cm，站距約 250 cm 出 6Y</td>
-<td>ID 6，Crossed 變 yes，落在 CPU 另一側；原值 200 cm 越不過</td>
-</tr>
-<tr>
-<td>遠距越頂：不帶方向或帶 4 按 Y</td>
-<td>ID 3 第二攻擊</td>
-</tr>
-<tr>
-<td>後退鍵越頂：ID 6 Keys 由 <code>6,Y</code> 改 <code>4,Y</code>，站距約 100 cm 出 4Y</td>
-<td>ID 6，仍朝 CPU 跳過去並越過</td>
-</tr>
-<tr>
-<td>後退鍵越頂：6Y 或不帶方向按 Y</td>
-<td>ID 3 第二攻擊</td>
-</tr>
-</tbody></table>
-<p><strong>判讀重點</strong></p>
-<ul>
-<li><strong>輸入為什麼選到 ID 6</strong>：學生要用排序說明。ID 6 與 ID 3 的 <code>Priority</code> 都是 0，ID 6 的 Keys 有方向，排在 ID 3 前面；輸入帶著那個方向時先符合 ID 6。沒帶那個方向時 ID 6 不符合，往下找到 Keys 沒寫方向的 ID 3。</li>
-<li><strong>把 <code>Priority</code> 改大的做法</strong>：學生若把 ID 6 改成 <code>Keys=Y</code>、<code>Priority=1</code>，ID 6 排到最前面，不帶方向或帶 6 都出越頂，ID 3 從此按不出來。實測兩種輸入都選到 ID 6。這個改法合法，但學生要說得出「第二攻擊被搶走」，演示第二件事時要換別的鍵，例如 6X 出右腳踢頭。</li>
-<li><strong>距離為什麼越得過</strong>：學生要說出軌跡沿起跳面向走完水平距離，起跳時站距小於水平距離才會從對手上方通過。實測距離 150 cm 時，站距 100 cm 越過、180 cm 沒越過。</li>
-<li><strong>方向與面向是兩件事</strong>：做法 2 按的是後退鍵，越頂仍朝 CPU 跳。輸入的 4 只用來選招，軌跡方向取起跳那一幀的角色面向。</li>
-<li><strong>高度與曲線</strong>：改 <code>Apex Height Cm</code> 或曲線只改變畫面上的節奏與高度，在場中央不影響越不越得過；曲線不合法時（高度曲線兩端不是 0、水平進度曲線兩端不是 0 與 1 或中途倒退），整張招式表驗證失敗。高度與曲線的各種改法沒有逐一實測。</li>
-</ul>
-<p><strong>可以追問</strong></p>
-<ul>
-<li>「越頂跳到一半，你在 Details 把距離改成 400，這一次落點會變嗎？」答：不會。起招時已經抄下距離，這一次照 300 跳完，下一次越頂才用 400。</li>
-<li>「做法 2 之後，按住後退防禦時再按 <code>I</code> 會怎樣？」答：防禦中仍可以起手，選招結果是 ID 6。這一點依 <code>SubmitCommand</code> 推得，實際按住後退鍵的操作沒有實測。</li>
-</ul>
-<p>教師備註：兩種參考設計與判讀重點沿用先前 14 個 PIE 案例，取材 <code>dev-week-12</code> HEAD <code>84ebfa4c</code>，腳本與摘要在工作區 <code>.scratch/courseware-week-12/</code>。當時以 60 FPS、CPU AI 關閉、CPU 不防禦測試，在記憶體改參數並直接送出攻擊語意；「站距」指起跳前兩人中心的距離。實際按鍵、目測站距及 AI 依共用提示詞整理 SPEC、修改資產、Reimport 與還原的完整流程尚未驗證，本次沒有重跑這些 PIE 案例。</p>
+1. **越頂的輸入鍵位（`Keys`）與優先度（`Priority`）想要什麼？**
+   - 合法格式為 `X`/`Y` 或單方向加攻擊（例如 `6,Y`、`8,Y`、`6,X`）。若與現有招式同鍵（例如 ID 2 為 `6,X`、ID 3 為 `Y`），需靠 `Priority` 決定誰優先。
+   - **建議**：維持 `Keys="6,Y"`、`Priority=0`（按前＋Y 出越頂、單按 Y 仍出 ID 3）；若想改成 `8,Y` 則建議 `Priority=0`，若想用 `6,X` 取代或壓過右腳踢頭則設 `Priority=1`。
+
+2. **從多遠可以越過對手（`HorizontalDistanceCm`）？**
+   - 目前為 `200 cm`（約在 100～180 cm 內可順利越過對手中心）。
+   - **建議**：`220 cm`（中近距離更容易越過對手並留出落地空間），或依你的手感指定公分數。
+
+3. **跳得多高（`ApexHeightCm`）？**
+   - 目前為 `110 cm`（高度同時影響越頂時是否容易越過場地短牆／基準牆）。
+   - **建議**：`130 cm`（弧線更明顯、視覺上更像越過頭頂），或指定你想要的公分數。
+
+4. **想要什麼樣的跳躍與落地節奏（`HeightCurve` 與 `ProgressCurve`）？**
+   - **建議**：採用「快升、頂點微滯空、快落」的高度節奏，搭配「起跳前段快速突進、落地前微減速」的水平進度；或也可改為「對稱拋物線＋等速水平移動」或「急升急降」。
+
+5. **文件目錄的功能代號（`Specs/&lt;功能代號&gt;/`）**
+   - **建議**：`crossover-tuning`
+
+請回覆上述 1～5 的決定（或直接說「全依建議」並微調其中幾項），確認後我會整理 `plan.md`。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 7 輪｜User</h5>
+<div class="dialogue-text">Q1: 依建議; Q2: 250cm; Q3: 200cm; Q4: 慢升、頂點微滯空後像氣球一樣慢慢落下; Q5: 依建議</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 7 輪｜Assistant</h5>
+<div class="dialogue-text">已整理 [plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/plan.md)，摘要如下：
+
+- **功能代號**：`crossover-tuning`
+- **輸入與優先度**：ID 6 維持 `Keys="6,Y"`、`Priority=0`（按住前＋Y 優先出越頂，單按 Y 仍出 ID 3）
+- **軌跡參數**：`HorizontalDistanceCm = 250 cm`、`ApexHeightCm = 200 cm`
+- **節奏**：慢升、頂點微滯空後像氣球一樣慢慢落下（不改 C++ 與其他招式資料）
+
+請確認 [plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/plan.md) 內容是否符合需求；確認後我將進入 `spec` 關，先查證 `AM_CrossOver` 現有曲線關鍵幀並提出具體曲線方案。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 8 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 8 輪｜Assistant</h5>
+<div class="dialogue-text">進入 `spec` 關，我已查證 `_DataTable/CommandTable.csv`、`FightingCommandLink.cpp` 與 `AM_CrossOver` 現況，請確認以下 2 個實作細節：
+
+1. **`AM_CrossOver` 的 `HeightCurve` 與 `ProgressCurve` 具體關鍵幀數值**
+   - 目前 `HeightCurve` 為 `(0, 0, 斜率 5.0) → (0.42, 1.0, 0) → (0.58, 0.96, -0.6) → (1.0, 0, -4.2)`（快升急降）。
+   - 目前 `ProgressCurve` 為 `(0, 0, 斜率 1.15) → (0.45, 0.47, 1.0) → (1.0, 1.0, 0.8)`。
+   - **建議**：
+     - `HeightCurve` 改為 `(0.00, 0.00, 斜率 1.2) → (0.40, 1.00, 斜率 0.0) → (0.52, 0.98, 斜率 -0.25) → (0.80, 0.45, 斜率 -2.2) → (1.00, 0.00, 斜率 -0.8)`，呈現慢升、頂點微滯空、像氣球般緩慢收尾落地（端點皆為 `0`，符合驗證）。
+     - `ProgressCurve` 改為 `(0.00, 0.00, 斜率 1.4) → (0.50, 0.62, 斜率 0.9) → (1.00, 1.00, 斜率 0.45)`，前段穩定越過對手、後段隨氣球緩降微減速落地（單調遞增 `0 → 1`）。
+
+2. **`_DataTable/CommandTable.csv` ID 6 與 `DT_Command` 的處理**
+   - 查證目前 CSV 第 7 行已為 `6,越頂,"6,Y",AM_CrossOver,1.0,0,None,,,,2,`，已符合你決定的 `Keys="6,Y"`、`Priority=0`。
+   - **建議**：維持 CSV 該列設定不變，施工時仍執行一次 `DT_Command` 的 Reimport 與整表驗證確認（若不需要動 CSV 也可保留原檔並在驗證清單核對即可）。
+
+確認後我將整理完整的 `Specs/crossover-tuning/spec.md`。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 9 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 9 輪｜Assistant</h5>
+<div class="dialogue-text">已整理 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md)（`未決事項` 為 `無`），重點如下：
+
+- **資料表**：`_DataTable/CommandTable.csv` ID 6 維持 `Keys="6,Y"`、`Priority=0`，施工時對 `/Game/DataTable/DT_Command` 執行 Reimport 與整表驗證。
+- **Montage 軌跡（`AM_CrossOver` 的 `Airborne Arc`）**：
+  - `HorizontalDistanceCm = 250.0`、`ApexHeightCm = 200.0`
+  - `HeightCurve`：`(0.00, 0.00, 1.2) → (0.40, 1.00, 0.0) → (0.52, 0.98, -0.25) → (0.80, 0.45, -2.2) → (1.00, 0.00, -0.8)`
+  - `ProgressCurve`：`(0.00, 0.00, 1.4) → (0.50, 0.62, 0.9) → (1.00, 1.00, 0.45)`
+- **工單**：單張工單 `T1`，涵蓋 `V1～V4` 手動驗證。
+
+請確認 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md)；確認後我將進入第 3 關，提交 `plan.md` 與 `spec.md` 並回報 commit hash。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 10 輪｜User</h5>
+<div class="dialogue-text">手動驗證清單步驟太囉嗦了</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 10 輪｜Assistant</h5>
+<div class="dialogue-text">已精簡 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md#L78-L85) 的手動驗證清單步驟。請確認是否可進入第 3 關，將 `plan.md` 與 `spec.md` 存檔並 commit？</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 11 輪｜User</h5>
+<div class="dialogue-text">OK</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 11 輪｜Assistant</h5>
+<div class="dialogue-text">已完成第 3 關提交：
+- **Commit**：`c990609582f71d59860056c8e6038b41cf3c9c24`（`docs: crossover-tuning plan 與 spec`）
+- **納入檔案**：[plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/plan.md)、[spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md)
+
+進入第 4 關「施工前先確認基準」：
+- **引擎與建置方式**：引擎版本 `5.8`；專案根目錄提供 [BuildAndLaunchGame.bat](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/BuildAndLaunchGame.bat)（轉呼 [BuildAndLaunchGame.ps1](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Plugins/VibeUE/BuildAndLaunchGame.ps1)），會以 `Development` 組態建置 `TndaFighterEditor Win64 Development` 並啟動 Editor。
+- **基準確認步驟**（你目前已開啟 Editor，可直接驗證；若要重編再啟動可關閉 Editor 後執行 `BuildAndLaunchGame.bat -Map /Game/Fighting/stage1`）：
+  1. 在 Unreal Editor 確認目前關卡為 `/Game/Fighting/stage1`。
+  2. 點擊 **Play（PIE）** 進入關卡，按面向方向加 `I`（`6,Y`）確認既有越頂正常運作、無錯誤。
+  3. 停止 PIE，並告訴我基準正常與是否開始施工工單 **T1**（修改 `AM_CrossOver` 的 `Airborne Arc` 與 Reimport `DT_Command`）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 12 輪｜User</h5>
+<div class="dialogue-text">我移除 BuildAndLaunchGame.bat  了，重新計畫</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 12 輪｜Assistant</h5>
+<div class="dialogue-text">收到，已排除 `BuildAndLaunchGame.bat`，重新整理第 4 關「施工前先確認基準」：
+
+- **引擎與建置方式**：引擎位於 `C:\Program Files\Epic Games\UE_5.8`（版本 `5.8`）。若需建置 `TndaFighterEditor Win64 Development`，可由 IDE 或執行：
+  `&amp; "C:\Program Files\Epic Games\UE_5.8\Engine\Build\BatchFiles\Build.bat" TndaFighterEditor Win64 Development -Project="d:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\TndaFighter.uproject" -WaitMutex`
+  （本次僅調校資產與 DataTable，不修改 C++，若目前 Editor 已正常開啟則無需重編。）
+- **基準確認與進入 `stage1` 步驟**：
+  1. 在已開啟的 Unreal Editor 中開啟 `/Game/Fighting/stage1`。
+  2. 點擊 **Play（PIE）**，在對戰中按面向方向加 `I`（`6,Y`）確認既有越頂正常運作且 Output Log 無報錯。
+  3. 停止 PIE 後回報基準結果，並確認是否開始施工工單 **T1**（修改 `AM_CrossOver` 的 `Airborne Arc` 與 Reimport `DT_Command`）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 13 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 13 輪｜Assistant</h5>
+<div class="dialogue-text">已完成工單 **T1**（已透過 `unreal-mcp` 核對專案路徑 `D:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/TndaFighter.uproject` 並回讀驗證修改結果）。
+
+### 1. 異動導覽
+
+- **[AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset)**（`/Game/Fighting/Anims/AM_CrossOver` 的 `Airborne Arc` / `FightingAirborneArcNotifyState`）
+  - **改前 → 改後**：
+    - `HorizontalDistanceCm`：`200.0` → `250.0`（cm）
+    - `ApexHeightCm`：`110.0` → `200.0`（cm）
+    - `HeightCurve`：由快升急降 4 點曲線改為 5 點曲線 `(0.00, 0.00, 斜率 1.2) → (0.40, 1.00, 斜率 0.0) → (0.52, 0.98, 斜率 -0.25) → (0.80, 0.45, 斜率 -2.2) → (1.00, 0.00, 斜率 -0.8)`
+    - `ProgressCurve`：由 `(0.00, 0.00, 1.15) → (0.45, 0.47, 1.0) → (1.00, 1.00, 0.8)` 改為 `(0.00, 0.00, 1.4) → (0.50, 0.62, 0.9) → (1.00, 1.00, 0.45)`
+  - **原因**：將越頂調為 250 cm 距離、200 cm 高度，並呈現「慢升、頂點微滯空後像氣球一樣慢慢落下」的節奏。
+  - **你應檢查的內容**：在 Unreal Editor 開啟 `/Game/Fighting/Anims/AM_CrossOver`，選取 `Airborne Arc` Notify，確認 Details 面板中的距離為 `250.0`、高度為 `200.0`，並展開 `HeightCurve` 與 `ProgressCurve` 確認曲線形狀。
+- **[DT_Command.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/DataTable/DT_Command.uasset)**（來源 [CommandTable.csv](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/_DataTable/CommandTable.csv#L7)）
+  - **差異與原因**：ID 6 已維持 `Keys="6,Y"`、`Priority=0`，已透過 `unreal-mcp` 執行 Reimport 並回讀確認 `RowStruct=TndaCommandRow`、`ImportKeyField=ID` 與 Row `1～6` 完整保留。
+
+### 2. 手動驗證
+
+請依 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md#L78-L85) 在 Editor 執行 **V1～V4** 並回報各項目結果：
+
+| 編號 | 確認目標 | 準備條件 | 操作步驟 | 預期畫面或 Log | 結束後還原 |
+|---|---|---|---|---|---|
+| V1 | 啟動與資料驗證 | 已存 `AM_CrossOver`、Reimport `DT_Command` | 啟動 PIE 進入 `stage1` | 正常進場，Output Log 無 `DataTables TableId=Command` 或 `Field=AirborneCurve` 錯誤 | 停止 PIE |
+| V2 | 鍵位、距離與氣球手感 | `stage1` 開啟 `tnda.Debug.CPUAI off`、`tnda.Debug.ShowCombatDebug on`（或右 `Ctrl+F12`） | 150～200 cm 處先單按 `I`，再按 `6+I` | `I` 出 ID 3；`6+I` 出越頂，跳高 200 cm、前進約 250 cm 越過對手並慢升微滯空緩降 | `tnda.Debug.CPUAI on`、`tnda.Debug.ShowCombatDebug off` |
+| V3 | 越頂接招與空中中斷 | 同 V2 | 1. 150 cm 越過後按 `6+U`。&lt;br&gt;2. 300 cm 未越過按 `6+U`。&lt;br&gt;3. `CPUAI on` 空中挨打。 | 1. 落地接 ID 2 且轉向。&lt;br&gt;2. 無法接 ID 2。&lt;br&gt;3. 立即中斷進 `Hitstun`。 | `tnda.Debug.CPUAI on`、`tnda.Debug.ShowCombatDebug off`，重開 PIE |
+| V4 | 邊界出界與舊連段 | `stage1` 正常模式 | 1. 貼牆對外按 `6+I`。&lt;br&gt;2. 打 `U→U→U` 與 `U→U→6+U`。 | 1. 越牆落地場外時 Log 記 `Ring out:` 並判敗。&lt;br&gt;2. 舊連段正常。 | 重開 PIE |
+
+請回報 `V1～V4` 的測試結果（若有手感需微調也可直接告訴我）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 14 輪｜User</h5>
+<div class="dialogue-text">V2 不如預期，並沒有 慢升微滯空緩降</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 14 輪｜Assistant</h5>
+<div class="dialogue-text">已查明原因並修正：
+
+- **原因**：`AM_CrossOver` 的 `Airborne Arc` 總離地時間只有 `0.40 秒`（第 8～32 幀）。上一版 `HeightCurve` 起跳斜率 `1.2` 不夠緩、下降中段斜率 `-2.2` 又過快，且只在最後 0.08 秒減速，肉眼幾乎感覺不到慢升與氣球緩降；加上 `ProgressCurve` 前段推進偏快，讓整段跳躍看起來仍像一般拋物線。
+- **修正內容**：已透過 `unreal-mcp` 更新 [AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset) 的兩條曲線、儲存資產並重新 Reimport `DT_Command`（同步更新 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md#L44-L57)）：
+  - **`HeightCurve`**：起跳前 10% 只升到 `13.8 cm`（斜率 `0.3` 慢升）→ `T=0.38～0.52` 停在 `194～200 cm`（頂點微滯空）→ `T=0.72～1.00` 從 `100 cm` 柔緩落回 `0 cm`（落地斜率 `-0.2` 像氣球著地）。
+  - **`ProgressCurve`**：起跳與著地前水平都放慢（落地斜率 `0.2`），中段越過對手時才加速推進，強化氣球緩降體感。
+
+### 重測步驟（V2）
+1. 在 Editor 直接按 **Play（PIE）** 進入 `stage1`（已於 Editor 重新匯入 `DT_Command`）。
+2. 輸入 `tnda.Debug.CPUAI off` 與 `tnda.Debug.ShowCombatDebug on`（或按右 `Ctrl+F12`）。
+3. 在距 CPU 約 `150～200 cm` 處按 `6+I`（面向＋`I`）觀察起跳慢升、頂點微滯空與末尾緩慢著地（若想看更細微的幀變化，可用小鍵盤 `-` 切到 `×0.5` 或 `×0.25` 慢動作對照）。
+4. 測試結束後輸入 `tnda.Debug.CPUAI on`、`tnda.Debug.ShowCombatDebug off`（若有調慢速度請按 `+` 切回 `×1`）。
+
+請回報 **V1～V4** 測試結果（或告訴我是否還需要再調更極端一點的滯空／緩降比例）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 15 輪｜User</h5>
+<div class="dialogue-text">還是沒有 慢升微滯空緩降</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 15 輪｜Assistant</h5>
+<div class="dialogue-text">我已回讀確認 `/Game/Fighting/Anims/AM_CrossOver` 目前確實存著 `HorizontalDistanceCm = 250.0`、`ApexHeightCm = 200.0` 與新版 7 點 `HeightCurve`、4 點 `ProgressCurve`。
+
+為了確認問題出在「新版曲線沒套用到執行期」還是「0.40 秒總離地時間內 200 cm 高度變化太快、肉眼看不出慢升緩降」，請問你剛才測試 **V2** 時看到的實際現象是哪一種？
+
+1. **高度／距離有明顯變高變遠（跳到約 200 cm 高、推進 250 cm）**，但整段離地只有 `0.40 秒`（24 幀），所以感覺只是一瞬間衝上去又衝下來，看不出「慢升、微滯空、像氣球慢慢落下」。
+2. **高度／距離看起來跟原本一樣（約 110 cm 高、200 cm 遠）**，完全沒有套用到新數值。
+3. **其他現象**（請簡述實際畫面）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 16 輪｜User</h5>
+<div class="dialogue-text">感覺只是一瞬間衝上去又衝下來，看不出「慢升、微滯空、像氣球慢慢落下」</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 16 輪｜Assistant</h5>
+<div class="dialogue-text">已查明原因並調整：
+
+- **原因說明**：
+  1. 上一版曲線在 `T=0.22` 有 `2.8` 的陡峭斜率，造成起跳後段突然往上衝。我已改為平緩的 5 點 `HeightCurve`（移除中段急衝，並將頂點微滯空延長至 `T=0.35～0.55`、末尾 `0.82～1.00` 以斜率 `-0.5` 輕柔著地），同步更新 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md#L44-L52) 並透過 `unreal-mcp` 儲存 [AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset) 與重新 Reimport `DT_Command`。
+  2. **物理時間限制**：`AM_CrossOver` 的 `Airborne Arc` 總離地時間固定只有 **`0.40 秒`**（第 8～32 幀、24 幀）；要在 `0.40 秒` 內垂直上下各 `200 cm`（2 公尺），在正常 `×1` 速度下本來就會非常快。
+
+### 重測步驟（V2）
+1. 在 Editor 啟動 PIE 進入 `stage1`。
+2. 輸入 `tnda.Debug.CPUAI off`、`tnda.Debug.ShowCombatDebug on`（或按右 `Ctrl+F12`）。
+3. 按 `6+I` 觀察新曲線；若要看清楚 24 幀內的「平緩上升 → 頂點滯空 → 緩慢著地」節奏，可按小鍵盤 `-` 切到 `×0.5`／`×0.25` 慢動作確認（測完按 `+` 切回 `×1`）。
+4. 還原：`tnda.Debug.CPUAI on`、`tnda.Debug.ShowCombatDebug off`。
+
+若你希望在正常 `×1` 速度下就看得出氣球般慢飄，需要額外放慢 `CommandTable.csv` ID 6 的 `PlayRate`（超出原本只改 `Keys`/`Priority` 的範圍）；請先試試這版曲線並回報結果，或告訴我是否要放寬範圍調整 `PlayRate`。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 17 輪｜User</h5>
+<div class="dialogue-text">我是希望在正常 ×1 速度下就看得出氣球般慢飄</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 17 輪｜Assistant</h5>
+<div class="dialogue-text">已依需求更新 [plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/plan.md#L8) 與 [spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md#L7-L10)：
+
+- **變更內容**：將 `_DataTable/CommandTable.csv` ID 6 的 `PlayRate` 從 `1.0` 調為 `0.5`，使離地時間由 `0.40 秒` 延長為 `0.80 秒`（總長 `1.50 秒`），在正常 `×1` 速度下即可清楚呈現慢升、頂點微滯空與氣球般慢飄緩降。
+
+請確認是否核准此規格變更（確認後我會先 commit 更新後的 `plan.md` 與 `spec.md`，再修改 `CommandTable.csv` 並 Reimport `DT_Command`）。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 18 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 18 輪｜Assistant</h5>
+<div class="dialogue-text">已完成文件提交（`5afe187`）並更新工單 **T1** 的資料與資產，回讀確認已套用：
+
+### 1. 異動導覽
+- **[CommandTable.csv](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/_DataTable/CommandTable.csv#L7)**（第 7 行 ID 6）：
+  - **改前 → 改後**：`PlayRate` 由 `1.0` → `0.5`（`Keys="6,Y"`、`Priority=0` 維持不變）。
+  - **原因**：將離地時間從 `0.40 秒` 延長為 `0.80 秒`，讓正常 `×1` 速度即可呈現慢升、微滯空與氣球般緩慢落下。
+- **[DT_Command.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/DataTable/DT_Command.uasset)**：
+  - 已透過 `unreal-mcp` 重新自 `_DataTable/CommandTable.csv` 匯入並儲存資產，回讀確認 Row `6` 的 `PlayRate` 為 `0.500000`。
+- **[AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset)**：
+  - 維持已儲存的 `HorizontalDistanceCm = 250.0`、`ApexHeightCm = 200.0` 與 5 點 `HeightCurve`／4 點 `ProgressCurve`。
+
+### 2. 重測步驟（V1～V4）
+1. **V1**：在 Editor 按 **Play（PIE）** 進入 `stage1`，確認 Output Log 無 `DataTables TableId=Command` 或 `Field=AirborneCurve` 錯誤。
+2. **V2**：輸入 `tnda.Debug.CPUAI off`、`tnda.Debug.ShowCombatDebug on`（或按右 `Ctrl+F12`）；在 150～200 cm 處先單按 `I`（應出 ID 3），再按 `6+I`（正常 `×1` 速度下應明顯呈現慢升、頂點微滯空與氣球般緩慢落地，推進約 250 cm、高 200 cm）。
+3. **V3**：150 cm 越過後按 `6+U` 應落地接 ID 2 且轉向；300 cm 未越過按 `6+U` 不可接招；開 `tnda.Debug.CPUAI on` 空中挨打應立即進 `Hitstun`。
+4. **V4**：貼牆對外按 `6+I` 若越牆落地場外應記 `Ring out:` 判敗；`U→U→U` 與 `U→U→6+U` 舊連段應正常。
+5. **還原**：輸入 `tnda.Debug.CPUAI on`、`tnda.Debug.ShowCombatDebug off`，停止 PIE。
+
+請回報 **V1～V4** 測試結果。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 19 輪｜User</h5>
+<div class="dialogue-text">V1~V4測試結果有如預期</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 19 輪｜Assistant</h5>
+<div class="dialogue-text">已記錄工單 **T1** 驗證結果：
+- **V1（啟動與資料驗證）**：通過
+- **V2（鍵位、距離與氣球慢飄手感）**：通過
+- **V3（越頂接招與空中中斷）**：通過
+- **V4（邊界出界與舊連段）**：通過
+
+本批未建立臨時測試資產，僅異動目標檔案（[CommandTable.csv](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/_DataTable/CommandTable.csv)、[DT_Command.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/DataTable/DT_Command.uasset)、[AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset)）。請確認是否現在 commit 工單 **T1**？</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 20 輪｜User</h5>
+<div class="dialogue-text">OK</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 20 輪｜Assistant</h5>
+<div class="dialogue-text">已完成工單 **T1** 的 commit，整個 `crossover-tuning` 功能已全數完成：
+
+- **Commit**：`99f01c4a7fac86fe7c79e7c84f1b021c3e698a29`（`feat: 調校越頂距離、高度、曲線與播放倍率 (crossover-tuning T1)`）
+- **納入檔案**：
+  - [CommandTable.csv](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/_DataTable/CommandTable.csv)
+  - [DT_Command.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/DataTable/DT_Command.uasset)
+  - [AM_CrossOver.uasset](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Content/Fighting/Anims/AM_CrossOver.uasset)
+- **工作目錄狀態**：乾淨（無未提交異動）。
+- **相關文件**：[plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/plan.md)、[spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/crossover-tuning/spec.md)
+
+若有下一項需求，隨時告訴我！</div>
+</section>
+</details>
+<div class="practice-demo-files"><button type="button" class="sp-close" data-practice-doc="practice-demo-1-plan" aria-haspopup="dialog">plan.md</button> <button type="button" class="sp-close" data-practice-doc="practice-demo-1-spec" aria-haspopup="dialog">spec.md</button></div>
+</div>
+</div>
 <h2 id="w12-3-3">程式追蹤</h2>
 <h3 id="w12-3-4">追蹤路徑一｜按下 U 的那一刻，程式怎麼選到 ID 2 而不是 ID 5？</h3>
 <p><strong>ID 4 出招中按著朝對手的鍵再按 <code>U</code>，為什麼出右腳踢頭？</strong> 方向在按鍵當下換成 6，排序在匯入時就讓 ID 2 排在 ID 5 前面。</p>
@@ -849,7 +1321,7 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
 <p><code>FightingCharacter.cpp</code>、<code>_DataTable/CommandTable.csv</code>｜week-11（<code>61e68432</code>）→ week-12（<code>4502f9e3</code>）｜原始碼節錄；行號跳號表示省略，Tab 已換成四格空白。</p>
 <h4>程式流程圖</h4>
 <p><strong>圖 1｜越頂的 45 幀裡，哪一段做什麼？</strong>（時間軸，以越頂開始播放那一幀為第 0 幀）</p>
-<figure class="flow-diagram"><svg style="width:900px;max-width:100%;margin-inline:auto" id="w12-3-diagram-3" width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 256" role="graphics-document document" aria-roledescription="gantt"><g></g><g class="grid" transform="translate(70, 206)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-166V0.5H800.5V-166"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(89.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">05</text></g><g class="tick" opacity="1" transform="translate(178.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(267.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">15</text></g><g class="tick" opacity="1" transform="translate(356.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(444.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">25</text></g><g class="tick" opacity="1" transform="translate(533.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(622.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">35</text></g><g class="tick" opacity="1" transform="translate(711.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(800.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">45</text></g></g><g class="grid" transform="translate(70, 50)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,166V0.5H800.5V166"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(89.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">05</text></g><g class="tick" opacity="1" transform="translate(178.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(267.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">15</text></g><g class="tick" opacity="1" transform="translate(356.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(444.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">25</text></g><g class="tick" opacity="1" transform="translate(533.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(622.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">35</text></g><g class="tick" opacity="1" transform="translate(711.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(800.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">45</text></g></g><g><rect x="0" y="48" width="885" height="52" class="section section0"></rect><rect x="0" y="100" width="885" height="52" class="section section1"></rect><rect x="0" y="152" width="885" height="52" class="section section1"></rect></g><g><rect id="w12-3-diagram-3-a1" rx="3" ry="3" x="70" y="50" width="142" height="44" transform-origin="141px 72px" class="task task0 "></rect><rect id="w12-3-diagram-3-a2" rx="3" ry="3" x="212" y="50" width="427" height="44" transform-origin="425.5px 72px" class="task crit0 "></rect><rect id="w12-3-diagram-3-b1" rx="3" ry="3" x="212" y="102" width="498" height="44" transform-origin="461px 124px" class="task task1 "></rect><rect id="w12-3-diagram-3-a3" rx="3" ry="3" x="639" y="50" width="231" height="44" transform-origin="754.5px 72px" class="task task0 "></rect><rect id="w12-3-diagram-3-b2" rx="3" ry="3" x="639" y="154" width="71" height="44" transform-origin="674.5px 176px" class="task active1 "></rect><text id="w12-3-diagram-3-a1-text" font-size="18" x="141" y="79" text-height="44" class=" taskText taskText0  width-115.33479309082031">地面準備 0～8 </text><text id="w12-3-diagram-3-a2-text" font-size="18" x="425.5" y="79" text-height="44" class=" taskText taskText0  critText0 width-160.44561767578125">Airborne Arc 8～32 </text><text id="w12-3-diagram-3-b1-text" font-size="18" x="461" y="131" text-height="44" class=" taskText taskText1  width-374.12957763671875">Preorder～Disable 標記 8～36，越過後才受理 </text><text id="w12-3-diagram-3-a3-text" font-size="18" x="754.5" y="79" text-height="44" class=" taskText taskText0  width-136.19163513183594">地面收招 32～45 </text><text id="w12-3-diagram-3-b2-text" font-size="18" x="634" y="183" text-height="44" class=" taskTextOutsideLeft taskTextOutside1 activeText1">Enable～Disable 標記 32～36，站穩後才交接 </text></g><g><text dy="0em" x="10" y="76" font-size="20" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">位置</tspan></text><text dy="0em" x="10" y="154" font-size="20" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">接招</tspan></text></g><g class="today"><line x1="1350210" x2="1350210" y1="25" y2="231" class="today"></line></g><text x="450" y="25" class="titleText"></text></svg></figure>
+<figure class="flow-diagram"><svg style="width:900px;max-width:100%;margin-inline:auto" id="w12-3-diagram-3" width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 256" role="graphics-document document" aria-roledescription="gantt"><g></g><g class="grid" transform="translate(70, 206)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-166V0.5H800.5V-166"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(89.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">05</text></g><g class="tick" opacity="1" transform="translate(178.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(267.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">15</text></g><g class="tick" opacity="1" transform="translate(356.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(444.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">25</text></g><g class="tick" opacity="1" transform="translate(533.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(622.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">35</text></g><g class="tick" opacity="1" transform="translate(711.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(800.5,0)"><line stroke="currentColor" y2="-166"></line><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">45</text></g></g><g class="grid" transform="translate(70, 50)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,166V0.5H800.5V166"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">00</text></g><g class="tick" opacity="1" transform="translate(89.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">05</text></g><g class="tick" opacity="1" transform="translate(178.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(267.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">15</text></g><g class="tick" opacity="1" transform="translate(356.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(444.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">25</text></g><g class="tick" opacity="1" transform="translate(533.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g><g class="tick" opacity="1" transform="translate(622.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">35</text></g><g class="tick" opacity="1" transform="translate(711.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">40</text></g><g class="tick" opacity="1" transform="translate(800.5,0)"><line stroke="currentColor" y2="166"></line><text fill="#000" y="-3" dy="0em" stroke="none" font-size="10" style="text-anchor: middle;">45</text></g></g><g><rect x="0" y="48" width="885" height="52" class="section section0"></rect><rect x="0" y="100" width="885" height="52" class="section section1"></rect><rect x="0" y="152" width="885" height="52" class="section section1"></rect></g><g><rect id="w12-3-diagram-3-a1" rx="3" ry="3" x="70" y="50" width="142" height="44" transform-origin="141px 72px" class="task task0 "></rect><rect id="w12-3-diagram-3-a2" rx="3" ry="3" x="212" y="50" width="427" height="44" transform-origin="425.5px 72px" class="task crit0 "></rect><rect id="w12-3-diagram-3-b1" rx="3" ry="3" x="212" y="102" width="498" height="44" transform-origin="461px 124px" class="task task1 "></rect><rect id="w12-3-diagram-3-a3" rx="3" ry="3" x="639" y="50" width="231" height="44" transform-origin="754.5px 72px" class="task task0 "></rect><rect id="w12-3-diagram-3-b2" rx="3" ry="3" x="639" y="154" width="71" height="44" transform-origin="674.5px 176px" class="task active1 "></rect><text id="w12-3-diagram-3-a1-text" font-size="18" x="141" y="79" text-height="44" class=" taskText taskText0  width-115.33479309082031">地面準備 0～8 </text><text id="w12-3-diagram-3-a2-text" font-size="18" x="425.5" y="79" text-height="44" class=" taskText taskText0  critText0 width-160.44561767578125">Airborne Arc 8～32 </text><text id="w12-3-diagram-3-b1-text" font-size="18" x="461" y="131" text-height="44" class=" taskText taskText1  width-374.12957763671875">Preorder～Disable 標記 8～36，越過後才受理 </text><text id="w12-3-diagram-3-a3-text" font-size="18" x="754.5" y="79" text-height="44" class=" taskText taskText0  width-136.19163513183594">地面收招 32～45 </text><text id="w12-3-diagram-3-b2-text" font-size="18" x="634" y="183" text-height="44" class=" taskTextOutsideLeft taskTextOutside1 activeText1">Enable～Disable 標記 32～36，站穩後才交接 </text></g><g><text dy="0em" x="10" y="76" font-size="20" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">位置</tspan></text><text dy="0em" x="10" y="154" font-size="20" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">接招</tspan></text></g><g class="today"><line x1="1403646" x2="1403646" y1="25" y2="231" class="today"></line></g><text x="450" y="25" class="titleText"></text></svg></figure>
 <p><strong>圖 2｜空中按下 6X，要過哪兩道閘門？</strong>（判斷規則）</p>
 <figure class="flow-diagram"><svg style="width:520.90625px;max-width:100%;margin-inline:auto" id="w12-3-diagram-4" width="520.90625" xmlns="http://www.w3.org/2000/svg" class="flowchart" height="1302.765625" viewBox="4.5 4 520.90625 1302.765625" role="graphics-document document" aria-roledescription="flowchart-v2"><g><marker id="w12-3-diagram-4_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></polygon></marker><marker id="w12-3-diagram-4_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="w12-3-diagram-4_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="w12-3-diagram-4_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="w12-3-diagram-4_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="w12-3-diagram-4_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"></path></marker><marker id="w12-3-diagram-4_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edges edgePaths"><path d="M162.484375,63L162.484375,99" id="w12-3-diagram-4-L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 32 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MTYyLjQ4NDM3NSwieSI6NjN9LHsieCI6MTYyLjQ4NDM3NSwieSI6MTAzfV0=" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M115.65625,357.1405743807554L115.65625,403.96875L115.65625,416.8976821881345Q115.65625,423.96875 108.58518218813452,423.96875L77.37184906186548,423.96875Q70.30078125,423.96875 70.30078125,431.0398178118655L70.30078125,457.46875L70.30078125,786.265625L70.30078125,835.765625" id="w12-3-diagram-4-L_B_X_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 514.6522216796875 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B_X_0" data-points="W3sieCI6MTE1LjY1NjI1LCJ5IjozNTcuMTQwNTc0MzgwNzU1NH0seyJ4IjoxMTUuNjU2MjUsInkiOjQwMy45Njg3NX0seyJ4IjoxMTUuNjU2MjUsInkiOjQyMy45Njg3NX0seyJ4Ijo3MC4zMDA3ODEyNSwieSI6NDIzLjk2ODc1fSx7IngiOjcwLjMwMDc4MTI1LCJ5Ijo0NTcuNDY4NzV9LHsieCI6NzAuMzAwNzgxMjUsInkiOjc4Ni4yNjU2MjV9LHsieCI6NzAuMzAwNzgxMjUsInkiOjgzOS43NjU2MjV9XQ==" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M209.3125,357.1405743807554L209.3125,403.96875L209.3125,416.8976821881345Q209.3125,423.96875 216.38356781186548,423.96875L235.36252593813452,423.96875Q242.43359375,423.96875 242.43359375,431.0398178118655L242.43359375,506.96875" id="w12-3-diagram-4-L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 173.62100219726562 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6MjA5LjMxMjUsInkiOjM1Ny4xNDA1NzQzODA3NTU0fSx7IngiOjIwOS4zMTI1LCJ5Ijo0MDMuOTY4NzV9LHsieCI6MjA5LjMxMjUsInkiOjQyMy45Njg3NX0seyJ4IjoyNDIuNDMzNTkzNzUsInkiOjQyMy45Njg3NX0seyJ4IjoyNDIuNDMzNTkzNzUsInkiOjUxMC45Njg3NX1d" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M208.80078125,699.1327835917473L208.80078125,732.765625L208.80078125,745.6945571881345Q208.80078125,752.765625 201.72971343813452,752.765625L163.50466156186548,752.765625Q156.43359375,752.765625 156.43359375,759.8366928118655L156.43359375,812.6945571881345Q156.43359375,819.765625 149.36252593813452,819.765625L123.37184906186548,819.765625Q116.30078125,819.765625 116.30078125,826.8366928118655L116.30078125,835.765625" id="w12-3-diagram-4-L_C_X_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 214.4762420654297 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_C_X_0" data-points="W3sieCI6MjA4LjgwMDc4MTI1LCJ5Ijo2OTkuMTMyNzgzNTkxNzQ3M30seyJ4IjoyMDguODAwNzgxMjUsInkiOjczMi43NjU2MjV9LHsieCI6MjA4LjgwMDc4MTI1LCJ5Ijo3NTIuNzY1NjI1fSx7IngiOjE1Ni40MzM1OTM3NSwieSI6NzUyLjc2NTYyNX0seyJ4IjoxNTYuNDMzNTkzNzUsInkiOjgxOS43NjU2MjV9LHsieCI6MTE2LjMwMDc4MTI1LCJ5Ijo4MTkuNzY1NjI1fSx7IngiOjExNi4zMDA3ODEyNSwieSI6ODM5Ljc2NTYyNX1d" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M276.06640625,699.1327835917473L276.06640625,732.765625L276.06640625,746.6484375Q276.06640625,752.765625 282.18359375,752.765625L282.18359375,752.765625Q288.30078125,752.765625 288.30078125,758.8828125L288.30078125,835.765625" id="w12-3-diagram-4-L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 140.25779724121094 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6Mjc2LjA2NjQwNjI1LCJ5Ijo2OTkuMTMyNzgzNTkxNzQ3M30seyJ4IjoyNzYuMDY2NDA2MjUsInkiOjczMi43NjU2MjV9LHsieCI6Mjc2LjA2NjQwNjI1LCJ5Ijo3NTIuNzY1NjI1fSx7IngiOjI4OC4zMDA3ODEyNSwieSI6NzUyLjc2NTYyNX0seyJ4IjoyODguMzAwNzgxMjUsInkiOjgzOS43NjU2MjV9XQ==" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M288.30078125,890.765625L288.30078125,926.765625" id="w12-3-diagram-4-L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 32 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6Mjg4LjMwMDc4MTI1LCJ5Ijo4OTAuNzY1NjI1fSx7IngiOjI4OC4zMDA3ODEyNSwieSI6OTMwLjc2NTYyNX1d" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M256.63411458333337,1109.0988788604736L256.63411458333337,1140.765625L256.63411458333337,1153.6945571881345Q256.63411458333337,1160.765625 249.5630467714679,1160.765625L173.3366928118655,1160.765625Q166.26562500000003,1160.765625 166.26562500000003,1167.8366928118655L166.265625,1243.765625" id="w12-3-diagram-4-L_E_W_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 215.70693969726562 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_E_W_0" data-points="W3sieCI6MjU2LjYzNDExNDU4MzMzMzM3LCJ5IjoxMTA5LjA5ODg3ODg2MDQ3MzZ9LHsieCI6MjU2LjYzNDExNDU4MzMzMzM3LCJ5IjoxMTQwLjc2NTYyNX0seyJ4IjoyNTYuNjM0MTE0NTgzMzMzMzcsInkiOjExNjAuNzY1NjI1fSx7IngiOjE2Ni4yNjU2MjUwMDAwMDAwMywieSI6MTE2MC43NjU2MjV9LHsieCI6MTY2LjI2NTYyNSwieSI6MTI0Ny43NjU2MjV9XQ==" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path><path d="M319.96744791666663,1109.0988788604736L319.96744791666663,1140.765625L319.96744791666663,1153.6945571881345Q319.96744791666663,1160.765625 327.0385157285321,1160.765625L403.2648696881345,1160.765625Q410.3359375,1160.765625 410.3359375,1167.8366928118655L410.3359375,1243.765625" id="w12-3-diagram-4-L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 215.7069091796875 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MzE5Ljk2NzQ0NzkxNjY2NjYzLCJ5IjoxMTA5LjA5ODg3ODg2MDQ3MzZ9LHsieCI6MzE5Ljk2NzQ0NzkxNjY2NjYzLCJ5IjoxMTQwLjc2NTYyNX0seyJ4IjozMTkuOTY3NDQ3OTE2NjY2NjMsInkiOjExNjAuNzY1NjI1fSx7IngiOjQxMC4zMzU5Mzc1LCJ5IjoxMTYwLjc2NTYyNX0seyJ4Ijo0MTAuMzM1OTM3NSwieSI6MTI0Ny43NjU2MjV9XQ==" data-look="neo" marker-end="url(#w12-3-diagram-4_flowchart-v2-pointEnd-margin)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(70.30078125, 621.8671875)"><g class="label" data-id="L_B_X_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>否</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(242.43359375, 457.46875)"><g class="label" data-id="L_B_C_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>是</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(156.43359375, 786.265625)"><g class="label" data-id="L_C_X_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>否</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(288.30078125, 786.265625)"><g class="label" data-id="L_C_D_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>是</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(166.26562500000003, 1194.265625)"><g class="label" data-id="L_E_W_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>否</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(410.3359375, 1194.265625)"><g class="label" data-id="L_E_F_0" transform="translate(-9, -13.5)"><foreignObject width="18" height="27"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>是</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="w12-3-diagram-4-flowchart-A-0" data-look="neo" transform="translate(162.484375, 37.5)"><rect class="basic label-container" style="" x="-79" y="-25.5" width="158" height="51"></rect><g class="label" style="" transform="translate(-63, -13.5)"><rect></rect><foreignObject width="126" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>空中按下攻擊鍵</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-B-1" data-look="neo" transform="translate(162.484375, 253.484375)"><polygon points="150.484375,0 300.96875,-150.484375 150.484375,-300.96875 0,-150.484375" class="label-container" transform="translate(-149.984375, 150.484375)"></polygon><g class="label" style="" transform="translate(-108.484375, -27)"><rect></rect><foreignObject width="216.96875" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>在 Preorder～Disable 之間<br/>而且已越過對手？</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-X-3" data-look="neo" transform="translate(93.30078125, 865.265625)"><rect class="basic label-container" style="" x="-79" y="-25.5" width="158" height="51"></rect><g class="label" style="" transform="translate(-63, -13.5)"><rect></rect><foreignObject width="126" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>拒絕，不存預約</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-C-5" data-look="neo" transform="translate(242.43359375, 621.8671875)"><polygon points="110.8984375,0 221.796875,-110.8984375 110.8984375,-221.796875 0,-110.8984375" class="label-container" transform="translate(-110.3984375, 110.8984375)"></polygon><g class="label" style="" transform="translate(-82.3984375, -13.5)"><rect></rect><foreignObject width="164.796875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>Link 裡有符合的列？</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-D-9" data-look="neo" transform="translate(288.30078125, 865.265625)"><rect class="basic label-container" style="" x="-76" y="-25.5" width="152" height="51"></rect><g class="label" style="" transform="translate(-60, -13.5)"><rect></rect><foreignObject width="120" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center; width: 120px;"><span class="nodeLabel "><p>存下預約</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-E-11" data-look="neo" transform="translate(288.30078125, 1035.765625)"><polygon points="105,0 210,-105 105,-210 0,-105" class="label-container" transform="translate(-104.5, 105)"></polygon><g class="label" style="" transform="translate(-63, -27)"><rect></rect><foreignObject width="126" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>離地段結束<br/>站穩在擂台上？</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-W-13" data-look="neo" transform="translate(166.265625, 1273.265625)"><rect class="basic label-container" style="" x="-97" y="-25.5" width="194" height="51"></rect><g class="label" style="" transform="translate(-81, -13.5)"><rect></rect><foreignObject width="162" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>預約保留，等下一幀</p></span></div></foreignObject></g></g><g class="node default  " id="w12-3-diagram-4-flowchart-F-15" data-look="neo" transform="translate(410.3359375, 1273.265625)"><rect class="basic label-container" style="" x="-107.0703125" y="-25.5" width="214.140625" height="51"></rect><g class="label" style="" transform="translate(-91.0703125, -13.5)"><rect></rect><foreignObject width="182.140625" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 400px; text-align: center;"><span class="nodeLabel "><p>交接 ID 2，轉身朝對手</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="w12-3-diagram-4-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"></feDropShadow></filter></defs><defs><filter id="w12-3-diagram-4-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"></feDropShadow></filter></defs></svg></figure>
 <p><strong>圖 3｜越過對手前後，同一顆鍵是幾號方向？</strong>（判斷規則）</p>
@@ -1150,177 +1622,417 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
 開工前先跟我確認規格。之後依規格順序一次做一項，每完成一項，經我確認無誤後 commit，再做下一項。
 </code></pre>
 <h2 id="w12-3-9">課堂實作</h2>
-<h3 id="w12-3-10">課堂實作｜用 AI 與 MCP 把出界改成扣血回場</h3>
-<h4>題目</h4>
-<p>延伸課堂示範 2，使用 AI 與 Unreal MCP 完成「出界扣血回場」。你要決定扣多少血、何時回場、回場面向與保護時間，再把需求交給 AI 查專案、修改與驗收，直到遊戲能展示結果。</p>
-<p>展示目標固定：越頂落到場外時不再直接落敗，改成扣血，並回到自己在場內的出生點（<code>stage1</code> 的 <code>PlayerStart</code> 與 <code>CpuStart</code>），對局繼續。扣血讓 HP 歸零時，才進入擊倒，對手照常勝利。</p>
-<p>修改範圍限於出界結算、回場所需的出生點資料取得、角色狀態清理與命中保護，以及必要的 Debug、文件與測試；不動越頂軌跡、選招與接招規則，也不修改 <code>stage1</code> 關卡。</p>
-<p>開遊戲打開 Combat Debug，演示兩次越頂出界：一次扣血後回到出生點、對局繼續；一次在低血量時出界而落敗。請說明：<strong>你的設計做了哪些決定、為什麼？AI 改了哪些地方，你如何確認遊戲符合需求？</strong> 只提出需求或提示詞還不算完成，必須展示 AI 實作後的遊戲。</p>
-<p>演示後請 AI 只還原本題改動，保留其他既有工作；重新建置並確認教材原本的出界判負恢復正常。</p>
-<h4>參考做法與判讀</h4>
-<p><strong>AI 施工提示詞</strong></p>
-<p>先依序貼上 <a href="#shared-prompt">共用 AI 提示詞</a> 的兩段開場與共用提示詞，再完整複製下段。學生決定扣血量、回場時機與面向、保護時間，檢查異動並操作驗收；AI 負責查證、整理 SPEC 及修改程式與資產。以下函式是教材的查證起點，AI 須核對學生實際版本。</p>
-<pre><code class="language-markdown"># 開發目標
-請在目前 TndaFighter 教材專案實作「出界扣血回場」。
-越頂落到場外時不再直接落敗，改成扣血並回到自己的場內出生點，對局繼續；
-扣到 HP 歸零才進入擊倒，對手照常勝利。
-我決定一次出界扣多少血、何時回場、回場面向，以及回場後的保護時間。
-本題由你查證、整理 SPEC 並修改程式與資產，我負責選擇設計、檢查異動及手動遊戲驗收。
-沿用前面共用提示詞的基準確認、SPEC、分批施工與手動驗證流程。
+<h3 id="w12-3-10">課堂實作｜修改角色出界規格</h3>
+<div class="practice-example">
+<p class="practice-design-need"><strong>設計需求</strong>　把出界改成扣血回場</p>
+<div class="practice-demo has-practice-docs">
+<details class="practice-dialogue" id="practice-demo-2">
+<summary>AI Spec-Driven 完整對話歷程示範</summary>
+<section class="dialogue-message dialogue-user">
+<h5>第 1 輪｜User</h5>
+<div class="dialogue-text"># 專案與工作範圍
+以目前資料夾的 TndaFighter.uproject 為根目錄；主要模組是 TndaFighter。
+這是 Unreal Engine C++ 格鬥遊戲；引擎版本讀 EngineAssociation。
+# 先讀文件，再對照程式
+先讀 Source/AGENTS.md 與 Source/TndaFighter/Fighting/AGENTS.md。
+接著讀 Source/TndaFighter/ 下 Fighting/README.md、DataTable/README.md，
+再依功能讀 Fighting/Docs 與相關原始碼。
+文件缺失或與程式不一致時，先查原始碼與設定；資產查詢等下一頁確認 unreal-mcp 後進行。
+# 操作與資料入口
+關卡：/Game/Fighting/stage1。U 是 X，I 是 Y；6 朝向對手、4 遠離對手。
+CSV：_DataTable/CommandTable.csv、_DataTable/DamageTable.csv。
+對應 /Game/DataTable/DT_Command、/Game/DataTable/DT_Damage；改 CSV 後 Reimport。
+動畫：/Game/Fighting/Anims/AM_Attack_01～03；右 Ctrl＋F12 切換 Combat Debug。
+# 本輪回覆格式
+成功只回一行：「專案導讀完成，可以提供需求。引擎版本：&lt;EngineAssociation 的值&gt;」
+受阻只回兩行：「阻礙：…」「下一步：…」。先完成查證，不改檔，不附摘要或重述規則。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 1 輪｜Assistant</h5>
+<div class="dialogue-text">專案導讀完成，可以提供需求。引擎版本：5.8</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 2 輪｜User</h5>
+<div class="dialogue-text"># 開工前確認 unreal-mcp
+使用 unreal-mcp：http://127.0.0.1:8000/mcp。
+1. 完成 MCP 連線、取得工具並執行 Editor 唯讀查詢；只有 HTTP 回應不算通過。
+2. 透過 unreal-mcp 取得 Editor 開啟的 .uproject 完整路徑，
+   與工作資料夾的 TndaFighter.uproject 比對；只核對檔名不夠。
+3. 連線失敗、專案不符或無法確認時停止實作，排除後重新驗證。
+# 資產操作規則
+.uasset 的查詢、建立、修改、Reimport 與儲存，一律透過 unreal-mcp。
+修改前查現況，修改後回讀確認。C++、CSV 與設定文字檔使用檔案工具；
+CSV 改完後，DataTable 的 Reimport 與儲存仍透過 unreal-mcp。
+缺少所需能力時先回報並討論，不改用其他方式操作資產。
+本輪不修改功能；連線與專案確認後，接著貼共用提示詞。
+# 本輪回覆格式：固定三行
+unreal-mcp：可用／不可用／未確認
+Editor 專案：完整 .uproject 路徑；與工作資料夾一致／不一致／無法確認
+開工條件：已就緒／受阻；受阻時附原因與下一步
+受阻原因與下一步寫在第三行；不附前言、結語、清單或過程。未查證就寫「未確認」。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 2 輪｜Assistant</h5>
+<div class="dialogue-text">unreal-mcp：可用
+Editor 專案：D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\TndaFighter.uproject；與工作資料夾一致
+開工條件：已就緒</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 3 輪｜User</h5>
+<div class="dialogue-text"># 共用提示詞
+以下規則適用於後續每個功能。
+# 合作流程
+每個功能依序過四關，每關經我確認才進下一關：
+1. plan：我提出設計需求，你查證後問遊戲面的未決細節，整理 plan.md。
+2. spec：依 plan.md 問實作面的未決細節，整理 spec.md。
+3. 提交：依「存檔與提交」存檔並 commit。
+4. 施工：先確認基準，再逐張工單實作與驗證。
+# 分工
+你負責查證、提問、整理 plan 與 spec，並修改程式與資產；資產依共用開場 2 走 unreal-mcp，受阻就停下排除。
+我負責決定、確認，以及建置、PIE、重啟 Editor 與遊戲操作。
+需要我操作時，給我能照做的步驟，等我回報；沒回報的項目一律記為「未確認」。
+全程保留既有改動；沒有 Git 時，以備份代替 commit。
+換新對話時我重貼共用開場與這段規則；你先讀已提交的 plan.md、spec.md，再接續目前工單。
+# 提問方式
+先讀相關文件與程式，用 unreal-mcp 查相關資產；能自行查證的事實先查。
+只問未決問題，每題附建議；一輪只問現在能回答的題目，我回答後再問衍生問題。
+plan 關問玩家看得到的行為、規則、數值、範圍與驗收；
+資料與介面、接入位置、時間計算與工單拆分留到 spec 關。
+# plan.md 格式
+依序只用四個一級標題：「# 需求：功能名稱」「# 規格」「# 驗收目標」「# 現在開始」。
+- 需求：一句「我想…」寫玩家看到的效果；需要時再一句指出要改的檔案或資料表。
+- 規格：條列行為、規則、數值與邊界，一條一件事；寫出範圍外項目，不寫類別或函式名。
+- 驗收目標：條列能在 PIE、Combat Debug 或 Output Log 判斷的結果，
+  涵蓋正常操作、中斷、錯誤資料與受影響的舊功能。
+- 現在開始：交代下一關要查什麼、提出什麼方案讓我確認，確認後整理 spec.md，等我確認才實作。
+  新對話只貼這份 plan.md 也能接續。
+# spec.md 格式
+標題為「# SPEC｜功能名稱」，第二行寫「依據：plan.md」，以下六節依序展開。
+## 1. 目標與範圍
+寫目前問題、完成後的遊戲行為、本次包含與不包含的工作。
+## 2. 現況與已確認規則
+列程式與資產查證依據；規則用「條件 → 行為」表格。
+數值寫單位、方向基準與起算點，區分既有值與本次決定；未決事項不能當成已確認。
+## 3. 實作設計
+每套功能各開小節，完整展開以下五步：
+1. 資料與介面：型別、初始值、單位、擁有者、公開／私有方法與輸入輸出。
+   涉及表格時列 CSV、Row、執行期副本、Reader、驗證與舊資料相容方式。
+2. Init：觸發條件、資料準備、清除舊狀態、無效輸入與重複啟動的處理。
+3. Tick：更新時機、時間來源、狀態推進與停止條件；公式附符號、單位與小算例。
+4. End：正常結束、中斷、停用與生命週期清理；哪些歸零、哪些保留、如何重啟。
+5. 接入與手動確認：呼叫者、插入位置、先後順序、保留的既有行為與建置／資產更新順序。
+每一步列檔案／資產、修改位置、內容、原因，以及學生應檢查的重點。
+新名稱標示「預計新增」；不適用寫原因，事件驅動寫實際入口；必要時附偽碼。
+## 4. 手動驗證清單
+每項依序寫：編號、確認目標、準備條件、操作步驟、預期畫面或 Log、結束後如何還原。
+步驟寫清楚開哪個檔案或畫面、改動要看哪裡、遊戲內按什麼、觀察什麼。
+涵蓋建置與啟動、異動內容檢查、正常功能、中斷與受影響的舊功能；先提供最小可操作案例。
+## 5. 分階段工單
+表格欄位：編號、範圍、相依工單、修改檔案／資產、可展示成果、手動驗證項目編號。
+## 6. 未決事項
+列問題與建議；存檔版必須寫「無」，還有未決事項就不存檔。
+# 存檔與提交
+plan.md 與 spec.md 存在 Specs/&lt;功能代號&gt;/；功能代號用英文短名，整理 plan 時一併提出讓我確認。
+commit 只納入這兩個檔案，訊息如「docs: &lt;功能代號&gt; plan 與 spec」；回報 commit hash 後才開始施工。
+需求或規格要變更時，先改 plan.md 或 spec.md 給我確認並提交，再改程式。
+# 施工前先確認基準
+確認引擎、編譯工具與 TndaFighterEditor Win64 Development 建置方式。
+先讀啟動腳本，給我建置與進入 stage1 的步驟，等我回報基準結果。
+基準失敗先說明原因與下一步，不把既有問題當成本次修改造成。
+# 每張工單施工
+讀 spec.md 與目前工單，簡述本批範圍，等我確認後只實作這張工單。
+unreal-mcp 重連後先核對 .uproject 完整路徑。完成後閱讀 diff，交付兩段：
+1. 異動導覽：檔案／資產、修改位置、改前與改後的差異、原因；指出我應檢查的內容。
+2. 手動驗證：依 spec.md 列出本批項目，包含準備、逐步操作、預期畫面或 Log、還原步驟。
+# 收到我的結果後
+逐項記錄通過／失敗／未確認。
+失敗時先問實際現象與錯誤，查原因並提出修正；修正後再給我重測步驟。
+我還原 Debug，你還原測試資產；我確認後才 commit 本張工單，再做下一張。
+# 本輪回覆格式
+成功只回一句：「共用提示詞已就緒，請提供功能需求。」
+受阻只回兩行：「阻礙：…」「下一步：…」。不加摘要、解釋或提問；等待功能需求，不動工。</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 3 輪｜Assistant</h5>
+<div class="dialogue-text">共用提示詞已就緒，請提供功能需求。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 4 輪｜User</h5>
+<div class="dialogue-text">把出界改成扣血回場</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 4 輪｜Assistant</h5>
+<div class="dialogue-text">在整理 `plan.md` 前，先向您確認以下幾個遊戲面未決細節（每題皆附建議）：
 
-# 遊戲需求
-1. 沿用既有出界資格：角色站穩在沒有 ArenaFloor 的地面、雙方尚未分出勝負才處理。
-   空中越過牆還不算，牆頂及場外地面算出界。不要改成依座標範圍判定。
-2. 一次出界扣我選定的 HP，生命值最低為 0。1P 與 CPU 使用相同規則。
-   扣血量與回場保護秒數要能在 Editor 調整，預設為我選定的值。
-3. 扣完仍有 HP：依我選定的時機與面向，把同一個角色移回自己的場內出生點，
-   回到可移動、可出招的狀態。不補血、不銷毀重生、不重建對手配對、CPU 或相機。
-4. 扣完 HP 歸零：留在場外落點，進入既有 KnockedOut 與失敗動畫流程，
-   成因記為 RingOut，不回場、不給保護；對手依既有勝利規則處理。
-5. 出生點分別使用現有 APlayerStart 的 PlayerStartTag=PlayerStart 與 CpuStart。
-   這個欄位和 Actor Tags 不同，不得靠 Outliner 顯示名稱或硬編碼座標尋找。
-   ArenaFloor 則使用既有 Actor Tag。
-6. 出生點未被占用時回到該點。若被對手膠囊占住，只調整回場者到該點附近
-   最近的合法場內落點，不移動對手；落點必須可站立、不與角色或牆重疊，
-   腳下是 ArenaFloor。以有限範圍、固定順序找候選，不使用無限迴圈，
-   並在 SPEC 說明選點規則。找不到合法位置時，保留一次待回場事件、
-   印出明確錯誤，不重複扣血、不傳送到場外，並把此情況列為未解決的驗收失敗。
-7. 回場清除這次攻擊／反應動畫、指令預約、殘留速度、離地運動與硬直計時，
-   恢復正常移動模式與碰撞。不要讓原越頂下一幀把角色拉回場外，
-   也不要在回場後接出舊預約。
-8. 回場成功後開始計算保護時間。保護期間對手的攻擊不造成傷害、硬直或擊退，
-   也不算成功命中；自己的正常移動與攻擊仍可使用。保護不豁免再次出界。
-   到期恢復一般命中規則，不全域關掉碰撞來假裝無敵。
-9. 同一幀先完成既有命中結算，再評估雙方出界，最後共同決定擊倒與勝利。
-   保留同幀雙方公平結算，不因先處理 1P 就跳過 CPU。
-   已被本幀攻擊打到 HP 歸零者保留 Depleted，不再扣出界傷害或回場。
-10. 同幀雙方出界且都有剩餘 HP，雙方各扣一次並回各自出生點；
-    只有一人扣到 0，另一人存活回場後勝利；雙方都扣到 0，兩人落敗且沒有勝方。
-    前一幀已分出勝負時，不再處理新的出界。
-11. 同一次出界不得每 Tick 重複扣血、反覆清狀態或刷新保護時間；
-    成功回場後下一次真正出界，才可再扣一次。
+1. **出界扣血量與 HP 歸零處理**
+   - 單次出界要扣除多少 HP？（目前雙方預設 `MaxHealth` 為 100）
+   - 若出界扣血後 HP 歸零，是否直接落敗（進入 `KnockedOut`、對手進入 `Victory`）且不再回場？
+   - **建議**：單次出界扣 **20 HP**；若扣血後 HP 歸零，直接停在原地進入 `KnockedOut`（成因記為 `RingOut`）並讓對手獲勝，不再傳送回場。
 
-修改界線：
-- 只改出界結算及必要的呼叫端、出生點資料取得、回場狀態清理、命中保護、
-  Debug／Log 和相關文件。
-- 不改越頂軌跡與曲線、選招排序及接招規則、stage1 地圖，
-  不新增選單、多回合流程或完整重生系統。
-- 若保護需要接入共用命中入口，只加本題所需的資格判斷，不順手重構整個戰鬥系統。
+2. **回場目標位置與防重疊**
+   - 角色出界後要傳送回場內哪個位置？（例如：從出界位置朝擂台中心內縮至場內安全距離、回到各自出生點 `PlayerStart`／`CpuStart`，還是回到擂台中心附近？）
+   - 若目標位置剛好與對手重疊或被對手擋住，應如何處理？
+   - **建議**：沿「擂台中心 → 角色出界位置」方向，放回場內安全位置（例如距離中心 `700 cm` 的擂台頂面，避免緊貼牆壁）；若該位置與對手重疊，則再往擂台中心或切線側邊推開至不重疊，並貼齊地面、面向對手。
 
-# 先查現況
-1. 讀專案規則與功能文件，確認出界結算、生命值、命中資格與勝利判定由哪些檔案負責。
-2. 用 MCP 回讀 stage1 的 ArenaFloor 與兩個 PlayerStartTag、位置、旋轉
-   及相關角色預設值，確認每種出生點唯一且在場內；不要為了查詢改存關卡。
-3. 從 FightingCharacter 的 ShouldRingOut、QueueRingOutIfOutsideArena、
-   HandleWorldPostActorTick、QueueKnockedOut、BeginKnockedOut 查起，
-   再追查生命值修改、命中資格、攻擊中止、移動清理及勝利判定的現有入口。
-   名稱僅是閱讀起點，先確認本機版本再使用，不假設有不存在的 API。
-4. 查 FightingGameMode 的 FindSpawnPoint 與開場配對流程，
-   沿用 PlayerStartTag 的查找與唯一性驗證；只取得回場需要的資料，
-   不把整套開場流程再跑一次。出生點不存在或重複時要明確失敗，不能偷偷使用世界原點。
-5. 問我尚未決定的扣血量、回場時機、回場面向與保護時間，每項附建議，
-   並說明它對同幀結算與保護計時的影響。可提供出界扣 30 HP、
-   存活時當次結算立即回場、面向對手、保護 1 秒作為討論起點，選定值記入 SPEC。
+3. **回場時機與角色狀態**
+   - 站穩在場外（含牆頂或外層高台）時，是**當幀立刻**扣血並回場，還是先停頓／播完動作才回場？
+   - 回場後角色應立即恢復可行動（`Neutral`／依按鍵 `Defending`），還是播放受擊動畫並進入短暫硬直？進行中的攻擊、預約與速度是否一併清除？
+   - **建議**：站穩在場外當幀**立刻**扣血、強制中斷進行中的攻擊與預約、清除移動速度並傳送回場且立即面向對手；回場後直接恢復可行動（不額外播受擊硬直，避免剛回場又被連擊），若為離地落下後出界則重設為地面站立狀態。
 
-# 施工設計要求
-- 同一幀先收集雙方結果，再套用會改變勝負的狀態。SPEC 寫清楚雙方結算順序，
-  以及一次性出界事件與保護時間的擁有者、初始值、更新與清除時點。
-- 回場用既有狀態清理入口或最小必要擴充，檢查傳送成功、落點與碰撞恢復；
-  傳送失敗不得回報成功。
-- 在 Combat Debug 或 Output Log 顯示：角色、出界扣血前後 HP、是否回場、
-  回場位置、保護是否有效；歸零時顯示 RingOut。Log 每次事件印一次，避免每幀洗版。
-  既有 Frame Bar 若會記錄命中，設計上不得把保護中未命中的攻擊記為成功命中。
-- 修改前記下 HEAD 與現有未提交修改，供展示後只還原本題改動。
-- 分成「資料與初始化」「出界扣血與回場」「保護與顯示」等可展示的小批次，
-  每批給我異動導覽與手動驗證，等我回報後再繼續。
-- C++ 建置與重啟 Editor 依專案建置指引給我操作步驟，等我回報建置結果再繼續；
-  舊 DLL 或 Live Coding 訊息不能當成完整建置證據。
-- 更新本題必要文件與索引，完成後閱讀 diff，確認沒有超出範圍。
+4. **雙方同時出界與出界判定門檻**
+   - 觸發門檻是否維持既有規則：不在離地軌跡期間、雙腳站穩在非 `ArenaFloor` 地面（含牆頂與外層高台），且雙方都尚未進入終態（`KnockedOut`／`Victory`）？
+   - 若同幀雙方同時出界，是否各自扣血並各自回場（若同時歸零則同幀雙倒、無勝方）？
+   - **建議**：維持既有站穩判定與非終態前提；同幀雙方出界時各自獨立扣血並各自回場（可選各自相對位置對稱處理），同時歸零時維持雙倒無勝方。
 
-# 手動驗收
-請給出可照做的準備、遊戲操作、預期畫面或 Log 與還原步驟。
-準備步驟寫清楚我怎麼安排站位與 HP；HP 只改執行中的角色，不存成 Blueprint 預設值。
-每項都走真實的越頂出界，不用直接扣血或回場代替整條流程。
-以下數值以參考設計為例，依我選定的值換算。
-1. 1P HP=100 越頂到場外站穩：只扣一次變 70，回到自己出生點附近的合法位置、
-   面向 CPU，能移動與出招，CPU 沒有進入勝利。
-2. HP=31 出界後剩 1 並回場；HP=30 與 HP=20 出界後為 0，
-   留在落點 KnockedOut (RingOut)，CPU 勝利；沒有負 HP。
-3. CPU 出界：依相同規則扣血，存活時回 CpuStart，歸零時落敗。
-4. 回場後保護有效時讓對手確實打中一次：沒有扣血、硬直、擊退與成功命中紀錄；
-   保護到期後新的一次攻擊正常命中。
-5. 對手站在回場者出生點：對手不被傳送，回場者落在附近合法位置，
-   兩人不重疊，不連續扣血；另說明找不到合法落點時我會看到的錯誤。
-6. 場外空中尚未站穩不扣血；一般站在 ArenaFloor 上不扣血；
-   成功回場停留數幀不再扣血，之後再次出界才再扣一次。
-7. 同幀雙方出界：雙方存活、一方歸零、雙方歸零；同幀攻擊致死與出界時，
-   致死角色保留 Depleted、不回場。說明我怎麼安排同一幀；做不到就記為未確認。
-8. 勝負已定後不再扣出界傷害或回場；原有越頂、場內接招、一般命中
-   與 HP 歸零落敗仍正常。
-9. 展示完成後還原：重新建置後，出界立即判負、出界不扣 HP 的教材行為恢復。
+請確認以上四點的決定（或調整數值／規則），確認後我就整理 `plan.md` 並一併提出英文功能代號。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 5 輪｜User</h5>
+<div class="dialogue-text">以上依建議</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 5 輪｜Assistant</h5>
+<div class="dialogue-text">已整理完成第一關 `plan.md`：[Specs/ring-out-return/plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/plan.md)。
 
-# 現在開始
-先完成現況查證，提出未決設計問題，再依共用提示詞整理 SPEC。
-驗收由我在遊戲內操作，未收到回報的項目記為未確認。
-完成後說明可調參數位置，並給我最短的現場操作順序，
-讓我演示「存活出界後扣血回場」與「低血量出界落敗」，指出 Debug 或 Log 的出界資訊。
-留下修改後的版本供我展示，不自行 commit；等我說「展示完成，還原本題」
-再只還原本題改動，保留原有修改、不使用整庫 reset，並給我重新建置與確認還原的步驟。
-</code></pre>
-<p>下表採參考設計：出界扣 30 HP、存活時當次結算立即回場並面向對手、回場後保護 1 秒。學生可選其他值，但要能說明並演示。表中結果依規格推得，尚未實測。</p>
-<table>
-<thead>
-<tr>
-<th>展示情境</th>
-<th>參考設計的預期結果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1P HP 100，越頂到場外站穩</td>
-<td>只扣一次變 70，回到 <code>PlayerStart</code> 附近合法位置、面向 CPU，對局繼續</td>
-</tr>
-<tr>
-<td>1P HP 31 出界</td>
-<td>剩 1 並回場</td>
-</tr>
-<tr>
-<td>1P HP 30 或 20 出界</td>
-<td>HP 為 0，留在落點 KnockedOut（RingOut），CPU 勝利</td>
-</tr>
-<tr>
-<td>CPU 出界</td>
-<td>同規則；存活回 <code>CpuStart</code>，歸零落敗</td>
-</tr>
-<tr>
-<td>回場後 1 秒內被打中</td>
-<td>不扣血、無硬直與擊退、不算成功命中；到期後新的攻擊正常命中</td>
-</tr>
-<tr>
-<td>同幀雙方出界，一方 20 HP、另一方 100 HP</td>
-<td>前者扣到 0 落敗；後者扣到 70 回場後勝利</td>
-</tr>
-<tr>
-<td>同幀雙方都扣到 0</td>
-<td>兩人落敗，沒有勝方</td>
-</tr>
-<tr>
-<td>展示後還原本題</td>
-<td>出界立即判負、不扣 HP</td>
-</tr>
-</tbody></table>
-<p><strong>判讀重點</strong></p>
-<ul>
-<li><strong>AI 確實完成遊戲目標</strong>：能展示扣血回場與低血量落敗；只有規格、程式片段或建置成功，還不能證明玩法完成。</li>
-<li><strong>規則有對應實作</strong>：學生說得出扣血、回場、保護各在哪裡處理，尤其是為什麼一次出界只扣一次、同幀雙方要先收集結果再結算。</li>
-<li><strong>保留既有對局</strong>：回場沿用同一個角色與對手配對，不重新生成 CPU、不補滿血。出生點依 <code>APlayerStart::PlayerStartTag</code> 尋找，與擂台的 Actor Tag 分清楚。</li>
-<li><strong>用驗收確認 AI 的結果</strong>：學生能指出實測過與尚未實測的案例，能解釋保護期間的命中處理，而不只是重述提示詞。</li>
-</ul>
-<p><strong>可以追問</strong></p>
-<ul>
-<li>「回場後還有越頂預約沒清掉，下一幀可能發生什麼？」答：可能接出本來留在場外那次攻擊的預約，或被殘留運動拉離回場位置；要核對狀態清理與實際演示。</li>
-<li>「雙方同幀出界，一方剩 20 HP、另一方剩 100 HP，參考設計會怎樣？」答：前者扣到 0、留在場外落敗；後者扣到 70 並回場後勝利。若學生採不同規則，需能對回自己的需求與實作。</li>
-</ul>
-<p>教師備註：此段是施工規格與驗收預期。AI 依共用提示詞查證、提出設計問題、整理 SPEC、分工單施工，以及學生手動驗收的完整流程尚未驗證，也沒有出界扣血回場的 PIE 實測結果；同幀雙方出界、指定 HP 等案例能否由學生手動安排也未確認。課堂以遊戲成果驗收；未完成施工與建置時列為未完成，不能以提示詞取代。2026-11-17 本次取材仍為 <code>dev-week-12</code> HEAD <code>84ebfa4c</code>，原始碼 tag <code>week-12</code> 為 <code>4502f9e3</code>，前週 tag 為 <code>61e68432</code>；既有工具設定修改保留。索引同步與 Build Binary 均成功，Editor PID <code>27724</code> 載入 <code>stage1</code>，MCP 確認專案身分並回讀 <code>DT_Command</code>、Montage Notify 及出生點。<code>FindSpawnPoint()</code> 已透過 CodeGraph 核對：查的是 <code>PlayerStartTag</code>，不是 Actor Tags。本次沒有修改遊戲程式或資產。</p>
+- **建議功能代號**：`ring-out-return`（存放路徑：`Specs/ring-out-return/`）
+- **內容摘要**：將出界從「直接擊倒」改為「扣 20 HP 並立刻傳送回擂台安全位置且面向對手；若扣血後 HP 歸零則原地進入 `KnockedOut`（`RingOut`），對手依既有規則 `Victory`」。
+
+請確認 `plan.md` 內容與功能代號 `ring-out-return` 是否同意；確認後我們就進入第二關（`spec`），由我先查證相關程式、資產與既有測試後提出實作面的未決問題。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 6 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 6 輪｜Assistant</h5>
+<div class="dialogue-text">在撰寫 `spec.md` 前，已完成程式與 `stage1` 資產查證（`ArenaFloor` 中心 `(1790, 1800)`、半徑 `900 cm`、頂面 `Z=210`；既有 `FightingCharacterTests.cpp` 內含 `RingOutRule` 與 `RingOutOutcome` 測試）。請確認以下實作面未決細節（每題皆附建議）：
+
+1. **出界扣血常數與設定方式**
+   - `20 HP` 要直接定義為 `AFightingCharacter` 的 C++ 常數，還是開成 Blueprint 可調屬性？
+   - **建議**：定義為 `AFightingCharacter` 內部的 `static constexpr int32 RingOutDamage = 20;`（與既有 `AirborneSweepLiftCm` 等內部規則常數一致），避免與 `DamageTable` 混淆。
+
+2. **回場目標位置計算與 `ArenaFloor` 邊界讀取**
+   - 是否於執行期讀取關卡唯一 `ArenaFloor` Actor Bounds 的圓心、半徑與頂面 Z，並用 `FMath::Min(700.0, FMath::Max(0.0, ArenaRadius - 200.0))` 作為安全半徑（`stage1` 下即為 `700 cm`）？若與對手水平距離小於最小接觸距（雙方膠囊半徑和），是優先往擂台中心退讓、被擋再往切線側邊推開嗎？
+   - **建議**：是，動態讀取 `ArenaFloor` Bounds 計算安全半徑與頂面 Z；落點先沿「圓心 → 出界位置」放回不超過 `700 cm` 的位置，若與對手重疊則依序嘗試「朝圓心退開」與「切線兩側推開」並以 Capsule 掃掠確認不穿牆、再對地面做 `FindFloor` / 垂直對齊。
+
+3. **同幀命中與出界的先後與硬直清理**
+   - 在 `HandleWorldPostActorTick` 中，仍維持「先結算雙方連續命中候選 → 再結算雙方出界」。若角色同幀剛被命中（HP 仍 &gt; 0）且同幀站穩在場外，回場時是否一併取消剛產生的硬直／反應並回到可行動狀態（`Neutral`／`Defending`）？
+   - **建議**：是，只要出界扣血後 HP &gt; 0 而執行回場，就一併清除硬直計時器、待套用硬直與反應動畫，讓角色以可行動狀態安全回到場內。
+
+4. **既有 `RingOut` 自動化測試與新增純規則測試**
+   - `FightingCharacterTests.cpp` 的 `RingOutRule` 與 `RingOutOutcome` 目前斷言舊的「出界即擊倒」。是否改寫為驗證新規則（扣 20 HP、HP &gt; 0 回場、HP 歸零才 `KnockedOut(RingOut)`、同幀雙方出界），並新增「回場安全點與防重疊」純規則測試？
+   - **建議**：是，同步更新既有測試並補齊純規則測試（同時也將同步更新 `Combat.md`、`Character.md`、`Arena.md` 的過期說明）。
+
+請確認以上四點，確認後我將立即整理並寫入 `Specs/ring-out-return/spec.md`。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 7 輪｜User</h5>
+<div class="dialogue-text">確認，以上依建議</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 7 輪｜Assistant</h5>
+<div class="dialogue-text">已整理完成第二關 `spec.md`：[Specs/ring-out-return/spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/spec.md)。
+
+- **涵蓋內容**：
+  1. 目標與範圍（出界扣 `20 HP`、HP &gt; 0 立即回場、HP == 0 才 `KnockedOut(RingOut)`）。
+  2. 現況與已確認規則（`stage1` `ArenaFloor` 圓心 `(1790, 1800)`、半徑 `900 cm`、頂面 `Z=210`，安全內縮半徑 `700 cm`）。
+  3. 實作設計五步驟（資料與介面、Init、Tick、End、接入與手動確認）。
+  4. 手動驗證清單（V01～V05）。
+  5. 分階段工單（`WP01` 核心 C++ 實作、`WP02` 自動化測試與文件同步）。
+  6. 未決事項：無。
+
+請確認 `spec.md` 內容是否同意；確認後我將把 `Specs/ring-out-return/plan.md` 與 `Specs/ring-out-return/spec.md` 進行 commit 並回報 commit hash，再進入基準確認與施工。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 8 輪｜User</h5>
+<div class="dialogue-text">手動驗證清單 幫我控制在 兩步</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 8 輪｜Assistant</h5>
+<div class="dialogue-text">已將 [Specs/ring-out-return/spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/spec.md) 的「4. 手動驗證清單」精簡為兩步（`V01`：建置、出界扣血回場與歸零擊倒；`V02`：自動化測試與 `FrameScenario G2` 回歸），並同步更新第 5 節對應編號。
+
+請確認是否同意這份 `spec.md`；確認後我就執行第三關：只納入 `Specs/ring-out-return/plan.md` 與 `Specs/ring-out-return/spec.md` 進行 commit 並回報 commit hash。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 9 輪｜User</h5>
+<div class="dialogue-text">確認</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 9 輪｜Assistant</h5>
+<div class="dialogue-text">已完成第三關存檔與提交：
+- **Commit**：`41b21f3`（`docs: ring-out-return plan 與 spec`）
+- **納入檔案**：[Specs/ring-out-return/plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/plan.md)、[Specs/ring-out-return/spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/spec.md)
+
+---
+
+### 施工前基準確認
+
+已確認專案根目錄沒有額外啟動腳本，目前連接的引擎環境為 **UE 5.8.4**（`C:\Program Files\Epic Games\UE_5.8\Engine`）。請依下列步驟確認修改前基準：
+
+1. **建置 `TndaFighterEditor Win64 Development`**：
+   - 若 Editor 開啟中，請先正常關閉 Editor（或於 IDE 建置），執行：
+     ```powershell
+     &amp; "C:\Program Files\Epic Games\UE_5.8\Engine\Build\BatchFiles\Build.bat" TndaFighterEditor Win64 Development -Project="d:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\TndaFighter.uproject" -WaitMutex -FromMsBuild
+     ```
+2. **進入 `stage1` 並啟動 PIE**：
+   - 開啟專案（預設或手動開啟 `/Game/Fighting/stage1`），按下 **Play (PIE)** 確認 1P 與 CPU 正常出生且面對彼此、可移動與出招。
+
+請回報基準結果（成功或遇到的錯誤），確認基準正常後我們就開始實作第一張工單 `WP01`。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 10 輪｜User</h5>
+<div class="dialogue-text">確認，開始實作第一張工單</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 10 輪｜Assistant</h5>
+<div class="dialogue-text">已完成工單 **WP01** 實作（僅修改 C++，未動資產）。
+
+### 1. 異動導覽
+
+- [FightingCharacter.h](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.h#L214-L240) / [私有成員宣告](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.h#L726-L746)
+  - **改前**：只有 `ShouldRingOut()` 與 `QueueRingOutIfOutsideArena()`（出界即排入擊倒）。
+  - **改後**：新增常數 `RingOutDamage = 20`、`RingOutSafeMarginCm = 200.0`、`RingOutMaxSafeRadiusCm = 700.0`，新增純規則 `ComputeArenaSafePoint2D()` 與 `ResolveRingOutReturnTargets()`，並將 `QueueRingOutIfOutsideArena()` 拆為 `EvaluateAndApplyRingOutDamage()`、`ExecuteRingOutReturn()` 與 `TryFindArenaFloorAnchor()`。
+  - **原因**：將「出界判定與扣血」和「回場傳送與狀態清理」分離，方便同幀雙方各自評估後再各自回場。
+- [FightingCharacter.cpp](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.cpp#L369-L565) / [HandleWorldPostActorTick](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.cpp#L1753-L1774)
+  - **改前**：`QueueRingOutIfOutsideArena()` 直接呼叫 `QueueKnockedOut(RingOut)`，不扣血也不回場。
+  - **改後**：
+    - `EvaluateAndApplyRingOutDamage()`：站穩場外且雙方未終態時扣 `20 HP`；若 `HP &lt;= 0` 才呼叫 `QueueKnockedOut(RingOut)`，否則回傳 `true` 排程回場。
+    - `ExecuteRingOutReturn()`：在 `ApplyPendingStun()` 後執行，清除硬直計時器與待套用硬直、停止攻擊／反應 Montage、清預約與速度、還原 `MOVE_Walking` 與 Pawn 碰撞，從唯一 `ArenaFloor` Bounds 計算安全半徑（`stage1` 下為 `700 cm`）與防重疊候選（先朝圓心退讓、再切線推開）、Sweep 檢查無阻擋後傳送並貼齊地面，最後轉回 `Neutral`/`Defending` 並立即面向對手。
+    - `HandleWorldPostActorTick()`：先結算雙方攻擊命中，再共同評估雙方出界扣血，套用 `ApplyPendingStun()`，最後讓存活者執行 `ExecuteRingOutReturn()` 再判勝負。
+  - **應檢查重點**：
+    1. `HandleWorldPostActorTick()` 中 `EvaluateAndApplyRingOutDamage()` 位於命中結算之後、`ApplyPendingStun()` 之前。
+    2. `ExecuteRingOutReturn()` 有清除 `StunTimer`、`PendingStunState`、攻擊與預約，且有還原離地狀態的 Pawn 碰撞與 `MOVE_Walking`。
+    3. 兩個檔案 EOL 已確認皆為 `w/crlf`。
+
+---
+
+### 2. 手動驗證（V01）
+
+- **確認目標**：建置、出界扣血回場與歸零擊倒
+- **準備條件**：
+  1. 關閉 Editor 後建置 `TndaFighterEditor Win64 Development`：
+     ```powershell
+     &amp; "C:\Program Files\Epic Games\UE_5.8\Engine\Build\BatchFiles\Build.bat" TndaFighterEditor Win64 Development -Project="d:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\TndaFighter.uproject" -WaitMutex -FromMsBuild
+     ```
+  2. 開啟 Editor 載入 `/Game/Fighting/stage1`，啟動 PIE 並於 Console 輸入 `tnda.Debug.ShowCombatDebug on`。
+- **操作步驟**：
+  1. 移動 1P 到短牆（`ArenaBoundaryShort`）邊朝場外方向按 `6,Y` 越頂出界（可在空中按 `6,X` 預約測試中斷清理）。
+  2. 連續出界 4 次使 1P HP 降至 `20`，再執行第 5 次出界。
+- **預期畫面或 Log**：
+  - 前 4 次站穩場外當幀扣 `20 HP`（100 → 80 → 60 → 40 → 20）、攻擊與預約被清除、立刻傳送回擂台內側（距圓心 `&lt;= 700 cm`）並面向 CPU；Output Log 印出 `Ring out return: ... damage=20 ...`。
+  - 第 5 次 HP 歸 `0`，1P **不回場**並停在場外播放 `AM_EndLost` 進入 `KnockedOut(RingOut)`，CPU 進入 `Victory` 播放 `AM_EndWin`；Output Log 印出 `Ring out: ... hp=0/100 ...`。
+- **結束後還原**：Console 輸入 `tnda.Debug.ShowCombatDebug off` 並停止 PIE。
+
+請回報 **V01** 的實測結果（通過或遇到的問題），我記錄後即進行 **WP01** 的 commit 並開始 **WP02**。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 11 輪｜User</h5>
+<div class="dialogue-text">編譯有錯
+
+[1/8] Compile [x64] FightingCharacter.cpp
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(463,60): error C2039: 'GetCurrentHealth': is not a member of 'UFightingHealthComponent'
+        const int32 Remaining = IsValid(HealthComp) ? HealthComp-&gt;GetCurrentHealth() : 0;
+                                                                  ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingHealthComponent.h(16,23): note: see declaration of 'UFightingHealthComponent'
+class TNDAFIGHTER_API UFightingHealthComponent : public UActorComponent
+                      ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(463,14): error C2737: 'Remaining': const object must be initialized
+        const int32 Remaining = IsValid(HealthComp) ? HealthComp-&gt;GetCurrentHealth() : 0;
+                    ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(464,56): error C2039: 'GetMaxHealth': is not a member of 'UFightingHealthComponent'
+        const int32 MaxHp = IsValid(HealthComp) ? HealthComp-&gt;GetMaxHealth() : 0;
+                                                              ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingHealthComponent.h(16,23): note: see declaration of 'UFightingHealthComponent'
+class TNDAFIGHTER_API UFightingHealthComponent : public UActorComponent
+                      ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(464,14): error C2737: 'MaxHp': const object must be initialized
+        const int32 MaxHp = IsValid(HealthComp) ? HealthComp-&gt;GetMaxHealth() : 0;
+                    ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(576,60): error C2039: 'GetCurrentHealth': is not a member of 'UFightingHealthComponent'
+        const int32 Remaining = IsValid(HealthComp) ? HealthComp-&gt;GetCurrentHealth() : 0;
+                                                                  ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingHealthComponent.h(16,23): note: see declaration of 'UFightingHealthComponent'
+class TNDAFIGHTER_API UFightingHealthComponent : public UActorComponent
+                      ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(576,14): error C2737: 'Remaining': const object must be initialized
+        const int32 Remaining = IsValid(HealthComp) ? HealthComp-&gt;GetCurrentHealth() : 0;
+                    ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(577,56): error C2039: 'GetMaxHealth': is not a member of 'UFightingHealthComponent'
+        const int32 MaxHp = IsValid(HealthComp) ? HealthComp-&gt;GetMaxHealth() : 0;
+                                                              ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingHealthComponent.h(16,23): note: see declaration of 'UFightingHealthComponent'
+class TNDAFIGHTER_API UFightingHealthComponent : public UActorComponent
+                      ^
+D:\Case\TNDA_Workspace\TndaFighterProject-worktrees\week-12\Source\TndaFighter\Fighting\FightingCharacter.cpp(577,14): error C2737: 'MaxHp': const object must be initialized
+        const int32 MaxHp = IsValid(HealthComp) ? HealthComp-&gt;GetMaxHealth() : 0;
+                    ^</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 11 輪｜Assistant</h5>
+<div class="dialogue-text">已查明並修正編譯錯誤：
+- **原因**：[FightingHealthComponent.h](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingHealthComponent.h#L40-L45) 的生命值欄位為公開成員 `CurrentHealth` 與 `MaxHealth`，沒有 `GetCurrentHealth()`／`GetMaxHealth()` 函式。
+- **修正**：已將 [FightingCharacter.cpp](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.cpp#L461-L464) 與 [ExecuteRingOutReturn](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.cpp#L575-L577) 改為讀取 `HealthComp-&gt;CurrentHealth` 與 `HealthComp-&gt;MaxHealth`（已確認檔案 EOL 為 `w/crlf`）。
+
+請重新建置 `TndaFighterEditor Win64 Development` 並進行 **V01** 手動驗證（於 `stage1` PIE 開啟 `tnda.Debug.ShowCombatDebug on`，在短牆邊按 `6,Y` 連續出界 5 次，確認前 4 次扣 20 HP 回場、第 5 次 HP 歸 0 原地進 `KnockedOut(RingOut)` 與 CPU 進 `Victory`），完成後請回報結果。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 12 輪｜User</h5>
+<div class="dialogue-text">完成建置後已經在stage1 PIE中驗證完成 V01</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 12 輪｜Assistant</h5>
+<div class="dialogue-text">已記錄 **V01 通過**，並完成 **WP01** commit：`38f28d9`（`feat(fighting): 出界改為扣血 20 並立即回場，HP 歸零才進入擊倒`）。
+
+接著已完成工單 **WP02** 實作（自動化測試與文件同步）：
+
+### 1. 異動導覽
+
+- [FightingCharacterTests.cpp](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Tests/FightingCharacterTests.cpp#L595-L639)
+  - **改前**：僅有 `RingOutRule`（`ShouldRingOut`）與 `RingOutOutcome`（出界擊倒結算）測試。
+  - **改後**：保留既有測試並新增 `TndaFighter.Fighting.Character.RingOutReturnRule`，驗證 `RingOutDamage == 20`、`ComputeArenaSafePoint2D`（`700 cm` 上限與較小擂台 `Radius - 200`）與 `ResolveRingOutReturnTargets`（未重疊單點與重疊時優先朝圓心退讓且全數夾在安全半徑內）。已確認檔案 EOL 為 `w/crlf`。
+- [Combat.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Combat.md#L171)、[Character.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Character.md#L25)、[Arena.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Arena.md#L8)
+  - **改前**：記錄「出界不改 HP、直接進入 `KnockedOut(RingOut)`」。
+  - **改後**：同步更新為「出界固定扣 `20 HP`，HP &gt; 0 立即清狀態回場並面向對手，HP 歸零才進 `KnockedOut(RingOut)`」。
+- **應檢查重點**：
+  1. 新增的 `RingOutReturnRule` 斷言與 `FightingCharacter.h/.cpp` 規則一致。
+  2. 三份文件的規則描述與實際 Log／函式名相符。
+
+---
+
+### 2. 手動驗證（V02）
+
+- **確認目標**：自動化測試與舊功能回歸
+- **準備條件**：關閉 Editor 後重新建置 `TndaFighterEditor Win64 Development`（讓新增的 `FightingCharacterTests.cpp` 編入），再開啟 Editor 並載入 `/Game/Fighting/stage1`。
+- **操作步驟**：
+  1. 在 Editor Console 執行：`Automation RunTests TndaFighter.Fighting.Character`。
+  2. 啟動 PIE，在 Console 執行 `tnda.Debug.FrameScenario G2`，觀察越頂後於擂台內落地並接 ID 2。
+- **預期畫面或 Log**：
+  - `TndaFighter.Fighting.Character` 下所有測試（含 `RingOutRule`、`RingOutOutcome`、`RingOutReturnRule`）全數通過。
+  - `FrameScenario G2` 正常落地接出 ID 2 且不誤觸發扣血或回場。
+- **結束後還原**：Console 執行 `tnda.Debug.FrameScenario off` 並停止 PIE。
+
+請回報 **V02** 的實測結果，確認通過後我將進行 **WP02** 的 commit 並完成本功能。</div>
+</section>
+<section class="dialogue-message dialogue-user">
+<h5>第 13 輪｜User</h5>
+<div class="dialogue-text">確認 V02 兩項測試皆如預期</div>
+</section>
+<section class="dialogue-message dialogue-assistant">
+<h5>第 13 輪｜Assistant</h5>
+<div class="dialogue-text">已記錄 **V02 通過**，並完成 **WP02** commit：`61eafb8`（`test(fighting): 新增出界回場規則測試並同步 Fighting 文件`），工作區目前乾淨無未提交異動。
+
+### 完成摘要
+
+- **規格文件**：`41b21f3`（[plan.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/plan.md)、[spec.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Specs/ring-out-return/spec.md)）
+- **WP01（核心實作）**：`38f28d9`（[FightingCharacter.h](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.h)、[FightingCharacter.cpp](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/FightingCharacter.cpp)）— **V01 通過**
+- **WP02（測試與文件）**：`61eafb8`（[FightingCharacterTests.cpp](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Tests/FightingCharacterTests.cpp)、[Combat.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Combat.md)、[Character.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Character.md)、[Arena.md](file:///d:/Case/TNDA_Workspace/TndaFighterProject-worktrees/week-12/Source/TndaFighter/Fighting/Docs/Arena.md)）— **V02 通過**
+
+「出界扣血回場」功能已全部實作並驗證完成，隨時可以提供下一個需求。</div>
+</section>
+</details>
+<div class="practice-demo-files"><button type="button" class="sp-close" data-practice-doc="practice-demo-2-plan" aria-haspopup="dialog">plan.md</button> <button type="button" class="sp-close" data-practice-doc="practice-demo-2-spec" aria-haspopup="dialog">spec.md</button></div>
+</div>
+</div>
 </article></main></div><script id="reading-navigation">
 (() => {
   const article=document.querySelector('article.paper,main');
@@ -1342,6 +2054,7 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
   }
   for(const el of article.querySelectorAll('h2,h3,h4,h5,p,summary')){
     if(el.closest('figure,pre,blockquote'))continue;
+    if(el.closest('.practice-dialogue')&&!el.matches('.practice-dialogue > summary'))continue;
     const tag=el.tagName.toLowerCase();let level;
     if(/^h[2-5]$/.test(tag)){level=+tag[1];headingLevel=level;headingPath.length=level;headingPath[level]=el.textContent.trim();}
     else if(tag==='summary')level=Math.min(headingLevel+2,6);
@@ -1360,7 +2073,9 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
     }
     // Chapter context distinguishes repeated subheadings without shifting later anchors.
     if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+el.textContent.trim());
-    nodes.push({el,level,text:el.textContent.trim(),parents:[]});
+    const title=el.textContent.trim();
+    const text=true&&tag==='h3'?title.replace(/^(?:課前預習\s+\d+|課前實作練習|追蹤路徑[一二三四五六七八九十]+|課堂示範\s+\d+|課堂實作)｜\s*/,''):title;
+    nodes.push({el,level,text,parents:[]});
   }
   const stack=[];
   for(const node of nodes){
@@ -1421,177 +2136,480 @@ document.querySelectorAll('article pre > code.language-markdown').forEach(code=>
   button.textContent=copied?'已複製':'複製失敗，請選取文字複製';
  });
 });
-</script><!-- shared-prompt:start --><style>
-.sp-dialog{width:min(960px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid var(--line,#c9d3dd);border-radius:10px;background:var(--paper,#fff);color:inherit;font-size:17px;line-height:1.7}
-.sp-dialog::backdrop{background:rgba(15,30,45,.55)}
-.sp-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:var(--paper,#fff);border-bottom:1px solid var(--line,#c9d3dd)}
-.sp-head h2{margin:0;font-size:22px;color:var(--navy,#17456c)}
-.sp-close{font:inherit;font-size:16px;padding:6px 14px;cursor:pointer;border:1px solid var(--line,#9db4ca);border-radius:6px;background:transparent}
-.sp-body{padding:8px 24px 24px}
-.sp-toc{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 0 4px;padding:0;list-style:none}
-.sp-toc a{font-size:16px}
-.sp-body h2{font-size:21px;margin:28px 0 8px;scroll-margin-top:72px;color:var(--navy,#17456c)}
-.sp-body pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;padding:12px 14px;border-radius:6px;background:#f4f7fa;border:1px solid #d8e1ea}
-.sp-body code{font-size:16px}
-.sp-copy-bar{display:flex;justify-content:flex-end;margin:10px 0 4px}
-.sp-copy{font:inherit;font-size:16px;padding:.35rem .8rem;cursor:pointer}
-a.sp-open{cursor:pointer}
-@media print{.sp-dialog{display:none}}
-</style><dialog class="sp-dialog" id="shared-prompt-dialog" aria-labelledby="shared-prompt-title"><div class="sp-head"><h2 id="shared-prompt-title">共用 AI 提示詞</h2><button type="button" class="sp-close">關閉</button></div><div class="sp-body"><ul class="sp-toc"><li><a href="#shared-prompt-1">共用開場 1：先讀專案與操作入口</a></li><li><a href="#shared-prompt-2">共用開場 2：確認工具，再逐輪合作</a></li><li><a href="#shared-prompt-3">共用提示詞</a></li><li><a href="#shared-prompt-4">寫進自己的 AGENTS.md</a></li></ul><p>學生和 AI 合作實作一項功能前，依序貼上下面三段：兩段共用開場確認專案與 unreal-mcp，一段共用提示詞交代合作流程與 SPEC 格式。之後每項功能只交一段設計需求，SPEC 與實作規格由 AI 依共用提示詞產生。</p>
-<p>每段貼完，確認 AI 只回該段指定的回覆。</p>
-<h2 id="shared-prompt-1">共用開場 1：先讀專案與操作入口</h2>
-<pre><code class="language-markdown"># 專案與工作範圍
-以目前資料夾的 TndaFighter.uproject 為根目錄；主要模組是 TndaFighter。
-這是 Unreal Engine C++ 格鬥遊戲；引擎版本讀 EngineAssociation。
-# 先讀文件，再對照程式
-先讀 Source/AGENTS.md 與 Source/TndaFighter/Fighting/AGENTS.md。
-接著讀 Source/TndaFighter/ 下 Fighting/README.md、DataTable/README.md，
-再依功能讀 Fighting/Docs 與相關原始碼。
-文件缺失或與程式不一致時，先查原始碼與設定；資產查詢等下一頁確認 unreal-mcp 後進行。
-# 操作與資料入口
-關卡：/Game/Fighting/stage1。U 是 X，I 是 Y；6 朝向對手、4 遠離對手。
-CSV：_DataTable/CommandTable.csv、_DataTable/DamageTable.csv。
-對應 /Game/DataTable/DT_Command、/Game/DataTable/DT_Damage；改 CSV 後 Reimport。
-動畫：/Game/Fighting/Anims/AM_Attack_01～03；右 Ctrl＋F12 切換 Combat Debug。
-# 本輪回覆格式
-成功只回一句：「專案導讀完成，可以提供需求。」
-受阻只回兩行：「阻礙：…」「下一步：…」。先完成查證，不改檔，不附摘要或重述規則。
-</code></pre>
-<h2 id="shared-prompt-2">共用開場 2：確認工具，再逐輪合作</h2>
-<pre><code class="language-markdown"># 開工前確認 unreal-mcp
-使用 unreal-mcp：http://127.0.0.1:8000/mcp。
-1. 完成 MCP 連線、取得工具並執行 Editor 唯讀查詢；只有 HTTP 回應不算通過。
-2. 透過 unreal-mcp 取得 Editor 開啟的 .uproject 完整路徑，
-   與工作資料夾的 TndaFighter.uproject 比對；只核對檔名不夠。
-3. 連線失敗、專案不符或無法確認時停止實作，排除後重新驗證。
-# 資產操作規則
-.uasset 的查詢、建立、修改、Reimport 與儲存，一律透過 unreal-mcp。
-修改前查現況，修改後回讀確認。C++、CSV 與設定文字檔使用檔案工具；
-CSV 改完後，DataTable 的 Reimport 與儲存仍透過 unreal-mcp。
-缺少所需能力時先回報並討論，不改用其他方式操作資產。
-本輪不修改功能；連線與專案確認後，接著貼共用提示詞。
-# 本輪回覆格式：固定三行
-unreal-mcp：可用／不可用／未確認
-Editor 專案：完整 .uproject 路徑；與工作資料夾一致／不一致／無法確認
-開工條件：已就緒／受阻；受阻時附原因與下一步
-受阻原因與下一步寫在第三行；不附前言、結語、清單或過程。未查證就寫「未確認」。
-</code></pre>
-<h2 id="shared-prompt-3">共用提示詞</h2>
-<pre><code class="language-markdown"># 共用提示詞
-以下是同一套規則，適用於後續每個功能；收到功能需求才開始。
-本段先記住規則，不修改檔案。
-# 收到功能需求後
-先讀指定文件與程式，用 unreal-mcp 查相關資產，再提出尚未決定的問題。
-能自行查證的事實先查；每題附建議，一輪只問現在能回答的題目。
-我回答後再問衍生問題，全部確認後才依下方的格式整理 SPEC。
-SPEC 給我看，我確認後才存檔；每張工單由你實作，我檢查異動並手動確認功能。
-# 開始功能前先確認基準
-保留既有改動；確認引擎、編譯工具與 TndaFighterEditor Win64 Development 建置方式。
-先讀啟動腳本，給我建置與進入 stage1 的操作步驟；等我回報基準結果，不自行執行。
-基準失敗先說明原因與下一步，不把既有問題當成本次修改造成。
-# 回覆與接續
-正常進度簡短回報；討論只列待決定問題，SPEC、異動導覽與手動驗證步驟依格式提供。
-換新對話時重貼共用開場、這段規則與已確認 SPEC，交代目前工單進度。
-# SPEC 固定格式
-討論完成後，SPEC 使用 Markdown，標題為「# SPEC｜功能名稱」。
-## 1. 目標與範圍
-寫目前問題、完成後的遊戲行為、本次包含與不包含的工作。
-## 2. 現況與已確認規則
-列程式與資產查證依據；規則用「條件 → 行為」表格。
-數值寫單位、方向基準與起算點，區分既有值與本次決定；未決事項不能當成已確認。
-## 3. 實作設計
-每套功能各開小節，完整展開以下五步，不能只列標題：
-1. 資料與介面：型別、初始值、單位、擁有者、公開／私有方法與輸入輸出。
-   涉及表格時列 CSV、Row、執行期副本、Reader、驗證與舊資料相容方式。
-2. Init：觸發條件、資料準備、清除舊狀態、無效輸入與重複啟動的處理。
-3. Tick：更新時機、時間來源、狀態推進與停止條件；公式附符號、單位與小算例。
-4. End：正常結束、中斷、停用與生命週期清理；哪些歸零、哪些保留、如何重啟。
-5. 接入與手動確認：呼叫者、插入位置、先後順序、保留的既有行為與建置／資產更新順序。
-每一步列檔案／資產、修改位置、內容、原因，以及學生應檢查的重點。
-新名稱標示「預計新增」；不適用寫原因，事件驅動寫實際入口；必要時附偽碼。
-## 4. 手動驗證清單
-每項依序寫：編號、確認目標、準備條件、操作步驟、預期畫面或 Log、結束後如何還原。
-步驟要寫清楚開哪個檔案或畫面、改動要看哪裡、遊戲內按什麼、觀察什麼。
-包含異動內容檢查、正常功能、中斷與受影響的舊功能；先提供最小可操作案例。
-建置與啟動也提供給我操作；資產修改仍由你透過 unreal-mcp 處理，我負責檢視與遊戲操作。
-不自行跑測試、操作遊戲驗證或產生自動驗收腳本；結果等我回報，未回報就是未確認。
-## 5. 分階段工單
-表格欄位：編號、範圍、相依工單、修改檔案／資產、可展示成果、手動驗證項目編號。
-每張完成後先讓我檢查異動、操作確認，我同意後才進下一張。
-## 6. 未決事項
-列問題與建議；沒有寫「無」。提出 SPEC 保存位置，等我確認再存檔。
-# 規格確認後
-讀 SPEC 與目前工單，簡述本批範圍，等我確認後只實作這張工單。
-保留既有改動，依專案規則處理註解、行尾與文件；完成後閱讀 diff，整理異動導覽。
-資產查詢、修改、儲存、回讀與 CSV Reimport 都走 unreal-mcp；重連後核對 .uproject 完整路徑。
-需要停止 PIE、建置或重啟 Editor 時，先給我操作步驟，等我回報後繼續。
-# 完成實作後，固定交付兩段
-1. 異動導覽：檔案／資產、修改位置、改前與改後的差異、原因；指出我應檢查的內容。
-2. 手動驗證：依 SPEC 列出本批項目，包含準備、逐步操作、預期畫面或 Log、還原步驟。
-步驟要能照做，交付後等我回報；不自行跑測試、遊戲驗證或自動驗收腳本。
-# 收到我的結果後
-依回報記錄通過／失敗／未確認；沒有回報的項目不能自行判定通過。
-失敗時先問實際現象與錯誤，查原因並提出修正；修正後再給我重測步驟。
-我還原 Debug，你透過 MCP 還原測試資產；我確認後才 commit、做下一張，無 Git 則先備份。
-unreal-mcp 受阻先停止並排除，不改用其他方式操作資產。
-# 本輪回覆格式
-成功只回一句：「共用提示詞已就緒，請提供功能需求。」
-受阻只回兩行：「阻礙：…」「下一步：…」。不加摘要、解釋或提問；等待功能需求，不動工。
-</code></pre>
-<h2 id="shared-prompt-4">寫進自己的 AGENTS.md</h2>
-<p>每次開新對話都重貼三段很花時間。Codex 這類 AI 代理開工時，會自動讀取專案裡的 <code>AGENTS.md</code>；把長期不變的規則寫進去，之後就不必每次重貼。教材專案沒有附根目錄的 <code>AGENTS.md</code>，這份由你自己寫、自己維護。</p>
-<ol>
-<li><strong>建立檔案</strong>：在 <code>TndaFighter.uproject</code> 同一層建立 <code>AGENTS.md</code>。<code>Source/AGENTS.md</code> 與 <code>Source/TndaFighter/Fighting/AGENTS.md</code> 是教材附的程式規則，保留原樣。</li>
-<li><strong>搬進每次都適用的規則</strong>：<ul>
-<li>共用開場 1 的專案範圍、要先讀的文件、操作與資料入口。</li>
-<li>共用開場 2 的 unreal-mcp 位址、開工前確認與資產操作規則。</li>
-<li>共用提示詞的合作流程、SPEC 固定格式、施工與驗證分工。</li>
+</script><dialog class="sp-dialog practice-doc" id="practice-demo-1-plan" aria-labelledby="practice-demo-1-plan-title">
+<div class="sp-head"><h2 id="practice-demo-1-plan-title">plan.md</h2><form method="dialog"><button class="sp-close" autofocus>關閉</button></form></div>
+<div class="sp-body">
+<h1>需求：調出你的越頂</h1>
+<p>我想在維持「前＋Y」起手的前提下，將越頂調成能從更遠距離起跳、跳得更高，並以「慢升、頂點微滯空後像氣球一樣慢慢落下」的節奏越過對手頭頂。
+本需求僅修改 <code>_DataTable/CommandTable.csv</code>（並 Reimport 至 <code>/Game/DataTable/DT_Command</code>）與 <code>/Game/Fighting/Anims/AM_CrossOver</code> 的離地軌跡參數。</p>
+<h1>規格</h1>
+<ul>
+<li>輸入鍵位、優先度與播放倍率：越頂（ID 6）維持使用相對前方加 Y（<code>6,Y</code>）發動，優先度維持 <code>0</code>，並將播放倍率（<code>PlayRate</code>）調慢至 <code>0.5</code>，使離地時間從 <code>0.40 秒</code> 延長為 <code>0.80 秒</code>，在正常 <code>×1</code> 速度下即可清楚呈現氣球般慢飄。</li>
+<li>同優先度仲裁：單按 <code>Y</code> 仍觸發第二攻擊（ID 3），按住相對前方 <code>6</code> 再按 <code>Y</code> 時由組合鍵越頂（ID 6）優先觸發。</li>
+<li>越頂水平距離：離地期間沿起跳當下面向推進 <code>250 cm</code>；起跳時與對手中心距離小於此距離即可越過對手中心。</li>
+<li>越頂頂點高度：拋物線頂點相對起跳位置的高度設為 <code>200 cm</code>，在離地時段中點附近達到最高點。</li>
+<li>垂直高度節奏：離地高度曲線呈現「慢升、頂點微滯空、像氣球一樣慢慢落下」的飄浮節奏，且起跳點（進度 0）與落地點（進度 1）高度比例皆為 <code>0</code>。</li>
+<li>水平進度節奏：水平移動進度從進度 <code>0</code> 的 <code>0</code> 單調推進至進度 <code>1</code> 的 <code>1</code>（不倒退），配合氣球般緩慢落下的滯空節奏。</li>
+<li>接招與方向規則：維持既有規則，僅在已越過對手且安全落回戰鬥區域內時，才可於落地後的接招窗口接續右腳踢頭（ID 2）並於起招瞬間自動轉向面對對手。</li>
+<li>場地與碰撞規則：離地期間依實際高度與場地邊界牆碰撞；頂點提高至 <code>200 cm</code> 後，越過短牆或基準牆出界的風險相應增加，出界即判定落敗。</li>
+<li>範圍外項目：不修改任何 C++ 程式碼、不變更 <code>AM_CrossOver</code> 的片段長度／Notify 起訖時間／CommandLink 時間、不修改 ID 1～5 的招式資料，也不新增特效、音效或 UI。</li>
+</ul>
+<h1>驗收目標</h1>
+<ul>
+<li>正常操作：在 <code>stage1</code> 按 <code>6,Y</code> 可順利發動越頂，單按 <code>Y</code> 仍出 ID 3；與 CPU 相距約 <code>100～220 cm</code> 時起跳可越過對手頭頂並推進約 <code>250 cm</code>，在畫面上可明顯看出高於舊版的 <code>200 cm</code> 弧頂，以及慢升、頂點微滯空與氣球般緩慢落下的軌跡。</li>
+<li>越頂接招：在越過對手後預約或於落地窗口按 <code>6,X</code>（此時方向以起跳側或新面向為準），落地後可接續 ID 2 並自動轉身面向對手；若未越過對手（例如距離超過 <code>250 cm</code>），則無法預約或接出 ID 2。</li>
+<li>中斷與場地邊界：越頂空中被 CPU 擊中會立即中斷離地軌跡並進入受擊反應；朝場地邊界越頂時若高度足以越過牆體並站穩於場外地面，Output Log 記錄出界並進入落敗終態。</li>
+<li>錯誤資料防護：Reimport <code>DT_Command</code> 時通過整表驗證；若刻意將高度曲線端點改為非 <code>0</code> 或水平進度曲線出現倒退，啟動 PIE 或驗證時應在 Output Log 報錯並阻擋。</li>
+<li>受影響舊功能：ID 1～5 的起手與連段（<code>1→4→5</code>、<code>1→4→2</code>、<code>1→3</code>）在 <code>stage1</code> 仍正常運作且手感不變。</li>
+</ul>
+<h1>現在開始</h1>
+<p>下一關（<code>spec</code> 關）將透過 <code>unreal-mcp</code> 查證 <code>/Game/Fighting/Anims/AM_CrossOver</code> 目前 <code>HeightCurve</code> 與 <code>ProgressCurve</code> 的實際關鍵幀數值與切線模式，並確認 <code>DT_Command</code> 的既有設定；接著提出具體的曲線關鍵幀座標與 <code>ProgressCurve</code> 搭配方案供你確認。
+確認後將整理 <code>Specs/crossover-tuning/spec.md</code>，待你確認並完成文件提交後再開始修改資產與資料表。</p>
+</div>
+</dialog>
+<dialog class="sp-dialog practice-doc" id="practice-demo-1-spec" aria-labelledby="practice-demo-1-spec-title">
+<div class="sp-head"><h2 id="practice-demo-1-spec-title">spec.md</h2><form method="dialog"><button class="sp-close" autofocus>關閉</button></form></div>
+<div class="sp-body">
+<h1>SPEC｜調出你的越頂</h1>
+<p>依據：<button type="button" class="sp-close" data-practice-doc="practice-demo-1-plan" aria-haspopup="dialog">plan.md</button></p>
+<h2>1. 目標與範圍</h2>
+<ul>
+<li><strong>目前問題</strong>：<code>AM_CrossOver</code> 的 <code>Airborne Arc</code> 目前為水平 <code>200.0 cm</code>、頂點 <code>110.0 cm</code>，且 <code>HeightCurve</code> 採「快升急降」（起跳斜率 <code>5.0</code>、落地斜率 <code>-4.2</code>），未達本次期望的遠距離高跳與氣球般緩慢落地手感。</li>
+<li><strong>完成後行為</strong>：在 <code>stage1</code> 按相對前方加 <code>Y</code>（<code>6,Y</code>）仍優先於單鍵 <code>Y</code>（ID 3）發動越頂（ID 6）；<code>PlayRate</code> 調為 <code>0.5</code>（離地時間由 <code>0.40 s</code> 延長為 <code>0.80 s</code>），角色離地期間沿起跳面向推進 <code>250.0 cm</code>、頂點高度達 <code>200.0 cm</code>，在正常 <code>×1</code> 速度下即可呈現「慢升、頂點微滯空後像氣球一樣慢慢落下」的節奏越過對手頭頂。</li>
+<li><strong>包含範圍</strong>：<ul>
+<li>修改 <code>_DataTable/CommandTable.csv</code> ID 6 的 <code>PlayRate</code> 為 <code>0.5</code>（維持 <code>Keys=&quot;6,Y&quot;</code>、<code>Priority=0</code>），並對 <code>/Game/DataTable/DT_Command</code> 執行 Reimport 與驗證。</li>
+<li>透過 <code>unreal-mcp</code> 修改 <code>/Game/Fighting/Anims/AM_CrossOver</code> 上 <code>UFightingAirborneArcNotifyState</code>（<code>Airborne Arc</code>）的 <code>HorizontalDistanceCm</code>、<code>ApexHeightCm</code>、<code>HeightCurve</code> 與 <code>ProgressCurve</code>，並儲存資產。</li>
+<li>更新或確認相關驗證（PIE 實測與 <code>tnda.Debug.ShowCombatDebug</code> 觀察）。</li>
 </ul>
 </li>
-<li><strong>不要搬的句子</strong>：各段的「本輪回覆格式」，以及「本段先記住規則，不修改檔案」「本輪不修改功能」這類只管當下那一輪的句子。寫進 <code>AGENTS.md</code> 後每一輪都會生效，AI 會一直只回固定句子，或一直不動工。</li>
-<li><strong>改成你自己的版本</strong>：用自己的話整理，刪掉用不到的規則，補上實作中學到的事，例如常犯的錯、建置步驟。保持精簡；AI 每次都會讀這份檔案，越長越容易稀釋重點。</li>
-<li><strong>確認 AI 讀到了</strong>：開一個新對話，先問「請列出你從 AGENTS.md 讀到的規則」。之後每次新對話，先請 AI 確認 unreal-mcp 連線與 Editor 開啟的專案路徑，再交功能需求。</li>
-<li><strong>納入版控</strong>：用 Git 提交 <code>AGENTS.md</code>；規則有變就更新它。換用 Claude Code 時，它讀的是 <code>CLAUDE.md</code>，可在其中寫一行 <code>@AGENTS.md</code> 引用同一份規則。</li>
+<li><strong>不包含範圍</strong>：不修改 C++ 原始碼（<code>FightingAirborneArcNotifyState</code>、<code>FightingCommandLink</code>、<code>FightingCharacter</code> 等）、不修改 <code>AM_CrossOver</code> 長度／<code>Airborne Arc</code> 起訖幀（第 8～32 幀）／<code>CommandLink</code> Notify 時間（第 8／32／41 幀）、不修改 ID 1～5 招式資料，也不新增特效、音效或 UI。</li>
+</ul>
+<h2>2. 現況與已確認規則</h2>
+<h3>查證依據</h3>
+<ul>
+<li><code>_DataTable/CommandTable.csv</code> 第 7 行：<code>6,越頂,&quot;6,Y&quot;,AM_CrossOver,1.0,0,None,,,,2,</code>（已為 <code>Keys=&quot;6,Y&quot;</code>、<code>Priority=0</code>）。</li>
+<li><code>/Game/Fighting/Anims/AM_CrossOver</code>（長 <code>0.75 s</code>、45 設計幀）：包含 <code>FightingAirborneArcNotifyState</code>（目前 <code>HorizontalDistanceCm=200.0</code>、<code>ApexHeightCm=110.0</code>）與 <code>CommandLink</code> Preorder／Enable／Disable 三個 Notify。</li>
+<li><code>Source/TndaFighter/Fighting/FightingCommandLink.cpp</code>（L83-149）：<code>FFightingAttackTiming::ReadMontage</code> 檢查並快照 <code>AirborneDistanceCm</code>、<code>AirborneApexHeightCm</code>、<code>AirborneHeightCurve</code>、<code>AirborneProgressCurve</code>；<code>AirborneArcAt(Alpha)</code> 依 <code>T = Clamp(Alpha, 0, 1)</code> 計算 <code>X = AirborneDistanceCm * Progress</code>、<code>Y = AirborneApexHeightCm * HeightRatio</code>。</li>
+</ul>
+<h3>規則表</h3>
+<table>
+<thead>
+<tr>
+<th>條件</th>
+<th>行為</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>玩家地面待機且按住相對前方 <code>6</code> 再按 <code>Y</code></td>
+<td>同 <code>Priority=0</code> 下組合鍵 <code>&quot;6,Y&quot;</code> 優先於單鍵 <code>&quot;Y&quot;</code>（ID 3），發動越頂（ID 6）</td>
+</tr>
+<tr>
+<td>玩家地面待機且僅按 <code>Y</code>（未按 <code>6</code>）</td>
+<td>僅符合 ID 3 <code>&quot;Y&quot;</code>，發動第二攻擊（ID 3）</td>
+</tr>
+<tr>
+<td>越頂離地期間 <code>T ∈ [0, 1]</code></td>
+<td>角色依起跳當下面向推進 <code>250.0 * ProgressCurve(T)</code> cm，相對起跳高度為 <code>200.0 * HeightCurve(T)</code> cm</td>
+</tr>
+<tr>
+<td><code>HeightCurve</code> 在 <code>T=0</code> 或 <code>T=1</code> 不為 <code>0</code>（容差 <code>1e-3</code>）</td>
+<td><code>FFightingAttackTiming::ReadMontage</code> 報錯 <code>Field=AirborneCurve</code>，阻止進入遊戲</td>
+</tr>
+<tr>
+<td><code>ProgressCurve</code> 在 <code>T=0</code> 非 <code>0</code>、在 <code>T=1</code> 非 <code>1</code> 或 <code>60</code> 取樣點倒退</td>
+<td><code>FFightingAttackTiming::ReadMontage</code> 報錯 <code>Field=AirborneCurve</code>，阻止進入遊戲</td>
+</tr>
+<tr>
+<td>起跳時與對手中心距離 <code>&lt; 250 cm</code> 且過程中越過對手</td>
+<td><code>HasCrossedOpponent()</code> 成立，可於 Preorder～Disable 間預約 ID 2（<code>6,X</code>）並於安全落地後接招轉向</td>
+</tr>
+<tr>
+<td>離地期間碰撞場地邊界牆且越過後站穩於無 <code>ArenaFloor</code> 地面</td>
+<td>依實際高度碰撞牆體；落地於場外地面即判定 <code>RingOut</code> 落敗</td>
+</tr>
+</tbody></table>
+<h2>3. 實作設計</h2>
+<p>本功能為資料與資產調校，不新增或修改 C++ 類別。</p>
+<h3>3.1 資料表與 Montage <code>Airborne Arc</code> 調校</h3>
+<ol>
+<li><p><strong>資料與介面</strong></p>
+<ul>
+<li><strong>CSV／DataTable</strong>：<code>_DataTable/CommandTable.csv</code> ID 6 維持 <code>Keys=&quot;6,Y&quot;</code>、<code>Priority=0</code>，<code>PlayRate</code> 由 <code>1.0</code> 改為 <code>0.5</code>（總長 <code>1.50 s</code>、離地 <code>0.80 s</code>），對應 <code>/Game/DataTable/DT_Command</code> Row <code>6</code>；執行期由 <code>UTndaCommandReader::Prepare()</code> 快取為 <code>FTndaCommand</code> 副本，無結構變更，完全相容舊資料。</li>
+<li><strong>Montage Notify 屬性</strong>（<code>/Game/Fighting/Anims/AM_CrossOver</code> 的 <code>UFightingAirborneArcNotifyState</code>）：<ul>
+<li><code>HorizontalDistanceCm</code>：<code>200.0f</code> → <code>250.0f</code>（單位：cm）</li>
+<li><code>ApexHeightCm</code>：<code>110.0f</code> → <code>200.0f</code>（單位：cm）</li>
+<li><code>HeightCurve</code>（<code>FRuntimeFloatCurve</code>，<code>RCIM_Cubic</code> / <code>RCTM_User</code>）：<ul>
+<li>Key 0：<code>Time=0.00, Value=0.00, ArriveTangent=1.5, LeaveTangent=1.5</code>（平緩起跳）</li>
+<li>Key 1：<code>Time=0.35, Value=1.00, ArriveTangent=0.0, LeaveTangent=0.0</code>（到達頂點）</li>
+<li>Key 2：<code>Time=0.55, Value=0.95, ArriveTangent=-0.3, LeaveTangent=-0.3</code>（延長頂點微滯空）</li>
+<li>Key 3：<code>Time=0.82, Value=0.30, ArriveTangent=-2.0, LeaveTangent=-2.0</code>（穩步下降）</li>
+<li>Key 4：<code>Time=1.00, Value=0.00, ArriveTangent=-0.5, LeaveTangent=-0.5</code>（氣球般輕柔著地）</li>
+</ul>
+</li>
+<li><code>ProgressCurve</code>（<code>FRuntimeFloatCurve</code>，<code>RCIM_Cubic</code> / <code>RCTM_User</code>）：<ul>
+<li>Key 0：<code>Time=0.00, Value=0.00, ArriveTangent=0.6, LeaveTangent=0.6</code></li>
+<li>Key 1：<code>Time=0.38, Value=0.35, ArriveTangent=1.3, LeaveTangent=1.3</code></li>
+<li>Key 2：<code>Time=0.65, Value=0.78, ArriveTangent=1.1, LeaveTangent=1.1</code></li>
+<li>Key 3：<code>Time=1.00, Value=1.00, ArriveTangent=0.2, LeaveTangent=0.2</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Init</strong></p>
+<ul>
+<li>觸發入口：GameInstance 初始化或 Editor Reimport <code>DT_Command</code> 時，由 <code>UTndaCommandReader::Prepare()</code> 呼叫 <code>FFightingAttackTiming::ReadMontage(AM_CrossOver)</code>。</li>
+<li>驗證與快照：檢查 <code>HorizontalDistanceCm &gt;= 0</code>、<code>ApexHeightCm &gt;= 0</code>、<code>HeightCurve(0)==0 &amp;&amp; HeightCurve(1)==0</code>、<code>ProgressCurve(0)==0 &amp;&amp; ProgressCurve(1)==1</code> 及 60 點單調遞增，並將曲線與距離快照進 <code>FTndaCommand</code>。無效資料會觸發 <code>Field=AirborneCurve</code> 錯誤並中止 PIE。</li>
+</ul>
+</li>
+<li><p><strong>Tick</strong></p>
+<ul>
+<li>不適用新增 Tick 程式；執行期沿用 <code>FFightingAttackTiming::AirborneArcAt(Alpha)</code>（<code>Alpha</code> 由 Montage 播放位置於 <code>[AirborneBegin, AirborneEnd]</code> 歸一化取得）。</li>
+<li>公式：<code>X = 250.0 * ProgressCurve(T)</code> cm，<code>Z_offset = 200.0 * HeightCurve(T)</code> cm。</li>
+<li>算例：<ul>
+<li><code>T = 0.00</code>：<code>X = 0.0 cm</code>，<code>Z_offset = 0.0 cm</code>。</li>
+<li><code>T = 0.40</code>：<code>HeightCurve(0.40) = 1.00</code>，<code>Z_offset = 200.0 cm</code>（達最高點）。</li>
+<li><code>T = 0.50</code>：<code>ProgressCurve(0.50) = 0.62</code>，<code>X = 155.0 cm</code>；<code>HeightCurve(0.52) = 0.98</code>，<code>Z_offset = 196.0 cm</code>（頂點微滯空）。</li>
+<li><code>T = 0.80</code>：<code>HeightCurve(0.80) = 0.45</code>，<code>Z_offset = 90.0 cm</code>（進入緩降段）。</li>
+<li><code>T = 1.00</code>：<code>X = 250.0 cm</code>，<code>Z_offset = 0.0 cm</code>（完成落地）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>End</strong></p>
+<ul>
+<li>不適用新增清理程式；沿用既有 <code>AFightingCharacter</code> 離地結束與落地分開流程。正常落地於 <code>ArenaFloor</code> 時進入 <code>Link</code>／<code>Recovery</code>；空中受擊立即中斷軌跡進入 <code>Hitstun</code>；越過牆體站穩於場外地面時觸發 <code>RingOut</code>。</li>
+</ul>
+</li>
+<li><p><strong>接入與手動確認</strong></p>
+<ul>
+<li><strong>檔案／資產修改</strong>：<ol>
+<li><code>/Game/Fighting/Anims/AM_CrossOver</code>：透過 <code>unreal-mcp</code> 修改 <code>Airborne Arc</code> 的四個屬性並儲存資產。</li>
+<li><code>/Game/DataTable/DT_Command</code>：透過 <code>unreal-mcp</code> 對 <code>_DataTable/CommandTable.csv</code> 執行 Reimport 與儲存，觸發 <code>UTndaCommandReader</code> 重新驗證 <code>AM_CrossOver</code>。</li>
 </ol>
-<p>下面是一個可以照著填的骨架，括號裡的內容換成你整理後的規則：</p>
-<pre><code class="language-text"># TndaFighter 專案協作規則
-
-## 專案與文件
-（共用開場 1：根目錄與模組、先讀哪些文件、操作與資料入口）
-
-## Unreal Editor 與資產
-（共用開場 2：unreal-mcp 位址、開工前確認、資產操作規則）
-
-## 合作流程
-（共用提示詞：收到功能需求後、開始功能前先確認基準、回覆與接續）
-
-## SPEC 格式
-（共用提示詞：SPEC 固定格式的六個小節）
-
-## 實作與驗證分工
-（共用提示詞：規格確認後、完成實作後、收到我的結果後）
-
-## 我的補充
-（踩過的坑、常用指令、自己的偏好）
-</code></pre>
-</div></dialog><script>
-(()=>{
- const dialog=document.getElementById('shared-prompt-dialog');if(!dialog)return;
- let opener=null;
- document.querySelectorAll('a[href="#shared-prompt"]').forEach(a=>{a.classList.add('sp-open');a.setAttribute('aria-haspopup','dialog');a.addEventListener('click',e=>{e.preventDefault();opener=a;dialog.showModal();dialog.querySelector('.sp-body').scrollTop=0;dialog.scrollTop=0})});
- dialog.querySelector('.sp-close').addEventListener('click',()=>dialog.close());
- dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
- dialog.addEventListener('close',()=>{if(opener)opener.focus()});
- dialog.querySelectorAll('.sp-toc a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();dialog.querySelector(a.getAttribute('href')).scrollIntoView({block:'start'})}));
- dialog.querySelectorAll('.sp-body pre > code').forEach(code=>{
-  const bar=document.createElement('div');bar.className='sp-copy-bar';
-  const button=document.createElement('button');button.type='button';button.className='sp-copy';button.textContent='複製這段';bar.append(button);code.parentElement.before(bar);
-  button.addEventListener('click',async()=>{
-   const text=code.textContent;let copied=false;
-   try{await navigator.clipboard.writeText(text);copied=true}catch{}
-   if(!copied){const area=document.createElement('textarea');area.value=text;area.style.cssText='position:fixed;left:-9999px';dialog.append(area);area.select();try{copied=document.execCommand('copy')}catch{}area.remove();button.focus()}
-   button.textContent=copied?'已複製':'複製失敗，請選取文字複製';
+</li>
+<li><strong>學生檢查重點</strong>：在 <code>AM_CrossOver</code> 的 <code>Airborne Arc</code> Details 面板確認 <code>HorizontalDistanceCm = 250.0</code>、<code>ApexHeightCm = 200.0</code>，並展開 <code>HeightCurve</code>／<code>ProgressCurve</code> 確認起終點與曲線形狀；確認 <code>DT_Command</code> Row <code>6</code> 為 <code>Keys=&quot;6,Y&quot;</code>、<code>Priority=0</code>。</li>
+</ul>
+</li>
+</ol>
+<h2>4. 手動驗證清單</h2>
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>確認目標</th>
+<th>準備條件</th>
+<th>操作步驟</th>
+<th>預期畫面或 Log</th>
+<th>結束後還原</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V1</td>
+<td>啟動與資料驗證</td>
+<td>已存 <code>AM_CrossOver</code>、Reimport <code>DT_Command</code></td>
+<td>啟動 PIE 進入 <code>stage1</code></td>
+<td>正常進場，Output Log 無 <code>DataTables TableId=Command</code> 或 <code>Field=AirborneCurve</code> 錯誤</td>
+<td>停止 PIE</td>
+</tr>
+<tr>
+<td>V2</td>
+<td>鍵位、距離與氣球手感</td>
+<td><code>stage1</code> 開啟 <code>CPUAI off</code>、<code>ShowCombatDebug on</code></td>
+<td>150～200 cm 處先單按 <code>I</code>，再按 <code>6+I</code></td>
+<td><code>I</code> 出 ID 3；<code>6+I</code> 出越頂，跳高 200 cm、前進約 250 cm 越過對手並慢升微滯空緩降</td>
+<td><code>CPUAI on</code>、<code>ShowCombatDebug off</code></td>
+</tr>
+<tr>
+<td>V3</td>
+<td>越頂接招與空中中斷</td>
+<td>同 V2</td>
+<td>1. 150 cm 越過後按 <code>6+U</code>。<br>2. 300 cm 未越過按 <code>6+U</code>。<br>3. <code>CPUAI on</code> 空中挨打。</td>
+<td>1. 落地接 ID 2 且轉向。<br>2. 無法接 ID 2。<br>3. 立即中斷進 <code>Hitstun</code>。</td>
+<td><code>CPUAI on</code>、<code>ShowCombatDebug off</code>，重開 PIE</td>
+</tr>
+<tr>
+<td>V4</td>
+<td>邊界出界與舊連段</td>
+<td><code>stage1</code> 正常模式</td>
+<td>1. 貼牆對外按 <code>6+I</code>。<br>2. 打 <code>U→U→U</code> 與 <code>U→U→6+U</code>。</td>
+<td>1. 越牆落地場外時 Log 記 <code>Ring out:</code> 並判敗。<br>2. 舊連段正常。</td>
+<td>重開 PIE</td>
+</tr>
+</tbody></table>
+<h2>5. 分階段工單</h2>
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>範圍</th>
+<th>相依工單</th>
+<th>修改檔案／資產</th>
+<th>可展示成果</th>
+<th>手動驗證項目編號</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T1</td>
+<td>修改 <code>CommandTable.csv</code> ID 6 <code>PlayRate</code> 為 <code>0.5</code>、調整 <code>AM_CrossOver</code> 的 <code>Airborne Arc</code> 距離／高度與雙曲線並儲存，對 <code>DT_Command</code> 執行 Reimport 與整表驗證</td>
+<td>無</td>
+<td><code>_DataTable/CommandTable.csv</code>、<code>/Game/Fighting/Anims/AM_CrossOver</code>、<code>/Game/DataTable/DT_Command</code></td>
+<td><code>stage1</code> 正常 <code>×1</code> 速度下 <code>6,Y</code> 越頂具備 250 cm 距離、200 cm 高度與 0.80 秒氣球慢飄緩降手感，且通過所有資料驗證</td>
+<td>V1、V2、V3、V4</td>
+</tr>
+</tbody></table>
+<h2>6. 未決事項</h2>
+<p>無</p>
+</div>
+</dialog>
+<dialog class="sp-dialog practice-doc" id="practice-demo-2-plan" aria-labelledby="practice-demo-2-plan-title">
+<div class="sp-head"><h2 id="practice-demo-2-plan-title">plan.md</h2><form method="dialog"><button class="sp-close" autofocus>關閉</button></form></div>
+<div class="sp-body">
+<h1>需求：出界扣血回場</h1>
+<p>我想讓玩家或 CPU 在格鬥場中出界時，不再直接判負結束對局，而是受到固定扣血並立刻傳送回擂台內安全位置繼續戰鬥；只有出界扣血導致生命值歸零時才進入擊倒結算。</p>
+<h1>規格</h1>
+<ul>
+<li>觸發條件：角色不在離地軌跡期間、雙腳站穩在非擂台地面（含牆頂與外層高台），且雙方皆尚未進入擊倒或勝利終態。</li>
+<li>出界扣血量：每次出界固定扣除 <strong>20 HP</strong>（最低夾在 0）。</li>
+<li>生命值歸零結算：若出界扣血後生命值為 0，角色不回場，停在原地進入擊倒終態（成因記為出界擊倒），對手依既有規則進入勝利終態；若同幀雙方皆歸零，則雙方皆進入擊倒終態、無勝方。</li>
+<li>回場傳送條件：出界扣血後生命值仍大於 0 時，於當幀立刻傳送回擂台地面。</li>
+<li>回場目標位置：沿「擂台圓心 → 角色出界位置」方向，放回距離擂台圓心 <strong>700 cm</strong> 內的擂台頂面安全位置（若角色原本就更靠近圓心則維持該水平距離內縮，不貼牆）；若該位置與對手重疊，則往擂台中心或切線側邊推開至不重疊，並貼齊擂台地面。</li>
+<li>回場狀態清理：回場時強制中斷角色進行中的攻擊、清除指令預約與移動速度、重設為地面站立狀態並立即面向對手，回場後立刻恢復可行動（依當下輸入或 AI 狀態進入待機或防禦）。</li>
+<li>雙方同幀出界：若同幀雙方皆出界，各自獨立扣血與中斷動作，仍有大於 0 HP 的一方各自傳送回場並彼此面向。</li>
+<li>範圍外項目：本次不新增出界扣血動畫或無敵時間、不新增場外緩衝倒數、不將出界傷害寫入外部 CSV 資料表，也不改變既有場地牆體高度、越頂軌跡或一般回合重設流程。</li>
+</ul>
+<h1>驗收目標</h1>
+<ul>
+<li><strong>正常出界回場</strong>：在 <code>stage1</code> 的 PIE 中以越頂（<code>6,Y</code>）越過短牆或站在牆頂／外層高台，角色站穩當幀於 Combat Debug 與 Output Log 觀察到生命值減少 <strong>20</strong>，角色立即回到擂台內側安全位置並面向對手，可正常移動、防禦與出招。</li>
+<li><strong>出界中斷清理</strong>：出招或預約連段期間因落地站穩在場外而觸發出界回場時，進行中的攻擊、Hitbox 與指令預約均被清除，回場後不殘留原攻擊鎖定或速度。</li>
+<li><strong>出界扣血歸零</strong>：將角色生命值打至 <strong>1～20 HP</strong> 後再觸發出界，角色停在原地進入擊倒終態（<code>KnockedOut</code>、成因 <code>RingOut</code>），Output Log 記錄出界擊倒，對手進入勝利終態（<code>Victory</code>），雙方不再接受攻擊或輸入。</li>
+<li><strong>同幀雙方出界</strong>：雙方同幀站穩在場外時各自扣 <strong>20 HP</strong> 並各自回場且不重疊；若其中一方或雙方同時歸零，依既有擊倒／雙倒規則結算。</li>
+<li><strong>異常資料防護</strong>：若關卡缺少或有多個擂台地面標記（<code>ArenaFloor</code>），維持既有開場初始化錯誤提示並停止 PIE；回場搜尋安全位置若遇牆體或對手阻擋，仍能安全落回擂台內且不穿牆或卡入對手。</li>
+<li><strong>受影響舊功能回歸</strong>：擂台內一般對戰、越頂（<code>6,Y</code>）落回擂台內接 <code>6,X</code>、攝影機構圖與距離限制、<code>tnda.Debug.ShowCombatDebug</code> 顯示、以及 <code>tnda.Debug.FrameScenario</code>（A～G2）皆維持既有行為。</li>
+</ul>
+<h1>現在開始</h1>
+<ul>
+<li>下一關（<code>spec</code>）將查證 <code>AFightingCharacter</code>、<code>AFightingGameMode</code>、<code>stage1</code> 的 <code>ArenaFloor</code> 幾何資料與既有測試（含 <code>RingOut</code> 相關 Automation／PIE 測試），並向您確認實作面細節（如：出界扣血常數放置位置、回場位置計算與防重疊掃掠邏輯、是否需更新既有 RingOut 測試斷言、以及是否需要新增 Debug／Automation 測試）。</li>
+<li>確認 <code>plan.md</code> 與功能代號後，即整理 <code>spec.md</code>，待您確認並提交後再開始實作。</li>
+</ul>
+</div>
+</dialog>
+<dialog class="sp-dialog practice-doc" id="practice-demo-2-spec" aria-labelledby="practice-demo-2-spec-title">
+<div class="sp-head"><h2 id="practice-demo-2-spec-title">spec.md</h2><form method="dialog"><button class="sp-close" autofocus>關閉</button></form></div>
+<div class="sp-body">
+<h1>SPEC｜出界扣血回場</h1>
+<p>依據：plan.md</p>
+<h2>1. 目標與範圍</h2>
+<ul>
+<li><strong>目前問題</strong>：在 <code>AFightingCharacter::QueueRingOutIfOutsideArena()</code> 中，角色一旦站穩在非 <code>ArenaFloor</code> 地面（含牆頂與外層高台），便直接呼叫 <code>QueueKnockedOut(EFightingKnockOutCause::RingOut)</code> 進入擊倒終態，沒有扣血回場繼續對戰的機制。</li>
+<li><strong>完成後行為</strong>：角色出界站穩時固定扣除 <code>20 HP</code>。若扣血後 <code>HP &gt; 0</code>，當幀立即中斷進行中的攻擊／預約／硬直與速度，傳送回擂台頂面安全位置（距圓心不超過 <code>700 cm</code>，並避開與對手重疊）且立即面向對手，恢復可行動狀態繼續戰鬥；只有扣血後 <code>HP == 0</code> 時，才停在原出界處進入 <code>KnockedOut</code>（成因 <code>RingOut</code>），對手依既有規則進入 <code>Victory</code>。</li>
+<li><strong>本次包含</strong>：<ul>
+<li><code>AFightingCharacter</code> 出界扣血（固定 <code>20 HP</code>）、安全回場座標計算、防重疊避讓、地面貼齊與面向對手。</li>
+<li>同幀先結算雙方攻擊命中、再評估雙方出界的雙階段流程（先共同評估並扣血／排入擊倒，再執行回場與套用終態）。</li>
+<li>更新 <code>FightingCharacterTests.cpp</code> 既有 <code>RingOutRule</code>／<code>RingOutOutcome</code> 並新增回場座標與防重疊純規則測試。</li>
+<li>同步更新 <code>Source/TndaFighter/Fighting/Docs/Combat.md</code>、<code>Character.md</code> 與 <code>Arena.md</code>。</li>
+</ul>
+</li>
+<li><strong>本次不包含</strong>：<ul>
+<li>不新增出界受傷動畫、無敵時間或場外倒數緩衝。</li>
+<li>不將出界扣血寫入 <code>CommandTable.csv</code>／<code>DamageTable.csv</code>。</li>
+<li>不修改 <code>stage1</code> 的牆體、高度、材質或 <code>ArenaFloor</code> Tag 設定。</li>
+</ul>
+</li>
+</ul>
+<h2>2. 現況與已確認規則</h2>
+<h3>查證依據</h3>
+<ul>
+<li><code>Source/TndaFighter/Fighting/FightingCharacter.h</code>／<code>.cpp</code>：<code>ShouldRingOut()</code>、<code>QueueRingOutIfOutsideArena()</code>、<code>HandleWorldPostActorTick()</code>、<code>BeginKnockedOut()</code>、<code>ResolveAirborneLandingTargets()</code>、<code>HaltActiveMotion()</code>、<code>UpdateFacing()</code>。</li>
+<li><code>Source/TndaFighter/Fighting/FightingHealthComponent.h</code>／<code>.cpp</code>：<code>ApplyDamage(int32)</code> 夾在 0、回傳實際扣除量並清預約。</li>
+<li><code>Source/TndaFighter/Fighting/FightingGameMode.cpp</code>：開場檢查關卡內恰好只有一個帶 <code>ArenaFloor</code> Tag 的 Actor，否則中止 PIE。</li>
+<li><code>unreal-mcp</code> 查證 <code>/Game/Fighting/stage1</code>：<code>ArenaFloor</code> Actor（<code>StaticMeshActor</code>）位置 <code>(1790, 1800, 200)</code>、Bounds 原點 <code>(1790, 1800, 205)</code>、Extent <code>(900, 900, 5)</code>，故擂台圓心 <code>(1790, 1800)</code>、半徑 <code>900 cm</code>、頂面 <code>Z = 210</code>。</li>
+<li><code>Source/TndaFighter/Fighting/Tests/FightingCharacterTests.cpp</code>：既有 <code>TndaFighter.Fighting.Character.RingOutRule</code> 與 <code>TndaFighter.Fighting.Character.RingOutOutcome</code>。</li>
+</ul>
+<h3>已確認規則表</h3>
+<table>
+<thead>
+<tr>
+<th>條件</th>
+<th>行為</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>角色在離地軌跡期間（<code>IsAirborneArcActive() == true</code>）、未站穩或腳下帶 <code>ArenaFloor</code></td>
+<td>不觸發出界</td>
+</tr>
+<tr>
+<td>自己或對手任一方已為終態（<code>KnockedOut</code>／<code>Victory</code>），或無有效對手</td>
+<td>不觸發出界</td>
+</tr>
+<tr>
+<td>站穩在非 <code>ArenaFloor</code> 且雙方皆非終態</td>
+<td>觸發出界，扣除固定 <code>20 HP</code>（<code>RingOutDamage = 20</code>）</td>
+</tr>
+<tr>
+<td>出界扣血後 <code>HP == 0</code></td>
+<td>角色不回場、停在出界處，排入 <code>KnockedOut(RingOut)</code>；同幀若已因攻擊命中排入 <code>Depleted</code>，維持先排入之 <code>Depleted</code></td>
+</tr>
+<tr>
+<td>出界扣血後 <code>HP &gt; 0</code></td>
+<td>當幀立即清理攻擊／預約／硬直計時器／待套用硬直／移動速度與離地狀態，傳送回擂台內安全位置並立即面向對手，依當下防禦意圖轉回 <code>Neutral</code> 或 <code>Defending</code></td>
+</tr>
+<tr>
+<td>同幀雙方皆出界</td>
+<td>先各自評估是否出界並各自扣血（避免先回場改變另一方當幀狀態）；<code>HP &gt; 0</code> 者各自回場（第二位回場者會避開第一位回場後的位置），<code>HP == 0</code> 者依既有雙倒／單倒規則結算</td>
+</tr>
+</tbody></table>
+<h3>數值與基準</h3>
+<ul>
+<li>出界傷害：<code>RingOutDamage = 20</code>（HP，整數，既有 <code>MaxHealth = 100</code>）。</li>
+<li>安全回場半徑：<code>SafeRadius = FMath::Min(700.0, FMath::Max(0.0, ArenaRadius - 200.0))</code>；在 <code>stage1</code>（半徑 <code>900 cm</code>）下為 <code>700 cm</code>，距離圓心不超過 <code>700 cm</code>（內縮於 <code>900 cm</code> 牆內緣至少 <code>200 cm</code>）。</li>
+<li>方向基準：沿水平向量 <code>Normalize(OutLocation - ArenaCenter)</code> 計算方向；若角色恰好在圓心正上方（零向量）則改採預設水平單位方向 <code>(1, 0)</code>，半徑取 <code>FMath::Min(OriginalHorizontalDist, SafeRadius)</code>。</li>
+</ul>
+<h2>3. 實作設計</h2>
+<h3>出界扣血與安全回場（<code>AFightingCharacter</code>）</h3>
+<h4>1. 資料與介面</h4>
+<ul>
+<li>檔案：<code>Source/TndaFighter/Fighting/FightingCharacter.h</code></li>
+<li>新增與調整成員：<ul>
+<li><code>static constexpr int32 RingOutDamage = 20;</code>（預計新增，私人／類別內部常數）：固定出界扣血量。</li>
+<li><code>static constexpr double RingOutSafeMarginCm = 200.0;</code> 與 <code>static constexpr double RingOutMaxSafeRadiusCm = 700.0;</code>（預計新增）：安全半徑計算常數。</li>
+<li><code>static FVector2D ComputeArenaSafePoint2D(const FVector2D&amp; CharacterPos, const FVector2D&amp; ArenaCenter, double ArenaRadius);</code>（預計新增，純規則 static 函式，供單元測試直接驗證）：沿圓心至出界點方向取 <code>FMath::Min(Dist, SafeRadius)</code> 的水平安全點。</li>
+<li><code>static bool ResolveRingOutReturnTargets(const FVector2D&amp; DesiredPos, const FVector2D&amp; OpponentPos, const FVector2D&amp; ArenaCenter, double SafeRadius, float ContactDistance, TArray&lt;FVector2D&gt;&amp; OutCandidates);</code>（預計新增，純規則 static 函式）：若 <code>DesiredPos</code> 與 <code>OpponentPos</code> 距離小於 <code>ContactDistance</code>（雙方膠囊半徑和），依序產生「朝圓心退讓至不重疊」、「切線左／右推開至不重疊」與「對側安全點」候選清單（全數夾在 <code>SafeRadius</code> 內）。</li>
+<li><code>bool TryFindArenaFloorAnchor(FVector2D&amp; OutCenter, double&amp; OutRadius, double&amp; OutTopZ) const;</code>（預計新增）：從 World 尋找唯一帶 <code>ArenaFloor</code> Tag 的 Actor，取 <code>GetActorBounds(false, Origin, Extent)</code> 計算圓心 <code>(Origin.X, Origin.Y)</code>、半徑 <code>FMath::Min(Extent.X, Extent.Y)</code> 與頂面高度 <code>Origin.Z + Extent.Z</code>。</li>
+<li><code>void ProcessRingOutForCharacter(bool&amp; OutShouldReturn, FVector&amp; OutReturnLocation);</code> 或分為兩段：<ol>
+<li><code>bool EvaluateAndApplyRingOutDamage();</code>（預計新增，取代原 <code>QueueRingOutIfOutsideArena</code> 的直接擊倒）：檢查 <code>ShouldRingOut</code>，成立時呼叫 <code>Health-&gt;ApplyDamage(RingOutDamage)</code>；若 <code>Health-&gt;GetCurrentHealth() &lt;= 0</code> 則呼叫 <code>QueueKnockedOut(EFightingKnockOutCause::RingOut)</code> 回傳 <code>false</code>，否則回傳 <code>true</code>（標記本幀須執行回場）。</li>
+<li><code>void ExecuteRingOutReturn();</code>（預計新增）：清理狀態、計算安全座標與防重疊 Sweep、更新位置與地面狀態、立即強制面向對手。</li>
+</ol>
+</li>
+<li>既有 <code>ShouldRingOut(bool bStandingOnGround, bool bOnArenaFloor, ECombatState Self, ECombatState Opponent)</code> 維持簽名與語意不變（純規則仍為「是否觸發出界事件」）。</li>
+</ul>
+</li>
+</ul>
+<h4>2. Init</h4>
+<ul>
+<li>角色 <code>BeginPlay()</code> 與 <code>AFightingGameMode::FinishRestartPlayer()</code> 無需新增額外初始化；<code>ArenaFloor</code> 存在性仍由 <code>AFightingGameMode</code> 在開場驗證。</li>
+<li>若異常關卡在無 <code>ArenaFloor</code>（或超過一個 <code>ArenaFloor</code>）下進入呼叫 <code>TryFindArenaFloorAnchor</code>，函式回傳 <code>false</code> 並記 Warning，改退回以對手位置或原點作為參考中心、或安全放棄傳送而不崩潰。</li>
+</ul>
+<h4>3. Tick</h4>
+<ul>
+<li>入口：<code>AFightingCharacter::HandleWorldPostActorTick()</code>（<code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code> 約 1565 行）。</li>
+<li>流程與先後順序：<ol>
+<li>維持先結算雙方攻擊命中候選（<code>TryApplyHit</code>）。</li>
+<li>接著對雙方分別呼叫 <code>EvaluateAndApplyRingOutDamage()</code>，記錄 <code>bSelfRingOutReturn</code> 與 <code>bOtherRingOutReturn</code>（先共同評估與扣血，避免先傳送者改變後者的空間或狀態）。</li>
+<li>對待套用硬直／擊倒執行 <code>ApplyPendingStun()</code>（若出界已將某方 <code>HP</code> 扣至 0，這裡會套用 <code>KnockedOut(RingOut)</code>）。</li>
+<li>對需要回場且尚未進入終態的角色（<code>bSelfRingOutReturn &amp;&amp; !IsCombatStateEnded(CombatState)</code>）呼叫 <code>ExecuteRingOutReturn()</code>；同理處理 <code>Target</code>。</li>
+<li>最後執行 <code>ResolveMatchOutcome()</code> 與結束攻擊收尾。</li>
+</ol>
+</li>
+<li>算例：<ul>
+<li>角色於 <code>stage1</code>（圓心 <code>(1790, 1800)</code>，半徑 <code>900</code>，頂面 <code>Z=210</code>）越頂落在 <code>(2750, 1800, 210)</code>（距圓心 <code>960 cm</code>，場外高台）：<ul>
+<li><code>SafeRadius = min(700, 900 - 200) = 700 cm</code>。</li>
+<li>方向 <code>(1, 0)</code>，安全目標點 <code>Desired2D = (1790 + 700, 1800) = (2490, 1800)</code>。</li>
+<li>加上膠囊半高 <code>CapsuleHalfHeight</code>（約 <code>88 cm</code>）作垂直起點與向下 Sweep 找地面，<code>Z</code> 貼齊 <code>ArenaFloor</code> 頂面（約 <code>210 + CapsuleHalfHeight</code>）。</li>
+<li>若對手剛好站在 <code>(2460, 1800)</code>，水平距 <code>30 cm &lt; ContactDistance</code>（約 <code>68 cm</code>），<code>ResolveRingOutReturnTargets</code> 會優先產生「朝圓心退開」位置 <code>(2460 - 68, 1800) = (2392, 1800)</code> 並以 Capsule Sweep 確認無牆體阻擋後放置。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>4. End</h4>
+<ul>
+<li><code>ExecuteRingOutReturn()</code> 的狀態清理（相當於回場重置）：<ul>
+<li>若 <code>UWorld* World = GetWorld()</code> 有效，清除 <code>StunTimer</code> 與清空 <code>PendingStunState = ECombatState::Neutral</code>、<code>PendingStunFrames = 0</code>（取消同幀剛被命中但未歸零的硬直）。</li>
+<li>若正在攻擊或播反應：停止攻擊 Montage（<code>StopAttackMontage</code>／<code>ReleaseAttackPlayback(true)</code>）與反應 Montage（<code>StopReactionMontage</code>），清空 <code>CommandBuffer</code>（<code>ClearCommandBuffer(TEXT(&quot;RingOutReturn&quot;))</code>），關閉 <code>ActiveHitbox</code> 與清空 <code>HitCharacters</code>。</li>
+<li>呼叫 <code>HaltActiveMotion()</code> 清零速度與加速度；若 <code>AirbornePhase != None</code> 或 MovementMode 不是 <code>Walking</code>，重設為 <code>MOVE_Walking</code> 並還原 Capsule 對 Pawn 的碰撞回應（確保不殘留 <code>Flying</code> 或穿透狀態）。</li>
+<li>透過 <code>SetCombatState(ResolveIdleState(ECombatState::Neutral, EvaluateDefenseIntentAs(ECombatState::Neutral)), TEXT(&quot;RingOutReturn&quot;))</code> 立刻回到可行動狀態（<code>Neutral</code> 或 <code>Defending</code>）。</li>
+<li>重新更新朝向對手的方向向量並直接將 <code>ActorRotation</code> 設為面向對手（Yaw 朝向 <code>Other</code>），同步更新 <code>DesiredFacingYaw</code> 與 <code>LastValidOpponentDirection</code>。</li>
+<li>記錄 <code>LogTndaFighter</code> Log：<code>Ring out return: actor=%s damage=%d hp=%d/%d from=%s to=%s floor=%s</code>。</li>
+</ul>
+</li>
+</ul>
+<h4>5. 接入與手動確認</h4>
+<ul>
+<li>檔案：<code>FightingCharacter.h</code>、<code>FightingCharacter.cpp</code>、<code>Tests/FightingCharacterTests.cpp</code>、以及 <code>Docs/Combat.md</code>、<code>Docs/Character.md</code>、<code>Docs/Arena.md</code>。</li>
+<li>保留既有行為：<ul>
+<li>擂台內正常站立與越頂（<code>6,Y</code>）落回擂台內不觸發扣血或回場。</li>
+<li><code>tnda.Debug.FrameScenario</code>（A～G2）皆在擂台安全範圍內執行，不受影響。</li>
+<li>場地牆與 <code>Camera</code> 碰撞不變；若回場後雙方距離較遠，格鬥攝影機在下一個 PostPhysics Tick 會自動依雙方新位置更新構圖。</li>
+</ul>
+</li>
+<li>學生／審查檢查重點：<ul>
+<li>確認 <code>EvaluateAndApplyRingOutDamage()</code> 在 <code>HandleWorldPostActorTick()</code> 中位於命中結算之後、<code>ApplyPendingStun()</code> 之前。</li>
+<li>確認 <code>ExecuteRingOutReturn()</code> 有清除 <code>StunTimer</code>、<code>PendingStunState</code>、攻擊與預約，且沒有遺漏還原 Pawn 碰撞或 MovementMode。</li>
+</ul>
+</li>
+</ul>
+<h2>4. 手動驗證清單</h2>
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>確認目標</th>
+<th>準備條件</th>
+<th>操作步驟</th>
+<th>預期畫面或 Log</th>
+<th>結束後還原</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V01</td>
+<td>建置、出界扣血回場與歸零擊倒</td>
+<td>1. 建置 <code>TndaFighterEditor Win64 Development</code> 並載入 <code>/Game/Fighting/stage1</code><br>2. 啟動 PIE 並輸入 <code>tnda.Debug.ShowCombatDebug on</code></td>
+<td>1. 在短牆（<code>ArenaBoundaryShort</code>）邊按 <code>6,Y</code> 越頂出界（可在空中按 <code>6,X</code> 預約測試中斷）<br>2. 連續出界 4 次至 HP 剩 <code>20</code>，再出界第 5 次</td>
+<td>前 4 次站穩場外當幀扣 <code>20 HP</code>、清攻擊與預約並立刻回場面向 CPU（Log 記 <code>Ring out return</code>）；第 5 次 HP 歸 <code>0</code> 停在場外播 <code>AM_EndLost</code> 進 <code>KnockedOut(RingOut)</code>，CPU 進 <code>Victory</code></td>
+<td>輸入 <code>tnda.Debug.ShowCombatDebug off</code> 並停止 PIE</td>
+</tr>
+<tr>
+<td>V02</td>
+<td>自動化測試與舊功能回歸</td>
+<td>Editor 開啟，位於 <code>/Game/Fighting/stage1</code></td>
+<td>1. Console 執行 <code>Automation RunTests TndaFighter.Fighting.Character</code><br>2. PIE 執行 <code>tnda.Debug.FrameScenario G2</code>（驗證場內越頂接招）後執行 <code>tnda.Debug.FrameScenario off</code></td>
+<td>自動化測試全數通過（含更新的 <code>RingOutRule</code>／<code>RingOutOutcome</code> 與回場規則測試）；<code>G2</code> 正常落地接 ID 2，無誤判出界</td>
+<td>執行 <code>tnda.Debug.FrameScenario off</code> 並停止 PIE</td>
+</tr>
+</tbody></table>
+<h2>5. 分階段工單</h2>
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>範圍</th>
+<th>相依工單</th>
+<th>修改檔案／資產</th>
+<th>可展示成果</th>
+<th>手動驗證項目編號</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WP01</td>
+<td>實作 <code>AFightingCharacter</code> 出界扣 <code>20 HP</code>、安全回場座標與防重疊計算、狀態清理與面向對手，並接入 <code>HandleWorldPostActorTick</code></td>
+<td>無</td>
+<td><code>Source/TndaFighter/Fighting/FightingCharacter.h</code><br><code>Source/TndaFighter/Fighting/FightingCharacter.cpp</code></td>
+<td>PIE 中角色出界不再直接落敗，而是扣 20 HP 並立即回到場內面向對手；HP 歸零時才進 <code>KnockedOut(RingOut)</code></td>
+<td>V01</td>
+</tr>
+<tr>
+<td>WP02</td>
+<td>更新 <code>FightingCharacterTests.cpp</code> 既有 <code>RingOutRule</code>／<code>RingOutOutcome</code> 測試、新增回場座標與防重疊純規則測試，並同步更新文件</td>
+<td>WP01</td>
+<td><code>Source/TndaFighter/Fighting/Tests/FightingCharacterTests.cpp</code><br><code>Source/TndaFighter/Fighting/Docs/Combat.md</code><br><code>Source/TndaFighter/Fighting/Docs/Character.md</code><br><code>Source/TndaFighter/Fighting/Docs/Arena.md</code></td>
+<td><code>Automation RunTests TndaFighter.Fighting.Character</code> 全數通過，文件與實作完全一致</td>
+<td>V02</td>
+</tr>
+</tbody></table>
+<h2>6. 未決事項</h2>
+<p>無</p>
+</div>
+</dialog>
+<script>
+document.querySelectorAll('[data-practice-doc]').forEach(button => {
+  button.addEventListener('click', () => {
+    button.closest('dialog')?.close();
+    const dialog = document.getElementById(button.dataset.practiceDoc);
+    dialog.showModal();
+    dialog.scrollTop = 0;
   });
- });
-})();
-</script><!-- shared-prompt:end --></body></html>
+});
+</script>
+</body></html>

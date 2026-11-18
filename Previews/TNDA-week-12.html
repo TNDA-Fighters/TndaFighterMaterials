@@ -487,10 +487,10 @@ html:has(nav.toc) :is(pre,.tree){white-space:pre-wrap;overflow-wrap:anywhere}
 </style></head><body><a class="skip-link" href="#main-content">跳到主要內容</a><header class="hero" id="top"><div class="hero-inner"><p class="eyebrow">TNDA · WEEK 12 · 課前預習</p><h1>TNDA Week 12 課前預習｜越頂與相對方向分支</h1></div></header><div class="page-layout"><aside class="sidebar"><nav class="quick-nav" aria-label="本頁導覽"><p class="quick-nav-title">本頁導覽</p><a class="nav-level-2" href="#w12-2-1">本週目標</a>
 <a class="nav-level-2" href="#w12-2-2">課前準備</a>
 <a class="nav-level-2" href="#w12-2-3">課前預習</a>
-<a class="nav-level-3" href="#w12-2-4">課前預習 1｜輸入當下的 6，如何選到分支終段</a>
-<a class="nav-level-3" href="#w12-2-5">課前預習 2｜越頂（<code>6,Y</code>）這招怎麼做出來的</a>
+<a class="nav-level-3" href="#w12-2-4">輸入當下的 6，如何選到分支終段</a>
+<a class="nav-level-3" href="#w12-2-5">越頂（<code>6,Y</code>）這招怎麼做出來的</a>
 <a class="nav-level-2" href="#w12-2-6">課前實作練習</a>
-<a class="nav-level-3" href="#w12-2-7">課前實作練習｜調出你的越頂</a>
+<a class="nav-level-3" href="#w12-2-7">調出你的越頂</a>
 <a class="nav-level-2" href="#w12-2-8">官方參考資料</a>
 <a class="nav-level-2" href="#w12-2-9">上課前確認</a></nav></aside><main id="main-content"><article class="paper"><h2 id="w12-2-1">本週目標</h2>
 <ul>
@@ -975,19 +975,10 @@ Q5 是，離地期間鎖住攝影機角度。
 
 <h2 id="w12-2-6">課前實作練習</h2>
 <h3 id="w12-2-7">課前實作練習｜調出你的越頂</h3>
-<p>只修改兩個地方，把越頂調成你想要的版本：</p>
-<ul>
-<li><code>_DataTable/CommandTable.csv</code> ID 6 的 <code>Keys</code> 與 <code>Priority</code>，改完 Reimport 到 <code>DT_Command</code>。</li>
-<li><code>/Game/Fighting/Anims/AM_CrossOver</code> 上 <code>Airborne Arc</code> 的水平距離、頂點高度與兩條曲線。</li>
-</ul>
-<p>你要自己決定：從多遠可以越過對手、跳得多高、用什麼節奏落地，以及要用什麼輸入叫出越頂。</p>
-<p>上課時分享畫面，進入 PIE 打開 Combat Debug，演示兩件事：</p>
-<ol>
-<li>在你設定的距離起跳，<code>Attack</code> 顯示 ID 6，跳到一半 <code>Crossed</code> 變成 <code>yes</code>。</li>
-<li>同一顆攻擊鍵換一種方向輸入，叫出的是別的招，例如 ID 3 第二攻擊。</li>
-</ol>
-<p>請說明：<strong>你的輸入為什麼選到 ID 6 而不是 ID 3？你的水平距離為什麼在那個站距下越得過對手？</strong> 說明時請指出預習 1 的排序規則與預習 2 的離地段規則。</p>
-<p>展示完成後，把 CSV 改回原值並 Reimport，<code>Airborne Arc</code> 的參數也改回原值。</p>
+<p>調整 <code>/Game/Fighting/Anims/AM_CrossOver</code> 上 <code>Airborne Arc</code> 的水平距離、頂點高度與兩條曲線，做出你想要的越頂效果。</p>
+<p><strong>用 AI 協作</strong>：依序貼上 <a href="../%E5%85%B1%E7%94%A8AI%E6%8F%90%E7%A4%BA%E8%A9%9E.md">共用 AI 提示詞</a> 的兩段開場與共用提示詞，再描述你想要的越頂效果。確認 AI 整理的 <code>plan.md</code> 和 <code>spec.md</code> 後再開始修改。</p>
+<p>上課時分享畫面，在 PIE 開啟 Combat Debug。從你選定的站距起跳，展示調整後的跳躍高度與落地節奏。越過對手時，<code>Crossed</code> 會變成 <code>yes</code>，角色最後落在對手另一側。</p>
+<p>請用預習 2 的離地段規則，說明起跳時兩人的站距和你設定的水平距離有什麼關係，以及為什麼這樣越得過對手。</p>
 <h2 id="w12-2-8">官方參考資料</h2>
 <ul>
 <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-montage-in-unreal-engine">Animation Montage</a>：了解 Montage 的結構與 Montage Editor 的操作。</li>
@@ -998,9 +989,8 @@ Q5 是，離地期間鎖住攝影機角度。
 <h2 id="w12-2-9">上課前確認</h2>
 <ul>
 <li><input disabled="" type="checkbox"> week-12 專案可編譯，stage1 能進入 PIE，按 6Y 能看到越頂，Combat Debug 看得到 <code>Crossed</code>。</li>
-<li><input disabled="" type="checkbox"> 能說出方向在什麼時候決定、資料表怎麼排序，以及越頂的距離和站距怎麼決定越不越得過。</li>
-<li><input disabled="" type="checkbox"> 已調出自己的越頂，可現場演示在設定距離越過對手，以及同一顆攻擊鍵叫出別的招。</li>
-<li><input disabled="" type="checkbox"> 展示完成後，<code>CommandTable.csv</code>、<code>DT_Command</code> 與 <code>AM_CrossOver</code> 的 <code>Airborne Arc</code> 參數已還原為原值。</li>
+<li><input disabled="" type="checkbox"> 能說明為什麼調整後的水平距離足以在選定的站距越過對手。</li>
+<li><input disabled="" type="checkbox"> 能現場展示調整後的越頂高度、落地節奏，以及從選定的站距越過對手。</li>
 </ul>
 </article></main></div><script id="reading-navigation">
 (() => {
@@ -1041,7 +1031,11 @@ Q5 是，離地期間鎖住攝影機角度。
     }
     // Chapter context distinguishes repeated subheadings without shifting later anchors.
     if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+el.textContent.trim());
-    nodes.push({el,level,text:el.textContent.trim(),parents:[]});
+    const title=el.textContent.trim();
+    const text=(tag==='h3' && /^w12-2-(?:4|5|7)$/.test(el.id))
+      ? title.replace(/^(?:課前預習 [12]|課前實作練習)｜/,'')
+      : title;
+    nodes.push({el,level,text,parents:[]});
   }
   const stack=[];
   for(const node of nodes){
@@ -1090,4 +1084,189 @@ Q5 是，離地期間鎖住攝影機角度。
   addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);addEventListener('hashchange',followHash);article.addEventListener('toggle',schedule,true);
   new ResizeObserver(schedule).observe(article);update();if(location.hash)followHash();
 })();
-</script></body></html>
+</script><!-- shared-prompt:start --><style>
+.sp-dialog{width:min(960px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid var(--line,#c9d3dd);border-radius:10px;background:var(--paper,#fff);color:inherit;font-size:17px;line-height:1.7}
+.sp-dialog::backdrop{background:rgba(15,30,45,.55)}
+.sp-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:var(--paper,#fff);border-bottom:1px solid var(--line,#c9d3dd)}
+.sp-head h2{margin:0;font-size:22px;color:var(--navy,#17456c)}
+.sp-close{font:inherit;font-size:16px;padding:6px 14px;cursor:pointer;border:1px solid var(--line,#9db4ca);border-radius:6px;background:transparent}
+.sp-body{padding:8px 24px 24px}
+.sp-toc{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 0 4px;padding:0;list-style:none}
+.sp-toc a{font-size:16px}
+.sp-body h2{font-size:21px;margin:28px 0 8px;scroll-margin-top:72px;color:var(--navy,#17456c)}
+.sp-body pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;padding:12px 14px;border-radius:6px;background:#f4f7fa;border:1px solid #d8e1ea}
+.sp-body code{font-size:16px}
+.sp-copy-bar{display:flex;justify-content:flex-end;margin:10px 0 4px}
+.sp-copy{font:inherit;font-size:16px;padding:.35rem .8rem;cursor:pointer}
+a.sp-open{cursor:pointer}
+@media print{.sp-dialog{display:none}}
+</style><dialog class="sp-dialog" id="shared-prompt-dialog" aria-labelledby="shared-prompt-title"><div class="sp-head"><h2 id="shared-prompt-title">共用 AI 提示詞</h2><button type="button" class="sp-close">關閉</button></div><div class="sp-body"><ul class="sp-toc"><li><a href="#shared-prompt-1">共用開場 1：先讀專案與操作入口</a></li><li><a href="#shared-prompt-2">共用開場 2：確認工具，再逐輪合作</a></li><li><a href="#shared-prompt-3">共用提示詞</a></li><li><a href="#shared-prompt-4">寫進自己的 AGENTS.md</a></li></ul><p>學生和 AI 合作實作一項功能前，依序貼上下面三段：兩段共用開場確認專案與 unreal-mcp，一段共用提示詞交代合作流程與 plan.md、spec.md 格式。之後每項功能只交設計需求，AI 依共用提示詞確認細節後整理 plan.md，再整理 spec.md；兩份都確認並提交後才施工。</p>
+<p>每段貼完，確認 AI 只回該段指定的回覆。</p>
+<h2 id="shared-prompt-1">共用開場 1：先讀專案與操作入口</h2>
+<pre><code class="language-markdown"># 專案與工作範圍
+以目前資料夾的 TndaFighter.uproject 為根目錄；主要模組是 TndaFighter。
+這是 Unreal Engine C++ 格鬥遊戲；引擎版本讀 EngineAssociation。
+# 先讀文件，再對照程式
+先讀 Source/AGENTS.md 與 Source/TndaFighter/Fighting/AGENTS.md。
+接著讀 Source/TndaFighter/ 下 Fighting/README.md、DataTable/README.md，
+再依功能讀 Fighting/Docs 與相關原始碼。
+文件缺失或與程式不一致時，先查原始碼與設定；資產查詢等下一頁確認 unreal-mcp 後進行。
+# 操作與資料入口
+關卡：/Game/Fighting/stage1。U 是 X，I 是 Y；6 朝向對手、4 遠離對手。
+CSV：_DataTable/CommandTable.csv、_DataTable/DamageTable.csv。
+對應 /Game/DataTable/DT_Command、/Game/DataTable/DT_Damage；改 CSV 後 Reimport。
+動畫：/Game/Fighting/Anims/AM_Attack_01～03；右 Ctrl＋F12 切換 Combat Debug。
+# 本輪回覆格式
+成功只回一行：「專案導讀完成，可以提供需求。引擎版本：&lt;EngineAssociation 的值&gt;」
+受阻只回兩行：「阻礙：…」「下一步：…」。先完成查證，不改檔，不附摘要或重述規則。
+</code></pre>
+<h2 id="shared-prompt-2">共用開場 2：確認工具，再逐輪合作</h2>
+<pre><code class="language-markdown"># 開工前確認 unreal-mcp
+使用 unreal-mcp：http://127.0.0.1:8000/mcp。
+1. 完成 MCP 連線、取得工具並執行 Editor 唯讀查詢；只有 HTTP 回應不算通過。
+2. 透過 unreal-mcp 取得 Editor 開啟的 .uproject 完整路徑，
+   與工作資料夾的 TndaFighter.uproject 比對；只核對檔名不夠。
+3. 連線失敗、專案不符或無法確認時停止實作，排除後重新驗證。
+# 資產操作規則
+.uasset 的查詢、建立、修改、Reimport 與儲存，一律透過 unreal-mcp。
+修改前查現況，修改後回讀確認。C++、CSV 與設定文字檔使用檔案工具；
+CSV 改完後，DataTable 的 Reimport 與儲存仍透過 unreal-mcp。
+缺少所需能力時先回報並討論，不改用其他方式操作資產。
+本輪不修改功能；連線與專案確認後，接著貼共用提示詞。
+# 本輪回覆格式：固定三行
+unreal-mcp：可用／不可用／未確認
+Editor 專案：完整 .uproject 路徑；與工作資料夾一致／不一致／無法確認
+開工條件：已就緒／受阻；受阻時附原因與下一步
+受阻原因與下一步寫在第三行；不附前言、結語、清單或過程。未查證就寫「未確認」。
+</code></pre>
+<h2 id="shared-prompt-3">共用提示詞</h2>
+<pre><code class="language-markdown"># 共用提示詞
+以下規則適用於後續每個功能。
+# 合作流程
+每個功能依序過四關，每關經我確認才進下一關：
+1. plan：我提出設計需求，你查證後問遊戲面的未決細節，整理 plan.md。
+2. spec：依 plan.md 問實作面的未決細節，整理 spec.md。
+3. 提交：依「存檔與提交」存檔並 commit。
+4. 施工：先確認基準，再逐張工單實作與驗證。
+# 分工
+你負責查證、提問、整理 plan 與 spec，並修改程式與資產；資產依共用開場 2 走 unreal-mcp，受阻就停下排除。
+我負責決定、確認，以及建置、PIE、重啟 Editor 與遊戲操作。
+需要我操作時，給我能照做的步驟，等我回報；沒回報的項目一律記為「未確認」。
+全程保留既有改動；沒有 Git 時，以備份代替 commit。
+換新對話時我重貼共用開場與這段規則；你先讀已提交的 plan.md、spec.md，再接續目前工單。
+# 提問方式
+先讀相關文件與程式，用 unreal-mcp 查相關資產；能自行查證的事實先查。
+只問未決問題，每題附建議；一輪只問現在能回答的題目，我回答後再問衍生問題。
+plan 關問玩家看得到的行為、規則、數值、範圍與驗收；
+資料與介面、接入位置、時間計算與工單拆分留到 spec 關。
+# plan.md 格式
+依序只用四個一級標題：「# 需求：功能名稱」「# 規格」「# 驗收目標」「# 現在開始」。
+- 需求：一句「我想…」寫玩家看到的效果；需要時再一句指出要改的檔案或資料表。
+- 規格：條列行為、規則、數值與邊界，一條一件事；寫出範圍外項目，不寫類別或函式名。
+- 驗收目標：條列能在 PIE、Combat Debug 或 Output Log 判斷的結果，
+  涵蓋正常操作、中斷、錯誤資料與受影響的舊功能。
+- 現在開始：交代下一關要查什麼、提出什麼方案讓我確認，確認後整理 spec.md，等我確認才實作。
+  新對話只貼這份 plan.md 也能接續。
+# spec.md 格式
+標題為「# SPEC｜功能名稱」，第二行寫「依據：plan.md」，以下六節依序展開。
+## 1. 目標與範圍
+寫目前問題、完成後的遊戲行為、本次包含與不包含的工作。
+## 2. 現況與已確認規則
+列程式與資產查證依據；規則用「條件 → 行為」表格。
+數值寫單位、方向基準與起算點，區分既有值與本次決定；未決事項不能當成已確認。
+## 3. 實作設計
+每套功能各開小節，完整展開以下五步：
+1. 資料與介面：型別、初始值、單位、擁有者、公開／私有方法與輸入輸出。
+   涉及表格時列 CSV、Row、執行期副本、Reader、驗證與舊資料相容方式。
+2. Init：觸發條件、資料準備、清除舊狀態、無效輸入與重複啟動的處理。
+3. Tick：更新時機、時間來源、狀態推進與停止條件；公式附符號、單位與小算例。
+4. End：正常結束、中斷、停用與生命週期清理；哪些歸零、哪些保留、如何重啟。
+5. 接入與手動確認：呼叫者、插入位置、先後順序、保留的既有行為與建置／資產更新順序。
+每一步列檔案／資產、修改位置、內容、原因，以及學生應檢查的重點。
+新名稱標示「預計新增」；不適用寫原因，事件驅動寫實際入口；必要時附偽碼。
+## 4. 手動驗證清單
+每項依序寫：編號、確認目標、準備條件、操作步驟、預期畫面或 Log、結束後如何還原。
+步驟寫清楚開哪個檔案或畫面、改動要看哪裡、遊戲內按什麼、觀察什麼。
+涵蓋建置與啟動、異動內容檢查、正常功能、中斷與受影響的舊功能；先提供最小可操作案例。
+## 5. 分階段工單
+表格欄位：編號、範圍、相依工單、修改檔案／資產、可展示成果、手動驗證項目編號。
+## 6. 未決事項
+列問題與建議；存檔版必須寫「無」，還有未決事項就不存檔。
+# 存檔與提交
+plan.md 與 spec.md 存在 Specs/&lt;功能代號&gt;/；功能代號用英文短名，整理 plan 時一併提出讓我確認。
+commit 只納入這兩個檔案，訊息如「docs: &lt;功能代號&gt; plan 與 spec」；回報 commit hash 後才開始施工。
+需求或規格要變更時，先改 plan.md 或 spec.md 給我確認並提交，再改程式。
+# 施工前先確認基準
+確認引擎、編譯工具與 TndaFighterEditor Win64 Development 建置方式。
+先讀啟動腳本，給我建置與進入 stage1 的步驟，等我回報基準結果。
+基準失敗先說明原因與下一步，不把既有問題當成本次修改造成。
+# 每張工單施工
+讀 spec.md 與目前工單，簡述本批範圍，等我確認後只實作這張工單。
+unreal-mcp 重連後先核對 .uproject 完整路徑。完成後閱讀 diff，交付兩段：
+1. 異動導覽：檔案／資產、修改位置、改前與改後的差異、原因；指出我應檢查的內容。
+2. 手動驗證：依 spec.md 列出本批項目，包含準備、逐步操作、預期畫面或 Log、還原步驟。
+# 收到我的結果後
+逐項記錄通過／失敗／未確認。
+失敗時先問實際現象與錯誤，查原因並提出修正；修正後再給我重測步驟。
+我還原 Debug，你還原測試資產；我確認後才 commit 本張工單，再做下一張。
+# 本輪回覆格式
+成功只回一句：「共用提示詞已就緒，請提供功能需求。」
+受阻只回兩行：「阻礙：…」「下一步：…」。不加摘要、解釋或提問；等待功能需求，不動工。
+</code></pre>
+<h2 id="shared-prompt-4">寫進自己的 AGENTS.md</h2>
+<p>每次開新對話都重貼三段很花時間。Codex 這類 AI 代理開工時，會自動讀取專案裡的 <code>AGENTS.md</code>；把長期不變的規則寫進去，之後就不必每次重貼。教材專案沒有附根目錄的 <code>AGENTS.md</code>，這份由你自己寫、自己維護。</p>
+<ol>
+<li><strong>建立檔案</strong>：在 <code>TndaFighter.uproject</code> 同一層建立 <code>AGENTS.md</code>。<code>Source/AGENTS.md</code> 與 <code>Source/TndaFighter/Fighting/AGENTS.md</code> 是教材附的程式規則，保留原樣。</li>
+<li><strong>搬進每次都適用的規則</strong>：<ul>
+<li>共用開場 1 的專案範圍、要先讀的文件、操作與資料入口。</li>
+<li>共用開場 2 的 unreal-mcp 位址、開工前確認與資產操作規則。</li>
+<li>共用提示詞的合作流程、plan.md 與 spec.md 格式、存檔提交、施工與驗證分工。</li>
+</ul>
+</li>
+<li><strong>不要搬的句子</strong>：各段的「本輪回覆格式」，以及「本段先記住規則，不修改檔案」「本輪不修改功能」這類只管當下那一輪的句子。寫進 <code>AGENTS.md</code> 後每一輪都會生效，AI 會一直只回固定句子，或一直不動工。</li>
+<li><strong>改成你自己的版本</strong>：用自己的話整理，刪掉用不到的規則，補上實作中學到的事，例如常犯的錯、建置步驟。保持精簡；AI 每次都會讀這份檔案，越長越容易稀釋重點。</li>
+<li><strong>確認 AI 讀到了</strong>：開一個新對話，先問「請列出你從 AGENTS.md 讀到的規則」。之後每次新對話，先請 AI 確認 unreal-mcp 連線與 Editor 開啟的專案路徑，再交功能需求。</li>
+<li><strong>納入版控</strong>：用 Git 提交 <code>AGENTS.md</code>；規則有變就更新它。換用 Claude Code 時，它讀的是 <code>CLAUDE.md</code>，可在其中寫一行 <code>@AGENTS.md</code> 引用同一份規則。</li>
+</ol>
+<p>下面是一個可以照著填的骨架，括號裡的內容換成你整理後的規則：</p>
+<pre><code class="language-text"># TndaFighter 專案協作規則
+
+## 專案與文件
+（共用開場 1：根目錄與模組、先讀哪些文件、操作與資料入口）
+
+## Unreal Editor 與資產
+（共用開場 2：unreal-mcp 位址、開工前確認、資產操作規則）
+
+## 合作流程
+（共用提示詞：合作流程、分工、提問方式、存檔與提交、施工前先確認基準）
+
+## plan.md 與 spec.md 格式
+（共用提示詞：plan.md 的四個一級標題、spec.md 的六個小節）
+
+## 實作與驗證分工
+（共用提示詞：每張工單施工、收到我的結果後）
+
+## 我的補充
+（踩過的坑、常用指令、自己的偏好）
+</code></pre>
+</div></dialog><script>
+(()=>{
+ const dialog=document.getElementById('shared-prompt-dialog');if(!dialog)return;
+ let opener=null;
+ document.querySelectorAll('a[href="#shared-prompt"]').forEach(a=>{a.classList.add('sp-open');a.setAttribute('aria-haspopup','dialog');a.addEventListener('click',e=>{e.preventDefault();opener=a;dialog.showModal();dialog.querySelector('.sp-body').scrollTop=0;dialog.scrollTop=0})});
+ dialog.querySelector('.sp-close').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+ dialog.addEventListener('close',()=>{if(opener)opener.focus()});
+ dialog.querySelectorAll('.sp-toc a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();dialog.querySelector(a.getAttribute('href')).scrollIntoView({block:'start'})}));
+ dialog.querySelectorAll('.sp-body pre > code').forEach(code=>{
+  const bar=document.createElement('div');bar.className='sp-copy-bar';
+  const button=document.createElement('button');button.type='button';button.className='sp-copy';button.textContent='複製這段';bar.append(button);code.parentElement.before(bar);
+  button.addEventListener('click',async()=>{
+   const text=code.textContent;let copied=false;
+   try{await navigator.clipboard.writeText(text);copied=true}catch{}
+   if(!copied){const area=document.createElement('textarea');area.value=text;area.style.cssText='position:fixed;left:-9999px';dialog.append(area);area.select();try{copied=document.execCommand('copy')}catch{}area.remove();button.focus()}
+   button.textContent=copied?'已複製':'複製失敗，請選取文字複製';
+  });
+ });
+})();
+</script><!-- shared-prompt:end --></body></html>
