@@ -976,7 +976,7 @@ Q5 是，離地期間鎖住攝影機角度。
 <h2 id="w12-2-6">課前實作練習</h2>
 <h3 id="w12-2-7">課前實作練習｜調出你的越頂</h3>
 <p>調整 <code>/Game/Fighting/Anims/AM_CrossOver</code> 上 <code>Airborne Arc</code> 的水平距離、頂點高度與兩條曲線，做出你想要的越頂效果。</p>
-<p><strong>用 AI 協作</strong>：依序貼上 <a href="../%E5%85%B1%E7%94%A8AI%E6%8F%90%E7%A4%BA%E8%A9%9E.md">共用 AI 提示詞</a> 的兩段開場與共用提示詞，再描述你想要的越頂效果。確認 AI 整理的 <code>plan.md</code> 和 <code>spec.md</code> 後再開始修改。</p>
+<p><strong>用 AI 協作</strong>：依序貼上 <a href="#shared-prompt">共用前置提示詞</a> 的兩段開場與共用提示詞，再描述你想要的越頂效果。確認 AI 整理的 <code>plan.md</code> 和 <code>spec.md</code> 後再開始修改。</p>
 <p>上課時分享畫面，在 PIE 開啟 Combat Debug。從你選定的站距起跳，展示調整後的跳躍高度與落地節奏。越過對手時，<code>Crossed</code> 會變成 <code>yes</code>，角色最後落在對手另一側。</p>
 <p>請用預習 2 的離地段規則，說明起跳時兩人的站距和你設定的水平距離有什麼關係，以及為什麼這樣越得過對手。</p>
 <h2 id="w12-2-8">官方參考資料</h2>
@@ -1013,6 +1013,7 @@ Q5 是，離地期間鎖住攝影機角度。
   }
   for(const el of article.querySelectorAll('h2,h3,h4,h5,p,summary')){
     if(el.closest('figure,pre,blockquote'))continue;
+    if(el.closest('.practice-dialogue')&&!el.matches('.practice-dialogue > summary'))continue;
     const tag=el.tagName.toLowerCase();let level;
     if(/^h[2-5]$/.test(tag)){level=+tag[1];headingLevel=level;headingPath.length=level;headingPath[level]=el.textContent.trim();}
     else if(tag==='summary')level=Math.min(headingLevel+2,6);
@@ -1029,12 +1030,10 @@ Q5 是，離地期間鎖住攝影機角度。
       if(el.closest('details'))continue;
       level=Math.min(headingLevel+1,6);
     }
+    const title=(el.querySelector('.practice-demo-title')?.textContent??el.textContent).trim();
     // Chapter context distinguishes repeated subheadings without shifting later anchors.
-    if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+el.textContent.trim());
-    const title=el.textContent.trim();
-    const text=(tag==='h3' && /^w12-2-(?:4|5|7)$/.test(el.id))
-      ? title.replace(/^(?:課前預習 [12]|課前實作練習)｜/,'')
-      : title;
+    if(!el.id)el.id=makeAnchor(headingPath.join('/')+'/'+tag+'/'+title);
+    const text=true&&tag==='h3'?title.replace(/^(?:課前預習\s+\d+|課前實作練習|追蹤路徑[一二三四五六七八九十]+|課堂示範\s+\d+|課堂實作)｜\s*/,''):title;
     nodes.push({el,level,text,parents:[]});
   }
   const stack=[];
